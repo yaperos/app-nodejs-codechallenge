@@ -4,6 +4,8 @@ import { TransactionService } from './transaction.service';
 import { DatabaseModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TransactionEntity } from './entity/transaction.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,11 +17,11 @@ import * as Joi from 'joi';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
-        DB_LOCATE_ENTRIES: Joi.string().required(),
       }),
       envFilePath: './apps/transaction/.env',
     }),
     DatabaseModule,
+    TypeOrmModule.forFeature([TransactionEntity]),
   ],
   controllers: [TransactionController],
   providers: [TransactionService],
