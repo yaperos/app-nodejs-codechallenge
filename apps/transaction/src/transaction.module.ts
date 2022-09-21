@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionEntity } from './entity/transaction.entity';
+import { KafkaModule } from '@app/common';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,11 +18,14 @@ import { TransactionEntity } from './entity/transaction.entity';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
+        KAFKA_URI: Joi.string().required(),
+        KAFKA_TRANSACTION_QUEUE: Joi.string().required(),
       }),
       envFilePath: './apps/transaction/.env',
     }),
     DatabaseModule,
     TypeOrmModule.forFeature([TransactionEntity]),
+    KafkaModule,
   ],
   controllers: [TransactionController],
   providers: [TransactionService],
