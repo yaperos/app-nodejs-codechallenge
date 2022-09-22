@@ -1,13 +1,42 @@
 version: '3.7'
 services:
+  transaction:
+    build:
+      context: .
+      dockerfile: ./apps/transaction/Dockerfile
+      target: development
+    command: npm run start:dev transaction
+    env_file:
+      - ./apps/transaction/.env
+    depends_on:
+      - postgres
+      - zookeeper
+      - kafka
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+  anti-fraud:
+    build:
+      context: .
+      dockerfile: ./apps/anti-fraud/Dockerfile
+      target: development
+    command: npm run start:dev anti-fraud
+    env_file:
+      - ./apps/anti-fraud/.env
+    depends_on:
+      - zookeeper
+      - kafka
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
   postgres:
     image: postgres:14
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=default_database
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=test_db
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
