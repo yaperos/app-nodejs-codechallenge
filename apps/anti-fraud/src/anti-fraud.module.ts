@@ -11,7 +11,7 @@ import { AntiFraudService } from './anti-fraud.service';
       isGlobal: true,
       validationSchema: Joi.object({
         KAFKA_URI: Joi.string().required(),
-        KAFKA_ANTI_FRAUD_QUEUE: Joi.string().required(),
+        KAFKA_ANTI_FRAUD_CONSUMER: Joi.string().required(),
       }),
       envFilePath: './apps/anti-fraud/.env',
     }),

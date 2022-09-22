@@ -14,7 +14,7 @@ export class KafkaService {
           brokers: [this.configService.get<string>('KAFKA_URI')],
         },
         consumer: {
-          groupId: this.configService.get<string>(`KAFKA_${queue}_QUEUE`),
+          groupId: this.configService.get<string>(`KAFKA_${queue}_CONSUMER`),
         },
       },
     };

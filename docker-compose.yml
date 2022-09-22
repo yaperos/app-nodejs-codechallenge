@@ -1,5 +1,24 @@
 version: '3.7'
 services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile
+      target: development
+    command: npm run start:dev api-gateway
+    env_file:
+      - ./apps/api-gateway/.env
+    depends_on:
+      - postgres
+      - zookeeper
+      - kafka
+      - transaction
+      - anti-fraud
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports: 
+      - 3000:3000
   transaction:
     build:
       context: .

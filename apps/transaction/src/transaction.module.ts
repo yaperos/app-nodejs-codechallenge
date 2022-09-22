@@ -19,7 +19,7 @@ import { KafkaModule } from '@app/common';
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
         KAFKA_URI: Joi.string().required(),
-        KAFKA_TRANSACTION_QUEUE: Joi.string().required(),
+        KAFKA_TRANSACTION_CONSUMER: Joi.string().required(),
       }),
       envFilePath: './apps/transaction/.env',
     }),
