@@ -5,8 +5,10 @@ import { DatabaseModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TransactionEntity } from './entity/transaction.entity';
+import { Transaction } from './entity/transaction.entity';
 import { KafkaModule } from '@app/common';
+import { ANTI_FRAUD_SERVICE } from './constans/services';
+import { TransactionRepository } from './transaction.repository';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,16 +20,15 @@ import { KafkaModule } from '@app/common';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
-        KAFKA_URI: Joi.string().required(),
-        KAFKA_TRANSACTION_CONSUMER: Joi.string().required(),
+        KAFKA_ANTI_FRAUD_CONSUMER: Joi.string().required(),
       }),
       envFilePath: './apps/transaction/.env',
     }),
     DatabaseModule,
-    TypeOrmModule.forFeature([TransactionEntity]),
-    KafkaModule,
+    TypeOrmModule.forFeature([Transaction]),
+    KafkaModule.register({ name: ANTI_FRAUD_SERVICE }),
   ],
   controllers: [TransactionController],
-  providers: [TransactionService],
+  providers: [TransactionService, TransactionRepository],
 })
 export class TransactionModule {}

@@ -1,0 +1,1 @@
+export const ANTI_FRAUD_SERVICE = 'ANTI_FRAUD';

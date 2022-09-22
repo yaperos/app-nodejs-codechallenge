@@ -1,17 +1,13 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
+import { CreateTransactionDto } from './dto/create-trasaction.dto';
 
-@Controller()
+@Controller('/api/transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
-  @Get()
-  getHello(): string {
-    return this.transactionService.getHello();
-  }
-
   @Post()
-  createPhoto(@Body() body: any): Promise<any> {
-    return this.transactionService.create(body);
+  createTransaction(@Body() body: CreateTransactionDto) {
+    return this.transactionService.createTransaction(body);
   }
 }

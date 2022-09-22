@@ -1,19 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { TransactionEntity } from './entity/transaction.entity';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { ANTI_FRAUD_SERVICE } from './constans/services';
+import { CreateTransactionDto } from './dto/create-trasaction.dto';
+import { TransactionRepository } from './transaction.repository';
+import {lastValueFrom} from 'rxjs'
 @Injectable()
 export class TransactionService {
   constructor(
-    @InjectRepository(TransactionEntity)
-    private transactionRepository: Repository<TransactionEntity>,
+    private readonly transactionRepository: TransactionRepository,
+    @Inject(ANTI_FRAUD_SERVICE) private antiFraudClient: ClientProxy,
   ) {}
 
-  getHello(): string {
-    return 'Hello World!';
-  }
-
-  create(body: any): Promise<any> {
-    return this.transactionRepository.insert(body);
+  async createTransaction(request: CreateTransactionDto) {
+    try {
+      const transaction = await this.transactionRepository.create(request);
+      await lastValueFrom(
+        this.antiFraudClient.emit('transaction_created',{
+          request,
+          
+        })
+      )
+      return transaction;
+    } catch (error) {
+      throw new InternalServerErrorException('Error al crear Transacion');
+    }
   }
 }

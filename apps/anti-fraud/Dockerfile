@@ -1,28 +1,29 @@
-FROM node:alpine As development
+FROM node:18-alpine as base
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
 
-COPY . .
+FROM base as production
 
-RUN npm run build anti-fraud
-
-FROM node:alpine as production
-
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
+ENV NODE_ENV=production
 
 RUN npm install --only=production
 
 COPY . .
 
-COPY --from=development /usr/src/app/dist ./dist
+RUN npm run build anti-fraud
 
 CMD ["node", "dist/apps/anti-fraud/main"]
+
+
+FROM base as development
+
+ENV NODE_ENV=development
+
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run","start:dev","anti-fraud"]

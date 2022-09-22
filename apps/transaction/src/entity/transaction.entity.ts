@@ -1,14 +1,14 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class TransactionEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class Transaction {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ length: 50 })
+  @Column('uuid')
   accountExternalIdDebit: string;
 
-  @Column({ length: 50 })
+  @Column('uuid')
   accountExternalIdCredit: string;
 
   @Column('int')
