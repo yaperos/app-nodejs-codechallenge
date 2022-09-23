@@ -1,3 +1,4 @@
+import { START_TRANSACTION_VALIDATED } from '@app/common/constans/topics';
 import { AntiFraud, RequestData } from '@app/common/interfaces';
 import { Controller, Get } from '@nestjs/common';
 import {
@@ -12,7 +13,7 @@ import { AntiFraudService } from './anti-fraud.service';
 export class AntiFraudController {
   constructor(private readonly antiFraudService: AntiFraudService) {}
 
-  @EventPattern('start_transaction_validated')
+  @EventPattern(START_TRANSACTION_VALIDATED)
   async handleTransactionCreated(
     @Payload() { payload }: RequestData<AntiFraud>,
     @Ctx() context: KafkaContext,

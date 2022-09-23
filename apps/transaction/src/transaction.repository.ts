@@ -33,6 +33,11 @@ export class TransactionRepository {
 
   async updateStatusById(id: string, status: TRANSACTION_STATUS) {
     console.table({ id, status });
-    return this.repository.update(id, { status });
+    const transaction = this.repository.findOne({ where: { id } });
+    if (transaction) {
+      await this.repository.update(id, { status });
+    }
+
+    return transaction;
   }
 }

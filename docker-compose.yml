@@ -1,20 +1,5 @@
 version: '3.7'
 services:
-  api-gateway:
-    build:
-      context: .
-      dockerfile: ./apps/api-gateway/Dockerfile
-      target: development
-    env_file:
-      - ./apps/api-gateway/.env
-    depends_on:
-      - zookeeper
-      - kafka
-      - anti-fraud
-      - transaction
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
   transaction:
     build:
       context: .

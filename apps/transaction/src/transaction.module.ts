@@ -7,7 +7,7 @@ import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './entity/transaction.entity';
 import { KafkaModule } from '@app/common';
-import { ANTI_FRAUD_SERVICE } from './constans/services';
+import { ANTI_FRAUD_SERVICE, TRANSACTION_SERVICE } from './constans/services';
 import { TransactionRepository } from './transaction.repository';
 @Module({
   imports: [
@@ -30,6 +30,7 @@ import { TransactionRepository } from './transaction.repository';
     TypeOrmModule.forFeature([Transaction]),
     KafkaModule,
     KafkaModule.register({ name: ANTI_FRAUD_SERVICE }),
+    KafkaModule.register({ name: TRANSACTION_SERVICE }),
   ],
   controllers: [TransactionController],
   providers: [TransactionService, TransactionRepository],

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka, KafkaRetriableException } from '@nestjs/microservices';
-import { ANTI_FRAUD_SERVICE } from './constans/services';
+import { ANTI_FRAUD_SERVICE, TRANSACTION_SERVICE } from './constans/services';
 import { CreateTransactionDto } from './dto/create-trasaction.dto';
 import { TransactionRepository } from './transaction.repository';
 import { lastValueFrom } from 'rxjs';
@@ -12,6 +12,7 @@ export class TransactionService {
   constructor(
     private readonly transactionRepository: TransactionRepository,
     @Inject(ANTI_FRAUD_SERVICE) private antiFraudClient: ClientKafka,
+    @Inject(TRANSACTION_SERVICE) private transactionClient: ClientKafka,
   ) {}
 
   async create(transactionDto: CreateTransactionDto) {
@@ -22,13 +23,21 @@ export class TransactionService {
     }
   }
 
+  async findOne(transactionExternalId: string) {
+    try {
+      return this.transactionRepository.findOne(transactionExternalId);
+    } catch (error) {
+      throw new KafkaRetriableException('Error al crear Transacion');
+    }
+  }
+
   async updateStatus(antiFraud: AntiFraud) {
     try {
-      const updateResult = await this.transactionRepository.updateStatusById(
+      const transaction = await this.transactionRepository.updateStatusById(
         antiFraud.transactionId,
         antiFraud.status,
       );
-      return antiFraud;
+      return transaction;
     } catch (error) {
       throw new KafkaRetriableException('Error actualizar Transacion');
     }

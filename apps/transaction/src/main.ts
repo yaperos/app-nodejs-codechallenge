@@ -9,5 +9,6 @@ async function bootstrap() {
   const kafkaService = app.get<KafkaService>(KafkaService);
   app.connectMicroservice(kafkaService.getOptions('TRANSACTION'));
   await app.startAllMicroservices();
+  await app.listen(3000);
 }
 bootstrap();
