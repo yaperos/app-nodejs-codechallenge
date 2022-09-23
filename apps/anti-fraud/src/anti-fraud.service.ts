@@ -1,14 +1,38 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { END_TRANSACTION_VALIDATED } from '@app/common/constans/topics';
+import { RequestData, AntiFraud } from '@app/common/interfaces';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
+import { TRANSACTION_STATUS, TRANSACTION_SERVICE } from './constans';
 
 @Injectable()
 export class AntiFraudService {
-  private readonly logger = new Logger(AntiFraudService.name);
+  constructor(
+    @Inject(TRANSACTION_SERVICE) private transactionClient: ClientKafka,
+  ) {}
 
-  getHello(): string {
-    return 'Hello World!';
+  async check(data: AntiFraud) {
+    let validData: AntiFraud = {
+      transactionId: data.transactionId,
+      status: data.status,
+      value: data.value,
+    };
+    if (data.value <= 1000 && data.value > 0) {
+      validData.status = TRANSACTION_STATUS.APPROVED;
+    } else {
+      validData.status = TRANSACTION_STATUS.REJECTED;
+    }
+    return validData;
   }
 
-  check(data: any) {
-    this.logger.log('Checked data...', data);
+  async emitResultValidated(data: AntiFraud) {
+    await lastValueFrom(
+      this.transactionClient.emit<string, RequestData<AntiFraud>>(
+        END_TRANSACTION_VALIDATED,
+        {
+          payload: data,
+        },
+      ),
+    );
   }
 }

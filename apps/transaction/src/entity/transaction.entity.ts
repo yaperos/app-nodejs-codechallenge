@@ -1,3 +1,4 @@
+import { TRANSACTION_STATUS } from '@app/common/interfaces';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -17,6 +18,6 @@ export class Transaction {
   @Column('float')
   value: number;
 
-  @Column({ default: 'pending', length: 15 })
-  status: string;
+  @Column({ default: 'pending', length: 15, type: 'varchar' })
+  status: TRANSACTION_STATUS;
 }
