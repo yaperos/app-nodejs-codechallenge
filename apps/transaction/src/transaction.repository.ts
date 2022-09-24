@@ -15,13 +15,12 @@ export class TransactionRepository {
   async create(data: CreateTransactionDto): Promise<Transaction> {
     const transaction = this.repository.create(data);
     await this.repository.insert(transaction);
-    console.table(transaction);
     return transaction;
   }
 
   async findOne(id: string) {
     const entity = await this.repository.findOne({
-      where: { id },
+      where: { transactionExternalId: id },
     });
 
     return entity;
@@ -32,8 +31,9 @@ export class TransactionRepository {
   }
 
   async updateStatusById(id: string, status: TRANSACTION_STATUS) {
-    console.table({ id, status });
-    const transaction = this.repository.findOne({ where: { id } });
+    const transaction = this.repository.findOne({
+      where: { transactionExternalId: id },
+    });
     if (transaction) {
       await this.repository.update(id, { status });
     }

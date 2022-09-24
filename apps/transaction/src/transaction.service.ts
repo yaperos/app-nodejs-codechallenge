@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ClientKafka, KafkaRetriableException } from '@nestjs/microservices';
 import { ANTI_FRAUD_SERVICE, TRANSACTION_SERVICE } from './constans/services';
 import { CreateTransactionDto } from './dto/create-trasaction.dto';
@@ -15,9 +15,37 @@ export class TransactionService {
     @Inject(TRANSACTION_SERVICE) private transactionClient: ClientKafka,
   ) {}
 
+  private readonly transactionTypes = [
+    {
+      id: 1,
+      name: 'visa',
+    },
+    {
+      id: 2,
+      name: 'mastercard',
+    },
+  ];
+
+  findTransactionTypeById(id: number) {
+    return this.transactionTypes.find((type) => type.id === id);
+  }
+
   async create(transactionDto: CreateTransactionDto) {
+    const transactionType = this.findTransactionTypeById(
+      transactionDto.tranferTypeId,
+    );
+    if (!transactionType) {
+      throw new NotFoundException(
+        'TransactionType not found with tranferTypeId:' +
+          transactionDto.tranferTypeId,
+      );
+    }
+
     try {
-      return this.transactionRepository.create(transactionDto);
+      const transaction = await this.transactionRepository.create(
+        transactionDto,
+      );
+      return { transaction, transactionType };
     } catch (error) {
       throw new KafkaRetriableException('Error al crear Transacion');
     }
@@ -25,7 +53,19 @@ export class TransactionService {
 
   async findOne(transactionExternalId: string) {
     try {
-      return this.transactionRepository.findOne(transactionExternalId);
+      const transaction = await this.transactionRepository.findOne(
+        transactionExternalId,
+      );
+      const transactionType = this.findTransactionTypeById(
+        transaction.tranferTypeId,
+      );
+
+      if (!transaction) {
+        throw new NotFoundException(
+          'Transaction not found with guid: ' + transactionExternalId,
+        );
+      }
+      return { transaction, transactionType };
     } catch (error) {
       throw new KafkaRetriableException('Error al crear Transacion');
     }
@@ -50,7 +90,7 @@ export class TransactionService {
         {
           payload: {
             status: transaction.status,
-            transactionId: transaction.id,
+            transactionId: transaction.transactionExternalId,
             value: transaction.value,
           },
         },

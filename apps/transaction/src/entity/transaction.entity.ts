@@ -1,10 +1,15 @@
 import { TRANSACTION_STATUS } from '@app/common/interfaces';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Transaction {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  transactionExternalId: string;
 
   @Column('uuid')
   accountExternalIdDebit: string;
@@ -20,4 +25,7 @@ export class Transaction {
 
   @Column({ default: 'pending', length: 15, type: 'varchar' })
   status: TRANSACTION_STATUS;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
