@@ -1,0 +1,42 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionType {
+  name: String
+}
+
+type TransactionResponse {
+  transactionExternalId: String
+  transactionType: TransactionType
+  transactionStatus: TransactionType
+  value: Int
+  createdAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  findById(id: String!): TransactionResponse!
+}
+
+type Mutation {
+  processTransaction(transactionInput: TransactionRequest!): TransactionResponse!
+}
+
+input TransactionRequest {
+  """Account external Id Debit"""
+  accountExternalIdDebit: String!
+
+  """Account external Id Credit"""
+  accountExternalIdCredit: String!
+
+  """Type Transaction"""
+  tranferTypeId: Int!
+
+  """Value Transaction"""
+  value: Int!
+}
