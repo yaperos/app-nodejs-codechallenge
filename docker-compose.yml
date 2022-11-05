@@ -1,5 +1,44 @@
 version: "3.7"
 services:
+  anti-fraud: 
+    image: node:latest
+    user: "node"
+    ports:
+    - 4000:4000
+    working_dir: /home/node/app
+    environment:
+      - PORT=4000
+      - KAFKA_URL=kafka:9092
+    volumes:
+      - ./anti-fraud:/home/node/app
+    expose:
+      - "4000"
+    command: bash -c "npm install && npm run start:dev"
+    depends_on:
+      - kafka
+    restart: "always"
+  transaction: 
+    image: node:latest
+    user: "node"
+    depends_on: 
+     - postgres
+     - kafka
+    ports:
+    - 4100:4100
+    working_dir: /home/node/app
+    environment:
+      - PORT=4100
+      - KAFKA_URL=kafka:9092
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./transaction:/home/node/app
+    expose:
+      - "4100"
+    command: bash -c "npm install && npm run start:dev"
+    restart: "always"
   postgres:
     image: postgres:14
     ports:
@@ -16,7 +55,7 @@ services:
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
