@@ -1,0 +1,46 @@
+input NewTransaction {
+  accountExternalIdDebit: String!,
+  accountExternalIdCredit: String!,
+  tranferTypeId: Int!,
+  value: Int!
+  status: String
+}
+
+input UpdateTransaction {
+    id: ID!
+    status: String!,
+}
+
+type TransactionName {
+    name: String!
+}
+
+type Response {
+  transactionExternalId: String!
+  transactionType: TransactionName!
+  transactionStatus: TransactionName!
+  value: Int!
+  createdAt: String!
+}
+
+type TransactionDB {
+    id: ID
+    accountExternalIdDebit: String!
+    accountExternalIdCredit: String!
+    tranferTypeId: Int!
+    value: Int!
+    status: String
+    createdAt: String
+    updateAt: String
+}
+
+type Query {
+    transactions: [TransactionDB]!
+    transaction(id: ID!): TransactionDB
+}
+
+type Mutation {
+    createTransaction(input: NewTransaction): Response
+    updateTransaction(input: UpdateTransaction): TransactionDB
+    deleteTransaction(id: ID): TransactionDB
+}
