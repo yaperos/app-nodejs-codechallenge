@@ -3,8 +3,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
-import container from './config/dependency-injection';
-//import NatsDomainEventsConsumer from '../../../Contexts/Shared/infrastructure/EventBus/nats/NatsDomainEventsConsumer';
 import Configuration from './config';
 import { RoutesManager } from './routes/RoutesManager';
 
@@ -33,11 +31,6 @@ export default class App {
     const router = Router();
     this.app.use('/', router);
     RoutesManager.run(router);
-  }
-
-  private async registerSubscribers(): Promise<void> {
-    //const eventBus = container.get('Shared.NatsDomainEventsConsumer') as NatsDomainEventsConsumer;
-    //await eventBus.start();
   }
 
   async start(): Promise<void> {

@@ -1,6 +1,0 @@
-services:
-  Exchange.utils.MongoValueObjectRepository:
-    class: ../../../../../../Contexts/Exchange/utils/infrastructure/persistence/MongoValueObjectRepository
-  Exchange.utils.FindValueObject:
-    class: ../../../../../../Contexts/Exchange/utils/application/FindValueObject
-    arguments: ['@Exchange.utils.MongoValueObjectRepository']
