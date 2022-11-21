@@ -1,0 +1,7 @@
+services:
+  Transaction.Events.KafkaEvents:
+    class: ../../../../../../Contexts/Transaction/events/infrastructure/kafka/KafkaEvents
+    arguments: []
+  Transaction.Events.PublishEvent:
+    class: ../../../../../../Contexts/Transaction/events/application/PublishEvent
+    arguments: ['@Transaction.Events.KafkaEvents']

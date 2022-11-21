@@ -1,0 +1,13 @@
+services:
+  Transaction.Contexts.MongoTransactionRepository:
+    class: ../../../../../../Contexts/Transaction/transaction/infrastructure/persistence/MongoTransactionRepository
+    arguments: []
+  Transaction.Contexts.CreateTransaction:
+    class: ../../../../../../Contexts/Transaction/transaction/application/create/CreateTransaction
+    arguments: ['@Transaction.Contexts.MongoTransactionRepository', '@Transaction.Events.PublishEvent', '@Transaction.Contexts.UpdateTransaction']
+  Transaction.Contexts.UpdateTransaction:
+    class: ../../../../../../Contexts/Transaction/transaction/application/update/UpdateTransaction
+    arguments: ['@Transaction.Contexts.MongoTransactionRepository']
+  Transaction.Contexts.UpdateTransactionOnTransactionCreatedSubscriber:
+    class: ../../../../../../Contexts/Transaction/transaction/application/update/UpdateTransactionOnTransactionCreatedSubscriber
+    arguments: ['@Transaction.Contexts.UpdateTransaction']

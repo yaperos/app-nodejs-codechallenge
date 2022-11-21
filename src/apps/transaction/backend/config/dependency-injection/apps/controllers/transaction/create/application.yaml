@@ -1,0 +1,4 @@
+services:
+  Apps.controllers.CreateTransactionPostController:
+    class: ../../../../../../controllers/transaction/create/CreateTransactionPostController
+    arguments: ['@Transaction.Contexts.CreateTransaction']

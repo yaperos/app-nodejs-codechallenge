@@ -1,0 +1,4 @@
+imports:
+  - { resource: ./events/application.yaml }
+  - { resource: ./transaction/application.yaml }
+  - { resource: ./apps/application.yaml }

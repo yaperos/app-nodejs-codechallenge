@@ -1,0 +1,5 @@
+services:
+  Apps.routes.TransactionRoutes:
+    class: ../../../../routes/TransactionRoutes
+    tags:
+      - { name: 'route' }
