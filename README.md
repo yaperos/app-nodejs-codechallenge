@@ -13,6 +13,13 @@ To start the application you first need to start the development environment wit
 $ docker-compose up -d
 ```
 
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+this application uses the nestJS framework so you will need to install the cli:
+
+```bash
+$ npm install -g @nestjs/cli
+```
+
 To start the applications just follow the command:
 
 ```bash
