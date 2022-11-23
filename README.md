@@ -4,6 +4,30 @@
 - [Tech Stack](#tech_stack)
 - [Send us your challenge](#send_us_your_challenge)
 
+# Solution
+for this challenge I created two applications one for data entry as api manager and another to deal with the anti-fraud both talking to the postgres database and communicating with kafka.
+
+To start the application you first need to start the development environment with docker-compose:
+
+```bash
+$ docker-compose up -d
+```
+
+To start the applications just follow the command:
+
+```bash
+$ cd core
+$ npm i
+$ nest start core
+```
+
+```bash
+$ cd core
+$ nest start anti-fraud
+```
+
+with the applications started, you will be able to access the address http://localhost:3000/api through the browser and through the swagger itself you will be able to create a transaction and list changed transactions
+
 # Problem
 
 Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
