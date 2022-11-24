@@ -16,14 +16,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(
-        appController.handleantiFraud({
-          id: 1,
-          transactionExternalId: 'Guid',
-          transactionStatus: 'pending',
-          value: 100,
-        }),
-      ).toBe('Hello World!');
+      expect(appController.getHello()).toBe('Hello World!');
     });
   });
 });

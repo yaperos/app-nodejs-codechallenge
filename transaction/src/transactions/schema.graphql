@@ -1,14 +1,22 @@
+scalar Date
+
 input NewTransaction {
   accountExternalIdDebit: String!,
   accountExternalIdCredit: String!,
   tranferTypeId: Int!,
   value: Int!
-  status: String
+}
+
+type Status {
+    id: Int,
+    transactionId: Int,
+    status: String,
+    createdAt: Date,
 }
 
 input UpdateTransaction {
-    id: ID!
-    status: String!,
+    id: Int!
+    statusArray: String!,
 }
 
 type TransactionName {
@@ -16,23 +24,24 @@ type TransactionName {
 }
 
 type Response {
-  transactionExternalId: String!
+  transactionExternalId: Int!
   transactionType: TransactionName!
   transactionStatus: TransactionName!
   value: Int!
-  createdAt: String!
+  createdAt: Date
 }
 
 type TransactionDB {
-    id: ID
+    id: Int
     accountExternalIdDebit: String!
     accountExternalIdCredit: String!
     tranferTypeId: Int!
     value: Int!
-    status: String
-    createdAt: String
-    updateAt: String
+    statusArray: [Status]
+    createdAt: Date
+    updateAt: Date
 }
+
 
 type Query {
     transactions: [TransactionDB]!

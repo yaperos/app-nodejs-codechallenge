@@ -1,27 +1,20 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { Controller, Get, OnModuleInit } from '@nestjs/common';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 import { AppService } from './app.service';
-import { TransactionEvent } from './transactionEvent';
+import { TransactionValidatedEvent } from './transactionEvent';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @MessagePattern('anti-fraud')
-  async handleantiFraud(data: TransactionEvent) {
-    let transactionStatusChanged;
-    const amount = data.value;
-    if (amount > 1000) {
-      transactionStatusChanged = {
-        ...data,
-        transactionStatus: 'rejected',
-      };
-    } else {
-      transactionStatusChanged = {
-        ...data,
-        transactionStatus: 'approved',
-      };
-    }
-    return transactionStatusChanged;
+  @MessagePattern('antiFraud')
+  handleantiFraud(data: TransactionValidatedEvent): any {
+    return {eventStatus: this.appService.handleTrasactionCreated(data)};
+  }
+  
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
   }
 }

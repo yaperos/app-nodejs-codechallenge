@@ -7,21 +7,20 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model Post {
-    id Int @id @default(autoincrement())
-    title String
-    content String
-    published Boolean @default(false)
-    createAt DateTime @default(now())
-}
-
 model Transaction {
     id Int @id @default(autoincrement())
     accountExternalIdDebit String
     accountExternalIdCredit String
     tranferTypeId Int
     value Int
-    status String @default("pending")
+    statusArray Status[] @relation("StatusOfTransaction")
     createdAt DateTime @default(now())
-    updateAt DateTime @default(now())
+}
+
+model Status {
+    id Int @id @default(autoincrement())
+    transactionId Int
+    status String? @default("pending")
+    transaction Transaction @relation("StatusOfTransaction", fields: [transactionId], references: [id], onDelete: Cascade)
+    createdAt DateTime? @default(now())
 }

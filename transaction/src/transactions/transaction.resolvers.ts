@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { TransactionService } from './transaction.service';
-import { NewTransaction, TransactionDB, UpdateTransaction } from 'src/graphql';
+import { NewTransaction, UpdateTransaction } from 'src/graphql';
 
 @Resolver('Transaction')
 export class TransactionResolvers {
@@ -17,8 +17,8 @@ export class TransactionResolvers {
   }
 
   @Mutation('createTransaction')
-  async create(@Args('input') args: TransactionDB) {
-    return this.transactionService.createTransaction(args);
+  async create(@Args('input') args: NewTransaction) {
+    return await this.transactionService.createTransaction(args);
   }
 
   @Mutation('updateTransaction')
@@ -30,5 +30,4 @@ export class TransactionResolvers {
   async delete(@Args('id') args: string) {
     return this.transactionService.deleteTransaction(args);
   }
-
 }
