@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TransactionResolvers } from './transaction.resolvers';
 import { TransactionService } from './transaction.service';
 import { PrismaService } from 'src/prisma.service';
-import { AppService } from 'src/app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({

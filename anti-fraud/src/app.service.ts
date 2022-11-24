@@ -30,7 +30,7 @@ export class AppService implements OnModuleInit{
       transactionStatusChanged.status = 'approved'
     }
     statusArray = transactionStatusChanged;
-    console.log(`Resultado: ${transactionStatusChanged.status}`)
+    console.log(`Result: ${transactionStatusChanged.status}`)
     console.log("/".repeat(20))
     return {id, tranferTypeId, value, statusArray};
   }
