@@ -1,0 +1,79 @@
+CREATE DATABASE transaction
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'en_US.utf8'
+    LC_CTYPE = 'en_US.utf8'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+   
+CREATE SEQUENCE public.transaction_type_id_type_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+CREATE TYPE public.transaction_transactionstatus_enum AS ENUM (
+	'PENDING',
+	'APPROVED',
+	'REJECTED');
+	
+CREATE OR REPLACE FUNCTION public.uuid_generate_v4()
+ RETURNS uuid
+ LANGUAGE c
+ PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_generate_v4$function$
+;
+
+
+CREATE TABLE IF NOT EXISTS public.transaction_type
+(
+    id_type integer NOT NULL,
+    name character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "PK_dd337178435f600bdddbd79775e" PRIMARY KEY (id_type)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.transaction_type
+    OWNER to postgres;
+
+CREATE TABLE IF NOT EXISTS public.transaction
+(
+    "isActive" boolean NOT NULL DEFAULT true,
+    "isArchived" boolean NOT NULL DEFAULT false,
+    "createDateTime" timestamp with time zone NOT NULL DEFAULT now(),
+    "createdBy" character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    "lastChangedDateTime" timestamp with time zone NOT NULL DEFAULT now(),
+    "lastChangedBy" character varying(300) COLLATE pg_catalog."default" NOT NULL,
+    "internalComment" character varying(300) COLLATE pg_catalog."default",
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    account_external_id_debit character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    account_external_id_credit character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    value numeric NOT NULL,
+    "transactionStatus" transaction_transactionstatus_enum NOT NULL DEFAULT 'PENDING'::transaction_transactionstatus_enum,
+    transaction_type_id integer,
+    CONSTRAINT "PK_b20d8e9bb606acb6363c27cb991" PRIMARY KEY (id),
+    CONSTRAINT transaction_type_id FOREIGN KEY (transaction_type_id)
+        REFERENCES public.transaction_type (id_type) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.transaction
+    OWNER to postgres;
+   
+   INSERT INTO public.transaction_type
+(id_type, "name")
+VALUES(1, 'SEGUROS');
+INSERT INTO public.transaction_type
+(id_type, "name")
+VALUES(2, 'PROVEEDORES');
+INSERT INTO public.transaction_type
+(id_type, "name")
+VALUES(3, 'HIPOTECA');
