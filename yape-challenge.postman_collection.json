@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "c9ec3a2a-7681-4964-af5e-6d271d091f7e",
+		"name": "yape-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3734897"
+	},
+	"item": [
+		{
+			"name": "Create transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"accountExternalIdDebit\": null,\n  \"accountExternalIdCredit\": \"d149238a-746f-11ed-a1eb-0242ac120002\",\n  \"tranferTypeId\": 2,\n  \"value\": 999.91\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/transaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transactions By Product",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "productType",
+						"value": "account_credit_id",
+						"type": "text"
+					},
+					{
+						"key": "productId",
+						"value": "d149238a-746f-11ed-a1eb-0242ac120002",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/transaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
