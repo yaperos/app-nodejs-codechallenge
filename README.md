@@ -86,6 +86,16 @@ If you have any questions, please let us know.
   * application
   * domain
 
+# Advantages of clean architecture
+* Separate domain from infrastructure, technology
+* Understanding WHAT the system does by looking at its usecases
+* Have a big picture of the architecture,
+  participants, dependencies, kind of context diagram
+* Maintenability, evolvable, readbility,
+  comprehensibility (mainly by newcomers)
+* Structure not imposed by frameworks
+
+
 # Technical notes
 docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up
