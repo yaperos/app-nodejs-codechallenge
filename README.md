@@ -94,6 +94,7 @@ If you have any questions, please let us know.
 * Maintenability, evolvable, readbility,
   comprehensibility (mainly by newcomers)
 * Structure not imposed by frameworks
+* Currently used by Yape on Java code
 
 
 # Technical notes
