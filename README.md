@@ -78,6 +78,15 @@ When you finish your challenge, after forking a repository, you can open a pull 
 If you have any questions, please let us know.
 
 # Notes to organize
+
+# Code
+* Use of Clean Archictecture
+* Layout or packaging
+  * adapter
+  * application
+  * domain
+
+# Technical notes
 docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up
 
