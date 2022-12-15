@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MessageConsumerController } from '../adapter/input/messaging/message_consumer.controller';
 import { TransactionRestController } from '../adapter/input/web/transaction.rest.controller';
 import { TransactionEntity } from '../domain/models/transaction.entity';
 import { TransactionCreationUsecase } from '../domain/usecases/transaction_creation.usecase';
 import { TransactionService } from '../adapter/out/db/transaction.service';
+import { KafkaService } from 'src/adapter/input/messaging/kafka.service';
 
 @Module({
   imports: [
@@ -21,12 +23,7 @@ import { TransactionService } from '../adapter/out/db/transaction.service';
     }),
     TypeOrmModule.forFeature([TransactionEntity]),
   ],
-  controllers: [
-    TransactionRestController
-  ],
-  providers: [
-      TransactionCreationUsecase,
-      TransactionService
-  ],
+  controllers: [MessageConsumerController, TransactionRestController],
+  providers: [TransactionCreationUsecase, TransactionService, KafkaService],
 })
 export class AppModule {}
