@@ -1,8 +1,12 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { TransactionCreationUsecase } from 'src/domain/usecases/transaction_creation.usecase';
 import { Transaction } from '../../../domain/models/transaction.interface';
 
 @Controller('transaction')
 export class TransactionRestController {
+  constructor(
+    private readonly transactionCreationUsecase: TransactionCreationUsecase,
+  ) {}
 
   @Post()
   async create(@Body() transaction: Transaction) {
@@ -10,7 +14,7 @@ export class TransactionRestController {
       '>> TX TransactionRestController: Incoming REST request: ' +
         JSON.stringify(transaction),
     );
-    return 'todo';
+    return this.transactionCreationUsecase.create(transaction);
   }
 
 }

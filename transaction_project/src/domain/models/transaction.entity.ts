@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-// table name
 @Entity('transaction')
 export class TransactionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ nullable: false })
   value: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
