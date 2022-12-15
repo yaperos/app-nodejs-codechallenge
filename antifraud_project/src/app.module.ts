@@ -7,6 +7,7 @@ import { TransactionEntity } from './domain/models/transaction.entity';
 import { FraudAnalysisUsecase } from './domain/usecases/fraud_analysis.usecase';
 import { TransactionService } from './adapter/output/db/transaction.service';
 import { KafkaService } from './adapter/input/messaging/kafka.service';
+import { MessageProducerController } from './adapter/input/messaging/message_producer.controller';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { KafkaService } from './adapter/input/messaging/kafka.service';
     }),
     TypeOrmModule.forFeature([TransactionEntity]),
   ],
-  controllers: [MessageConsumerController],
+  controllers: [MessageConsumerController, MessageProducerController],
   providers: [KafkaService, FraudAnalysisUsecase, TransactionService],
 })
 export class AppModule {}
