@@ -12,13 +12,8 @@ export class TransactionService {
 
   async findById(transactionId: number): Promise<TransactionEntity> {
     console.log('TransactionService:: findById: ' + transactionId);
-    const result = this.transactionRepository.findOne({
+    return this.transactionRepository.findOne({
       where: { id: transactionId },
     });
-    console.log(
-      'TransactionService: findById record: ' + JSON.stringify(result),
-    );
-    return result;
   }
-  
 }
