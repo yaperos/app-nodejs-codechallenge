@@ -65,14 +65,118 @@ You must have two resources:
 }
 ```
 
-## Optional
+# Proposed Solution
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## Endpoints
 
-You can use Graphql;
+#### Create Transaction
 
-# Send us your challenge
 
-When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+| Path  | Type |
+| ------------- | ------------- |
+| $SERVER:$PORT/api/transaction  | POST |
 
-If you have any questions, please let us know.
+
+RequestBody
+
+```json
+{
+  "accountExternalIdDebit": "Guid",
+  "accountExternalIdCredit": "Guid",
+  "tranferTypeId": 1,
+  "value": 120
+}
+```
+
+Response Body
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionType": {
+    "name": ""
+  },
+  "transactionStatus": {
+    "name": ""
+  },
+  "value": 120,
+  "createdAt": "Date"
+}
+```
+
+####  Get Transaction By Id
+
+
+| Path  | Type |
+| ------------- | ------------- |
+| $SERVER:$PORT/api/transaction/:transactionExternalId  | GET |
+
+
+Response Body
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionType": {
+    "name": "TRANSFER TO OWN ACCOUNT"
+  },
+  "transactionStatus": {
+    "name": "APPROVED"
+  },
+  "value": 120,
+  "createdAt": "Date"
+}
+```
+
+Values list
+
+| Property  | Value | Description  |
+| ------------- | ------------- | ------------- |
+| tranferTypeId  | 1 | TRANSFER TO OWN ACCOUNT |
+| tranferTypeId  | 2 | TRANSFER TO THIRD ACCOUNT |
+| tranferTypeId  | 3 | TRANSFER TO INTERBANK ACCOUNT |
+| transactionStatus[name]  | 1 | PENDING |
+| transactionStatus[name]  | 2 | APPROVED |
+| transactionStatus[name]  | 3 | REJECTED |
+
+
+### Instalation 🔧
+
+From a command console (e.g. GitBash) execute the next steps:
+
+A) Clone this repository
+
+```
+git clone https://github.com/victorarmas9797/app-nodejs-codechallenge.git
+```
+
+B) Access the project folder and then run the following command to get the required project dependencies
+
+```
+cd app-nodejs-codechallenge
+npm install
+```
+
+C) Enable development environment
+
+```
+docker-compose up -d
+```
+
+D) Start transaction service
+
+```
+npx nx serve transaction
+```
+
+E) Start anti-fraud service
+
+```
+npx nx serve anti-fraud-microservice
+```
+
+### Postman
+
+Postman collection to import is located in the following file
+
+```
+/postman/YapeChallenge.postman_collection.json
+```
