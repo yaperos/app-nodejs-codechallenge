@@ -11,7 +11,7 @@ import { MessageProducerController } from './adapter/input/messaging/message_pro
 import configurationYaml from '../configuration.yaml';
 @Module({
   imports: [
-    ConfigModule.forRoot({ load: [configurationYaml], isGlobal: true }),
+    ConfigModule.forRoot({ load: [configurationYaml] }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,

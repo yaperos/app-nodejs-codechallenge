@@ -2,12 +2,14 @@ import { Controller, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { AntifraudCheckPayload } from './antifraud_check.payload';
 import { FraudAnalysisUsecase } from '../../../domain/usecases/fraud_analysis.usecase';
 import { KafkaService } from './kafka.service';
+import { ConfigService } from '@nestjs/config';
 
 @Controller()
 export class MessageConsumerController
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(
+    private readonly configService: ConfigService,
     private readonly fraudAnalysisUsecase: FraudAnalysisUsecase,
     private readonly kafkaService: KafkaService,
   ) {}
@@ -22,8 +24,10 @@ export class MessageConsumerController
     console.log('MessageConsumerController - consumers');
 
     // Consumer for topic "antifraud-check"
-    // TODO: topic to constants
-    await this.kafkaService.consume(consumer, 'antifraud-check', (msg) => {
+    const antifraudCheckTopic = this.configService.get(
+      'application.transport.event-driven.kafka.topics.antifraud-check',
+    );
+    await this.kafkaService.consume(consumer, antifraudCheckTopic, (msg) => {
       const checkPayload: AntifraudCheckPayload = JSON.parse(
         msg.value.toString(),
       );
@@ -38,6 +42,6 @@ export class MessageConsumerController
   }
 
   async onModuleDestroy() {
-    //this.kafkaService.getConsumer().disconnect();
+    this.kafkaService.getConsumer().disconnect();
   }
 }

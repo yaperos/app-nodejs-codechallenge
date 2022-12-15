@@ -8,17 +8,19 @@ import { TransactionStatus } from '../models/transaction_status.enum';
 
 @Injectable()
 export class FraudAnalysisUsecase {
+  private analysisResponseTopic: string;
+
   constructor(
     private readonly configService: ConfigService,
     private readonly transactionService: TransactionService,
     private readonly kafkaService: KafkaService,
-  ) {}
+  ) {
+    this.analysisResponseTopic = this.configService.get(
+      'application.transport.event-driven.kafka.topics.antifraud-analysis-response',
+    );
+  }
 
   async analyze(transactionId: number) {
-    // get tx with version
-
-    // TODO: analysis
-
     console.log(
       'FraudAnalysisUsecase analyze() transactionId: ' + transactionId,
     );
@@ -30,14 +32,11 @@ export class FraudAnalysisUsecase {
 
     const newStatus = this.getStatus(tx);
 
-    const topic = 'antifraud-analysis-response';
     const payload: AntifraudAnalysisResponsePayload = {
       transactionId: tx.id,
       version: tx.version,
       newStatus,
     };
-
-    await this.kafkaService.getProducer().connect();
 
     console.log(
       'FraudAnalysisUsecase: send antifraud analysis to Transaction: ' +
@@ -46,7 +45,7 @@ export class FraudAnalysisUsecase {
 
     await this.kafkaService.send(
       this.kafkaService.getProducer(),
-      topic,
+      this.analysisResponseTopic,
       payload,
     );
   }

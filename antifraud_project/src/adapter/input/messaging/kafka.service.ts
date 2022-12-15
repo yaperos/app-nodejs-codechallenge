@@ -1,5 +1,5 @@
-
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Consumer, Kafka, KafkaMessage, Producer } from 'kafkajs';
 
 @Injectable()
@@ -7,10 +7,11 @@ export class KafkaService {
   private consumer: Consumer;
   private producer: Producer;
 
-  constructor() {
-    const clientId = 'client-id';
-    const groupId = 'group-id';
-    const brokers = ['localhost:9092'];
+  constructor(private readonly configService: ConfigService) {
+    const kafkaPrefix = 'application.transport.event-driven.kafka';
+    const clientId = this.configService.get(`${kafkaPrefix}.client-id`);
+    const groupId = this.configService.get(`${kafkaPrefix}.groupd-id`);
+    const brokers = [this.configService.get(`${kafkaPrefix}.broker`)];
     const kafka = new Kafka({ clientId, brokers });
     this.consumer = kafka.consumer({ groupId });
     this.producer = kafka.producer();
