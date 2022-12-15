@@ -78,4 +78,5 @@ When you finish your challenge, after forking a repository, you can open a pull 
 If you have any questions, please let us know.
 
 # Notes to organize
+docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up
