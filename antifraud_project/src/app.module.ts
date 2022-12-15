@@ -8,10 +8,10 @@ import { FraudAnalysisUsecase } from './domain/usecases/fraud_analysis.usecase';
 import { TransactionService } from './adapter/output/db/transaction.service';
 import { KafkaService } from './adapter/input/messaging/kafka.service';
 import { MessageProducerController } from './adapter/input/messaging/message_producer.controller';
-
+import configurationYaml from '../configuration.yaml';
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ load: [configurationYaml], isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,

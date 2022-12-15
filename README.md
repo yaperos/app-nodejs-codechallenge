@@ -79,6 +79,7 @@ If you have any questions, please let us know.
 
 # Notes to organize
 * Code formatted with ESLint
+* Sequence of commits (tool of teaching)
 # Code
 * Use of Clean Archictecture
 * Layout or packaging

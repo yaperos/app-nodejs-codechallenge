@@ -1,0 +1,4 @@
+application:
+  business:
+    transaction:
+      max-amount: 1000

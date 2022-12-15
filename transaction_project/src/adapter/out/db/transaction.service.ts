@@ -26,7 +26,7 @@ export class TransactionService {
       .createQueryBuilder()
       .update(TransactionEntity)
       .set({
-        status: TransactionStatus.approved,
+        status: analysisResponse.newStatus,
         version: analysisResponse.version + 1,
       })
       .where({
