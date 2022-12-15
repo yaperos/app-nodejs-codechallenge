@@ -1,0 +1,17 @@
+
+application:
+  env: desa
+  db:
+    host: localhost
+    port: 5432
+    name: YapeChallengeDb
+    username: postgres
+    password: postgres
+    autoLoadEntities: true
+  kafka:
+    bootstrap-servers: 
+      - localhost:9092
+    clientId: anti-fraud
+    groupId: anti-fraud-consumer
+    transaction-topic-name: transaction-created-topic
+  max-amount-allowed: 1000
