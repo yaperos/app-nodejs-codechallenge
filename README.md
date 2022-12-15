@@ -78,7 +78,7 @@ When you finish your challenge, after forking a repository, you can open a pull 
 If you have any questions, please let us know.
 
 # Notes to organize
-
+* Code formatted with ESLint
 # Code
 * Use of Clean Archictecture
 * Layout or packaging
@@ -91,9 +91,8 @@ If you have any questions, please let us know.
 * Understanding WHAT the system does by looking at its usecases
 * Have a big picture of the architecture,
   participants, dependencies, kind of context diagram
-* Maintenability, evolvable, readbility,
-  comprehensibility (mainly by newcomers)
-* Structure not imposed by frameworks
+* Maintenability, evolvability, readbility, comprehensibility (mainly by newcomers)
+* Structure not imposed by frameworks and so resilient to framework changes.
 * Currently used by Yape on Java code
 
 
