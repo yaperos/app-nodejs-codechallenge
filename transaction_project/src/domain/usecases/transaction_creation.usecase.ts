@@ -26,10 +26,14 @@ export class TransactionCreationUsecase {
       'TransactionCreationUsecase: Created: ' + JSON.stringify(created),
     );
 
-    console.log('TransactionCreationUsecase: before sending to Antifraud');
-
     // Notify Antifraud to check the transition.
     const payload: AntifraudCheckPayload = { transactionId: created.id };
+
+    console.log(
+      `TransactionCreationUsecase: before sending to Antifraud:  ${JSON.stringify(
+        payload,
+      )}`,
+    );
 
     // TODO: topic as constant
     await this.kafkaService.send(
