@@ -5,12 +5,13 @@ import { Transaction } from '../models/transaction.interface';
 import { AntifraudCheckPayload } from './antifraud_check.payload';
 
 import { KafkaService } from 'src/adapter/input/messaging/kafka.service';
+import { InsertResult } from 'typeorm';
 
 @Injectable()
 export class TransactionCreationUsecase {
   constructor(
     private transactionService: TransactionService,
-    private readonly kafkaService: KafkaService
+    private readonly kafkaService: KafkaService,
   ) {}
 
   async create(transaction: Transaction) {
@@ -26,7 +27,9 @@ export class TransactionCreationUsecase {
       'TransactionCreationUsecase: Created: ' + JSON.stringify(created),
     );
 
-    // Notify Antifraud to check the transition.
+    // TODO: check result
+
+    // Notify Antifraud to check the transaction.
     const payload: AntifraudCheckPayload = { transactionId: created.id };
 
     console.log(
@@ -42,6 +45,6 @@ export class TransactionCreationUsecase {
       payload,
     );
 
-    return created;
+    return transaction;
   }
 }
