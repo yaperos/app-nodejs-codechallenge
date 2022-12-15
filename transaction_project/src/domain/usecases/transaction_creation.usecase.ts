@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
-
+import { ConfigService } from '@nestjs/config';
+import { KafkaService } from 'src/adapter/input/messaging/kafka.service';
 import { TransactionService } from '../../adapter/out/db/transaction.service';
 import { Transaction } from '../models/transaction.interface';
 import { AntifraudCheckPayload } from './antifraud_check.payload';
 
-import { KafkaService } from 'src/adapter/input/messaging/kafka.service';
-import { InsertResult } from 'typeorm';
-
 @Injectable()
 export class TransactionCreationUsecase {
   constructor(
+    private readonly configService: ConfigService,
     private transactionService: TransactionService,
     private readonly kafkaService: KafkaService,
   ) {}
@@ -38,10 +37,13 @@ export class TransactionCreationUsecase {
       )}`,
     );
 
-    // TODO: topic as constant
+    const topic = this.configService.get(
+      'application.transport.event-driven.kafka.topics.antifraud-check',
+    );
+
     await this.kafkaService.send(
       this.kafkaService.getProducer(),
-      'antifraud-check',
+      topic,
       payload,
     );
 

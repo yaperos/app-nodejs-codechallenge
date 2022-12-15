@@ -9,10 +9,10 @@ import { KafkaService } from 'src/adapter/input/messaging/kafka.service';
 import { MessageProducerController } from 'src/adapter/input/messaging/message_producer.controller';
 import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 import { MessageConsumerController } from 'src/adapter/input/messaging/message_consumer.controller';
-
+import configurationYaml from '../../configuration.yaml';
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ load: [configurationYaml] }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
