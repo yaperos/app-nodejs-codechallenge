@@ -38,6 +38,6 @@ export class MessageConsumerController
   }
 
   async onModuleDestroy() {
-    this.kafkaService.getConsumer().disconnect();
+    //this.kafkaService.getConsumer().disconnect();
   }
 }

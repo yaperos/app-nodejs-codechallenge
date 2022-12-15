@@ -84,7 +84,7 @@ If you have any questions, please let us know.
 * Layout or packaging
   * adapter
   * application
-  * domain
+  * domain  
 
 # Advantages of clean architecture
 * Separate domain from infrastructure, technology
@@ -95,6 +95,8 @@ If you have any questions, please let us know.
 * Structure not imposed by frameworks and so resilient to framework changes.
 * Currently used by Yape on Java code
 
+# Design
+* Usage of optimistic concurrency. Advantage: no need of a database transaction.
 
 # Technical notes
 docker-compose -f docker-compose.yml down

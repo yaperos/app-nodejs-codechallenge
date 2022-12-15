@@ -9,10 +9,10 @@ export class KafkaService {
 
   constructor() {
     const clientId = 'client-id-transaction';
-    const groupId = 'group-id';
+    const groupId = 'group-id-server';
     const brokers = ['localhost:9092'];
     const kafka = new Kafka({ clientId, brokers });
-    this.consumer = kafka.consumer({ groupId })
+    this.consumer = kafka.consumer({ groupId });
     this.producer = kafka.producer();
   }
 
@@ -30,7 +30,7 @@ export class KafkaService {
       messages: [{ value: JSON.stringify(payload) }],
     });
   }
-  
+
   async consume(
     consumer: Consumer,
     topic: string,

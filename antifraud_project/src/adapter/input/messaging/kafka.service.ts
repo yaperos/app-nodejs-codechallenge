@@ -13,7 +13,7 @@ export class KafkaService {
     const brokers = ['localhost:9092'];
     const kafka = new Kafka({ clientId, brokers });
     this.consumer = kafka.consumer({ groupId });
-    this.producer = kafka.producer()
+    this.producer = kafka.producer();
   }
 
   getConsumer() {

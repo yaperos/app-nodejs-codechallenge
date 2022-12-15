@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionService } from 'src/adapter/output/db/transaction.service';
 import { Transaction } from '../models/transaction.interface';
-import { AntifraudAnalysisResponsePayload } from "./antifraud_analysis_response.payload";
+import { AntifraudAnalysisResponsePayload } from './antifraud_analysis_response.payload';
 import { KafkaService } from 'src/adapter/input/messaging/kafka.service';
 
 @Injectable()
