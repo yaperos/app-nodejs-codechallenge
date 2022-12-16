@@ -10,10 +10,10 @@ export class TransactionService {
     private readonly transactionRepository: Repository<TransactionEntity>,
   ) {}
 
-  async findById(transactionId: number): Promise<TransactionEntity> {
+  async findById(transactionId: string): Promise<TransactionEntity> {
     console.log('TransactionService:: findById: ' + transactionId);
     return this.transactionRepository.findOne({
-      where: { id: transactionId },
+      where: { transactionExternalId: transactionId },
     });
   }
 }

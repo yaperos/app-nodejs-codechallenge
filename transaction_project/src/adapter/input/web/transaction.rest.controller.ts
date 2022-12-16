@@ -18,7 +18,7 @@ export class TransactionRestController {
     );
 
     return this.transactionCreationUsecase.create(
-      this.toTransactionDomainConverter.convert(transactionDto)
+      this.toTransactionDomainConverter.convert(transactionDto),
     );
   }
 }

@@ -29,7 +29,9 @@ export class TransactionCreationUsecase {
     // TODO: check result
 
     // Notify Antifraud to check the transaction.
-    const payload: AntifraudCheckPayload = { transactionId: created.id };
+    const payload: AntifraudCheckPayload = {
+      transactionId: created.transactionExternalId,
+    };
 
     console.log(
       `TransactionCreationUsecase: before sending to Antifraud:  ${JSON.stringify(

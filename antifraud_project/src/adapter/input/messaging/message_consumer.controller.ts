@@ -36,7 +36,7 @@ export class MessageConsumerController
           `${JSON.stringify(checkPayload)}`,
       );
 
-      const transactionId: number = checkPayload.transactionId;
+      const transactionId: string = checkPayload.transactionId;
       this.fraudAnalysisUsecase.analyze(transactionId);
     });
   }

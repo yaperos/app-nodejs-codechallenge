@@ -4,7 +4,6 @@ import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Transaction } from '../../../domain/models/transaction.interface';
-import { TransactionStatus } from 'src/domain/models/transaction_status.enum';
 import { AntifraudAnalysisResponsePayload } from 'src/adapter/input/messaging/antifraud_analysis_response.payload';
 
 @Injectable()
@@ -30,7 +29,7 @@ export class TransactionService {
         version: analysisResponse.version + 1,
       })
       .where({
-        id: analysisResponse.transactionId,
+        transactionExternalId: analysisResponse.transactionId,
         version: analysisResponse.version,
       })
       .execute();

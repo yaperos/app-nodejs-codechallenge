@@ -1,3 +1,3 @@
 export class AntifraudCheckPayload {
-  transactionId: number;
+  transactionId: string;
 }

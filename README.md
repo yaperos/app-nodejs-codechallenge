@@ -95,39 +95,37 @@ If you have any questions, please let us know.
     * models
     * usecases
 * Multiple commits following a step-by-step logical construction of the conceptual sequence diagram
-  (so there is no magic one-shot commit) In this sense, the project can be used as a tool for teaching to newcomers.
-  * transaction
-    * clean architecture skeleton
-    * creation endpoint
-    * db repository, saving of transaction
-    * messaging producer
-    * notify antifraud to check transaction
-  * antifraud
-    * clean architecture skeleton
-    * messaging consumer
-    * consume event
-    * validate transaction
-    * messaging producer
-    * notify transaction with validation result
-  * transaction
-    * messaging consumer
-    * db repository, update of transaction using optimistic concurrency
-    * update transaction in accordance to validation result
+  (so there is no magic one-shot commit) In this sense, the project can be used as a tool of teaching newcomers.
+  * transaction microservice
+    1. clean architecture skeleton
+    2. creation endpoint
+    3. db repository, saving of transaction
+    4. messaging producer
+    5. notify antifraud to check transaction
+  * antifraud microservice
+    1. clean architecture skeleton
+    2. messaging consumer
+    3. consume event
+    4. validate transaction
+    5. messaging producer
+    6. notify transaction with validation result
+  * transaction microservice
+    1. messaging consumer
+    2. db repository, update of transaction using optimistic concurrency
+    3. update transaction in accordance to validation result
 
 # Advantages of CLEAN ARCHITECTURE
 * Separate domain from infrastructure, technology
 * Understanding WHAT the system does by looking at its usecases
 * Have a big picture of the architecture,
-  participants, dependencies, kind of context diagram
+  participants, actors, dependencies, kind of help to build a mental context diagram
 * Maintenability, evolvability, readbility, comprehensibility (mainly by newcomers)
 * Structure not imposed by frameworks and so resilient to framework changes.
-* Currently used by Yape on Java code
+* Currently used by Yape on Java projects
 
 # Design
 * For tackling a huge amount of writes and read:
-  Usage of optimistic concurrency. Advantage: no need of a database transaction for the
-  resource update.
-
+  Usage of optimistic concurrency. Advantage: no need to encircle a resource update with a database transaction.
 # Technical notes
 docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up

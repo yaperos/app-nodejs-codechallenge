@@ -1,7 +1,7 @@
 import { TransactionStatus } from 'src/domain/models/transaction_status.enum';
 
 export class AntifraudAnalysisResponsePayload {
-  transactionId: number;
+  transactionId: string;
   version: number;
   newStatus: TransactionStatus;
 }

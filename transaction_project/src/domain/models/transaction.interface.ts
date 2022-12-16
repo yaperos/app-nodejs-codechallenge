@@ -1,7 +1,7 @@
 import { TransactionStatus } from './transaction_status.enum';
 
 export interface Transaction {
-  id?: number;
+  transactionExternalId?: string;
   value: number;
   createAt: Date;
   version: number;

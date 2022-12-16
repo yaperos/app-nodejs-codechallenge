@@ -20,7 +20,7 @@ export class FraudAnalysisUsecase {
     );
   }
 
-  async analyze(transactionId: number) {
+  async analyze(transactionId: string) {
     console.log(
       'FraudAnalysisUsecase analyze() transactionId: ' + transactionId,
     );
@@ -33,7 +33,7 @@ export class FraudAnalysisUsecase {
     const newStatus = this.getStatus(tx);
 
     const payload: AntifraudAnalysisResponsePayload = {
-      transactionId: tx.id,
+      transactionId: tx.transactionExternalId,
       version: tx.version,
       newStatus,
     };

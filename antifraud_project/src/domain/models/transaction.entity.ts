@@ -3,8 +3,8 @@ import { TransactionStatus } from './transaction_status.enum';
 
 @Entity('transaction')
 export class TransactionEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  transactionExternalId: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   value: number;
