@@ -81,13 +81,23 @@ If you have any questions, please let us know.
 * Code formatted with ESLint
 * Sequence of commits (tool of teaching)
 # Code
-* Use of Clean Archictecture
+* Use of CLEAN ARCHITECTURE
 * Layout or packaging
   * adapter
+    * input
+      * messaging
+      * web
+        * dto
+        * converter
+    * output
+      * messaging
+      * db
   * application
   * domain  
+    * models
+    * usecases
 
-# Advantages of clean architecture
+# Advantages of CLEAN ARCHITECTURE
 * Separate domain from infrastructure, technology
 * Understanding WHAT the system does by looking at its usecases
 * Have a big picture of the architecture,
