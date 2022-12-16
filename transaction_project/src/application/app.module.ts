@@ -12,6 +12,7 @@ import { MessageConsumerController } from 'src/adapter/input/messaging/message_c
 import configurationYaml from '../../configuration.yaml';
 import { FromTransactionCreationRequestDtoConverter } from 'src/adapter/input/web/converter/from_transaction_creation_request_dto.converter';
 import { FromTransactionDomainConverter } from 'src/adapter/input/web/converter/from_transaction_domain.converter';
+import { TransactionQueryUsecase } from 'src/domain/usecases/transaction_query_usecase';
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configurationYaml] }),
@@ -35,6 +36,7 @@ import { FromTransactionDomainConverter } from 'src/adapter/input/web/converter/
   providers: [
     TransactionCreationUsecase,
     UpdateTransactionAfterValidationUsecase,
+    TransactionQueryUsecase,
     TransactionService,
     MessagingService,
     FromTransactionCreationRequestDtoConverter,

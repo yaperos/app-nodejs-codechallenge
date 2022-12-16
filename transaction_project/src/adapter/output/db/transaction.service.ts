@@ -12,7 +12,7 @@ export class TransactionService {
     @InjectRepository(TransactionEntity)
     private readonly transactionRepository: Repository<TransactionEntity>,
   ) {}
-/*
+
   findById(transactionId: string): Observable<TransactionEntity> {
     console.log('TransactionService:: findById: ' + transactionId);
     return from(
@@ -21,7 +21,7 @@ export class TransactionService {
       }),
     );
   }
-*/
+
   create(transaction: Transaction): Observable<Transaction> {
     return from(this.transactionRepository.save(transaction));
   }
