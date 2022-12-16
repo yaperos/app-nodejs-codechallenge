@@ -17,13 +17,13 @@ export class FraudAnalysisUsecase {
     private readonly messagingService: MessagingService,
   ) {}
 
-  async analyze(transactionId: string) {
+  analyze(transactionId: string) {
     console.log(
       'FraudAnalysisUsecase analyze() transactionId: ' + transactionId,
     );
 
-    return this.transactionService.findById(transactionId).pipe(
-      map((tx) => {
+    this.transactionService.findById(transactionId).subscribe(
+      (tx) => {
         console.log(
           'FraudAnalysisUsecase analyze:: record: ' + JSON.stringify(tx),
         );
@@ -42,9 +42,8 @@ export class FraudAnalysisUsecase {
         );
 
         this.messagingService.notifyTransactionSystem(payload);
-        return tx;
-      }),
-    );
+        //return tx;
+      });
   }
 
   getStatus(transaction: Transaction): TransactionStatus {

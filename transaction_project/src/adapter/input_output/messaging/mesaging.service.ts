@@ -30,12 +30,12 @@ export class MessagingService {
     return this.producer;
   }
 
-  async notifyAntifraudSystem(payload: any) {
-    await this.send(this.antifraudCheckTopic, payload);
+  notifyAntifraudSystem(payload: any) {
+    this.send(this.antifraudCheckTopic, payload);
   }
 
-  private async send(topic: string, payload: any) {
-    await this.producer.send({
+  private send(topic: string, payload: any) {
+    this.producer.send({
       topic,
       messages: [{ value: JSON.stringify(payload) }],
     });

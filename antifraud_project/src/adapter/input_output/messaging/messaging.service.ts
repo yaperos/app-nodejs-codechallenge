@@ -30,12 +30,12 @@ export class MessagingService {
     return this.producer;
   }
 
-  async notifyTransactionSystem(payload: any) {
-    await this.send(this.analysisResponseTopic, payload);
+  notifyTransactionSystem(payload: any) {
+    this.send(this.analysisResponseTopic, payload);
   }
 
-  private async send(topic: string, payload: any) {
-    await this.producer.send({
+  private send(topic: string, payload: any) {
+    this.producer.send({
       topic,
       messages: [{ value: JSON.stringify(payload) }],
     });
