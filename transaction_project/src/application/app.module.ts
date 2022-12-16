@@ -4,9 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionRestController } from '../adapter/input/web/transaction.rest.controller';
 import { TransactionEntity } from '../domain/models/transaction.entity';
 import { TransactionCreationUsecase } from '../domain/usecases/transaction_creation.usecase';
-import { TransactionService } from '../adapter/out/db/transaction.service';
+import { TransactionService } from '../adapter/output/db/transaction.service';
 import { KafkaService } from 'src/adapter/input/messaging/kafka.service';
-import { MessageProducerController } from 'src/adapter/input/messaging/message_producer.controller';
+import { MessageProducerInitializer } from 'src/adapter/input/messaging/message_producer.initializer';
 import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 import { MessageConsumerController } from 'src/adapter/input/messaging/message_consumer.controller';
 import configurationYaml from '../../configuration.yaml';
@@ -28,7 +28,7 @@ import { ToTransactionDomainConverter } from 'src/adapter/input/web/converter/to
   ],
   controllers: [
     MessageConsumerController,
-    MessageProducerController,
+    MessageProducerInitializer,
     TransactionRestController,
   ],
   providers: [

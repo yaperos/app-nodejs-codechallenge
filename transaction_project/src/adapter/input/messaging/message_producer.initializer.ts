@@ -2,7 +2,7 @@ import { Controller, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { KafkaService } from './kafka.service';
 
 @Controller()
-export class MessageProducerController
+export class MessageProducerInitializer
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(private readonly kafkaService: KafkaService) {}

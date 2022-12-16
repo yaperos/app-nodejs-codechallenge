@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
-import { TransactionService } from '../../adapter/out/db/transaction.service';
+import { TransactionService } from '../../adapter/output/db/transaction.service';
 import { AntifraudAnalysisResponsePayload } from 'src/adapter/input/messaging/antifraud_analysis_response.payload';
 
 @Injectable()
