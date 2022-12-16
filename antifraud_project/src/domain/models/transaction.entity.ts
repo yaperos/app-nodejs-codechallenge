@@ -22,5 +22,5 @@ export class TransactionEntity {
 
   accountExternalIdCredit: string;
 
-  tranferTypeId: number;
+  transferTypeId: number;
 }

@@ -10,6 +10,7 @@ import { MessageProducerController } from 'src/adapter/input/messaging/message_p
 import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 import { MessageConsumerController } from 'src/adapter/input/messaging/message_consumer.controller';
 import configurationYaml from '../../configuration.yaml';
+import { ToTransactionDomainConverter } from 'src/adapter/input/web/converter/to_transaction_domain.converter';
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configurationYaml] }),
@@ -35,6 +36,7 @@ import configurationYaml from '../../configuration.yaml';
     UpdateTransactionAfterValidationUsecase,
     TransactionService,
     KafkaService,
+    ToTransactionDomainConverter,
   ],
 })
 export class AppModule {}

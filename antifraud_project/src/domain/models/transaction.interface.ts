@@ -8,5 +8,5 @@ export interface Transaction {
   status: TransactionStatus;
   accountExternalIdDebit: string;
   accountExternalIdCredit: string;
-  tranferTypeId: number;
+  transferTypeId: number;
 }
