@@ -15,7 +15,6 @@ export class TransactionCreationUsecase {
   ) {}
 
   create(transaction: Transaction) {
-
     console.log(
       'TransactionCreationUsecase: Create a transaction: ' +
         JSON.stringify(transaction),
@@ -40,7 +39,7 @@ export class TransactionCreationUsecase {
         );
         this.messagingService.notifyAntifraudSystem(payload);
         return tx;
-      })
+      }),
     );
   }
 }
