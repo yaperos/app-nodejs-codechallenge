@@ -11,13 +11,13 @@ export class MessageConsumerController
   constructor(
     private readonly configService: ConfigService,
     private readonly updateUsecase: UpdateTransactionAfterValidationUsecase,
-    private readonly kafkaService: MessagingService,
+    private readonly messageService: MessagingService,
   ) {}
 
   async onModuleInit() {
     console.log('MessageConsumerController::onModuleInit');
 
-    const consumer = this.kafkaService.getConsumer();
+    const consumer = this.messageService.getConsumer();
     await consumer.connect();
 
     // Consumers
@@ -27,8 +27,8 @@ export class MessageConsumerController
     const antifraudAnalysisResponseTopic = this.configService.get(
       'application.transport.event-driven.kafka.topics.antifraud-analysis-response',
     );
-    await this.kafkaService.consume(
-      consumer,
+
+    this.messageService.addTopicConsumer(
       antifraudAnalysisResponseTopic,
       (msg) => {
         const analysisResponse: AntifraudAnalysisResponsePayload = JSON.parse(
@@ -45,6 +45,6 @@ export class MessageConsumerController
   }
 
   async onModuleDestroy() {
-    this.kafkaService.getConsumer().disconnect();
+    this.messageService.getConsumer().disconnect();
   }
 }
