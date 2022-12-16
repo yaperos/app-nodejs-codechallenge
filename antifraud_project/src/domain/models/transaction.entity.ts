@@ -17,4 +17,10 @@ export class TransactionEntity {
 
   @Column({ default: 0 })
   status: TransactionStatus;
+
+  accountExternalIdDebit: string;
+
+  accountExternalIdCredit: string;
+
+  tranferTypeId: number;
 }

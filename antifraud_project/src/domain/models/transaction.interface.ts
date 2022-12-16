@@ -6,4 +6,7 @@ export interface Transaction {
   createAt: Date;
   version: number;
   status: TransactionStatus;
+  accountExternalIdDebit: string;
+  accountExternalIdCredit: string;
+  tranferTypeId: number;
 }

@@ -104,3 +104,5 @@ docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up
 
 psql -U postgres -p 5434 -h localhost -W
+psql -U postgres -p 5434 -h localhost -d transaction_db  -W
+
