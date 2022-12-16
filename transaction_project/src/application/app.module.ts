@@ -11,6 +11,7 @@ import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/upd
 import { MessageConsumerController } from 'src/adapter/input/messaging/message_consumer.controller';
 import configurationYaml from '../../configuration.yaml';
 import { ToTransactionDomainConverter } from 'src/adapter/input/web/converter/to_transaction_domain.converter';
+import { ToTransactionQueryResponseDtoConverter } from 'src/adapter/input/web/converter/to_transaction_query_response_dto.converter';
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configurationYaml] }),
@@ -37,6 +38,7 @@ import { ToTransactionDomainConverter } from 'src/adapter/input/web/converter/to
     TransactionService,
     MessagingService,
     ToTransactionDomainConverter,
+    ToTransactionQueryResponseDtoConverter,
   ],
 })
 export class AppModule {}
