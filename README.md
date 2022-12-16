@@ -130,6 +130,8 @@ If you have any questions, please let us know.
 ## Conceptual sequence diagram
 ![Conceptual sequence diagram](/images/challenge-antifraud-conceptual-sequence-diagram.png)
 
+## Detailed sequence diagram of Transaction microservice
+![Detailed sequence diagram of Transaction microservice](/images/transaction-microservice-detailed-sequence-diagram.png)
 # Technical notes
 docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up
