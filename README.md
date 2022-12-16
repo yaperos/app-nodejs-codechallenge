@@ -126,6 +126,10 @@ If you have any questions, please let us know.
 # Design
 * For tackling a huge amount of writes and read:
   Usage of optimistic concurrency. Advantage: no need to encircle a resource update with a database transaction.
+
+## Conceptual sequence diagram
+![Conceptual sequence diagram](/images/challenge-antifraud-conceptual-sequence-diagram.png)
+
 # Technical notes
 docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up
