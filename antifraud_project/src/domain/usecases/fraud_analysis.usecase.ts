@@ -16,30 +16,31 @@ export class FraudAnalysisUsecase {
     private readonly messagingService: MessagingService,
   ) {}
 
-  async analyze(transactionId: string) {
+  analyze(transactionId: string) {
     console.log(
       'FraudAnalysisUsecase analyze() transactionId: ' + transactionId,
     );
 
-    const tx: Transaction = await this.transactionService.findById(
-      transactionId,
-    );
-    console.log('FraudAnalysisUsecase analyze:: record: ' + JSON.stringify(tx));
+    this.transactionService.findById(transactionId).subscribe((tx) => {
+      console.log(
+        'FraudAnalysisUsecase analyze:: record: ' + JSON.stringify(tx),
+      );
 
-    const newStatus = this.getStatus(tx);
+      const newStatus = this.getStatus(tx);
 
-    const payload: AntifraudAnalysisResponsePayload = {
-      transactionId: tx.transactionExternalId,
-      version: tx.version,
-      newStatus,
-    };
+      const payload: AntifraudAnalysisResponsePayload = {
+        transactionId: tx.transactionExternalId,
+        version: tx.version,
+        newStatus,
+      };
 
-    console.log(
-      'FraudAnalysisUsecase: send antifraud analysis to Transaction: ' +
-        JSON.stringify(payload),
-    );
+      console.log(
+        'FraudAnalysisUsecase: send antifraud analysis to Transaction: ' +
+          JSON.stringify(payload),
+      );
 
-    await this.messagingService.notifyTransactionSystem(payload);
+      this.messagingService.notifyTransactionSystem(payload);
+    });
   }
 
   getStatus(transaction: Transaction): TransactionStatus {

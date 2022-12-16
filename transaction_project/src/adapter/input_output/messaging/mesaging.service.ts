@@ -8,6 +8,8 @@ export class MessagingService {
   private producer: Producer;
   private antifraudCheckTopic: string;
 
+  private topicConsumerMap = new Map();
+
   constructor(private readonly configService: ConfigService) {
     const kafkaPrefix = 'application.transport.event-driven.kafka';
     const clientId = this.configService.get(`${kafkaPrefix}.client-id`);
@@ -20,6 +22,15 @@ export class MessagingService {
     this.antifraudCheckTopic = this.configService.get(
       'application.transport.event-driven.kafka.topics.antifraud-check',
     );
+
+    // register every topic and callback
+    this.topicConsumerMap.forEach((topic, callback) => {
+      this.consume(this.consumer, topic, callback);
+    });
+  }
+
+  addTopicConsumer(topic: string, callback: (msg: KafkaMessage) => any) {
+    this.topicConsumerMap[topic] = callback;
   }
 
   getConsumer() {
@@ -30,12 +41,12 @@ export class MessagingService {
     return this.producer;
   }
 
-  async notifyAntifraudSystem(payload: any) {
-    await this.send(this.antifraudCheckTopic, payload);
+  notifyAntifraudSystem(payload: any) {
+    this.send(this.antifraudCheckTopic, payload);
   }
 
-  private async send(topic: string, payload: any) {
-    await this.producer.send({
+  private send(topic: string, payload: any) {
+    this.producer.send({
       topic,
       messages: [{ value: JSON.stringify(payload) }],
     });
