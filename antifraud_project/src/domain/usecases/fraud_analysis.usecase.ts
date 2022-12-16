@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { TransactionService } from 'src/adapter/output/db/transaction.service';
 import { Transaction } from '../models/transaction.interface';
 import { AntifraudAnalysisResponsePayload } from './antifraud_analysis_response.payload';
-import { KafkaService } from 'src/adapter/input/messaging/kafka.service';
+import { MessagingService } from 'src/adapter/input_output/messaging/messaging.service';
 import { TransactionStatus } from '../models/transaction_status.enum';
 
 @Injectable()
@@ -13,12 +13,8 @@ export class FraudAnalysisUsecase {
   constructor(
     private readonly configService: ConfigService,
     private readonly transactionService: TransactionService,
-    private readonly kafkaService: KafkaService,
-  ) {
-    this.analysisResponseTopic = this.configService.get(
-      'application.transport.event-driven.kafka.topics.antifraud-analysis-response',
-    );
-  }
+    private readonly messagingService: MessagingService,
+  ) {}
 
   async analyze(transactionId: string) {
     console.log(
@@ -43,11 +39,7 @@ export class FraudAnalysisUsecase {
         JSON.stringify(payload),
     );
 
-    await this.kafkaService.send(
-      this.kafkaService.getProducer(),
-      this.analysisResponseTopic,
-      payload,
-    );
+    await this.messagingService.notifyTransactionSystem(payload);
   }
 
   getStatus(transaction: Transaction): TransactionStatus {

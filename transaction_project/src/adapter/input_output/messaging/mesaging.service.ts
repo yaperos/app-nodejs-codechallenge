@@ -6,6 +6,7 @@ import { Consumer, Kafka, KafkaMessage, Producer } from 'kafkajs';
 export class MessagingService {
   private consumer: Consumer;
   private producer: Producer;
+  private antifraudCheckTopic: string;
 
   constructor(private readonly configService: ConfigService) {
     const kafkaPrefix = 'application.transport.event-driven.kafka';
@@ -15,6 +16,10 @@ export class MessagingService {
     const kafka = new Kafka({ clientId, brokers });
     this.consumer = kafka.consumer({ groupId });
     this.producer = kafka.producer();
+
+    this.antifraudCheckTopic = this.configService.get(
+      'application.transport.event-driven.kafka.topics.antifraud-check',
+    );
   }
 
   getConsumer() {
@@ -26,18 +31,11 @@ export class MessagingService {
   }
 
   async sendToAntifraud(payload: any) {
-    const topic = this.configService.get(
-      'application.transport.event-driven.kafka.topics.antifraud-check',
-    );
-
-    await this.producer.send({
-      topic,
-      messages: [{ value: JSON.stringify(payload) }],
-    });
+    await this.send(this.antifraudCheckTopic, payload);
   }
 
-  private async send(producer: Producer, topic: string, payload: any) {
-    await producer.send({
+  private async send(topic: string, payload: any) {
+    await this.producer.send({
       topic,
       messages: [{ value: JSON.stringify(payload) }],
     });

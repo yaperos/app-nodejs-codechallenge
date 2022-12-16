@@ -3,9 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { Consumer, Kafka, KafkaMessage, Producer } from 'kafkajs';
 
 @Injectable()
-export class KafkaService {
+export class MessagingService {
   private consumer: Consumer;
   private producer: Producer;
+  private analysisResponseTopic: string;
 
   constructor(private readonly configService: ConfigService) {
     const kafkaPrefix = 'application.transport.event-driven.kafka';
@@ -15,6 +16,10 @@ export class KafkaService {
     const kafka = new Kafka({ clientId, brokers });
     this.consumer = kafka.consumer({ groupId });
     this.producer = kafka.producer();
+
+    this.analysisResponseTopic = this.configService.get(
+      'application.transport.event-driven.kafka.topics.antifraud-analysis-response',
+    );
   }
 
   getConsumer() {
@@ -25,8 +30,12 @@ export class KafkaService {
     return this.producer;
   }
 
-  async send(producer: Producer, topic: string, payload: any) {
-    await producer.send({
+  async notifyTransactionSystem(payload: any) {
+    await this.send(this.analysisResponseTopic, payload);
+  }
+
+  private async send(topic: string, payload: any) {
+    await this.producer.send({
       topic,
       messages: [{ value: JSON.stringify(payload) }],
     });

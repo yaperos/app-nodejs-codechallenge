@@ -6,8 +6,8 @@ import { MessageConsumerController } from './adapter/input/messaging/message_con
 import { TransactionEntity } from './domain/models/transaction.entity';
 import { FraudAnalysisUsecase } from './domain/usecases/fraud_analysis.usecase';
 import { TransactionService } from './adapter/output/db/transaction.service';
-import { KafkaService } from './adapter/input/messaging/kafka.service';
-import { MessageProducerController } from './adapter/input/messaging/message_producer.controller';
+import { MessagingService } from './adapter/input_output/messaging/messaging.service';
+import { MessageProducerInitializer } from './adapter/output/messaging/message_producer.initializer';
 import configurationYaml from '../configuration.yaml';
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import configurationYaml from '../configuration.yaml';
     }),
     TypeOrmModule.forFeature([TransactionEntity]),
   ],
-  controllers: [MessageConsumerController, MessageProducerController],
-  providers: [KafkaService, FraudAnalysisUsecase, TransactionService],
+  controllers: [MessageConsumerController, MessageProducerInitializer],
+  providers: [MessagingService, FraudAnalysisUsecase, TransactionService],
 })
 export class AppModule {}
