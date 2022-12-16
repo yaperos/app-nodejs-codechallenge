@@ -5,7 +5,6 @@ import { Transaction } from '../models/transaction.interface';
 import { AntifraudAnalysisResponsePayload } from './antifraud_analysis_response.payload';
 import { MessagingService } from 'src/adapter/input_output/messaging/messaging.service';
 import { TransactionStatus } from '../models/transaction_status.enum';
-import { map } from 'rxjs';
 
 @Injectable()
 export class FraudAnalysisUsecase {
@@ -22,28 +21,26 @@ export class FraudAnalysisUsecase {
       'FraudAnalysisUsecase analyze() transactionId: ' + transactionId,
     );
 
-    this.transactionService.findById(transactionId).subscribe(
-      (tx) => {
-        console.log(
-          'FraudAnalysisUsecase analyze:: record: ' + JSON.stringify(tx),
-        );
+    this.transactionService.findById(transactionId).subscribe((tx) => {
+      console.log(
+        'FraudAnalysisUsecase analyze:: record: ' + JSON.stringify(tx),
+      );
 
-        const newStatus = this.getStatus(tx);
+      const newStatus = this.getStatus(tx);
 
-        const payload: AntifraudAnalysisResponsePayload = {
-          transactionId: tx.transactionExternalId,
-          version: tx.version,
-          newStatus,
-        };
+      const payload: AntifraudAnalysisResponsePayload = {
+        transactionId: tx.transactionExternalId,
+        version: tx.version,
+        newStatus,
+      };
 
-        console.log(
-          'FraudAnalysisUsecase: send antifraud analysis to Transaction: ' +
-            JSON.stringify(payload),
-        );
+      console.log(
+        'FraudAnalysisUsecase: send antifraud analysis to Transaction: ' +
+          JSON.stringify(payload),
+      );
 
-        this.messagingService.notifyTransactionSystem(payload);
-        //return tx;
-      });
+      this.messagingService.notifyTransactionSystem(payload);
+    });
   }
 
   getStatus(transaction: Transaction): TransactionStatus {
