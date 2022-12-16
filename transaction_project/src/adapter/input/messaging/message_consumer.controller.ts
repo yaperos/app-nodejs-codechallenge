@@ -42,6 +42,8 @@ export class MessageConsumerController
         this.updateUsecase.update(analysisResponse);
       },
     );
+
+    this.messagingService.initializeConsumers();
   }
 
   async onModuleDestroy() {

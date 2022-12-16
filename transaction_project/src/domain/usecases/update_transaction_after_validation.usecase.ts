@@ -19,13 +19,11 @@ export class UpdateTransactionAfterValidationUsecase {
         antifrauAnalysisResponse.version,
         antifrauAnalysisResponse.newStatus,
       )
-      .pipe(
-        map((updateResult) => {
-          console.log(
-            'UpdateTransactionAfterValidationUsecase: updated record ' +
-              JSON.stringify(updateResult),
-          );
-        }),
-      );
+      .subscribe((updateResult) => {
+        console.log(
+          'UpdateTransactionAfterValidationUsecase: updated record ' +
+            JSON.stringify(updateResult),
+        );
+      });
   }
 }
