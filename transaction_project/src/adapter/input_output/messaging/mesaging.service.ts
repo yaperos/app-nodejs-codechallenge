@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Consumer, Kafka, KafkaMessage, Producer } from 'kafkajs';
 
 @Injectable()
-export class KafkaService {
+export class MessagingService {
   private consumer: Consumer;
   private producer: Producer;
 
@@ -25,7 +25,18 @@ export class KafkaService {
     return this.producer;
   }
 
-  async send(producer: Producer, topic: string, payload: any) {
+  async sendToAntifraud(payload: any) {
+    const topic = this.configService.get(
+      'application.transport.event-driven.kafka.topics.antifraud-check',
+    );
+
+    await this.producer.send({
+      topic,
+      messages: [{ value: JSON.stringify(payload) }],
+    });
+  }
+
+  private async send(producer: Producer, topic: string, payload: any) {
     await producer.send({
       topic,
       messages: [{ value: JSON.stringify(payload) }],
