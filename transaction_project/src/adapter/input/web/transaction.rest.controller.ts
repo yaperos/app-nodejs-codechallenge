@@ -1,13 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { TransactionCreationUsecase } from 'src/domain/usecases/transaction_creation.usecase';
-import { ToTransactionDomainConverter } from './converter/to_transaction_domain.converter';
+import { FromTransactionCreationRequestDtoConverter } from './converter/from_transaction_creation_request_dto.converter';
 import { TransactionCreationRequestDto } from './dto/transaction_creation.request.dto';
 
 @Controller('transaction')
 export class TransactionRestController {
   constructor(
     private readonly transactionCreationUsecase: TransactionCreationUsecase,
-    private readonly toTransactionDomainConverter: ToTransactionDomainConverter,
+    private readonly fromDtoConverter: FromTransactionCreationRequestDtoConverter,
   ) {}
 
   @Post()
@@ -18,7 +18,7 @@ export class TransactionRestController {
     );
 
     return this.transactionCreationUsecase.create(
-      this.toTransactionDomainConverter.convert(transactionDto),
+      this.fromDtoConverter.toTransactionEntity(transactionDto),
     );
   }
 }

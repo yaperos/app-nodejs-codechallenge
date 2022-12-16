@@ -10,8 +10,8 @@ import { MessageProducerInitializer } from 'src/adapter/output/messaging/message
 import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 import { MessageConsumerController } from 'src/adapter/input/messaging/message_consumer.controller';
 import configurationYaml from '../../configuration.yaml';
-import { ToTransactionDomainConverter } from 'src/adapter/input/web/converter/to_transaction_domain.converter';
-import { ToTransactionQueryResponseDtoConverter } from 'src/adapter/input/web/converter/to_transaction_query_response_dto.converter';
+import { FromTransactionCreationRequestDtoConverter } from 'src/adapter/input/web/converter/from_transaction_creation_request_dto.converter';
+import { FromTransactionDomainConverter } from 'src/adapter/input/web/converter/from_transaction_domain.converter';
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configurationYaml] }),
@@ -37,8 +37,8 @@ import { ToTransactionQueryResponseDtoConverter } from 'src/adapter/input/web/co
     UpdateTransactionAfterValidationUsecase,
     TransactionService,
     MessagingService,
-    ToTransactionDomainConverter,
-    ToTransactionQueryResponseDtoConverter,
+    FromTransactionCreationRequestDtoConverter,
+    FromTransactionDomainConverter,
   ],
 })
 export class AppModule {}

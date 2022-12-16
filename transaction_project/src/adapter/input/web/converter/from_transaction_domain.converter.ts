@@ -4,8 +4,10 @@ import { TransactionStatus } from 'src/domain/models/transaction_status.enum';
 import { TransactionQueryResponsetDto } from '../dto/transaction_query.response.dto';
 
 @Injectable()
-export class ToTransactionQueryResponseDtoConverter {
-  convert(domainEntity: TransactionEntity): TransactionQueryResponsetDto {
+export class FromTransactionDomainConverter {
+  toTransactionQueryResponseDto(
+    domainEntity: TransactionEntity,
+  ): TransactionQueryResponsetDto {
     const dto = new TransactionQueryResponsetDto();
     dto.transactionExternalId = domainEntity.transactionExternalId;
     dto.transactionType = {
