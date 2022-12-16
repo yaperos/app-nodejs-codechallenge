@@ -4,7 +4,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Transaction } from '../../../domain/models/transaction.interface';
-import { AntifraudAnalysisResponsePayload } from 'src/adapter/input/messaging/antifraud_analysis_response.payload';
+import { TransactionStatus } from 'src/domain/models/transaction_status.enum';
 
 @Injectable()
 export class TransactionService {
@@ -19,18 +19,20 @@ export class TransactionService {
 
   // Use optimistic concurrency. Advantage: no need of a database transaction.
   async update(
-    analysisResponse: AntifraudAnalysisResponsePayload,
+    transactionId: string,
+    currentResourceVersion: number,
+    newStatus: TransactionStatus,
   ): Promise<UpdateResult> {
     return this.transactionRepository
       .createQueryBuilder()
       .update(TransactionEntity)
       .set({
-        status: analysisResponse.newStatus,
-        version: analysisResponse.version + 1,
+        status: newStatus,
+        version: currentResourceVersion + 1,
       })
       .where({
-        transactionExternalId: analysisResponse.transactionId,
-        version: analysisResponse.version,
+        transactionExternalId: transactionId,
+        version: currentResourceVersion,
       })
       .execute();
   }

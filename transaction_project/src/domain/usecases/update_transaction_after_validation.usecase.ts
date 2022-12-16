@@ -13,7 +13,9 @@ export class UpdateTransactionAfterValidationUsecase {
     );
 
     const updated: UpdateResult = await this.transactionService.update(
-      antifrauAnalysisResponse,
+      antifrauAnalysisResponse.transactionId,
+      antifrauAnalysisResponse.version,
+      antifrauAnalysisResponse.newStatus,
     );
 
     console.log(
