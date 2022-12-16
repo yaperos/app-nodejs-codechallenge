@@ -133,6 +133,12 @@ docker-compose -f docker-compose.yml up
 psql -U postgres -p 5434 -h localhost -W
 psql -U postgres -p 5434 -h localhost -d transaction_db  -W
 
+# Integration test
+cd transaction_project
+
+./test/scripts/create-tx.sh <amount>
+./test/scripts/create-tx.sh 1500
+
 # Notes to organize
 * Code formatted with ESLint
 * Sequence of commits (tool of teaching)
