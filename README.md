@@ -94,20 +94,25 @@ If you have any questions, please let us know.
   * domain  
     * models
     * usecases
-* Multiple commits following a step-by-step logical construction of the conceptual sequence diagram.
+* Multiple commits following a step-by-step logical construction of the conceptual sequence diagram
   (so there is no magic one-shot commit) In this sense, the project can be used as a tool for teaching to newcomers.
-  * transaction: clean architecture skeleton
-  * transaction: transaction creation endpoint
-  * transaction: db repository, saving of transaction
-  * transaction: messaging producer
-  * transaction: notify antifraud to check transaction
-  * antifraud: clean architecture skeleton
-  * antifraud: messaging consumer
-  * antifraud: consume event
-  * antifraud: validate transaction
-  * antifraud: messaging producer
-  * antifraud: notify transaction with validation result
-  * transaction: update transaction in accordance to validation result
+  * transaction
+    * clean architecture skeleton
+    * creation endpoint
+    * db repository, saving of transaction
+    * messaging producer
+    * notify antifraud to check transaction
+  * antifraud
+    * clean architecture skeleton
+    * messaging consumer
+    * consume event
+    * validate transaction
+    * messaging producer
+    * notify transaction with validation result
+  * transaction
+    * messaging consumer
+    * db repository, update of transaction using optimistic concurrency
+    * update transaction in accordance to validation result
 
 # Advantages of CLEAN ARCHITECTURE
 * Separate domain from infrastructure, technology
