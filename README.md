@@ -44,7 +44,7 @@ You must have two resources:
 {
   "accountExternalIdDebit": "Guid",
   "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
+  "transferTypeId": 1,
   "value": 120
 }
 ```
@@ -76,3 +76,69 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+
+# Code
+* Use of CLEAN ARCHITECTURE
+* Layout or packaging
+  * adapter
+    * input
+      * messaging
+      * web
+        * dto
+        * converter
+    * output
+      * messaging
+      * db
+  * application
+  * domain  
+    * models
+    * usecases
+* Multiple commits following a step-by-step logical construction of the conceptual sequence diagram
+  (so there is no magic one-shot commit) In this sense, the project can be used as a tool of teaching newcomers.
+  * transaction microservice
+    1. clean architecture skeleton
+    2. creation endpoint
+    3. db repository, saving of transaction
+    4. messaging producer
+    5. notify antifraud to check transaction
+  * antifraud microservice
+    1. clean architecture skeleton
+    2. messaging consumer
+    3. consume event
+    4. validate transaction
+    5. messaging producer
+    6. notify transaction with validation result
+  * transaction microservice
+    1. messaging consumer
+    2. db repository, update of transaction using optimistic concurrency
+    3. update transaction in accordance to validation result
+
+# Advantages of CLEAN ARCHITECTURE
+* Separate domain from infrastructure, technology
+* Understanding WHAT the system does by looking at its usecases
+* Have a big picture of the architecture,
+  participants, actors, dependencies, kind of help to build a mental context diagram
+* Maintenability, evolvability, readbility, comprehensibility (mainly by newcomers)
+* Structure not imposed by frameworks and so resilient to framework changes.
+* Currently used by Yape on Java projects
+
+# Design
+* For tackling a huge amount of writes and read:
+  Usage of optimistic concurrency. Advantage: no need to encircle a resource update with a database transaction.
+# Technical notes
+docker-compose -f docker-compose.yml down
+docker-compose -f docker-compose.yml up
+
+psql -U postgres -p 5434 -h localhost -W
+psql -U postgres -p 5434 -h localhost -d transaction_db  -W
+
+# Integration test
+cd transaction_project
+
+./test/scripts/create-tx.sh <amount>
+./test/scripts/create-tx.sh 1500
+
+# Notes to organize
+* Code formatted with ESLint
+* Sequence of commits (tool of teaching)

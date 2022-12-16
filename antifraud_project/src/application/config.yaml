@@ -1,0 +1,13 @@
+application:
+  business:
+    transaction:
+      max-amount: 1000
+  transport:
+    event-driven:
+      kafka:
+        client-id: antifraud-client-id
+        groupd-id: group-id
+        broker: 'localhost:9092'
+        topics:
+          antifraud-check: antifraud-check
+          antifraud-analysis-response: antifraud-analysis-response

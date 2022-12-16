@@ -3,10 +3,11 @@ services:
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - "5434:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=transaction_db
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
