@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionEntity } from '../../../domain/models/transaction.entity';
-import { Repository, UpdateResult } from 'typeorm';
+import { from, Observable } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
-
+import { Repository, UpdateResult } from 'typeorm';
+import { TransactionEntity } from '../../../domain/models/transaction.entity';
 import { Transaction } from '../../../domain/models/transaction.interface';
 import { TransactionStatus } from 'src/domain/models/transaction_status.enum';
 
@@ -13,8 +13,8 @@ export class TransactionService {
     private readonly transactionRepository: Repository<TransactionEntity>,
   ) {}
 
-  async create(transaction: Transaction): Promise<Transaction> {
-    return this.transactionRepository.save(transaction);
+  create(transaction: Transaction): Observable<Transaction> {
+    return from(this.transactionRepository.save(transaction));
   }
 
   // Use optimistic concurrency. Advantage: no need of a database transaction.
