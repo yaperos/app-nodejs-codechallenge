@@ -8,6 +8,8 @@ export class MessagingService {
   private producer: Producer;
   private analysisResponseTopic: string;
 
+  private topicConsumerMap = new Map();
+
   constructor(private readonly configService: ConfigService) {
     const kafkaPrefix = 'application.transport.event-driven.kafka';
     const clientId = this.configService.get(`${kafkaPrefix}.client-id`);
@@ -20,6 +22,17 @@ export class MessagingService {
     this.analysisResponseTopic = this.configService.get(
       'application.transport.event-driven.kafka.topics.antifraud-analysis-response',
     );
+  }
+
+  addTopicConsumer(topic: string, callback: (msg: KafkaMessage) => any) {
+    this.topicConsumerMap.set(topic, callback);
+  }
+
+  initializeConsumers() {
+    // register every topic and callback
+    for (const entry of this.topicConsumerMap.entries()) {
+      this.consume(this.consumer, entry[0], entry[1]);
+    }
   }
 
   getConsumer() {

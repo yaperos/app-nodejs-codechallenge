@@ -1,6 +1,6 @@
 import { Controller, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { MessagingService } from '../../input_output/messaging/messaging.service';
 import { ConfigService } from '@nestjs/config';
+import { MessagingService } from '../../input_output/messaging/messaging.service';
 import { AntifraudCheckPayload } from './antifraud_check.payload';
 import { FraudAnalysisUsecase } from '../../../domain/usecases/fraud_analysis.usecase';
 
@@ -27,22 +27,22 @@ export class MessageConsumerController
     const antifraudCheckTopic = this.configService.get(
       'application.transport.event-driven.kafka.topics.antifraud-check',
     );
-    await this.messagingService.consume(
-      consumer,
-      antifraudCheckTopic,
-      (msg) => {
-        const checkPayload: AntifraudCheckPayload = JSON.parse(
-          msg.value.toString(),
-        );
-        console.log(
-          `>> ANTIFRAUD AntifraudConsumerController: read incoming message ` +
-            `${JSON.stringify(checkPayload)}`,
-        );
 
-        const transactionId: string = checkPayload.transactionId;
-        this.fraudAnalysisUsecase.analyze(transactionId);
-      },
-    );
+    this.messagingService.addTopicConsumer(antifraudCheckTopic, (msg) => {
+      const checkPayload: AntifraudCheckPayload = JSON.parse(
+        msg.value.toString(),
+      );
+
+      console.log(
+        `>> ANTIFRAUD AntifraudConsumerController: read incoming message ` +
+          `${JSON.stringify(checkPayload)}`,
+      );
+
+      const transactionId: string = checkPayload.transactionId;
+      this.fraudAnalysisUsecase.analyze(transactionId);
+    });
+
+    this.messagingService.initializeConsumers();
   }
 
   async onModuleDestroy() {

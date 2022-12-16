@@ -5,7 +5,7 @@ import { TransactionRestController } from '../adapter/input/web/transaction.rest
 import { TransactionEntity } from '../domain/models/transaction.entity';
 import { TransactionCreationUsecase } from '../domain/usecases/transaction_creation.usecase';
 import { TransactionService } from '../adapter/output/db/transaction.service';
-import { MessagingService } from 'src/adapter/input_output/messaging/mesaging.service';
+import { MessagingService } from 'src/adapter/input_output/messaging/messaging.service';
 import { MessageProducerInitializer } from 'src/adapter/output/messaging/message_producer.initializer';
 import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 import { MessageConsumerController } from 'src/adapter/input/messaging/message_consumer.controller';
