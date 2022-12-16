@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionEntity } from '../../../domain/models/transaction.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-
+import { from, Observable } from 'rxjs';
+import { TransactionEntity } from '../../../domain/models/transaction.entity';
 @Injectable()
 export class TransactionService {
   constructor(
@@ -10,10 +10,12 @@ export class TransactionService {
     private readonly transactionRepository: Repository<TransactionEntity>,
   ) {}
 
-  async findById(transactionId: string): Promise<TransactionEntity> {
+  findById(transactionId: string): Observable<TransactionEntity> {
     console.log('TransactionService:: findById: ' + transactionId);
-    return this.transactionRepository.findOne({
-      where: { transactionExternalId: transactionId },
-    });
+    return from(
+      this.transactionRepository.findOne({
+        where: { transactionExternalId: transactionId },
+      }),
+    );
   }
 }
