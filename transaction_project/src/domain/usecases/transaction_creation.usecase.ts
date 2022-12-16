@@ -39,7 +39,7 @@ export class TransactionCreationUsecase {
       )}`,
     );
 
-    await this.messagingService.sendToAntifraud(payload);
+    await this.messagingService.notifyAntifraudSystem(payload);
 
     return transaction;
   }

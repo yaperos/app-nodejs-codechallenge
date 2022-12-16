@@ -30,7 +30,7 @@ export class MessagingService {
     return this.producer;
   }
 
-  async sendToAntifraud(payload: any) {
+  async notifyAntifraudSystem(payload: any) {
     await this.send(this.antifraudCheckTopic, payload);
   }
 
