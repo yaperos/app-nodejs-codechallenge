@@ -97,7 +97,9 @@ If you have any questions, please let us know.
 * Currently used by Yape on Java code
 
 # Design
-* Usage of optimistic concurrency. Advantage: no need of a database transaction.
+* For tackling a huge amount of writes and read:
+  Usage of optimistic concurrency. Advantage: no need of a database transaction for the
+  resource update.
 
 # Technical notes
 docker-compose -f docker-compose.yml down
