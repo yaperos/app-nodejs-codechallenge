@@ -77,9 +77,7 @@ When you finish your challenge, after forking a repository, you can open a pull 
 
 If you have any questions, please let us know.
 
-# Notes to organize
-* Code formatted with ESLint
-* Sequence of commits (tool of teaching)
+
 # Code
 * Use of CLEAN ARCHITECTURE
 * Layout or packaging
@@ -96,6 +94,20 @@ If you have any questions, please let us know.
   * domain  
     * models
     * usecases
+* Multiple commits following a step-by-step logical construction of the conceptual sequence diagram.
+  (so there is no magic one-shot commit) In this sense, the project can be used as a tool for teaching to newcomers.
+  * transaction: clean architecture skeleton
+  * transaction: transaction creation endpoint
+  * transaction: db repository, saving of transaction
+  * transaction: messaging producer
+  * transaction: notify antifraud to check transaction
+  * antifraud: clean architecture skeleton
+  * antifraud: messaging consumer
+  * antifraud: consume event
+  * antifraud: validate transaction
+  * antifraud: messaging producer
+  * antifraud: notify transaction with validation result
+  * transaction: update transaction in accordance to validation result
 
 # Advantages of CLEAN ARCHITECTURE
 * Separate domain from infrastructure, technology
@@ -118,3 +130,6 @@ docker-compose -f docker-compose.yml up
 psql -U postgres -p 5434 -h localhost -W
 psql -U postgres -p 5434 -h localhost -d transaction_db  -W
 
+# Notes to organize
+* Code formatted with ESLint
+* Sequence of commits (tool of teaching)
