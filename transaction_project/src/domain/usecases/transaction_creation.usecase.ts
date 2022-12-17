@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { MessagingService } from 'src/adapter/input_output/messaging/messaging.service';
 import { TransactionService } from '../../adapter/output/db/transaction.service';
+import { TransactionEntity } from '../models/transaction.entity';
 import { Transaction } from '../models/transaction.interface';
 import { AntifraudCheckPayload } from './antifraud_check.payload';
 
@@ -14,7 +15,7 @@ export class TransactionCreationUsecase {
     private readonly messagingService: MessagingService,
   ) {}
 
-  create(transaction: Transaction) {
+  create(transaction: Transaction): Observable<TransactionEntity> {
     console.log(
       'TransactionCreationUsecase: Create a transaction: ' +
         JSON.stringify(transaction),

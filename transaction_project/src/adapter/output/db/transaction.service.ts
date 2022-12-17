@@ -22,7 +22,7 @@ export class TransactionService {
     );
   }
 
-  create(transaction: Transaction): Observable<Transaction> {
+  create(transaction: Transaction): Observable<TransactionEntity> {
     return from(this.transactionRepository.save(transaction));
   }
 

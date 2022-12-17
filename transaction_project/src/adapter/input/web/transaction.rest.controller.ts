@@ -11,7 +11,7 @@ export class TransactionRestController {
   constructor(
     private readonly transactionCreationUsecase: TransactionCreationUsecase,
     private readonly transactionQueryUsecase: TransactionQueryUsecase,
-    private readonly fromDtoConverter: FromTransactionCreationRequestDtoConverter,
+    private readonly fromTransactionCreationRequestDtoConverter: FromTransactionCreationRequestDtoConverter,
     private readonly fromTransactionDomainConverter: FromTransactionDomainConverter,
   ) {}
 
@@ -39,8 +39,18 @@ export class TransactionRestController {
         JSON.stringify(transactionDto),
     );
 
-    return this.transactionCreationUsecase.create(
-      this.fromDtoConverter.toTransactionEntity(transactionDto),
-    );
+    return this.transactionCreationUsecase
+      .create(
+        this.fromTransactionCreationRequestDtoConverter.toTransactionEntity(
+          transactionDto,
+        ),
+      )
+      .pipe(
+        map((tx) => {
+          this.fromTransactionDomainConverter.toTransactionCreationResponseDto(
+            tx,
+          );
+        }),
+      );
   }
 }
