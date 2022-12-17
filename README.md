@@ -142,6 +142,10 @@ If you have any questions, please let us know.
 
 ## Detailed sequence diagram of Transaction microservice
 ![Detailed sequence diagram of Transaction microservice](/images/transaction-microservice-detailed-sequence-diagram.png)
+
+## Detaile sequence diagram of Antifraud microservice
+![Detailed sequence diagram of Antifraud microservice](/images/antifraud-microservice-detailed-sequence-diagram.png)
+
 # Technical notes
 docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up
