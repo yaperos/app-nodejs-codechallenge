@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
   ValidationPipe,
 } from '@nestjs/common';
@@ -24,7 +25,7 @@ export class TransactionRestController {
 
   @Get(':transactionId')
   findOne(
-    @Param('transactionId') transactionId: string,
+    @Param('transactionId', ParseUUIDPipe) transactionId: string,
   ): Observable<TransactionQueryResponsetDto> {
     return this.transactionQueryUsecase.findById(transactionId).pipe(
       map((tx) => {
