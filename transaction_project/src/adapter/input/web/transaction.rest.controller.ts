@@ -47,7 +47,7 @@ export class TransactionRestController {
       )
       .pipe(
         map((tx) => {
-          this.fromTransactionDomainConverter.toTransactionCreationResponseDto(
+          return this.fromTransactionDomainConverter.toTransactionCreationResponseDto(
             tx,
           );
         }),
