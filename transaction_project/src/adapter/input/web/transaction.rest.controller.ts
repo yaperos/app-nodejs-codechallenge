@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 import { TransactionCreationUsecase } from 'src/domain/usecases/transaction_creation.usecase';
 import { TransactionQueryUsecase } from 'src/domain/usecases/transaction_query_usecase';
@@ -33,7 +40,9 @@ export class TransactionRestController {
   }
 
   @Post()
-  async create(@Body() transactionDto: TransactionCreationRequestDto) {
+  async create(
+    @Body(ValidationPipe) transactionDto: TransactionCreationRequestDto,
+  ) {
     console.log(
       '>> TX TransactionRestController: Incoming REST request: ' +
         JSON.stringify(transactionDto),
