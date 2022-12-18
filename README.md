@@ -124,7 +124,9 @@ If you have any questions, please let us know.
 * Currently used by Yape on Java projects
 
 # Design
-* The sequence is twofold:
+* This pattern concerns our scenario
+  * [ASYNCHRONOUS REQUEST-REPLY PATTERN](https://learn.microsoft.com/en-us/azure/architecture/patterns/async-request-reply)
+* The sequence is two-fold:
   * blocking sequence, process
     * creation of transaction and return as 'pending'. Behind the scenes, the next sequence is started
   * asynchronous process
@@ -134,8 +136,11 @@ If you have any questions, please let us know.
   * It's like an administrative task, making a request to a government institution
     * Your request is accepted 'immediately'. The right template of your requests is analyzed. The form is analyzed quickly, not the content. Kind of blocking call. Your request is accepted, it doesn't mean it is validated.
     * The content of your request ("el fondo del asunto" in Spanish) is post analyzed, it takes time. It's the asynchronous part of your request.
-* For tackling a huge amount of writes and read:
-  Usage of optimistic concurrency. Advantage: no need to encircle a resource update with a database transaction.
+* For tackling a huge amount of writes:
+  * Use optimistic concurrency. Advantage: no need to wrap up a resource update with a database transaction.
+  * Transactions are fine but harepresent a performance penalty in data-intensive scenarios.
+* For tackling a huge amount of reads:
+  * Address read-only queries (CQRS) by configuring the microservices to read from read-only database replicas.
 
 ## Conceptual sequence diagram
 ![Conceptual sequence diagram](/images/challenge-antifraud-conceptual-sequence-diagram.png)
