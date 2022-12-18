@@ -138,7 +138,7 @@ If you have any questions, please let us know.
     * The content of your request ("el fondo del asunto" in Spanish) is post analyzed, it takes time. It's the asynchronous part of your request.
 * For tackling a huge amount of writes:
   * Use optimistic concurrency. Advantage: no need to wrap up a resource update with a database transaction.
-  * Transactions are fine but harepresent a performance penalty in data-intensive scenarios.
+  * Transactions are fine but represent a performance penalty in data-intensive scenarios.
 * For tackling a huge amount of reads:
   * Address read-only queries (CQRS) by configuring the microservices to read from read-only database replicas.
 
