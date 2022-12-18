@@ -1,6 +1,6 @@
 import { Controller, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { MessagingService } from '../../input_output/messaging/mesaging.service';
+import { MessagingService } from '../../input_output/messaging/messaging.service';
 import { AntifraudAnalysisResponsePayload } from './antifraud_analysis_response.payload';
 import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 
@@ -11,13 +11,13 @@ export class MessageConsumerController
   constructor(
     private readonly configService: ConfigService,
     private readonly updateUsecase: UpdateTransactionAfterValidationUsecase,
-    private readonly messageService: MessagingService,
+    private readonly messagingService: MessagingService,
   ) {}
 
   async onModuleInit() {
     console.log('MessageConsumerController::onModuleInit');
 
-    const consumer = this.messageService.getConsumer();
+    const consumer = this.messagingService.getConsumer();
     await consumer.connect();
 
     // Consumers
@@ -28,7 +28,7 @@ export class MessageConsumerController
       'application.transport.event-driven.kafka.topics.antifraud-analysis-response',
     );
 
-    this.messageService.addTopicConsumer(
+    this.messagingService.addTopicConsumer(
       antifraudAnalysisResponseTopic,
       (msg) => {
         const analysisResponse: AntifraudAnalysisResponsePayload = JSON.parse(
@@ -42,9 +42,11 @@ export class MessageConsumerController
         this.updateUsecase.update(analysisResponse);
       },
     );
+
+    this.messagingService.initializeConsumers();
   }
 
   async onModuleDestroy() {
-    this.messageService.getConsumer().disconnect();
+    this.messagingService.getConsumer().disconnect();
   }
 }

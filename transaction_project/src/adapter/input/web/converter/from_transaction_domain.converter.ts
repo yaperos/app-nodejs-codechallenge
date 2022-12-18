@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionEntity } from 'src/domain/models/transaction.entity';
 import { TransactionStatus } from 'src/domain/models/transaction_status.enum';
+import { TransactionTypeEnum } from 'src/domain/models/transaction_type_enum';
+import { TransactionCreationResponsetDto } from '../dto/transaction_creation.response.dto';
 import { TransactionQueryResponsetDto } from '../dto/transaction_query.response.dto';
 
 @Injectable()
@@ -11,7 +13,23 @@ export class FromTransactionDomainConverter {
     const dto = new TransactionQueryResponsetDto();
     dto.transactionExternalId = domainEntity.transactionExternalId;
     dto.transactionType = {
-      name: 'todo',
+      name: TransactionTypeEnum[domainEntity.transferTypeId],
+    };
+    dto.transactionStatus = {
+      name: TransactionStatus[domainEntity.status],
+    };
+    dto.value = domainEntity.value;
+    dto.createdAt = domainEntity.createAt;
+    return dto;
+  }
+
+  toTransactionCreationResponseDto(
+    domainEntity: TransactionEntity,
+  ): TransactionCreationResponsetDto {
+    const dto = new TransactionCreationResponsetDto();
+    dto.transactionExternalId = domainEntity.transactionExternalId;
+    dto.transactionType = {
+      name: TransactionTypeEnum[domainEntity.transferTypeId],
     };
     dto.transactionStatus = {
       name: TransactionStatus[domainEntity.status],

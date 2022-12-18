@@ -22,15 +22,17 @@ export class MessagingService {
     this.antifraudCheckTopic = this.configService.get(
       'application.transport.event-driven.kafka.topics.antifraud-check',
     );
-
-    // register every topic and callback
-    this.topicConsumerMap.forEach((topic, callback) => {
-      this.consume(this.consumer, topic, callback);
-    });
   }
 
   addTopicConsumer(topic: string, callback: (msg: KafkaMessage) => any) {
-    this.topicConsumerMap[topic] = callback;
+    this.topicConsumerMap.set(topic, callback);
+  }
+
+  initializeConsumers() {
+    // register every topic and callback
+    for (const entry of this.topicConsumerMap.entries()) {
+      this.consume(this.consumer, entry[0], entry[1]);
+    }
   }
 
   getConsumer() {

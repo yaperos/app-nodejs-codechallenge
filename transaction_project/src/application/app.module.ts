@@ -5,13 +5,14 @@ import { TransactionRestController } from '../adapter/input/web/transaction.rest
 import { TransactionEntity } from '../domain/models/transaction.entity';
 import { TransactionCreationUsecase } from '../domain/usecases/transaction_creation.usecase';
 import { TransactionService } from '../adapter/output/db/transaction.service';
-import { MessagingService } from 'src/adapter/input_output/messaging/mesaging.service';
+import { MessagingService } from 'src/adapter/input_output/messaging/messaging.service';
 import { MessageProducerInitializer } from 'src/adapter/output/messaging/message_producer.initializer';
 import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 import { MessageConsumerController } from 'src/adapter/input/messaging/message_consumer.controller';
 import configurationYaml from '../../configuration.yaml';
 import { FromTransactionCreationRequestDtoConverter } from 'src/adapter/input/web/converter/from_transaction_creation_request_dto.converter';
 import { FromTransactionDomainConverter } from 'src/adapter/input/web/converter/from_transaction_domain.converter';
+import { TransactionQueryUsecase } from 'src/domain/usecases/transaction_query_usecase';
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configurationYaml] }),
@@ -35,6 +36,7 @@ import { FromTransactionDomainConverter } from 'src/adapter/input/web/converter/
   providers: [
     TransactionCreationUsecase,
     UpdateTransactionAfterValidationUsecase,
+    TransactionQueryUsecase,
     TransactionService,
     MessagingService,
     FromTransactionCreationRequestDtoConverter,

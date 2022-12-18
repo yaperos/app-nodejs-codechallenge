@@ -13,7 +13,16 @@ export class TransactionService {
     private readonly transactionRepository: Repository<TransactionEntity>,
   ) {}
 
-  create(transaction: Transaction): Observable<Transaction> {
+  findById(transactionId: string): Observable<TransactionEntity> {
+    console.log('TransactionService:: findById: ' + transactionId);
+    return from(
+      this.transactionRepository.findOne({
+        where: { transactionExternalId: transactionId },
+      }),
+    );
+  }
+
+  create(transaction: Transaction): Observable<TransactionEntity> {
     return from(this.transactionRepository.save(transaction));
   }
 
