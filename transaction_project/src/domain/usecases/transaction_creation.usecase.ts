@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 import { MessagingService } from 'src/adapter/input_output/messaging/messaging.service';
 import { TransactionService } from '../../adapter/output/db/transaction.service';
@@ -16,14 +17,14 @@ export class TransactionCreationUsecase {
   ) {}
 
   create(transaction: Transaction): Observable<TransactionEntity> {
-    console.log(
+    Logger.log(
       'TransactionCreationUsecase: Create a transaction: ' +
         JSON.stringify(transaction),
     );
 
     return this.transactionService.create(transaction).pipe(
       map((tx) => {
-        console.log(
+        Logger.log(
           'TransactionCreationUsecase: Create a transaction: ' +
             JSON.stringify(tx),
         );
@@ -33,7 +34,7 @@ export class TransactionCreationUsecase {
           transactionId: tx.transactionExternalId,
         };
 
-        console.log(
+        Logger.log(
           `TransactionCreationUsecase: before sending to Antifraud:  ${JSON.stringify(
             payload,
           )}`,

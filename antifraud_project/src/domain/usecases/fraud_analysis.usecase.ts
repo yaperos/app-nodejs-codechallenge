@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { TransactionService } from 'src/adapter/output/db/transaction.service';
 import { Transaction } from '../models/transaction.interface';
 import { AntifraudAnalysisResponsePayload } from '../models/events/antifraud_analysis_response.payload';
@@ -17,7 +18,7 @@ export class FraudAnalysisUsecase {
   ) {}
 
   analyze(transactionId: string) {
-    console.log(
+    Logger.log(
       'FraudAnalysisUsecase analyze() transactionId: ' + transactionId,
     );
 
@@ -25,7 +26,7 @@ export class FraudAnalysisUsecase {
       if (!tx) {
         throw new NotFoundException('Transaction not found: ' + transactionId);
       }
-      console.log(
+      Logger.log(
         'FraudAnalysisUsecase analyze:: record: ' + JSON.stringify(tx),
       );
 
@@ -37,7 +38,7 @@ export class FraudAnalysisUsecase {
         newStatus,
       };
 
-      console.log(
+      Logger.log(
         'FraudAnalysisUsecase: send antifraud analysis to Transaction: ' +
           JSON.stringify(payload),
       );
@@ -55,7 +56,7 @@ export class FraudAnalysisUsecase {
         ? TransactionStatus.rejected
         : TransactionStatus.approved;
 
-    console.log('FraudAnalysisUsecase newStatus: ' + result);
+    Logger.log('FraudAnalysisUsecase: newStatus: ' + result);
     return result;
   }
 }
