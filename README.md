@@ -148,22 +148,39 @@ If you have any questions, please let us know.
 ## Detailed sequence diagram of Transaction microservice
 ![Detailed sequence diagram of Transaction microservice](/images/transaction-microservice-detailed-sequence-diagram.png)
 
-## Detaile sequence diagram of Antifraud microservice
+## Detailed sequence diagram of Antifraud microservice
 ![Detailed sequence diagram of Antifraud microservice](/images/antifraud-microservice-detailed-sequence-diagram.png)
 
-# Technical notes
-docker-compose -f docker-compose.yml down
+# Start applications
+
+## Start Kafka and Postgresql
 docker-compose -f docker-compose.yml up
 
-psql -U postgres -p 5434 -h localhost -W
-psql -U postgres -p 5434 -h localhost -d transaction_db  -W
+## Start Antifraud microservice
+From root
+cd antifraud_project
+npm start run:dev
 
-# Integration test
+## Start Transaction microservice
+From root
+cd transaction_project
+npm start run:dev
+
+## Test scripts
+From
 cd transaction_project
 
 ./test/scripts/create-tx.sh <amount>
 ./test/scripts/create-tx.sh 1500
 
-# Notes to organize
+# Technical notes
+docker-compose -f docker-compose.yml down
+docker-compose -f docker-compose.yml up
+
+Access to Postgresql console
+psql -U postgres -p 5434 -h localhost -W
+psql -U postgres -p 5434 -h localhost -d transaction_db  -W
+
+# Other notes
 * Code formatted with ESLint
 * Sequence of commits (tool of teaching)

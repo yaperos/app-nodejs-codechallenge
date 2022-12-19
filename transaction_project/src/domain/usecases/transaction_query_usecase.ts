@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { map } from 'rxjs';
 import { TransactionService } from '../../adapter/output/db/transaction.service';
@@ -18,6 +18,9 @@ export class TransactionQueryUsecase {
 
     return this.transactionService.findById(transactionId).pipe(
       map((tx) => {
+        if (!tx) {
+          throw new NotFoundException('Transaction not found');
+        }
         console.log(
           'TransactionQueryUsecase: Get transaction: ' + JSON.stringify(tx),
         );
