@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { TransactionEntity } from '../../../domain/models/transaction.entity';
@@ -11,7 +12,7 @@ export class TransactionService {
   ) {}
 
   findById(transactionId: string): Observable<TransactionEntity> {
-    console.log('TransactionService:: findById: ' + transactionId);
+    Logger.log('TransactionService:: findById: ' + transactionId);
     return from(
       this.transactionRepository.findOne({
         where: { transactionExternalId: transactionId },

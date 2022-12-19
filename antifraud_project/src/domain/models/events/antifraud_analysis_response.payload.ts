@@ -1,4 +1,4 @@
-import { TransactionStatus } from '../models/transaction_status.enum';
+import { TransactionStatus } from '../transaction_status.enum';
 
 export class AntifraudAnalysisResponsePayload {
   transactionId: string;

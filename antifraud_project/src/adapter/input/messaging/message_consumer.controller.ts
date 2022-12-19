@@ -1,7 +1,8 @@
 import { Controller, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { MessagingService } from '../../input_output/messaging/messaging.service';
-import { AntifraudCheckPayload } from './antifraud_check.payload';
+import { AntifraudCheckPayload } from '../../../domain/models/events/antifraud_check.payload';
 import { FraudAnalysisUsecase } from '../../../domain/usecases/fraud_analysis.usecase';
 
 @Controller()
@@ -15,13 +16,13 @@ export class MessageConsumerController
   ) {}
 
   async onModuleInit() {
-    console.log('MessageConsumerController::onModuleInit');
+    Logger.log('MessageConsumerController::onModuleInit');
 
     const consumer = this.messagingService.getConsumer();
     await consumer.connect();
 
     // Consumers
-    console.log('MessageConsumerController - consumers');
+    Logger.log('MessageConsumerController - consumers');
 
     // Consumer for topic "antifraud-check"
     const antifraudCheckTopic = this.configService.get(
@@ -33,7 +34,7 @@ export class MessageConsumerController
         msg.value.toString(),
       );
 
-      console.log(
+      Logger.log(
         `>> ANTIFRAUD AntifraudConsumerController: read incoming message ` +
           `${JSON.stringify(checkPayload)}`,
       );

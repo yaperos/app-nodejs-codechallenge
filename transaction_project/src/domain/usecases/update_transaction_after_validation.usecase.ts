@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { TransactionService } from '../../adapter/output/db/transaction.service';
-import { AntifraudAnalysisResponsePayload } from 'src/adapter/input/messaging/antifraud_analysis_response.payload';
+import { AntifraudAnalysisResponsePayload } from '../models/events/antifraud_analysis_response.payload';
 
 @Injectable()
 export class UpdateTransactionAfterValidationUsecase {
   constructor(private transactionService: TransactionService) {}
 
   update(antifrauAnalysisResponse: AntifraudAnalysisResponsePayload) {
-    console.log(
+    Logger.log(
       'UpdateTransactionAfterValidationUsecase: received ' +
         JSON.stringify(antifrauAnalysisResponse),
     );
@@ -22,12 +23,12 @@ export class UpdateTransactionAfterValidationUsecase {
         /**
          * It is not part of the requirements.
          * 
-         * If updateResult.affected == 0 (no update was done),
-         * You could:
+         * If not update (updateResult.affected == 0)
+         * you could:
          * * Notify by email about failed transaction
          * * Queue rejected transaction id for post processing
          */
-        console.log(
+        Logger.log(
           'UpdateTransactionAfterValidationUsecase: updated record result ' +
             JSON.stringify(updateResult),
         );

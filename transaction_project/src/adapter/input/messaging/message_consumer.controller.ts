@@ -1,7 +1,8 @@
 import { Controller, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { MessagingService } from '../../input_output/messaging/messaging.service';
-import { AntifraudAnalysisResponsePayload } from './antifraud_analysis_response.payload';
+import { AntifraudAnalysisResponsePayload } from '../../../domain/models/events/antifraud_analysis_response.payload';
 import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 
 @Controller()
@@ -15,13 +16,13 @@ export class MessageConsumerController
   ) {}
 
   async onModuleInit() {
-    console.log('MessageConsumerController::onModuleInit');
+    Logger.log('MessageConsumerController::onModuleInit');
 
     const consumer = this.messagingService.getConsumer();
     await consumer.connect();
 
     // Consumers
-    console.log('MessageConsumerController - consumers');
+    Logger.log('MessageConsumerController - consumers');
 
     // Consumer for topic "antifraud-analysis-response"
     const antifraudAnalysisResponseTopic = this.configService.get(
@@ -34,7 +35,7 @@ export class MessageConsumerController
         const analysisResponse: AntifraudAnalysisResponsePayload = JSON.parse(
           msg.value.toString(),
         );
-        console.log(
+        Logger.log(
           `MessageConsumerController antifraud-analysis-response ` +
             `payload.transactionId : ${analysisResponse.transactionId}`,
         );

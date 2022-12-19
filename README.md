@@ -168,11 +168,30 @@ npm start run:dev
 
 ## Test scripts
 From
-cd transaction_project
+cd transaction_project/test/scripts
 
-./test/scripts/create-tx.sh <amount>
-./test/scripts/create-tx.sh 1500
+### Happy paths
+* ./create-tx.sh &lt;amount&gt;
+  * ./create-tx.sh 1500
 
+* ./get-tx.sh &lt;existing-guid&gt;
+  * ./get-tx.sh b0e2068e-5e7b-41e2-9b81-90218b34d5be
+
+### Error scenarios
+* ./error-create-non-positive-amount.sh
+* ./error-create-account-id-not-a-uuid.sh
+* ./error-get-transaction-not-found.sh
+* ./error-create-invalid-transfer-type-id.sh
+* Important test: restart kafka and verify that both microservices reconnect
+  * docker-compose stop kafka
+  * docker-compose start kafka
+
+# Logs
+* Antifraud (top), Transaction (bottom)
+![Logs](/images/typical-logs.png)
+
+* In the last transaction log, the attribute "affected" means if an update was done under optimistic concurrency conditions (see TypeOrm class 'UpdateResult')
+  * [Nest] 34356  - 12/19/2022, 11:55:40 AM     LOG UpdateTransactionAfterValidationUsecase: updated record result {"generatedMaps":[],"raw":[],"affected":1}
 # Technical notes
 docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up

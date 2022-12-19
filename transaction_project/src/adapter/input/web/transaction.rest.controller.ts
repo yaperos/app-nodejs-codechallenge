@@ -8,6 +8,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
+import { Logger } from '@nestjs/common';
 import { TransactionCreationUsecase } from 'src/domain/usecases/transaction_creation.usecase';
 import { TransactionQueryUsecase } from 'src/domain/usecases/transaction_query_usecase';
 import { FromTransactionCreationRequestDtoConverter } from './converter/from_transaction_creation_request_dto.converter';
@@ -31,7 +32,7 @@ export class TransactionRestController {
       map((tx) => {
         const dto =
           this.fromTransactionDomainConverter.toTransactionQueryResponseDto(tx);
-        console.log(
+        Logger.log(
           'TransactionRestController query response dto: ' +
             JSON.stringify(dto),
         );
@@ -44,7 +45,7 @@ export class TransactionRestController {
   async create(
     @Body(ValidationPipe) transactionDto: TransactionCreationRequestDto,
   ) {
-    console.log(
+    Logger.log(
       '>> TX TransactionRestController: Incoming REST request: ' +
         JSON.stringify(transactionDto),
     );

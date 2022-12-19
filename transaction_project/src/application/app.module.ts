@@ -25,6 +25,7 @@ import { TransactionQueryUsecase } from 'src/domain/usecases/transaction_query_u
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+      entities: [TransactionEntity],
     }),
     TypeOrmModule.forFeature([TransactionEntity]),
   ],
