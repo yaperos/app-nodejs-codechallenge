@@ -15,7 +15,17 @@ export class MessagingService {
     const clientId = this.configService.get(`${kafkaPrefix}.client-id`);
     const groupId = this.configService.get(`${kafkaPrefix}.groupd-id`);
     const brokers = [this.configService.get(`${kafkaPrefix}.broker`)];
-    const kafka = new Kafka({ clientId, brokers });
+    const initialRetryTime = this.configService.get(
+      `${kafkaPrefix}.initialRetryTime`,
+    );
+    const maxRetryTime = this.configService.get(`${kafkaPrefix}.maxRetryTime`);
+    const retries = this.configService.get(`${kafkaPrefix}.retries`);
+
+    const kafka = new Kafka({
+      clientId,
+      brokers,
+      retry: { initialRetryTime, maxRetryTime, retries },
+    });
     this.consumer = kafka.consumer({ groupId });
     this.producer = kafka.producer();
 

@@ -182,6 +182,9 @@ cd transaction_project/test/scripts
 * ./error-create-account-id-not-a-uuid.sh
 * ./error-get-transaction-not-found.sh
 * ./error-create-invalid-transfer-type-id.sh
+* Important test: restart kafka and verify that both microservices reconnect
+  * docker-compose stop kafka
+  * docker-compose start kafka
 
 # Logs
 * Antifraud (top), Transaction (bottom)

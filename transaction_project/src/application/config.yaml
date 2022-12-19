@@ -5,6 +5,9 @@ application:
         client-id: transaction-client-id
         groupd-id: transaction-group-id
         broker: 'localhost:9092'
+        initialRetryTime: 5000
+        maxRetryTime: 5000
+        retries: 10
         topics:
           antifraud-check: antifraud-check
           antifraud-analysis-response: antifraud-analysis-response
