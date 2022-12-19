@@ -170,11 +170,20 @@ npm start run:dev
 From
 cd transaction_project/test/scripts
 
+### Happy paths
 ./create-tx.sh <amount>
 ./create-tx.sh 1500
 
-./get-tx.sh <guid>
+./get-tx.sh <existing-guid>
 ./get-tx.sh b0e2068e-5e7b-41e2-9b81-90218b34d5be
+
+### Error scenarios
+./error-create-non-positive-amount.sh
+./error-create-account-id-not-a-uuid.sh
+./error-get-transaction-not-found.sh
+./error-create-invalid-transfer-type-id.sh
+
+
 
 # Technical notes
 docker-compose -f docker-compose.yml down

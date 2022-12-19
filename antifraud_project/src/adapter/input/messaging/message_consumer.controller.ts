@@ -1,7 +1,7 @@
 import { Controller, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MessagingService } from '../../input_output/messaging/messaging.service';
-import { AntifraudCheckPayload } from './antifraud_check.payload';
+import { AntifraudCheckPayload } from '../../../domain/models/events/antifraud_check.payload';
 import { FraudAnalysisUsecase } from '../../../domain/usecases/fraud_analysis.usecase';
 
 @Controller()
