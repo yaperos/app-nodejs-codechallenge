@@ -3,7 +3,7 @@ application:
     event-driven:
       kafka:
         client-id: transaction-client-id
-        groupd-id: group-id-server
+        groupd-id: transaction-group-id
         broker: 'localhost:9092'
         topics:
           antifraud-check: antifraud-check
