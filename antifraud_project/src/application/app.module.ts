@@ -21,6 +21,7 @@ import configurationYaml from '../../configuration.yaml';
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+      entities: [TransactionEntity],
     }),
     TypeOrmModule.forFeature([TransactionEntity]),
   ],

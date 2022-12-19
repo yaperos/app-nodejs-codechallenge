@@ -5,7 +5,7 @@ import { MessagingService } from 'src/adapter/input_output/messaging/messaging.s
 import { TransactionService } from '../../adapter/output/db/transaction.service';
 import { TransactionEntity } from '../models/transaction.entity';
 import { Transaction } from '../models/transaction.interface';
-import { AntifraudCheckPayload } from './antifraud_check.payload';
+import { AntifraudCheckPayload } from '../models/events/antifraud_check.payload';
 
 @Injectable()
 export class TransactionCreationUsecase {

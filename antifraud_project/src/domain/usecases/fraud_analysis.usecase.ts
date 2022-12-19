@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TransactionService } from 'src/adapter/output/db/transaction.service';
 import { Transaction } from '../models/transaction.interface';
-import { AntifraudAnalysisResponsePayload } from './antifraud_analysis_response.payload';
+import { AntifraudAnalysisResponsePayload } from '../models/events/antifraud_analysis_response.payload';
 import { MessagingService } from 'src/adapter/input_output/messaging/messaging.service';
 import { TransactionStatus } from '../models/transaction_status.enum';
 

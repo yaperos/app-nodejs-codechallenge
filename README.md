@@ -168,10 +168,13 @@ npm start run:dev
 
 ## Test scripts
 From
-cd transaction_project
+cd transaction_project/test/scripts
 
-./test/scripts/create-tx.sh <amount>
-./test/scripts/create-tx.sh 1500
+./create-tx.sh <amount>
+./create-tx.sh 1500
+
+./get-tx.sh <guid>
+./get-tx.sh b0e2068e-5e7b-41e2-9b81-90218b34d5be
 
 # Technical notes
 docker-compose -f docker-compose.yml down

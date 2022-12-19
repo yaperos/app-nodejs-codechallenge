@@ -18,10 +18,10 @@ export class TransactionEntity {
   @Column({ default: 0 })
   status: TransactionStatus;
 
-  @Column({ default: '' })
+  @Column({ default: '', nullable: false })
   accountExternalIdDebit: string;
 
-  @Column({ default: '' })
+  @Column({ default: '', nullable: false })
   accountExternalIdCredit: string;
 
   @Column({ default: 0 })
