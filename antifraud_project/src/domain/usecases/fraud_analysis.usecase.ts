@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TransactionService } from 'src/adapter/output/db/transaction.service';
 import { Transaction } from '../models/transaction.interface';
@@ -22,6 +22,9 @@ export class FraudAnalysisUsecase {
     );
 
     this.transactionService.findById(transactionId).subscribe((tx) => {
+      if (!tx) {
+        throw new NotFoundException('Transaction not found: ' + transactionId);
+      }
       console.log(
         'FraudAnalysisUsecase analyze:: record: ' + JSON.stringify(tx),
       );
