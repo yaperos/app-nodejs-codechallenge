@@ -142,6 +142,25 @@ If you have any questions, please let us know.
 * For tackling a huge amount of reads:
   * Address read-only queries (CQRS) by configuring the microservices to read from read-only database replicas.
 
+# Optimistic concurrency when updating a transaction
+* Each resource is assigned a version.
+
+* When commiting a change to the database, we have to ensure that the version that is being overwritten matches the one that was orginally read.
+
+* Pseudocode-SQL version of Transaction microservice's TransactionService::update method:
+
+```
+01 UPDATE transaction
+02 SET status = <new-status>
+03 version = <current-version> + 1
+04 WHERE transactionExternalId = <transactionId> AND version = <current-version>
+```
+
+* This SQL statement applies changes made to the transaction instance’s state (line 2),
+and increases its version counter (line 3) but only if the current version equals the
+one that was read prior to applying changes to the aggregate’s state (line 4).
+
+
 ## Conceptual sequence diagram
 ![Conceptual sequence diagram](/images/challenge-antifraud-conceptual-sequence-diagram.png)
 
@@ -154,51 +173,51 @@ If you have any questions, please let us know.
 # Start applications
 
 ## Start Kafka and Postgresql
-docker-compose -f docker-compose.yml up
+```docker-compose -f docker-compose.yml up```
 
 ## Start Antifraud microservice
 From root
-cd antifraud_project
-npm start run:dev
+* ```cd antifraud_project```
+* ```npm start run:dev```
 
 ## Start Transaction microservice
 From root
-cd transaction_project
-npm start run:dev
+* ```cd transaction_project```
+* ```npm start run:dev```
 
 ## Test scripts
-From
-cd transaction_project/test/scripts
+From root
+* ```cd transaction_project/test/scripts```
 
 ### Happy paths
-* ./create-tx.sh &lt;amount&gt;
-  * ./create-tx.sh 1500
+* ```./create-tx.sh <amount>```
+  * ```./create-tx.sh 1500```
 
-* ./get-tx.sh &lt;existing-guid&gt;
-  * ./get-tx.sh b0e2068e-5e7b-41e2-9b81-90218b34d5be
+* ```./get-tx.sh <existing-guid>```
+  * ```./get-tx.sh b0e2068e-5e7b-41e2-9b81-90218b34d5be```
+* Important test: restart kafka and verify that both microservices reconnect
+  * ```docker-compose stop kafka```
+  * ```docker-compose start kafka```
 
 ### Error scenarios
-* ./error-create-non-positive-amount.sh
-* ./error-create-account-id-not-a-uuid.sh
-* ./error-get-transaction-not-found.sh
-* ./error-create-invalid-transfer-type-id.sh
-* Important test: restart kafka and verify that both microservices reconnect
-  * docker-compose stop kafka
-  * docker-compose start kafka
+* ```./error-create-non-positive-amount.sh```
+* ```./error-create-account-id-not-a-uuid.sh```
+* ```./error-get-transaction-not-found.sh```
+* ```./error-create-invalid-transfer-type-id.sh```
 
 # Logs
 * Antifraud (top), Transaction (bottom)
 ![Logs](/images/typical-logs.png)
 
 * In the last transaction log, the attribute "affected" means if an update was done under optimistic concurrency conditions (see TypeOrm class 'UpdateResult')
-  * [Nest] 34356  - 12/19/2022, 11:55:40 AM     LOG UpdateTransactionAfterValidationUsecase: updated record result {"generatedMaps":[],"raw":[],"affected":1}
+  * ```[Nest] 34356  - 12/19/2022, 11:55:40 AM     LOG UpdateTransactionAfterValidationUsecase: updated record result {"generatedMaps":[],"raw":[],"affected":1}```
 # Technical notes
-docker-compose -f docker-compose.yml down
-docker-compose -f docker-compose.yml up
+* ```docker-compose -f docker-compose.yml down```
+* ```docker-compose -f docker-compose.yml up```
 
-Access to Postgresql console
-psql -U postgres -p 5434 -h localhost -W
-psql -U postgres -p 5434 -h localhost -d transaction_db  -W
+* Access to Postgresql console
+  * ```psql -U postgres -p 5434 -h localhost -W```
+  * ```psql -U postgres -p 5434 -h localhost -d transaction_db  -W```
 
 # Other notes
 * Code formatted with ESLint
