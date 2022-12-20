@@ -126,6 +126,8 @@ If you have any questions, please let us know.
 # Design
 * This pattern concerns our scenario
   * [ASYNCHRONOUS REQUEST-REPLY PATTERN](https://learn.microsoft.com/en-us/azure/architecture/patterns/async-request-reply)
+  * Microsoft's site image:
+    * ![example-async-request-reply-pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/_images/async-request-fn.png)
 * The sequence is two-fold:
   * blocking sequence, process
     * creation of transaction and return as 'pending'. Behind the scenes, the next sequence is started
