@@ -2,8 +2,6 @@ import { Controller, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { MessagingService } from '../../input_output/messaging/messaging.service';
-import { AntifraudAnalysisResponsePayload } from '../../../domain/models/events/antifraud_analysis_response.payload';
-import { UpdateTransactionAfterValidationUsecase } from 'src/domain/usecases/update_transaction_after_validation.usecase';
 
 @Controller()
 export class MessageConsumerController
@@ -11,7 +9,6 @@ export class MessageConsumerController
 {
   constructor(
     private readonly configService: ConfigService,
-    private readonly updateUsecase: UpdateTransactionAfterValidationUsecase,
     private readonly messagingService: MessagingService,
   ) {}
 
@@ -23,28 +20,6 @@ export class MessageConsumerController
 
     // Consumers
     Logger.log('MessageConsumerController - consumers');
-
-    // Consumer for topic "antifraud-analysis-response"
-    const antifraudAnalysisResponseTopic = this.configService.get(
-      'application.transport.event-driven.kafka.topics.antifraud-analysis-response',
-    );
-
-    this.messagingService.addTopicConsumer(
-      antifraudAnalysisResponseTopic,
-      (msg) => {
-        const analysisResponse: AntifraudAnalysisResponsePayload = JSON.parse(
-          msg.value.toString(),
-        );
-        Logger.log(
-          `MessageConsumerController antifraud-analysis-response ` +
-            `payload.transactionId : ${analysisResponse.transactionId}`,
-        );
-
-        this.updateUsecase.update(analysisResponse);
-      },
-    );
-
-    this.messagingService.initializeConsumers();
   }
 
   async onModuleDestroy() {
