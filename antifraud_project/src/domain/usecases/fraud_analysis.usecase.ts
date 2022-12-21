@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { TransactionService } from 'src/adapter/output/db/transaction.service';
@@ -6,10 +6,34 @@ import { Transaction } from '../models/transaction.interface';
 import { AntifraudAnalysisResponsePayload } from '../models/events/antifraud_analysis_response.payload';
 import { MessagingService } from 'src/adapter/input_output/messaging/messaging.service';
 import { TransactionStatus } from '../models/transaction_status.enum';
+import { AntifraudCheckPayload } from '../models/events/antifraud_check.payload';
 
 @Injectable()
-export class FraudAnalysisUsecase {
+export class FraudAnalysisUsecase implements OnModuleInit {
   private analysisResponseTopic: string;
+
+  onModuleInit() {
+    // Consumer for topic "antifraud-check"
+    const antifraudCheckTopic = this.configService.get(
+      'application.transport.event-driven.kafka.topics.antifraud-check',
+    );
+
+    this.messagingService.addTopicConsumer(antifraudCheckTopic, (msg) => {
+      const checkPayload: AntifraudCheckPayload = JSON.parse(
+        msg.value.toString(),
+      );
+
+      Logger.log(
+        `>> ANTIFRAUD FraudAnalysisUsecase: read incoming message ` +
+          `${JSON.stringify(checkPayload)}`,
+      );
+
+      const transactionId: string = checkPayload.transactionId;
+      this.analyze(transactionId);
+    });
+
+    this.messagingService.subscribeConsumers();
+  }
 
   constructor(
     private readonly configService: ConfigService,

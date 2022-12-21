@@ -38,7 +38,7 @@ export class MessagingService {
     this.topicConsumerMap.set(topic, callback);
   }
 
-  initializeConsumers() {
+  subscribeConsumers() {
     // register every topic and callback
     for (const entry of this.topicConsumerMap.entries()) {
       this.consume(this.consumer, entry[0], entry[1]);
