@@ -2,15 +2,23 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    restart: always
     ports:
-      - "5432:5432"
+      - "5001:5432"
+    volumes:
+      - transactions-db-vol:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - ms-net
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - ms-net
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,3 +31,27 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - ms-net
+
+  mongo:
+    image: mongo:3.6
+    restart: always
+    ports:
+      - 27021:27017
+    volumes:
+      - incidents-db-vol:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: test
+    networks:
+      - ms-net
+
+volumes:
+  transactions-db-vol:
+  incidents-db-vol:
+
+networks:
+  ms-net:
+  gateway-net:
