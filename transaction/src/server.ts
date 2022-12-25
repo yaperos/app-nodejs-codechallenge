@@ -9,19 +9,19 @@ import { logger } from './core/utils/logger'
 
 const PORT = process.env.PORT || 3001
 const ENVIRONMENT = process.env.NODE_ENV || 'development'
+const WHITE_LIST = ['*']
 
 const app = <Application>express()
 app.use(cors())
 app.use(express.json())
 
-const whiteList = ['*']
 const corsOptionsDelegate = function handler(
   req: Request,
   callback: (err: Error | null, options?: CorsOptions) => void,
 ) {
   const corsOptions: { origin: boolean } = { origin: false }
 
-  if (whiteList.indexOf(req.header('Origin') ?? '') !== -1) {
+  if (WHITE_LIST.indexOf(req.header('Origin') ?? '') !== -1) {
     corsOptions.origin = true
   }
 
@@ -36,7 +36,6 @@ function httpErrorHandler(err: HttpError, req: Request, res: Response, next: Nex
   }
 
   res.status(err.status ?? 500)
-
   res.json(plainToInstance(HttpErrorDto, err))
 }
 
