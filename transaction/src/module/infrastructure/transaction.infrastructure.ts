@@ -4,15 +4,15 @@ import { logger } from '../../core/utils/logger'
 import { TransactionRepository } from '../domain/repositories/transaction.repository'
 import { TransactionEntity } from '../domain/entities/transaction.entity'
 import prisma from './db/prisma'
+import { TransactionStatusEnum } from './interface/dtos/enums/transaction-status.enum'
 
 export class TransactionInfrastructure implements TransactionRepository {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async create(data: TransactionEntity): Promise<Transaction> {
     try {
       const result = await prisma.transaction.create({
         data: {
           ...data,
-          transactionStatus: 'pending',
+          transactionStatus: TransactionStatusEnum.PENDING,
         },
       })
 
@@ -33,6 +33,33 @@ export class TransactionInfrastructure implements TransactionRepository {
       const result = await prisma.transaction.findUniqueOrThrow({
         where: {
           transactionExternalId: id,
+        },
+      })
+
+      return result
+    } catch (error) {
+      logger.error(error)
+
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFound(error.message)
+        }
+
+        throw new UnprocessableEntity(error.message)
+      }
+
+      throw new InternalServerError()
+    }
+  }
+
+  async updateStatus(id: string, status: TransactionStatusEnum): Promise<Transaction> {
+    try {
+      const result = await prisma.transaction.update({
+        where: {
+          transactionExternalId: id,
+        },
+        data: {
+          transactionStatus: status,
         },
       })
 

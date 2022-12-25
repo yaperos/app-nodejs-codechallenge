@@ -1,5 +1,5 @@
 import { Transaction } from '@prisma/client'
-import { getTransactionTypeName } from '../../infrastructure/interface/dtos/enums/transaction.enum'
+import { getTransactionTypeName } from '../../infrastructure/interface/dtos/enums/transaction-type.enum'
 import { ITransactionResponse, ITransactionStatus, ITransactionType } from './transaction-info.interface'
 
 export class TransactionInfoEntity implements ITransactionResponse {
