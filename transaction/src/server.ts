@@ -1,9 +1,11 @@
 import 'reflect-metadata'
-import express, { Application, Request, Response } from 'express'
+import express, { Application, NextFunction, Request, Response } from 'express'
 import cors, { CorsOptions } from 'cors'
 import { HttpError } from 'http-errors'
-import { plainToClass } from 'class-transformer'
+import { plainToInstance } from 'class-transformer'
 import { HttpErrorDto } from './core/dtos/exceptions/http-error.exception.dto'
+import transactionRoute from './module/infrastructure/interface/route/transaction.route'
+import { logger } from './core/utils/logger'
 
 const PORT = process.env.PORT || 3001
 const ENVIRONMENT = process.env.NODE_ENV || 'development'
@@ -26,23 +28,29 @@ const corsOptionsDelegate = function handler(
   callback(null, corsOptions)
 }
 
-function errorHandler(err: HttpError, req: Request, res: Response): void {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function httpErrorHandler(err: HttpError, req: Request, res: Response, next: NextFunction) {
   if (ENVIRONMENT !== 'development') {
-    // eslint-disable-next-line no-console
-    console.error(err.message)
-    // eslint-disable-next-line no-console
-    console.error(err.stack || '')
+    logger.error(err.message)
+    logger.error(err.stack || '')
   }
 
   res.status(err.status ?? 500)
-  res.json(plainToClass(HttpErrorDto, err))
+
+  res.json(plainToInstance(HttpErrorDto, err))
 }
 
 app.use(cors(corsOptionsDelegate))
 
-// app.use(userRoute)
-app.use(errorHandler)
+app.get('/status', (req: Request, res: Response) => {
+  res.json({ time: new Date() })
+})
+app.use(transactionRoute)
+app.get('*', (req: Request, res: Response) => {
+  res.status(404).json({ message: 'Invalid route' })
+})
+app.use(httpErrorHandler)
+
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`server running at port ${PORT}`)
+  logger.info(`🚀 Server running on port ${PORT}`)
 })

@@ -7,14 +7,20 @@ export class TransactionInfrastructure implements TransactionRepository {
   async create(data: any) {
     try {
       return prisma.transaction.create({
-        data,
+        data: {
+          accountExternalIdCredit: data.accountExternalIdCredit,
+          accountExternalIdDebit: data.accountExternalIdDebit,
+          transferType: data.transferType,
+          value: data.value,
+          transactionStatus: 'pending',
+        },
       })
     } catch (error) {
       if (error instanceof Error) {
-        return new UnprocessableEntity(error.message)
+        throw new UnprocessableEntity(error.message)
       }
 
-      return new InternalServerError()
+      throw new InternalServerError()
     }
   }
 
@@ -22,15 +28,15 @@ export class TransactionInfrastructure implements TransactionRepository {
     try {
       return prisma.transaction.findUniqueOrThrow({
         where: {
-          id,
+          transactionExternalId: id,
         },
       })
     } catch (error) {
       if (error instanceof Error) {
-        return new UnprocessableEntity(error.message)
+        throw new UnprocessableEntity(error.message)
       }
 
-      return new InternalServerError()
+      throw new InternalServerError()
     }
   }
 }

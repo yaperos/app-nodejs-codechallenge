@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rimraf dist cache",
     "build": "npm run prebuild && tsc && gulp minify",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +21,10 @@
     "cors": "^2.8.5",
     "dinero.js": "^1.9.1",
     "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
     "http-errors": "^2.0.0",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
