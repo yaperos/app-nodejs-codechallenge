@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Transaction } from '@prisma/client'
+import { TransactionEntity } from '../entities/transaction.entity'
+
 export interface TransactionRepository {
-  create(data: any): Promise<any>
-  get(id: string): Promise<any>
+  create(data: TransactionEntity): Promise<Transaction>
+  find(id: string): Promise<Transaction>
 }

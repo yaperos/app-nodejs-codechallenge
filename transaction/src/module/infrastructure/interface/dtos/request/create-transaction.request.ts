@@ -1,29 +1,30 @@
-import { Exclude, Expose, Transform } from 'class-transformer'
-import { IsEnum, IsNumber, IsPositive, IsString, IsUUID, Matches } from 'class-validator'
+import { Exclude, Expose } from 'class-transformer'
+import { IsNotEmpty, IsNumber, IsString, IsUUID, Max, Min } from 'class-validator'
 import { BaseDto } from '../../../../../core/dtos/base.dto'
 
-export enum TransferTypeEnum {
-  WEB = 1,
-  AGENCY = 2,
-  ATM = 3,
-}
-
+const TRANSFER_MESSAGE = 'Transfer type must be 1 , 2 or 3'
 @Exclude()
 export class CreateTransactionRequest extends BaseDto {
   @Expose()
   @IsString()
   @IsUUID()
+  @IsNotEmpty()
   readonly accountExternalIdCredit: string
 
   @Expose()
   @IsString()
   @IsUUID()
+  @IsNotEmpty()
   readonly accountExternalIdDebit: string
 
-  @Matches(/^[123]$/)
-  readonly transferType: number
+  @Expose()
+  @IsNumber()
+  @Min(1, { message: TRANSFER_MESSAGE })
+  @Max(3, { message: TRANSFER_MESSAGE })
+  readonly tranferTypeId: number
 
   @Expose()
-  @IsPositive()
+  @Min(1)
+  @IsNumber()
   readonly value: number
 }

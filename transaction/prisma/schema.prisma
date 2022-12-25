@@ -14,8 +14,8 @@ model Transaction {
   transactionExternalId   String                 @id @default(uuid())
   accountExternalIdDebit  String
   accountExternalIdCredit String
-  transactionStatus       TransactionStatusEnum?
-  transferType            Int
+  transactionStatus       TransactionStatusEnum
+  tranferTypeId           Int
   value                   Float
   createdAt               DateTime               @default(now())
 }

@@ -1,22 +1,26 @@
-import { UnprocessableEntity, InternalServerError } from 'http-errors'
+import { NotFound, UnprocessableEntity, InternalServerError } from 'http-errors'
+import { Prisma, Transaction } from '@prisma/client'
+import { logger } from '../../core/utils/logger'
 import { TransactionRepository } from '../domain/repositories/transaction.repository'
+import { TransactionEntity } from '../domain/entities/transaction.entity'
 import prisma from './db/prisma'
 
 export class TransactionInfrastructure implements TransactionRepository {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async create(data: any) {
+  async create(data: TransactionEntity): Promise<Transaction> {
     try {
-      return prisma.transaction.create({
+      const result = await prisma.transaction.create({
         data: {
-          accountExternalIdCredit: data.accountExternalIdCredit,
-          accountExternalIdDebit: data.accountExternalIdDebit,
-          transferType: data.transferType,
-          value: data.value,
+          ...data,
           transactionStatus: 'pending',
         },
       })
+
+      return result
     } catch (error) {
-      if (error instanceof Error) {
+      logger.error(error)
+
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
         throw new UnprocessableEntity(error.message)
       }
 
@@ -24,15 +28,23 @@ export class TransactionInfrastructure implements TransactionRepository {
     }
   }
 
-  async get(id: string) {
+  async find(id: string): Promise<Transaction> {
     try {
-      return prisma.transaction.findUniqueOrThrow({
+      const result = await prisma.transaction.findUniqueOrThrow({
         where: {
           transactionExternalId: id,
         },
       })
+
+      return result
     } catch (error) {
-      if (error instanceof Error) {
+      logger.error(error)
+
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFound(error.message)
+        }
+
         throw new UnprocessableEntity(error.message)
       }
 
