@@ -4,8 +4,8 @@ import { logger } from '../../core/utils/logger'
 import { BrokerRepository } from '../domain/repositories/broker.repository'
 
 export class BrokerInfrastructure implements BrokerRepository {
-  private kafkaTopicAntifraud: string
-  private kafkaTopicTransac: string
+  kafkaTopicAntifraud: string
+  kafkaTopicTransac: string
   constructor() {
     this.kafkaTopicAntifraud = EnvConfig.kafkaTopicAntifraud
     this.kafkaTopicTransac = EnvConfig.kafkaTopicTransac
@@ -15,7 +15,7 @@ export class BrokerInfrastructure implements BrokerRepository {
 
     await BrokerBootstrap.pruducer.connect()
     await BrokerBootstrap.pruducer.send({
-      topic: this.kafkaTopicAntifraud,
+      topic: this.kafkaTopicTransac,
       messages: [{ value: messageBuffer }],
     })
 
@@ -25,7 +25,7 @@ export class BrokerInfrastructure implements BrokerRepository {
   }
   async receive(): Promise<void> {
     await BrokerBootstrap.consumer.connect()
-    await BrokerBootstrap.consumer.subscribe({ topic: this.kafkaTopicTransac, fromBeginning: true })
+    await BrokerBootstrap.consumer.subscribe({ topic: this.kafkaTopicAntifraud, fromBeginning: true })
     await BrokerBootstrap.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
         logger.info(`{topic: ${topic}, partition: ${partition}, offset: ${message.offset}}`)

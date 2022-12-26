@@ -8,6 +8,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-vol:/data/db
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -22,5 +24,18 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKAJS_NO_PARTITIONER_WARNING: true
     ports:
       - 9092:9092
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --loglevel warning --requirepass root
+    volumes:
+      - redis-vol:/data/db
+    
+volumes:
+  postgres-vol:
+  redis-vol:

@@ -1,25 +1,17 @@
 import { BrokerBootstrap } from './bootstrap/broker.bootstrap'
 import ServerBootstrap from './bootstrap/server.bootstrap'
 import { logger } from './core/utils/logger'
-import { TransactionApplication } from './module/application/transaction.application'
+import { AntiFraudApplication } from './module/application/anti-fraud.application'
 import { BrokerInfrastructure } from './module/infrastructure/broker.infrastructure'
 import BrokerController from './module/infrastructure/interface/broker/broker.controller'
-import { RedisInfrastructure } from './module/infrastructure/redis.infrastructure'
-import { TransactionInfrastructure } from './module/infrastructure/transaction.infrastructure'
 
 const server = new ServerBootstrap()
 const broker = new BrokerBootstrap()
 
-const transactionInfrastructure = new TransactionInfrastructure()
 const brokerInfrastructure = new BrokerInfrastructure()
-const redisInfrastructure = new RedisInfrastructure()
-const transactionApplication = new TransactionApplication(
-  transactionInfrastructure,
-  brokerInfrastructure,
-  redisInfrastructure,
-)
+const antifraudApplication = new AntiFraudApplication(brokerInfrastructure)
 
-const brokerController = new BrokerController(transactionApplication)
+const brokerController = new BrokerController(antifraudApplication)
 
 ;(async () => {
   try {

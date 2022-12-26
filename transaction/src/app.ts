@@ -4,8 +4,9 @@ import { TransactionInfrastructure } from './module/infrastructure/transaction.i
 import { TransactionApplication } from './module/application/transaction.application'
 import { TransactionController } from './module/infrastructure/interface/controller/transaction.controller'
 import { TransactionRoute } from './module/infrastructure/interface/route/transaction.route'
-import { corsOptionsDelegate, httpErrorHandler } from './core/middlerares/transaction.middlewares'
+import { corsOptionsDelegate, httpErrorHandler } from './core/middlewares/transaction.middlewares'
 import { BrokerInfrastructure } from './module/infrastructure/broker.infrastructure'
+import { RedisInfrastructure } from './module/infrastructure/redis.infrastructure'
 
 class App {
   private readonly expressApp: Application
@@ -27,7 +28,8 @@ class App {
   mountRoutes() {
     const infrastructure = new TransactionInfrastructure()
     const broker = new BrokerInfrastructure()
-    const application = new TransactionApplication(infrastructure, broker)
+    const redis = new RedisInfrastructure()
+    const application = new TransactionApplication(infrastructure, broker, redis)
     const controller = new TransactionController(application)
     const route = new TransactionRoute(controller)
 
