@@ -6,6 +6,6 @@ export default class {
 
   async listen() {
     await this.transactionApplication.receive()
-    logger.info('📫 Broker listening')
+    logger.info('🧿 Broker listening')
   }
 }

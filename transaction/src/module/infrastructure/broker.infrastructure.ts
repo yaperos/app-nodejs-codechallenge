@@ -4,30 +4,31 @@ import { logger } from '../../core/utils/logger'
 import { BrokerRepository } from '../domain/repositories/broker.repository'
 
 export class BrokerInfrastructure implements BrokerRepository {
-  kafkaTopic: string
+  kafkaTopicAntifraud: string
+  kafkaTopicTransac: string
   constructor() {
-    this.kafkaTopic = EnvConfig.kafkaTopic
+    this.kafkaTopicAntifraud = EnvConfig.kafkaTopicAntifraud
+    this.kafkaTopicTransac = EnvConfig.kafkaTopicTransac
   }
   async send(payload: unknown): Promise<void> {
     const messageBuffer = Buffer.from(JSON.stringify(payload))
 
     await BrokerBootstrap.pruducer.connect()
-    const send = await BrokerBootstrap.pruducer.send({
-      topic: this.kafkaTopic,
+    await BrokerBootstrap.pruducer.send({
+      topic: this.kafkaTopicAntifraud,
       messages: [{ value: messageBuffer }],
     })
 
-    logger.info(`messages sent: ${send}`)
+    logger.info(`message sent: ${messageBuffer}`)
 
     await BrokerBootstrap.pruducer.disconnect()
   }
   async receive(): Promise<void> {
     await BrokerBootstrap.consumer.connect()
-    await BrokerBootstrap.consumer.subscribe({ topic: this.kafkaTopic, fromBeginning: true })
+    await BrokerBootstrap.consumer.subscribe({ topic: this.kafkaTopicTransac, fromBeginning: true })
     await BrokerBootstrap.consumer.run({
-      eachMessage: async ({ message }) => {
-        const receivedMessage = JSON.parse(message.toString())
-        logger.info(receivedMessage)
+      eachMessage: async ({ topic, partition, message }) => {
+        logger.info(`{topic: ${topic}, partition: ${partition}, offset: ${message.offset}}`)
       },
     })
   }

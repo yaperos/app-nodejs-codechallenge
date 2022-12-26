@@ -5,6 +5,7 @@ import { TransactionApplication } from './module/application/transaction.applica
 import { TransactionController } from './module/infrastructure/interface/controller/transaction.controller'
 import { TransactionRoute } from './module/infrastructure/interface/route/transaction.route'
 import { corsOptionsDelegate, httpErrorHandler } from './core/middlerares/transaction.middlewares'
+import { BrokerInfrastructure } from './module/infrastructure/broker.infrastructure'
 
 class App {
   private readonly expressApp: Application
@@ -25,8 +26,8 @@ class App {
 
   mountRoutes() {
     const infrastructure = new TransactionInfrastructure()
-    // const broker = new BrokerInfrastructure()
-    const application = new TransactionApplication(infrastructure) //, broker)
+    const broker = new BrokerInfrastructure()
+    const application = new TransactionApplication(infrastructure, broker)
     const controller = new TransactionController(application)
     const route = new TransactionRoute(controller)
 

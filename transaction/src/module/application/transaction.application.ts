@@ -16,6 +16,7 @@ export class TransactionApplication {
   async registerTransaction(data: CreateTransactionRequest): Promise<TransactionInfoEntity> {
     const transactionValue = new TransactionEntity(data)
     const transaction = await this.transactionRepository.create(transactionValue)
+    await this.brokerRepository.send({ transactionId: transaction.transactionExternalId, value: transaction.value })
 
     return new TransactionInfoEntity(transaction)
   }

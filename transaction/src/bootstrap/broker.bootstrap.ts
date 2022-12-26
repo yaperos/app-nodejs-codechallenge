@@ -18,7 +18,7 @@ export class BrokerBootstrap implements Bootstrap {
         BrokerBootstrap.pruducer = kafka.producer()
         BrokerBootstrap.consumer = kafka.consumer({ groupId: kafkaGroupId })
 
-        logger.info('📫 Broker ready')
+        logger.info('📫 Broker Client ready')
 
         resolve(true)
       } catch (error) {
