@@ -71,8 +71,84 @@ You can use any approach to store transaction data but you should consider that 
 
 You can use Graphql;
 
-# Send us your challenge
+# Challenge
 
-When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## Diagram
+1. The flow starts when the client makes an HTTP request to Gateway, then the Gateway makes a request to Transaction Microservice
+2. Transaction Microservice save the data and send a message to Anti Fraud Microservice through Event Broker
+3. Anti-Fraud Microservice validates the message and send a new message with status to Transaction Microservice
+4. Transaction Microservice receive the message and updates the register with the new status
+5. When the Gateway makes a GET request, the first time the Transaction Microservice find the register in database and store it 
+in cache with Redis, then all requests to the same resource will be requested to Redis
+![My Image](images/architecture.PNG)
 
-If you have any questions, please let us know.
+## API
+``` 
+POST -> http://localhost:3000/transaction/
+        body {
+          "accountExternalIdCredit": "b01ce0ef-34ab-4c21-94bc-c48c70003867",
+          "accountExternalIdDebit": "439e8f6e-c1c2-41b5-a69f-7bd93e8b35a7",
+          "tranferTypeId": 3,
+          "value": 1200
+        }
+
+GET -> http://localhost:3000/transaction/:id
+
+```
+
+## Setup project
+1. set env variables
+2. run scripts
+```
+> docker compose up -d --build
+> npm run build
+> npm run prisma:up
+> npm run start:gateway
+> npm run start:transaction
+> npm run start:antifraud
+```
+
+## Result with transaction value = 500
+1. started servers
+
+![My Image](images/start-gateway.PNG)
+![My Image](images/start-transaction.PNG)
+![My Image](images/start-anti-fraud.PNG)
+
+2. Send a POST request with transaction data
+
+![My Image](images/gateway-post.PNG)
+
+3. Transaction Microservice send and receive the message
+
+![My Image](images/send-receive-transaction.PNG)
+
+4. Anti-Fraud Microservice send and receive the message
+
+![My Image](images/send-receive-anti-fraud.PNG)
+
+5. GET request
+
+![My Image](images/get-transaction.PNG)
+![My Image](images/response-transaction.PNG)
+
+## Result with transaction value = 1200
+
+1. Send a POST request with transaction data
+
+![My Image](images/bad-gateway-post.PNG)
+
+2. Transaction Microservice send and receive the message
+
+![My Image](images/reject-transaction.PNG)
+
+3. Anti-Fraud Microservice send and receive the message
+
+![My Image](images/reject-anti-fraud.PNG)
+
+4. GET request
+
+![My Image](images/response-transaction-rejected.PNG)
+
+
+
