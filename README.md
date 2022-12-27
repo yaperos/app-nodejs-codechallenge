@@ -76,3 +76,15 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+### instrucciones
+
+1. descargar e instalar apache kafka https://kafka.apache.org/quickstart
+2. en otra terminal dentro de kafka_2.13-3.3.1 ejecutarr: `bin/zookeeper-server-start.sh config/zookeeper.properties`
+3. en otra terminal dentro de kafka_2.13-3.3.1 ejecutar: `bin/kafka-server-start.sh config/server.properties`
+4. en otra terminal dentro de kafka_2.13-3.3.1 ejecutar: `bin/kafka-topics.sh --create --topic yape-challenge --bootstrap-server localhost:9092`
+5. en otra terminal dentro de kafka_2.13-3.3.1 ejecutar:`bin/kafka-console-consumer.sh --topic yape-challenge --from-beginning --bootstrap-server localhost:9092`
+6. dentro de la ubicacion del proyecto abrir una terminal y ejecutar: `npm install`
+7. dentro de la ubicacion del proyecto ejecutar: `npm start`
+8. importar en postman el archivo yape-challenge.postman_collection.json y ejecutar la peticion create-transaction
+9. en la terminal del paso 5 se podra ver los resultados impresos por kafka y en postman por express
