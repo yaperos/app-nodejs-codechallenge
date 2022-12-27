@@ -74,10 +74,15 @@ You can use Graphql;
 # Challenge
 
 ## Diagram
-
+1. The client do a request to Gateway, then the Gateway do a request to Transaction Microservice
+2. Transaction Microservice store the data and send a message to Anti Fraud Microservice through Event Broker
+3. Anti-Fraud Microservice validates the message and send a new message with status to Transaction Microservice
+4. Transaction Microservice receive the message and updates the register with the new status
+5. When the Gateway do a GET request, the first time the Transaction Microservice find into database, then all
+requests to the same resource will be stored in cached database
 ![My Image](images/architecture.PNG)
 
-## Steps for run project
+## Setup project
 1. set env variables
 2. run scripts
 ```
