@@ -16,8 +16,6 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^4.8.0",
-    "@types/dinero.js": "^1.9.0",
-    "@types/ioredis": "^5.0.0",
     "@types/redis": "^4.0.11",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -25,7 +23,6 @@
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "http-errors": "^2.0.0",
-    "ioredis": "^5.2.4",
     "kafkajs": "^2.2.3",
     "redis": "^4.5.1",
     "reflect-metadata": "^0.1.13",
