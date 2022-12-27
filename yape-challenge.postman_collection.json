@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "2040d189-1f8a-451d-ac8a-345beaaf6dc6",
+		"name": "yape-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20097082"
+	},
+	"item": [
+		{
+			"name": "create-a-transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountExternalIdDebit\": \"guid\",\n    \"accountExternalIdCredit\": \"guid\",\n    \"tranferTypeId\": 1,\n    \"value\": 100\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/transaction/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"transaction",
+						"create"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "transaction rejected",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountExternalIdDebit\": \"guid\",\n    \"accountExternalIdCredit\": \"guid\",\n    \"tranferTypeId\": 1,\n    \"value\": 1200\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/transaction/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"transaction",
+								"create"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "170"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"aa-DF/9i1M5y4arkxa9vDUgqDVBqBE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 27 Dec 2022 12:38:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"transaction\": {\n        \"value\": 1200,\n        \"createdAt\": \"2022-12-27T12:38:16.411Z\",\n        \"transactionStatus\": {\n            \"name\": \"rejected\"\n        },\n        \"transactionType\": {\n            \"name\": \"\"\n        },\n        \"transactionExternalId\": \"Guid\"\n    }\n}"
+				},
+				{
+					"name": "transaction approved",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountExternalIdDebit\": \"guid\",\n    \"accountExternalIdCredit\": \"guid\",\n    \"tranferTypeId\": 1,\n    \"value\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/transaction/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"transaction",
+								"create"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "169"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"a9-J7DJaTyw2PCjun7L1ZdKoMpNUmk\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 27 Dec 2022 13:22:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"transaction\": {\n        \"value\": 100,\n        \"createdAt\": \"2022-12-27T13:22:08.124Z\",\n        \"transactionStatus\": {\n            \"name\": \"approved\"\n        },\n        \"transactionType\": {\n            \"name\": \"\"\n        },\n        \"transactionExternalId\": \"Guid\"\n    }\n}"
+				}
+			]
+		}
+	]
+}
