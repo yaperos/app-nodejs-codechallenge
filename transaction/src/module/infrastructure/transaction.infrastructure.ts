@@ -1,81 +1,22 @@
-import { NotFound, UnprocessableEntity, InternalServerError } from 'http-errors'
-import { Prisma, Transaction } from '@prisma/client'
-import { logger } from '../../core/utils/logger'
+import { Transaction } from '@prisma/client'
 import { TransactionRepository } from '../domain/repositories/transaction.repository'
 import { TransactionEntity } from '../domain/entities/transaction.entity'
-import prisma from './db/prisma'
 import { TransactionStatusEnum } from './interface/dtos/enums/transaction-status.enum'
+import { TransactionService } from './services/transaction.service'
+import { RedisService } from './services/redis.service'
 
 export class TransactionInfrastructure implements TransactionRepository {
   async create(data: TransactionEntity): Promise<Transaction> {
-    try {
-      const result = await prisma.transaction.create({
-        data: {
-          ...data,
-          transactionStatus: TransactionStatusEnum.PENDING,
-        },
-      })
-
-      return result
-    } catch (error) {
-      logger.error(error)
-
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        throw new UnprocessableEntity(error.message)
-      }
-
-      throw new InternalServerError()
-    }
+    return TransactionService.create(data)
   }
 
   async find(id: string): Promise<Transaction> {
-    try {
-      const result = await prisma.transaction.findUniqueOrThrow({
-        where: {
-          transactionExternalId: id,
-        },
-      })
-
-      return result
-    } catch (error) {
-      logger.error(error)
-
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2025') {
-          throw new NotFound(error.message)
-        }
-
-        throw new UnprocessableEntity(error.message)
-      }
-
-      throw new InternalServerError()
-    }
+    return TransactionService.find(id)
   }
 
   async updateStatus(id: string, status: TransactionStatusEnum): Promise<Transaction> {
-    try {
-      const result = await prisma.transaction.update({
-        where: {
-          transactionExternalId: id,
-        },
-        data: {
-          transactionStatus: status,
-        },
-      })
+    await RedisService.delete(id)
 
-      return result
-    } catch (error) {
-      logger.error(error)
-
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2025') {
-          throw new NotFound(error.message)
-        }
-
-        throw new UnprocessableEntity(error.message)
-      }
-
-      throw new InternalServerError()
-    }
+    return TransactionService.update(id, status)
   }
 }

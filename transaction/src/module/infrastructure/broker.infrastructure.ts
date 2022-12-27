@@ -2,6 +2,7 @@ import { BrokerBootstrap } from '../../bootstrap/broker.bootstrap'
 import { EnvConfig } from '../../core/utils/env-config'
 import { logger } from '../../core/utils/logger'
 import { BrokerRepository } from '../domain/repositories/broker.repository'
+import { RecevierMessageService } from './services/receiver-message.service'
 
 export class BrokerInfrastructure implements BrokerRepository {
   private kafkaTopicAntifraud: string
@@ -28,7 +29,9 @@ export class BrokerInfrastructure implements BrokerRepository {
     await BrokerBootstrap.consumer.subscribe({ topic: this.kafkaTopicTransac, fromBeginning: true })
     await BrokerBootstrap.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
-        logger.info(`{topic: ${topic}, partition: ${partition}, offset: ${message.offset}}`)
+        logger.info(`message received => topic: ${topic}, partition: ${partition}, offset: ${message.offset}`)
+
+        RecevierMessageService.receiveMessage(message)
       },
     })
   }
