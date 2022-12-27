@@ -74,12 +74,12 @@ You can use Graphql;
 # Challenge
 
 ## Diagram
-1. The client do a request to Gateway, then the Gateway do a request to Transaction Microservice
-2. Transaction Microservice store the data and send a message to Anti Fraud Microservice through Event Broker
+1. The flow starts when the client makes an HTTP request to Gateway, then the Gateway makes a request to Transaction Microservice
+2. Transaction Microservice save the data and send a message to Anti Fraud Microservice through Event Broker
 3. Anti-Fraud Microservice validates the message and send a new message with status to Transaction Microservice
 4. Transaction Microservice receive the message and updates the register with the new status
-5. When the Gateway do a GET request, the first time the Transaction Microservice find into database, then all
-requests to the same resource will be stored in cached database
+5. When the Gateway makes a GET request, the first time the Transaction Microservice find the register in database and store it 
+in cache with Redis, then all requests to the same resource will be requested to Redis
 ![My Image](images/architecture.PNG)
 
 ## Setup project
@@ -94,7 +94,19 @@ requests to the same resource will be stored in cached database
 ```
 
 ## Result
-
+1. started servers
+![My Image](images/start-gateway.PNG.PNG)
+![My Image](images/start-transaction.PNG.PNG)
+![My Image](images/start-anti-fraud.PNG.PNG)
+2. Send a request with value 500
+![My Image](images/gateway-post.PNG.PNG)
+3. Transaction Microservice send and receive the message
+![My Image](images/send-receive-transaction.PNG.PNG)
+3. Anti-Fraud Microservice send and receive the message
+![My Image](images/send-receive-anti-fraud.PNG.PNG)
+4. GET request
+![My Image](images/get-transaction.PNG.PNG)
+![My Image](images/response-transaction.PNG.PNG)
 
 
 
