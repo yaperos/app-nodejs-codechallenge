@@ -1,0 +1,23 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "- Microservices for validate a transaction",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd transaction/ && npm run build && cd ../anti-fraud/ && npm run build && cd ../gateway/ && npm run build",
+    "start:gateway": "cd gateway/ && npm run start",
+    "start:transaction": "cd transaction/ && npm run start",
+    "start:antifraud": "cd anti-fraud/ && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/templario01/app-nodejs-codechallenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/templario01/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/templario01/app-nodejs-codechallenge#readme"
+}
