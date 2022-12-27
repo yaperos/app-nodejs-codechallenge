@@ -71,8 +71,16 @@ You can use any approach to store transaction data but you should consider that 
 
 You can use Graphql;
 
-# Send us your challenge
+# Challenge
 
-When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## Diagram
 
-If you have any questions, please let us know.
+![My Image](images/architecture.PNG)
+
+## Steps for run project
+
+## Result
+
+
+
+
