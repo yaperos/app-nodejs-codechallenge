@@ -1,31 +1,25 @@
 
 version: "3.7"
 services:
-  postgres-transactions:
+  postgres:
     image: postgres:14
-    container_name: postgres-transactions
     restart: always
     ports:
-      - "5432:5432"
+      - "5430:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=transactions_db
     volumes:
       - postgres-vol:/data/db
-    networks:
-      - net-transaction-antifraud
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-    networks:
-      - net-transaction-antifraud
 
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    container_name: kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -37,75 +31,17 @@ services:
       KAFKAJS_NO_PARTITIONER_WARNING: true
     ports:
       - "9092:9092"
-    networks:
-      - net-transaction-antifraud
 
-  redis-transactions:
+  redis:
     image: redis:6.2-alpine
-    container_name: redis-transactions
     restart: always
     ports:
       - 6379:6379
     command: redis-server --loglevel warning --requirepass root
     volumes:
       - redis-vol:/data/db
-    networks:
-      - net-transaction-antifraud
 
-  gateway:
-    container_name: gateway-ms
-    image: gateway
-    build:
-      context: .
-      dockerfile: gateway/Dockerfile
-      args:
-        - BASE_DIR=gateway
-    env_file:
-      - ./gateway/.env
-    ports:
-      - "3000:3000"
-    networks:
-      - net-gateway-transaction
-
-  transaction:
-    container_name: transaction-ms
-    image: transaction
-    build:
-      context: .
-      dockerfile: transaction/Dockerfile
-      args:
-        - BASE_DIR=transaction
-    env_file:
-      - ./transaction/.env
-    ports:
-      - "3001:3001"
-    networks:
-      - net-gateway-transaction
-      - net-transaction-antifraud
-    depends_on:
-      - postgres-transactions
-      - redis-transactions
-      - kafka
-
-  anti-fraud:
-    container_name: anti-fraud-ms
-    image: anti-fraud
-    build:
-      context: .
-      dockerfile: anti-fraud/Dockerfile
-      args:
-        - BASE_DIR=anti-fraud
-    environment:
-      - PORT=3002
-    networks:
-      - net-transaction-antifraud
-    depends_on:
-      - transaction
-
-networks:
-  net-gateway-transaction:
-  net-transaction-antifraud:
-    
+ 
 volumes:
   postgres-vol:
   redis-vol:
