@@ -82,6 +82,13 @@ You can use Graphql;
 in cache with Redis, then all requests to the same resource will be requested to Redis
 ![My Image](images/architecture.PNG)
 
+## API
+``` 
+POST -> http://localhost:3000/transaction/
+GET -> http://localhost:3000/transaction/:id
+
+```
+
 ## Setup project
 1. set env variables
 2. run scripts
@@ -100,7 +107,7 @@ in cache with Redis, then all requests to the same resource will be requested to
 ![My Image](images/start-transaction.PNG)
 ![My Image](images/start-anti-fraud.PNG)
 
-2. Send a request
+2. Send a POST request with transaction data
 
 ![My Image](images/gateway-post.PNG)
 
@@ -109,12 +116,31 @@ in cache with Redis, then all requests to the same resource will be requested to
 ![My Image](images/send-receive-transaction.PNG)
 
 4. Anti-Fraud Microservice send and receive the message
+
 ![My Image](images/send-receive-anti-fraud.PNG)
 
 5. GET request
 
 ![My Image](images/get-transaction.PNG)
 ![My Image](images/response-transaction.PNG)
+
+## Result with transaction value = 1200
+
+1. Send a POST request with transaction data
+
+![My Image](images/bad-gateway-post.PNG)
+
+2. Transaction Microservice send and receive the message
+
+![My Image](images/reject-transaction.PNG)
+
+3. Anti-Fraud Microservice send and receive the message
+
+![My Image](images/reject-anti-fraud.PNG)
+
+4. GET request
+
+![My Image](images/response-transaction-rejected.PNG)
 
 
 
