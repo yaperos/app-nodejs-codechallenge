@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cd transaction/ && npm run build && cd ../anti-fraud/ && npm run build && cd ../gateway/ && npm run build",
-    "prisma:up": "cd transaction/ && npm run migrate dev && npm run generate",
+    "prisma:up": "cd transaction/ && npm run migrate && npm run generate",
     "start:gateway": "cd gateway/ && npm run start",
     "start:transaction": "cd transaction/ && npm run start",
     "start:antifraud": "cd anti-fraud/ && npm run start"
