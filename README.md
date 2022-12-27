@@ -93,18 +93,26 @@ in cache with Redis, then all requests to the same resource will be requested to
 > npm run start:antifraud
 ```
 
-## Result
+## Result with transaction value = 500
 1. started servers
+
 ![My Image](images/start-gateway.PNG)
 ![My Image](images/start-transaction.PNG)
 ![My Image](images/start-anti-fraud.PNG)
-2. Send a request with value 500
-![My Image](images/gateway-post.PNG.PNG)
+
+2. Send a request
+
+![My Image](images/gateway-post.PNG)
+
 3. Transaction Microservice send and receive the message
+
 ![My Image](images/send-receive-transaction.PNG)
-3. Anti-Fraud Microservice send and receive the message
+
+4. Anti-Fraud Microservice send and receive the message
 ![My Image](images/send-receive-anti-fraud.PNG)
-4. GET request
+
+5. GET request
+
 ![My Image](images/get-transaction.PNG)
 ![My Image](images/response-transaction.PNG)
 
