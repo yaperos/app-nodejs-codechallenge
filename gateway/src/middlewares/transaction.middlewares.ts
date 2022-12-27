@@ -2,7 +2,7 @@ import { plainToInstance } from 'class-transformer'
 import { CorsOptions } from 'cors'
 import { NextFunction, Request, Response } from 'express'
 import { HttpErrorDto } from '../core/dtos/http-error.exception.dto'
-import { EnvConfig } from '../utils/env-config'
+import { EnvConfig } from '../core/utils/env-config'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 export function httpErrorHandler(err: any, req: Request, res: Response, next: NextFunction) {

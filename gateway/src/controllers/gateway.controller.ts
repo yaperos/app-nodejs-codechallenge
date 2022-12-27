@@ -1,7 +1,7 @@
 import stringify from 'json-stringify-safe'
 import { Request, Response } from 'express'
-import { axiosRequest } from '../utils/axios-request'
-import { EnvConfig } from '../utils/env-config'
+import { axiosRequest } from '../core/utils/axios-request'
+import { EnvConfig } from '../core/utils/env-config'
 
 export async function getTransaction(req: Request, res: Response) {
   const { id } = req.params

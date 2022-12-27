@@ -1,5 +1,5 @@
 import ServerBootstrap from './bootstrap/server.bootstrap'
-import { logger } from './utils/logger'
+import { logger } from './core/utils/logger'
 ;(async () => {
   try {
     const serverBootstrap = new ServerBootstrap()

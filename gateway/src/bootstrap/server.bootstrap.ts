@@ -1,7 +1,7 @@
 import http from 'http'
 import app from '../app'
-import { EnvConfig } from '../utils/env-config'
-import { logger } from '../utils/logger'
+import { EnvConfig } from '../core/utils/env-config'
+import { logger } from '../core/utils/logger'
 import { Bootstrap } from './bootstrap'
 
 export default class ServerBootstrap extends Bootstrap {
