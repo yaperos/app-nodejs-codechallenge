@@ -78,6 +78,15 @@ You can use Graphql;
 ![My Image](images/architecture.PNG)
 
 ## Steps for run project
+1. set env variables
+2. run scripts
+```
+> docker compose up -d --build
+> npm run build
+> npm run start:gateway
+> npm run start:transaction
+> npm run start:antifraud
+```
 
 ## Result
 
