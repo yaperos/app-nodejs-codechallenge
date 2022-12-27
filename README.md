@@ -95,18 +95,18 @@ in cache with Redis, then all requests to the same resource will be requested to
 
 ## Result
 1. started servers
-![My Image](images/start-gateway.PNG.PNG)
-![My Image](images/start-transaction.PNG.PNG)
-![My Image](images/start-anti-fraud.PNG.PNG)
+![My Image](images/start-gateway.PNG)
+![My Image](images/start-transaction.PNG)
+![My Image](images/start-anti-fraud.PNG)
 2. Send a request with value 500
 ![My Image](images/gateway-post.PNG.PNG)
 3. Transaction Microservice send and receive the message
-![My Image](images/send-receive-transaction.PNG.PNG)
+![My Image](images/send-receive-transaction.PNG)
 3. Anti-Fraud Microservice send and receive the message
-![My Image](images/send-receive-anti-fraud.PNG.PNG)
+![My Image](images/send-receive-anti-fraud.PNG)
 4. GET request
-![My Image](images/get-transaction.PNG.PNG)
-![My Image](images/response-transaction.PNG.PNG)
+![My Image](images/get-transaction.PNG)
+![My Image](images/response-transaction.PNG)
 
 
 
