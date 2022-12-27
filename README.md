@@ -85,12 +85,13 @@ in cache with Redis, then all requests to the same resource will be requested to
 ## API
 ``` 
 POST -> http://localhost:3000/transaction/
-body {
-	"accountExternalIdCredit": "b01ce0ef-34ab-4c21-94bc-c48c70003867",
-	"accountExternalIdDebit": "439e8f6e-c1c2-41b5-a69f-7bd93e8b35a7",
-	"tranferTypeId": 3,
-	"value": 1200
-}
+        body {
+          "accountExternalIdCredit": "b01ce0ef-34ab-4c21-94bc-c48c70003867",
+          "accountExternalIdDebit": "439e8f6e-c1c2-41b5-a69f-7bd93e8b35a7",
+          "tranferTypeId": 3,
+          "value": 1200
+        }
+
 GET -> http://localhost:3000/transaction/:id
 
 ```
