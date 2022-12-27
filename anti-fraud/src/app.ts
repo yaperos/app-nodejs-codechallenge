@@ -1,6 +1,5 @@
 import express, { Application, Request, Response } from 'express'
 
-
 class App {
   private readonly expressApp: Application
 
