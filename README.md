@@ -102,6 +102,7 @@ GET -> http://localhost:3000/transaction/:id
 ```
 > docker compose up -d --build
 > npm run build
+> npm run prisma:up
 > npm run start:gateway
 > npm run start:transaction
 > npm run start:antifraud
