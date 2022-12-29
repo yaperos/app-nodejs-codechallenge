@@ -1,78 +1,68 @@
-# Yape Code Challenge :rocket:
+# CodeChallenge
+### Challenge using the following technologies:
+- Typescript
+- NestJS
+- Kafka
+- Postgres
+- Docker
+- CQRS
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Initial Setup
 
-# Problem
+1. Root directory contains a `docker-compose.yml` file. Run `docker-compose up` to create docker containers.
+2. Enter to directory `ms-antifraud` and run `yarn install` to install dependencies.
+3. Enter to directory `ms-antifraud` and run `yarn start:dev` to start the server.
+4. Enter to directory `ms-transaction` and run `yarn install` to install dependencies.
+5. Enter to directory `ms-transaction` and run `yarn start:dev` to start the server.
+6. Set environment variables inside `ms-transaction` directory. Change values `.env.stage.dev` file or use the following variables:
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```
+PORT=3000
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USERNAME=postgres
+POSTGRES_PASSWORD=12345
+POSTGRES_DATABASE=transactions
 ```
 
-# Tech Stack
+# API Documentation
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## Transaction
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+### Show API Swagger Documentation
 
-You must have two resources:
+```
+GET /docs
+```
 
-1. Resource to create a transaction that must containt:
-
-```json
+### Create transaction
+```
+POST /transactions
+```
+```
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "f549b5ea-c956-453a-b78f-550948753925",
+  "accountExternalIdCredit": "f549b5ea-c956-453a-b78f-550948753925",
   "tranferTypeId": 1,
-  "value": 120
+  "value": 500
 }
 ```
 
-2. Resource to retrieve a transaction
 
-```json
+### Get transaction
+```
+GET /transactions/3fccb28f-b061-4213-9027-9b815bbcbe8a
+```
+```
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+    "transactionExternalId": "3fccb28f-b061-4213-9027-9b815bbcbe8a",
+    "transactionType": {
+        "name": 1
+    },
+    "transactionStatus": {
+        "name": "APPROVED"
+    },
+    "value": 500,
+    "createdAt": "2022-12-28T23:05:10.097Z"
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
