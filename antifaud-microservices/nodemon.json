@@ -1,0 +1,7 @@
+{
+    "watch": ["src", ".env"],
+    "ext": "ts,json",
+    "ignore": [".git"],
+    "exec": "npm start"
+}
+  

@@ -26,7 +26,7 @@ export default class ProducerFactory {
   public async send(message: CustomMessageFormat): Promise<void> {
 
     const topicMessages: TopicMessages = {
-      topic: config.kafkaTopicTransaction,
+      topic: config.kafkaTopicAntifraud,
       messages: [{ value: JSON.stringify(message) }]
     }
 
@@ -35,7 +35,7 @@ export default class ProducerFactory {
 
   private createProducer() : Producer {
     const kafka = new Kafka({
-      clientId: 'producer-transaction-client',
+      clientId: 'producer-antifraud-client',
       brokers: ['localhost:9092'],
     })
 

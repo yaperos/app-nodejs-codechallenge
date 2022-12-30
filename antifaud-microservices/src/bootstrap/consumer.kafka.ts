@@ -10,7 +10,7 @@ export default class ConsumerFactory {
 
   public async startConsumer(): Promise<void> {
     const topic: ConsumerSubscribeTopics = {
-      topics: [config.kafkaTopicAntifraud],
+      topics: [config.kafkaTopicTransaction],
       fromBeginning: false
     }
 
@@ -37,10 +37,10 @@ export default class ConsumerFactory {
 
   private createKafkaConsumer(): Consumer {
     const kafka = new Kafka({ 
-      clientId: 'consumer-transaction-client',
+      clientId: 'consumer-antifraud-client',
       brokers: ['localhost:9092']
     })
-    const consumer = kafka.consumer({ groupId: 'consumer-antifraud-group' })
+    const consumer = kafka.consumer({ groupId: 'consumer-transaction-group' })
     return consumer
   }
 }
