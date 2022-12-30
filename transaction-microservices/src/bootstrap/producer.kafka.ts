@@ -1,7 +1,6 @@
 import { config } from '../config';
 import { Kafka, Partitioners, Producer, TopicMessages } from 'kafkajs';
-
-interface CustomMessageFormat { a: string }
+import { Transaction } from '../models';
 
 export default class ProducerFactory {
   private producer: Producer
@@ -23,7 +22,7 @@ export default class ProducerFactory {
     await this.producer.disconnect()
   }
 
-  public async send(message: CustomMessageFormat): Promise<void> {
+  public async send(message: Transaction): Promise<void> {
 
     const topicMessages: TopicMessages = {
       topic: config.kafkaTopicTransaction,
