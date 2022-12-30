@@ -1,5 +1,9 @@
 import express from 'express';
 import router from './router';
+import ConsumerFactory from './bootstrap/consumer.kafka';
+
+const consumerFactory = new ConsumerFactory();
+consumerFactory.startConsumer();
 
 const app = express();
 

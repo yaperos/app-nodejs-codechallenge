@@ -15,6 +15,8 @@ interface Env {
   port: number;
   defaultPage: number;
   defaultPageSize: number;
+  kafkaTopicTransaction: string;
+  kafkaTopicAntifraud: string;
 }
 
 export const config: Env = {
@@ -25,4 +27,6 @@ export const config: Env = {
   port: Number(process.env.APP_PORT) || 3000,
   defaultPage: 0,
   defaultPageSize: 10,
+  kafkaTopicTransaction: process.env.KAFKA_TOPIC_TRANSACTION || 'topic-1',
+  kafkaTopicAntifraud: process.env.KAFKA_TOPIC_ANTIFRAUD || 'topic-2',
 };
