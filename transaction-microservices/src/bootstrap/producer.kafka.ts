@@ -1,10 +1,11 @@
 import { config } from '../config';
-import { Kafka, Partitioners, Producer, TopicMessages } from 'kafkajs';
+import { Kafka, Partitioners, Producer, RecordMetadata, TopicMessages } from 'kafkajs';
 import { Transaction } from '../models';
 
 export default class ProducerFactory {
   private producer: Producer
   private topic: string
+  public sendResult!: RecordMetadata[]
 
   constructor(topic: string) {
     this.topic = topic;
@@ -14,9 +15,8 @@ export default class ProducerFactory {
   public async start(): Promise<void> {
     try {
       await this.producer.connect()
-      console.log('connected the producer');
     } catch (error) {
-      console.log('Error connecting the producer: ', error)
+      // error
     }
   }
 
@@ -31,7 +31,7 @@ export default class ProducerFactory {
       messages: [{ value: JSON.stringify(message) }]
     }
 
-    await this.producer.send(topicMessages)
+    this.sendResult = await this.producer.send(topicMessages)
   }
 
   private createProducer() : Producer {

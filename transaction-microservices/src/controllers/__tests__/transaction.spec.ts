@@ -39,6 +39,7 @@ describe('TransactionController', () => {
     test('should create a new transaction correctly', async () => {
       const transaction = factories.transaction.build();
       const response = await request(server).post(`/transactions`).send(transaction);
+      await new Promise((r) => setTimeout(r, 5000));
       expect(response.status).toBe(StatusCodes.CREATED);
       expect(response.body.id).toBe(transaction.id);
     });

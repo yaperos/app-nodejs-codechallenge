@@ -1,5 +1,6 @@
 import { config } from '../config';
 import { Consumer, ConsumerSubscribeTopics, Kafka, EachMessagePayload } from 'kafkajs'
+import { AntifraudInterface } from '../Interfaces/antifraud.interface';
 
 export default class ConsumerFactory {
   private kafkaConsumer: Consumer
@@ -13,27 +14,26 @@ export default class ConsumerFactory {
 
   public async startConsumer(): Promise<void> {
     const topic: ConsumerSubscribeTopics = {
-      topics: [config.kafkaTopicAntifraud],
-      fromBeginning: false
+      topics: [this.topic],
+      fromBeginning: true
     }
 
     try {
       await this.kafkaConsumer.connect()
       await this.kafkaConsumer.subscribe(topic)
-      console.log('connected and subscribe the consumer');
       await this.kafkaConsumer.run({
         eachMessage: async (messagePayload: EachMessagePayload) => {
           const { topic, partition, message } = messagePayload
           if( this.callbackRecived !== undefined) {
-            this.callbackRecived(message);
+            const data:AntifraudInterface = message.value ? JSON.parse(message.value.toString()) : undefined;
+            await this.callbackRecived(data);
           }
           const prefix = `${topic}[${partition} | ${message.offset}] / ${message.timestamp}`
           console.log(`TRANSACTION_SERVICE- ${prefix} ${message.key}#${message.value}`)
         }
       })
-      console.log('consumer RUN');
     } catch (error) {
-      console.log('Error: ', error)
+      // error
     }
   }
 

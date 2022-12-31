@@ -24,11 +24,9 @@ export const create = async ( req: Request, res: Response): Promise<Response> =>
   const body = req.body;
   body.transactionExternalId = uuidv4();
   const transaction = await Transaction.query().insert(body).returning('*');
-  if (config.env !== 'test') {
-    await producerFactory.start();
-    await producerFactory.send(transaction);
-    await producerFactory.shutdown();
-  }
+  await producerFactory.start();
+  await producerFactory.send(transaction);
+  await producerFactory.shutdown();
   // @ts-ignore
   return res.status(StatusCodes.CREATED).json(await TransactionResource(transaction));
 };
