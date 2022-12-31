@@ -3,12 +3,12 @@
 **Environment**  
 
 - Node: 14.16.0
-- Sqlite: 14.16.0
+- Sqlite: 3
 - Docker: 14.13
 - Default Ports: 3001 and 3002
 - Configs in .env
 
-**Commands to root project**
+**Command to root project**
 - composer: 
 ```bash
 docker-compose up
@@ -38,4 +38,4 @@ npm run test
 ```
 ![alt text](https://raw.githubusercontent.com/yaperos/app-nodejs-codechallenge/454160949fbe268ca493f96089ff2db91929a78b/imgs/console.png)
 
-![alt text](https://raw.githubusercontent.com/yaperos/app-nodejs-codechallenge/454160949fbe268ca493f96089ff2db91929a78b/imgs/console.png)
+![alt text](https://raw.githubusercontent.com/yaperos/app-nodejs-codechallenge/454160949fbe268ca493f96089ff2db91929a78b/imgs/postman.png)
