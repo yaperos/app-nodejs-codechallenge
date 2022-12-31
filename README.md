@@ -32,7 +32,7 @@ npm run dev
 npm run db:reset
 ```
 
-- test: 
+- test Note: run the test with microservices stopped: 
 ```bash
 npm run test
 ```
