@@ -4,8 +4,10 @@ import { Transaction } from '../models';
 
 export default class ProducerFactory {
   private producer: Producer
+  private topic: string
 
-  constructor() {
+  constructor(topic: string) {
+    this.topic = topic;
     this.producer = this.createProducer()
   }
 
@@ -25,7 +27,7 @@ export default class ProducerFactory {
   public async send(message: Transaction): Promise<void> {
 
     const topicMessages: TopicMessages = {
-      topic: config.kafkaTopicTransaction,
+      topic: this.topic,
       messages: [{ value: JSON.stringify(message) }]
     }
 

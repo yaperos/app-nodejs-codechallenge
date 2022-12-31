@@ -4,8 +4,10 @@ import { Consumer, ConsumerSubscribeTopics, Kafka, EachMessagePayload } from 'ka
 export default class ConsumerFactory {
   private kafkaConsumer: Consumer
   public callbackRecived: Function | undefined;
+  private topic: string
 
-  public constructor() {
+  public constructor(topic: string) {
+    this.topic = topic;
     this.kafkaConsumer = this.createKafkaConsumer()
   }
 

@@ -6,7 +6,7 @@ import { config } from './config';
 
 (async () => {
 	if (config.env !== 'test') {
-    const consumerFactory = new ConsumerFactory();
+		const consumerFactory = new ConsumerFactory(config.kafkaTopicAntifraud);
 		consumerFactory.callbackRecived = antifraudResolveService;
 		await consumerFactory.startConsumer();
   }

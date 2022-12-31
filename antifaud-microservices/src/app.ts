@@ -3,9 +3,11 @@ import router from './router';
 import ConsumerFactory from './bootstrap/consumer.kafka';
 import { antifraudService } from './services/antifraud.services';
 
-const consumerFactory = new ConsumerFactory();
-consumerFactory.callbackRecived = antifraudService;
-consumerFactory.startConsumer();
+(async () => {
+	const consumerFactory = new ConsumerFactory();
+	consumerFactory.callbackRecived = antifraudService;
+	consumerFactory.startConsumer();
+})();
 
 const app = express();
 

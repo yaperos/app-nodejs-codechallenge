@@ -7,7 +7,7 @@ import ProducerFactory from '../bootstrap/producer.kafka';
 import { TransactionResource } from '../resources/transaction.resource';
 import { config } from '../config';
 
-const producerFactory = new ProducerFactory();
+const producerFactory = new ProducerFactory(config.kafkaTopicTransaction);
 
 export const get = async (req: Request, res: Response): Promise<Response> => {
   const externalId: Id = req.params.id;
