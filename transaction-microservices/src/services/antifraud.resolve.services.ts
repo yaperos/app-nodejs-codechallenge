@@ -9,10 +9,10 @@ export const antifraudResolveService = async (message: KafkaMessage): Promise<vo
     const transaction = await Transaction.query().where({transactionExternalId: data.transactionExternalId}).first();
 
     if (transaction && data.status == StatusInterface.REJECTED) {
-      Transaction.query().findById(transaction.id).patch({status: StatusInterface.REJECTED});
+      await Transaction.query().findById(transaction.id).patch({status: StatusInterface.REJECTED});
     }
     if (transaction &&  data.status == StatusInterface.APPROVED) {
-      Transaction.query().findById(transaction.id).patch({status: StatusInterface.APPROVED});
+      await Transaction.query().findById(transaction.id).patch({status: StatusInterface.APPROVED});
     }
   }
 };
