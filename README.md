@@ -1,78 +1,71 @@
-# Yape Code Challenge :rocket:
+## Project Specifications
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+**Environment**  
 
-# Problem
+- Node: 14.16.0
+- Sqlite: 3
+- Docker: 14.13
+- Default Ports: 3001 and 3002
+- Configs in .env
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+**Command to root project**
+- composer: 
+```bash
+docker-compose up -d
 ```
 
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+**Commands to each project**
+- install: 
+```bash
+npm install
+```
+- setup: 
+```bash
+npm run db:setup
+```
+- run server: 
+```bash
+npm run dev
+```
+- or restart all db: 
+```bash
+npm run db:reset
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+- test Note: run the test with microservices stopped: 
+```bash
+npm run test
+```
+**Endpoints microservice transaction**
+- create transaction: 
+```bash
+http://127.0.0.1:3001/transactions
+```
+- get transaction: 
+```bash
+http://127.0.0.1:3001/transactions/14903f2d-0759-412c-aea3-758ef6c170c6
 ```
 
-## Optional
+**Img console test services**
+![alt text](https://raw.githubusercontent.com/DanteCuevas/yape-app-nodejs-codechallenge/challenge-code/imgs/console.png)
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+**Img test postman**
+![alt text](https://raw.githubusercontent.com/DanteCuevas/yape-app-nodejs-codechallenge/challenge-code/imgs/postman.png)
+**Img test jest microservice transaction**
+![alt text](https://raw.githubusercontent.com/DanteCuevas/yape-app-nodejs-codechallenge/challenge-code/imgs/jest.png)
 
-You can use Graphql;
+**Curl commands and img response kafka**
+- post transaction value less than 1000: 
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"accountExternalIdDebit":"d54a623d-e1eb-4e1f-80c1-3c770c004721", "accountExternalIdCredit":"d54a623d-e1eb-4e1f-80c1-3c770c004723", "tranferTypeId":1, "value":900}' http://127.0.0.1:3001/transactions
+```
+- post transaction value grater than 1000: 
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"accountExternalIdDebit":"d54a623d-e1eb-4e1f-80c1-3c770c004721", "accountExternalIdCredit":"d54a623d-e1eb-4e1f-80c1-3c770c004723", "tranferTypeId":1, "value":1100}' http://127.0.0.1:3001/transactions
+```
+- get transaction: 
+```bash
+curl -X GET -H "Content-Type: application/json" http://127.0.0.1:3001/transactions/74bf850b-be12-46ad-85e2-5d28c6a555a8
+```
 
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+![alt text](https://raw.githubusercontent.com/DanteCuevas/yape-app-nodejs-codechallenge/challenge-code/imgs/curl-and-response-kafka.png)
