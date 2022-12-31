@@ -11,7 +11,7 @@
 **Command to root project**
 - composer: 
 ```bash
-docker-compose up
+docker-compose up -d
 ```
 
 **Commands to each project**
@@ -36,6 +36,20 @@ npm run db:reset
 ```bash
 npm run test
 ```
-![alt text](https://raw.githubusercontent.com/yaperos/app-nodejs-codechallenge/454160949fbe268ca493f96089ff2db91929a78b/imgs/console.png)
+**Endpoints microservice transaction**
+- create transaction: 
+```bash
+http://127.0.0.1:3001/transactions
+```
+- get transaction: 
+```bash
+http://127.0.0.1:3001/transactions/14903f2d-0759-412c-aea3-758ef6c170c6
+```
 
-![alt text](https://raw.githubusercontent.com/yaperos/app-nodejs-codechallenge/454160949fbe268ca493f96089ff2db91929a78b/imgs/postman.png)
+**Img console test services**
+![alt text](https://raw.githubusercontent.com/DanteCuevas/yape-app-nodejs-codechallenge/challenge-code/imgs/console.png)
+
+**Img test postman**
+![alt text](https://raw.githubusercontent.com/DanteCuevas/yape-app-nodejs-codechallenge/challenge-code/imgs/postman.png)
+**Img test jest microservice transaction**
+![alt text](https://raw.githubusercontent.com/DanteCuevas/yape-app-nodejs-codechallenge/challenge-code/imgs/jest.png)
