@@ -3,6 +3,7 @@ import { Consumer, ConsumerSubscribeTopics, Kafka, EachMessagePayload } from 'ka
 
 export default class ConsumerFactory {
   private kafkaConsumer: Consumer
+  public callbackRecived: Function | undefined;
 
   public constructor() {
     this.kafkaConsumer = this.createKafkaConsumer()
@@ -21,8 +22,11 @@ export default class ConsumerFactory {
       await this.kafkaConsumer.run({
         eachMessage: async (messagePayload: EachMessagePayload) => {
           const { topic, partition, message } = messagePayload
+          if( this.callbackRecived !== undefined) {
+            this.callbackRecived(message);
+          }
           const prefix = `${topic}[${partition} | ${message.offset}] / ${message.timestamp}`
-          console.log(`- ${prefix} ${message.key}#${message.value}`)
+          console.log(`TRANSACTION_SERVICE- ${prefix} ${message.key}#${message.value}`)
         }
       })
       console.log('consumer RUN');

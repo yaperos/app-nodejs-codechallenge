@@ -1,5 +1,6 @@
 import { config } from '../config';
 import { Kafka, Partitioners, Producer, TopicMessages } from 'kafkajs';
+import { AntifraudInterface } from '../../src/Interfaces/antifraud.interface'
 
 interface CustomMessageFormat { a: string }
 
@@ -23,7 +24,7 @@ export default class ProducerFactory {
     await this.producer.disconnect()
   }
 
-  public async send(message: CustomMessageFormat): Promise<void> {
+  public async send(message: AntifraudInterface): Promise<void> {
 
     const topicMessages: TopicMessages = {
       topic: config.kafkaTopicAntifraud,
