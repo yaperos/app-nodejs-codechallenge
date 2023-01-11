@@ -1,0 +1,7 @@
+INSERT INTO public.status(
+	name)
+	VALUES ('Pending'),('Approved'),('Rejected');
+
+INSERT INTO public.transfer_types(
+	name)
+	VALUES ('YAPE');
