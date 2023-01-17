@@ -1,5 +1,9 @@
 # Yape Code Challenge :rocket:
 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+
+Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
 - [Send us your challenge](#send_us_your_challenge)
@@ -73,6 +77,6 @@ You can use Graphql;
 
 # Send us your challenge
 
-When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
