@@ -76,3 +76,33 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+
+# Solution 
+
+- Start dependencies 
+
+```sh
+docker compose up
+```
+
+- Start transaction service
+
+```sh
+cd projects/transaction/
+yarn start:dev
+```
+
+- Start auti fraud service
+
+```sh
+cd projects/anti-fraud/
+yarn start:dev
+```
+
+- Test with [k6](https://k6.io/)
+
+```sh
+k6 run k6.js
+```
+
