@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { CqrsModule } from '@nestjs/cqrs';
 import { Transport } from '@nestjs/microservices';
 import { ClientsModule } from '@nestjs/microservices/module';
 import { AppController } from './app.controller';
@@ -8,6 +9,7 @@ import { DBProvider } from './DBProvider';
 
 @Module({
   imports: [
+    CqrsModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
