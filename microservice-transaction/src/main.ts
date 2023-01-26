@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
 import { MicroserviceOptions } from '@nestjs/microservices/interfaces';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 
 async function bootstrap() {
@@ -19,6 +20,16 @@ async function bootstrap() {
       },
     }
   })
+
+  const config = new DocumentBuilder()
+    .setTitle('Transaction Microservice')
+    .setDescription('Transactions')
+    .setVersion('1.0')
+    .addTag('transaction')
+
+  const document = SwaggerModule.createDocument(app, config.build()); 
+  
+  SwaggerModule.setup('api', app, document);
 
   app.startAllMicroservices();
   await app.listen(process.env.PORT);
