@@ -3,10 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Transport } from '@nestjs/microservices';
 import { ClientsModule } from '@nestjs/microservices/module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { CreateTransactionHandler } from './application/commands/create-transaction/create-transaction';
 import { DBProvider } from './DBProvider';
-
+import { TransactionInfrastructure } from './infrastructure/transaction.infrastructure';
+import { TransactionController } from './interfaces/http/transaction.controller';
 @Module({
   imports: [
     CqrsModule,
@@ -30,7 +30,7 @@ import { DBProvider } from './DBProvider';
 
     ]),
   ],
-  controllers: [AppController],
-  providers: [DBProvider,AppService],
+  controllers: [TransactionController],
+  providers: [DBProvider,CreateTransactionHandler,TransactionInfrastructure],
 })
 export class AppModule {}

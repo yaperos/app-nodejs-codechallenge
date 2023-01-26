@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DataSource, EntityManager } from "typeorm";
+import { TransactionEntity } from "./infrastructure/entities/transaction.entity";
 
 let manager: EntityManager;
 @Injectable()
@@ -20,9 +21,11 @@ export class DBProvider{
 
     async onModuleInit(){
         const config = this.dbConfigPostgres();
+        const entities = [TransactionEntity];
         this.dataSource = await new DataSource({
             type: 'postgres',
             ...config,
+            entities,
         }).initialize().catch((err) => {
             console.log(err);
             process.exit(1);
@@ -31,7 +34,7 @@ export class DBProvider{
         manager = (this.dataSource as DataSource).manager;
     }  
 
-    getManager(): EntityManager {
+    static get manager(): EntityManager {
         return manager;
     }
 }
