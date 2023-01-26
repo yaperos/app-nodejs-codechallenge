@@ -1,0 +1,1 @@
+export const TRANSACTION_TABLE_NAME = 'transaction';
