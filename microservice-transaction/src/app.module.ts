@@ -5,6 +5,7 @@ import { Transport } from '@nestjs/microservices';
 import { ClientsModule } from '@nestjs/microservices/module';
 import { CreateTransactionHandler } from './application/commands/create-transaction/create-transaction';
 import { UpdateTransactionHandler } from './application/commands/update-status-transaction/update-status-transaction';
+import { GetTransactionQueryHandler } from './application/queries/get-transaction.query';
 import { DBProvider } from './DBProvider';
 import { TransactionInfrastructure } from './infrastructure/transaction.infrastructure';
 import { TransactionController } from './interfaces/http/transaction.controller';
@@ -32,6 +33,6 @@ import { TransactionController } from './interfaces/http/transaction.controller'
     ]),
   ],
   controllers: [TransactionController],
-  providers: [DBProvider,CreateTransactionHandler,UpdateTransactionHandler,TransactionInfrastructure],
+  providers: [DBProvider,CreateTransactionHandler,UpdateTransactionHandler,GetTransactionQueryHandler,TransactionInfrastructure],
 })
 export class AppModule {}

@@ -27,7 +27,7 @@ export class Transaction  extends AggregateRoot{
         this.accountExternalIdDebit = transaction.accountExternalIdDebit;
         this.accountExternalIdCredit = transaction.accountExternalIdCredit;
         this.tranferType = transaction.tranferType;
-        this.status = TRANSACTION_STATUS_PENDING;
+        this.status = transaction.status || TRANSACTION_STATUS_PENDING;
         this.value = transaction.value;
 
         this.createdAt = new Date();
@@ -56,6 +56,10 @@ export class Transaction  extends AggregateRoot{
 
     public getValue(): number {
         return this.value;
+    }
+
+    public getCreatedAt(): Date {
+        return this.createdAt;
     }
 
     public setStatus(status: string) {
