@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommand, ICommandHandler } from "@nestjs/cqrs";
+import { ClientKafka } from "@nestjs/microservices";
 import { CreateTransactionResponse } from "src/application/dtos/create-transaction-response.dto";
 import { Transaction } from "src/domain/aggregates/transaction";
 import { TransactionRepository } from "src/domain/repositories/transaction.repository";
@@ -19,6 +20,7 @@ export class CreateTransactionHandler implements ICommandHandler<CreateTransacti
 
     constructor(
         @Inject(TransactionInfrastructure) private transactionRepository: TransactionRepository,
+        @Inject('TRANSACTION_MICROSERVICE') private readonly transactionEmitter: ClientKafka,
     ) {}
 
     async execute(command: CreateTransactionUseCase): Promise<CreateTransactionResponse> {
@@ -37,6 +39,12 @@ export class CreateTransactionHandler implements ICommandHandler<CreateTransacti
         });
 
         const transactionCreated = await this.transactionRepository.createTransaction(transaction);
+        this.transactionEmitter.emit('transaction.created', JSON.stringify(
+            {
+                transactionExternalId: transactionCreated.getTransactionExternalId(),
+                value   : transactionCreated.getValue(),
+            }
+        ));
         return {
             transactionExternalId: transactionCreated.getTransactionExternalId(),
             message: 'Transaction created successfully',
