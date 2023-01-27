@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommand, ICommandHandler } from "@nestjs/cqrs";
 import { UpdateTransactionResponse } from "src/application/dtos/update-transaction-reponse.dto";
 import { TransactionRepository } from "src/domain/repositories/transaction.repository";
-import { TransactionInfrastructure } from "src/infrastructure/transaction.infrastructure";
+import { TransactionInfrastructure } from "../../../../src/infrastructure/transaction.infrastructure";
 
 export class UpdateTransactionUseCase implements ICommand{
     constructor(

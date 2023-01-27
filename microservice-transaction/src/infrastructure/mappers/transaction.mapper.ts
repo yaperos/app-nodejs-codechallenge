@@ -1,4 +1,4 @@
-import { Transaction } from "src/domain/aggregates/transaction";
+import { Transaction } from "../../../src/domain/aggregates/transaction";
 import { TransactionEntity } from "../entities/transaction.entity";
 
 export class TransactionMapper {
