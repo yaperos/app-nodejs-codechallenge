@@ -6,13 +6,18 @@ import { TransactionEntity } from "./entities/transaction.entity";
 import { TransactionMapper } from "./mappers/transaction.mapper";
 
 export class TransactionInfrastructure implements TransactionRepository {
-    async createTransaction(transaction: Transaction): Promise<Transaction> {
+    async saveTransaction(transaction: Transaction): Promise<Transaction> {
         const transactionEntity = TransactionMapper.toEntity(transaction);
         const transactionSaved = await DBProvider.manager.getRepository(TransactionEntity).save(transactionEntity);
         Logger.log('Transaction saved: ' + transactionSaved)
         return TransactionMapper.toDomain(transactionSaved);
     }
-    getTransactionById(id: string): Promise<Transaction> {
-        throw new Error("Method not implemented.");
+    async getTransactionById(id: string): Promise<Transaction> {
+        const transactionEntity = await DBProvider.manager.getRepository(TransactionEntity).findOne({
+            where: {
+                transactionExternalId: id,
+            }
+        });
+        return TransactionMapper.toDomain(transactionEntity);
     }
 }

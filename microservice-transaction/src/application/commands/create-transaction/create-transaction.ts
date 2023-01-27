@@ -38,7 +38,7 @@ export class CreateTransactionHandler implements ICommandHandler<CreateTransacti
             value,
         });
 
-        const transactionCreated = await this.transactionRepository.createTransaction(transaction);
+        const transactionCreated = await this.transactionRepository.saveTransaction(transaction);
         this.transactionEmitter.emit('transaction.created', JSON.stringify(
             {
                 transactionExternalId: transactionCreated.getTransactionExternalId(),

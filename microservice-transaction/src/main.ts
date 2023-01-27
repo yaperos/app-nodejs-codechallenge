@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
 import { MicroserviceOptions } from '@nestjs/microservices/interfaces';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -30,7 +30,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config.build()); 
   
   SwaggerModule.setup('api', app, document);
-
+  app.useGlobalPipes(new ValidationPipe());
   app.startAllMicroservices();
   await app.listen(process.env.PORT);
   Logger.log(`Microservice Transaction is running on port ${process.env.PORT}`);

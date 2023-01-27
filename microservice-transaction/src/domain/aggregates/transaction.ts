@@ -15,7 +15,7 @@ export class Transaction  extends AggregateRoot{
     private readonly accountExternalIdDebit: string;
     private readonly accountExternalIdCredit: string;
     private readonly tranferType: number;
-    private readonly status: string;
+    private status: string;
     private readonly value: number;
 
     private readonly createdAt: Date;
@@ -57,8 +57,12 @@ export class Transaction  extends AggregateRoot{
     public getValue(): number {
         return this.value;
     }
- 
 
+    public setStatus(status: string) {
+        this.status = status;
+        this.updatedAt = new Date();
+    }
+ 
     update(fields: Partial<ITransaction>) {
         Object.assign(this, fields);
         this.updatedAt = new Date();
