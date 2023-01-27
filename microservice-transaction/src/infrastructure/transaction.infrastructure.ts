@@ -1,7 +1,7 @@
 import { Logger } from "@nestjs/common";
-import { DBProvider } from "../../src/DBProvider";
-import { Transaction } from "../../src/domain/aggregates/transaction";
-import { TransactionRepository } from "../../src/domain/repositories/transaction.repository";
+import { DBProvider } from "src/DBProvider";
+import { Transaction } from "src/domain/aggregates/transaction";
+import { TransactionRepository } from "src/domain/repositories/transaction.repository";
 import { TransactionEntity } from "./entities/transaction.entity";
 import { TransactionMapper } from "./mappers/transaction.mapper";
 
