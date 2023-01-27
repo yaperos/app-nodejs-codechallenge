@@ -1,48 +1,45 @@
-# Yape Code Challenge :rocket:
+# YAPE CHALLENGE
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Initial Setup 
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+### Execute docker for create container ( postgress database, kafka, zookeeper)
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+```sh
+   docker-compose up -d
+ ```
+### Intall dependecies with yarn, enter each microservice ( Microservice - antifraud , Microservice Transaction)
 
-# Problem
+```sh
+   yarn
+ ```
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### copy env.example to env 
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```sh
+cp env.example env
 ```
 
-# Tech Stack
+### Initialize microservices, enter each microservice ( Microservice - antifraud , Microservice Transaction)
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```sh
+   yarn star:dev
+ ```
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+### TEST 
 
-You must have two resources:
+```sh
+   yarn test
+ ```
 
-1. Resource to create a transaction that must containt:
+### Documentation API 
+
+http://localhost:3000/api
+
+#### CREATE TRANSACTION 
+
+```
+POST http://localhost:3000/transaction
+```
 
 ```json
 {
@@ -53,7 +50,10 @@ You must have two resources:
 }
 ```
 
-2. Resource to retrieve a transaction
+#### GET TRANSACTION 
+```
+GET http://localhost:3000/transaction/c5bf3864-e7d0-42cd-874a-6fbae47acdc1
+```
 
 ```json
 {
@@ -68,15 +68,3 @@ You must have two resources:
   "createdAt": "Date"
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
