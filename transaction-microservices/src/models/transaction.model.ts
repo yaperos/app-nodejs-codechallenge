@@ -1,6 +1,5 @@
 import { Id, RelationMappings } from 'objection';
 import Base from './base';
-import { Model } from 'objection';
 
 export class Transaction extends Base {
   id!: Id;
@@ -10,6 +9,16 @@ export class Transaction extends Base {
   tranferTypeId!: number;
   value!: number;
   status!: string;
-
+  createdAt!: string;
+  updatedAt!: string;
+  
   static tableName = 'transactions';
+  
+  $beforeUpdate() {
+    this.updatedAt = new Date().toISOString();
+  }
+
+  $beforeInsert() {
+    this.createdAt = new Date().toISOString();
+  }
 }

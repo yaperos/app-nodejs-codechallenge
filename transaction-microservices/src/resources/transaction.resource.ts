@@ -1,7 +1,6 @@
-import { Transfer } from '../models';
-import { TransactionInterface } from '../../src/Interfaces/transaction.interface'
+import { Transaction, Transfer } from '../models';
 
-export const TransactionResource = async (data: TransactionInterface) => {
+export const TransactionResource = async (data: Transaction) => {
   const transfer = await Transfer.query().findById(data.tranferTypeId);
   
   return {

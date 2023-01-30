@@ -6,6 +6,7 @@ import { Transaction } from '../models';
 import ProducerFactory from '../bootstrap/producer.kafka';
 import { TransactionResource } from '../resources/transaction.resource';
 import { config } from '../config';
+import { TransactionDTO } from '../dto/transaction.dto';
 
 const producerFactory = new ProducerFactory(config.kafkaTopicTransaction);
 
@@ -13,7 +14,6 @@ export const get = async (req: Request, res: Response): Promise<Response> => {
   const externalId: Id = req.params.id;
   const transaction = await Transaction.query().where({transactionExternalId: externalId}).first();
   if (transaction) {
-    // @ts-ignore
     const response =  await TransactionResource(transaction);
     return res.status(StatusCodes.OK).json(response);
   }
@@ -21,13 +21,9 @@ export const get = async (req: Request, res: Response): Promise<Response> => {
 };
 
 export const create = async ( req: Request, res: Response): Promise<Response> => {
-  const body = req.body;
-  body.transactionExternalId = uuidv4();
-  const transaction = await Transaction.query().insert(body).returning('*');
-  await producerFactory.start();
+  const transactionDto = TransactionDTO(req);
+  const transaction = await Transaction.query().insert(transactionDto).returning('*');
   await producerFactory.send(transaction);
-  await producerFactory.shutdown();
-  // @ts-ignore
   return res.status(StatusCodes.CREATED).json(await TransactionResource(transaction));
 };
 

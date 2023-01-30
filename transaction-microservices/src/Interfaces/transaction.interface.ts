@@ -16,3 +16,8 @@ export interface TransactionInterface {
 	createdAt: string,
 	updatedAt: string,
 }
+
+export type TransactionCreateInterface = Omit<
+	TransactionInterface,
+	'id' | 'status' | 'createdAt' | 'updatedAt' | 'transactionExternalId'
+>
