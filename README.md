@@ -1,82 +1,86 @@
-# Yape Code Challenge :rocket:
+# Yape-Code-Challenge
+### Tech Stack:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+[![NestJS][NestJS]][NestJS-url] [![Typescript][Typescript]][Typescript-url] [![GraphQL][GraphQL]][GraphQL-url] [![Prisma][Prisma]][Prisma-url] [![Postgres][Postgres]][Postgres-url] [![Kafka][Kafka]][Kafka-url] [![Docker][Docker]][Docker-url]
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Main Setup
 
-# Problem
+1. Root directory contains a `docker-compose.yml` file. Run `docker-compose up -d` to create docker containers in detached mode.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## TRANSACTION MANAGER Microservice Setup
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+1. Go to directory `transaction-manager-microservice`
+2. Run `npm i` to install dependencies.
+3. Create the .env file and insert your values the following variables (for DB credentials use the same defined in the docker-compose file).
+	```
+	API_PORT=5001
+	DATABASE_URL=postgresql://<USER_DB>:<PASS_DB>@localhost:5432/reto_yape_dev?connect_timeout=300
+	KAFKA_BROKER=localhost:9092
+	```
+4. Run `npm run start:prisma` to generate prisma dependencies.
+5. Run `npm run start:dev` to start the microservice.
 
-Every transaction with a value greater than 1000 should be rejected.
+## ANTI-FRAUD Microservice Setup
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+1. Go to directory `anti-fraud-microservice`
+2. Run `npm i` to install dependencies.
+3. Create the .env file and insert your values the following variables.
+	```
+	KAFKA_BROKER=localhost:9092
+	```
+4. Run `npm run start:dev` to start the microservice.
 
-# Tech Stack
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+# GraphQL API Documentation
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+Open your browser and go to http://localhost:5001/graphql
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+### Create transaction
+```graphql
+mutation  {
+  createTransaction(createTransactionInput:{
+    accountExternalIdDebit: "c3281685-b097-4d9a-a284-ef232af5eb32" ,
+    accountExternalIdCredit: "ca7a6efa-e39f-4650-af63-2e40455850ce",
+    transferTypeId: 1,
+    value: 999.9
+  }){
+    transactionExternalId,
+    transactionType{name},
+    transactionStatus{name},
+    value,
+    createdAt
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+### Retrieve transaction
+```graphql
+query{
+  retrieveTransactionById(id:"ca7a6efa-e39f-4650-af63-2e40455850ce"){
+    transactionExternalId,
+    transactionType{name},
+    transactionStatus{name},
+    value,
+    createdAt
+  }
 }
 ```
 
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[NestJS]: https://skillicons.dev/icons?i=nestjs
+[NestJS-url]: https://nestjs.com/
+[Typescript]: https://skillicons.dev/icons?i=ts
+[Typescript-url]: https://www.typescriptlang.org/
+[GraphQL]: https://skillicons.dev/icons?i=graphql
+[GraphQL-url]: https://graphql.org/
+[Prisma]: https://skillicons.dev/icons?i=prisma
+[Prisma-url]: https://www.prisma.io/
+[Postgres-url]: https://www.postgresql.org/
+[Postgres]: https://skillicons.dev/icons?i=postgres
+[Kafka]: https://i.postimg.cc/5t6vtzpF/kafka-icon-48.png
+[Kafka-url]: https://kafka.apache.org/
+[Docker]: https://skillicons.dev/icons?i=docker
+[Docker-url]: https://www.docker.com/
