@@ -16,7 +16,7 @@ export const databaseProviders = [
       username: configService.get<string>('DATABASE_USERNAME'),
       password: configService.get<string>('DATABASE_PASSWORD'),
       database: configService.get<string>('DATABASE_NAME'),
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
       namingStrategy: new SnakeNamingStrategy(),
       synchronize: true,
       reuseConnection: true,
