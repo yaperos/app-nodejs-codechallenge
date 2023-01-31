@@ -11,7 +11,7 @@ export class Service {
     newTran.idCredit = tran.accountExternalIdCredit;
     newTran.transferTypeId = tran.transferTypeId;
     newTran.amount = tran.value;
-    newTran.status = STATUS.PENDING;
+    newTran.status = tran.value < 1000 ? STATUS.REJECTED : STATUS.PENDING;
 
     await newTran.save();
 
