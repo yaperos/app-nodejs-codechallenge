@@ -1,14 +1,13 @@
-import { type } from "os";
-import { Column, Entity, PrimaryGeneratedColumn,CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn,CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, AfterInsert } from "typeorm";
 import { TransactionStatus } from "./transaction-status.entity";
 import { TransactionType } from "./transaction-type.entity";
 
-@Entity()
+@Entity('transaction')
 export class Transaction{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type:'varchar'})
+    @Column({ type:'varchar', unique: true})
     externalId: string;
 
     @Column({ type:'varchar'})
@@ -28,9 +27,14 @@ export class Transaction{
     @JoinColumn()
     status: TransactionStatus
 
-    @CreateDateColumn({ type: 'date' })
+    @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: 'date' })
+    @UpdateDateColumn({ type: 'timestamp', nullable: true})
     updatedAt: Date;
+
+    @AfterInsert()
+    resetCounters() {
+        this.externalId = crypto.randomUUID();
+    }
 }

@@ -1,5 +1,8 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
+import { Transaction } from 'src/infrastructure/entities/transaction.entity';
+import { TransactionType } from 'src/infrastructure/entities/transaction-type.entity';
+import { TransactionStatus } from 'src/infrastructure/entities/transaction-status.entity';
 
 if (process.env.NODE_ENV === 'local') {
     dotenv.config({ path: './env/local.env' });
@@ -15,9 +18,7 @@ const datasource = new DataSource({
     synchronize: false,
     migrationsRun: true,
     migrations: ['database/migrations/**/*{.ts,.js}']
-})
-
-console.log(datasource);
+});
 
 datasource.initialize()
 .then(() => {

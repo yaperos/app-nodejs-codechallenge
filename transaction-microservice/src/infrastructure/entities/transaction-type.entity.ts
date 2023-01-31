@@ -1,16 +1,16 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity()
+@Entity("transaction_type")
 export class TransactionType{
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column({ type:'varchar'})
     description: string;
 
-    @CreateDateColumn({ type: 'date' })
+    @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: 'date' })
+    @UpdateDateColumn({ type: 'timestamp', nullable: true})
     updatedAt: Date;
 }

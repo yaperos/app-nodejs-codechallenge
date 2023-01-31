@@ -23,8 +23,11 @@ export class DataBaseTransactionRepository implements ITransactionRepository{
     }
 
     async findByExternalId(externalId: string): Promise<TransactionModel> {
-        //const transaction = await this.transactionRepository.findOneBy( externalId: externalId {relations: { type: true, status: true} });
-        const transaction = await this.transactionRepository.findOneBy({externalId: externalId});
+        const transaction = await this.transactionRepository.createQueryBuilder("transaction")
+        .leftJoinAndSelect("transaction.type", "transaction_type")
+        .leftJoinAndSelect("transaction.status", "transaction_status")
+        .where({externalId: externalId}).getOne();
+        console.log(transaction);
         return TransactionMapper.toTransactionModel(transaction);
     }
     

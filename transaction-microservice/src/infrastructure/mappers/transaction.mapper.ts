@@ -1,3 +1,5 @@
+import { TransactionStatusModel } from "src/domain/model/transaction-status.model";
+import { TransactionTypeModel } from "src/domain/model/transaction-type.model";
 import { TransactionModel } from "src/domain/model/transaction.model";
 import { CreateTransactionDto } from "../controllers/transaction/transaction.dto";
 import { Transaction } from "../entities/transaction.entity";
@@ -10,9 +12,11 @@ export default class TransactionMapper{
         transactionModel.externalId = transaction.externalId;
         transactionModel.accountExternalIdDebit = transaction.accountExternalIdDebit;
         transactionModel.accountExternalIdCredit = transaction.accountExternalIdCredit;
-        transactionModel.transferTypeId = transaction.type?.id;
+        transactionModel.typeId = transaction.type?.id;
+        transactionModel.type = new TransactionTypeModel(transaction.type?.id, transaction.type?.description);
         transactionModel.value = transaction.value;
         transactionModel.statusId = transaction.status?.id;
+        transactionModel.status = new TransactionStatusModel(transaction.status?.id, transaction.status?.description);
         transactionModel.createdAt = transaction.createdAt;
         transactionModel.updatedAt = transaction.updatedAt;
         return transactionModel;
@@ -24,7 +28,7 @@ export default class TransactionMapper{
         transaction.externalId = transactionModel.externalId;
         transaction.accountExternalIdDebit = transactionModel.accountExternalIdDebit;
         transaction.accountExternalIdCredit = transactionModel.accountExternalIdCredit;
-        transaction.type.id = transactionModel.transferTypeId;
+        transaction.type.id = transactionModel.typeId;
         transaction.value = transactionModel.value;
         transaction.status.id = transactionModel.statusId;
         transaction.createdAt = transactionModel.createdAt;
@@ -37,7 +41,7 @@ export default class TransactionMapper{
         transactionModel.externalId = transaction.accountExternalIdDebit; //check
         transactionModel.accountExternalIdDebit = transaction.accountExternalIdDebit;
         transactionModel.accountExternalIdCredit = transaction.accountExternalIdCredit;
-        transactionModel.transferTypeId = transaction.transferTypeId;
+        transactionModel.typeId = transaction.transferTypeId;
         transactionModel.value = transaction.value;
         return transactionModel;
     }

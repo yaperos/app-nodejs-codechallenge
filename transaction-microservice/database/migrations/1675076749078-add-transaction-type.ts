@@ -1,15 +1,17 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class AddTransactionType1675076797319 implements MigrationInterface{
+export class AddTransactionType1675076749078 implements MigrationInterface{
 
-    name = 'AddTransactionType1675076797319';
+    name = 'AddTransactionType1675076749078';
     transactionTypeTable =new Table({
-        name: 'transactiontype',
+        name: 'transaction_type',
         columns: [
             {
                 name: 'id',
                 type: 'int',
-                isPrimary: true
+                isPrimary: true,
+                isGenerated: true,
+                generationStrategy: 'identity'
             },
             {
                 name: 'description',
@@ -17,11 +19,12 @@ export class AddTransactionType1675076797319 implements MigrationInterface{
             },
             {
                 name: 'createdAt',
-                type: 'date'
+                type: 'timestamp'
             },
             {
                 name: 'updatedAt',
-                type: 'date'
+                type: 'timestamp',
+                isNullable: true
             }
         ]
     });
