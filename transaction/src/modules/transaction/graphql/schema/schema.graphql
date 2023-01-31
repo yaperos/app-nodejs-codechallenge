@@ -1,0 +1,52 @@
+type Query {
+  helloWorld: String!
+  getTransaction(id: ID!): RetrieveTransaction
+}
+
+type Mutation {
+  "For create a transaction"
+  createTransaction(tran: TransactionInput): Transaction
+  updateTransaction(tran: TransactionUpdateInput): Transaction
+}
+
+input TransactionInput {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  transferTypeId: Int!
+  value: Float!
+}
+
+input TransactionUpdateInput {
+  idTran: Int!
+  status: Status!
+}
+
+type Transaction {
+  status: Status
+  idTransaction: Int
+  message: String
+}
+
+type RetrieveTransaction {
+  message: String
+  transactionExternalId: String
+  transactionType: TransactionType
+  transactionStatus: TransactionStatus
+  value: Float
+  createdAt: String
+}
+
+type TransactionType {
+  name: String!
+}
+
+type TransactionStatus { 
+  name: String!
+}
+
+enum Status {
+  PENDING
+  CREATED
+  APPROVED
+  REJECTED
+}
