@@ -26,7 +26,7 @@ export class AddTransaction1675076781856 implements MigrationInterface{
                 type: 'varchar'
             },
             {
-                name: 'transactionTypeId',
+                name: 'typeId',
                 type: 'int'
             },
             {
@@ -58,7 +58,7 @@ export class AddTransaction1675076781856 implements MigrationInterface{
     });
 
     typeForeignKey = new TableForeignKey({
-        columnNames: ['transactionTypeId'],
+        columnNames: ['typeId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'transaction_type',
         onDelete: 'RESTRICT'

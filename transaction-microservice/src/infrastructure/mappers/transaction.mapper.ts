@@ -2,6 +2,8 @@ import { TransactionStatusModel } from "src/domain/model/transaction-status.mode
 import { TransactionTypeModel } from "src/domain/model/transaction-type.model";
 import { TransactionModel } from "src/domain/model/transaction.model";
 import { CreateTransactionDto } from "../controllers/transaction/transaction.dto";
+import { TransactionStatus } from "../entities/transaction-status.entity";
+import { TransactionType } from "../entities/transaction-type.entity";
 import { Transaction } from "../entities/transaction.entity";
 
 export default class TransactionMapper{
@@ -23,14 +25,15 @@ export default class TransactionMapper{
     }
 
     public static toTransactionEntity(transactionModel: TransactionModel ): Transaction{
+        console.log(transactionModel);
         const transaction: Transaction = new Transaction();
         transaction.id = transactionModel.id;
         transaction.externalId = transactionModel.externalId;
         transaction.accountExternalIdDebit = transactionModel.accountExternalIdDebit;
         transaction.accountExternalIdCredit = transactionModel.accountExternalIdCredit;
-        transaction.type.id = transactionModel.typeId;
+        transaction.type = {id: transactionModel.typeId}  as TransactionType;
         transaction.value = transactionModel.value;
-        transaction.status.id = transactionModel.statusId;
+        transaction.status = {id: transactionModel.statusId} as TransactionStatus;
         transaction.createdAt = transactionModel.createdAt;
         transaction.updatedAt = transactionModel.updatedAt;
         return transaction;

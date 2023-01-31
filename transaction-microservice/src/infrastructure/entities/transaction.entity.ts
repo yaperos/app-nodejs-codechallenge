@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn,CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, AfterInsert } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn,CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, AfterInsert, ManyToOne } from "typeorm";
 import { TransactionStatus } from "./transaction-status.entity";
 import { TransactionType } from "./transaction-type.entity";
 
@@ -16,14 +16,14 @@ export class Transaction{
     @Column({ type:'varchar'})
     accountExternalIdCredit: string;
 
-    @OneToOne(() => TransactionType)
+    @ManyToOne(() => TransactionType, (transactionType)=> transactionType.transactions)
     @JoinColumn()
     type: TransactionType
 
     @Column({ type:'double precision'})
     value: number;
 
-    @OneToOne(() => TransactionStatus)
+    @ManyToOne(() => TransactionStatus, (transactionStatus)=> transactionStatus.transactions)
     @JoinColumn()
     status: TransactionStatus
 
@@ -32,9 +32,12 @@ export class Transaction{
 
     @UpdateDateColumn({ type: 'timestamp', nullable: true})
     updatedAt: Date;
-
+/*
     @AfterInsert()
-    resetCounters() {
-        this.externalId = crypto.randomUUID();
+    setExternalId() {
+        let uuid = crypto.randomUUID();
+        console.log(uuid);
+        this.externalId = uuid;
     }
+*/
 }

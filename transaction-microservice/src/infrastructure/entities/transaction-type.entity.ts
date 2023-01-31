@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Transaction } from "./transaction.entity";
 
 @Entity("transaction_type")
 export class TransactionType{
@@ -13,4 +14,7 @@ export class TransactionType{
 
     @UpdateDateColumn({ type: 'timestamp', nullable: true})
     updatedAt: Date;
+
+    @OneToMany(()=> Transaction, (transaction)=> transaction.type)
+    transactions: Transaction[]
 }

@@ -1,6 +1,5 @@
-import { Body, Controller, Get, HttpCode, Inject, NotFoundException, Param, Post, UseFilters } from '@nestjs/common';
-import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
-import { AllExceptionFilter } from 'src/infrastructure/common/filter/exception.filter';
+import { Body, Controller, Get, Inject, NotFoundException, Param, Post } from '@nestjs/common';
+import { ApiExtraModels, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiResponseType } from 'src/infrastructure/common/swagger/response.decorator';
 import { UseCaseProxy } from 'src/infrastructure/usecases-proxy/usecases-proxy';
 import { UsecasesProxyModule } from 'src/infrastructure/usecases-proxy/usecases-proxy.module';
@@ -11,7 +10,8 @@ import { TransactionPresenter } from './transaction.presenter';
 
 @Controller('transaction')
 @ApiTags('transaction')
-@ApiExtraModels()
+@ApiResponse({ status: 500, description: 'Internal server error' })
+@ApiExtraModels(TransactionPresenter)
 export class TransactionController {
 
     constructor(
@@ -22,14 +22,14 @@ export class TransactionController {
     ){}
 
     @Post()
-    @HttpCode(201)
+    @ApiResponseType(TransactionPresenter, false)
     async createTransaction(@Body() createTransactionDto: CreateTransactionDto){
         const transactionCreated = await this.createTransactionUsecaseProxy.getInstance().execute(createTransactionDto);
-        return transactionCreated;
+
+        return new TransactionPresenter(transactionCreated);
     }
 
     @Get(':id')
-    @HttpCode(200)
     @ApiResponseType(TransactionPresenter, false)
     async getTransaction(@Param('id') id: string){
         const transaction = await this.getTransactionUsecaseProxy.getInstance().execute(id);
