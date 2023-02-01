@@ -17,7 +17,8 @@
     "paths": {
       "@payments/shared": ["libs/shared/src/index.ts"],
       "@payments/shared/dto": ["libs/shared/src/lib/dto/index.ts"],
-      "@payments/shared/model": ["libs/shared/src/lib/model/index.ts"]
+      "@payments/shared/model": ["libs/shared/src/lib/model/index.ts"],
+      "@payments/shared/constant": ["libs/shared/src/lib/constant/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

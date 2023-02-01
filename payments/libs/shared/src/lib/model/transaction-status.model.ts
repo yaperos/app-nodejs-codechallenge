@@ -1,3 +1,9 @@
+export enum StatusInterface {
+	PENDING = 'pending',
+	APPROVED = 'approved',
+	REJECTED = 'rejected'
+}
+
 export class TransactionStatusModel{
     id: number;
     description: string;

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { TransactionModel } from "@payments/shared/model";
+import { StatusInterface, TransactionModel } from "@payments/shared/model";
 import { randomUUID } from "crypto";
 import { Repository } from "typeorm";
 import { ITransactionRepository } from "../../domain/repositories/transaction.repository.interface";
@@ -33,7 +33,7 @@ export class DataBaseTransactionRepository implements ITransactionRepository{
     async insert(transactionModel: TransactionModel): Promise<TransactionModel> {
         let transaction = TransactionMapper.toTransactionEntity(transactionModel);
         transaction.externalId = randomUUID();
-        transaction.status = await this.transactionStatusRepository.findOne({where: {description: 'pending'}});
+        transaction.status = await this.transactionStatusRepository.findOne({where: {description: StatusInterface.PENDING}});
         transaction.type = await this.transactionTypeRepository.findOne({where: {id: transaction.type.id}});
 
         const result = await this.transactionRepository.insert(transaction);

@@ -1,5 +1,6 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
-import { TransactionModel } from "../model";
+import { faker } from '@faker-js/faker';
+import { StatusInterface, TransactionModel, TypeInterface } from "../model";
 
 export class TransactionTypePresenter{
     @IsNotEmpty()
@@ -8,6 +9,10 @@ export class TransactionTypePresenter{
 
     constructor(name: string){
         this.name = name;
+    }
+
+    static createSameBankTransferTransactionType(){
+        return ({name: TypeInterface.LOCAL_INTERBANK} as TransactionTypePresenter);
     }
 }
 
@@ -18,6 +23,10 @@ export class TransactionStatusPresenter{
 
     constructor(name: string){
         this.name = name;
+    }
+
+    static createPendingTransactionStatus(){
+        return ({name: StatusInterface.PENDING} as TransactionStatusPresenter);
     }
 }
 
@@ -40,6 +49,17 @@ export class TransactionPresenter{
         this.transactionStatus =  new TransactionStatusPresenter(transactionModel.status.description);
         this.value = transactionModel.value;
         this.createdAt = transactionModel.createdAt;
+    }
+
+    static createRandomTransaction(): TransactionPresenter {
+        return ({
+            transactionExternalId: faker.datatype.uuid(),
+            transactionType: TransactionTypePresenter.createSameBankTransferTransactionType(),
+            transactionStatus:  TransactionStatusPresenter.createPendingTransactionStatus(),
+            value: faker.datatype.number({ min: 900, max: 1500 }),
+            createdAt: faker.datatype.datetime()
+        } as TransactionPresenter);
+        
     }
 }
 
