@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/yape-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/yape-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/yape-gateway",
+  "projects": {
+    "yape-gateway": {
+      "type": "application",
+      "root": "apps/yape-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/yape-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/yape-gateway/tsconfig.app.json"
+      }
+    },
+    "yape-auth": {
+      "type": "application",
+      "root": "apps/yape-auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/yape-auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/yape-auth/tsconfig.app.json"
+      }
+    }
+  }
+}
