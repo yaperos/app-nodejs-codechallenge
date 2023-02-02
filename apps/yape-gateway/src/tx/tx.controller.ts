@@ -1,4 +1,4 @@
-import {Body, Controller, Post} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 import {TxService} from "./tx.service";
 import {TxCreateDto} from "@yape/yape-domain/dto/tx.create.dto";
 
@@ -12,5 +12,12 @@ export class TxController {
         const id = await this.txService.create(tx);
 
         return {id}
+    }
+
+    @Get('/:id')
+    async retrieve(@Param('id') id: string): Promise<any> {
+        const tx = await this.txService.retrieve(id);
+
+        return tx
     }
 }

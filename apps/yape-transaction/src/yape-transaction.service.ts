@@ -5,6 +5,7 @@ import {Repository} from "typeorm";
 import {ClientKafka} from "@nestjs/microservices";
 import {TxCreateDto} from "@yape/yape-domain/dto/tx.create.dto";
 import {UserEntity} from "@yape/yape-domain/entity/user.entity";
+import {TxDto, TxStatus, TxType} from "@yape/yape-domain/dto/tx.dto";
 
 @Injectable()
 export class YapeTransactionService {
@@ -44,11 +45,17 @@ export class YapeTransactionService {
         await this.repository.save(txEntity);
     }
 
-    async retrieve(id: string): Promise<any> {
+    async retrieve(id: string): Promise<TxDto> {
 
         const tx = await this.repository.findOne({where: {id},});
 
-        return tx.id;
+        return {
+            transactionExternalId: tx.id,
+            transactionType: new TxType(tx.type),
+            transactionStatus: new TxStatus(tx.status),
+            value: tx.value,
+            createdAt: tx.createdAt
+        };
 
     }
 }

@@ -13,4 +13,8 @@ export class TxService {
     async create(tx: TxCreateDto): Promise<string> {
         return await firstValueFrom(this.txClient.send({cmd: 'tx.create'}, tx));
     }
+
+    async retrieve(id: string): Promise<any> {
+        return await firstValueFrom(this.txClient.send({cmd: 'tx.retrieve'}, {id}));
+    }
 }
