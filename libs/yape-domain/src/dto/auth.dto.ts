@@ -10,4 +10,5 @@ export class TokenDto {
 
 export class AuthDto {
     id: string;
+    username: string;
 }

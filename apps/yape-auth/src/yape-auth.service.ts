@@ -43,6 +43,7 @@ export class YapeAuthService {
 
     return {
       id: auth.id,
+      username: auth.username,
     };
   }
 

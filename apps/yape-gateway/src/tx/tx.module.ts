@@ -2,9 +2,11 @@ import {Module} from '@nestjs/common';
 import {ClientsModule, Transport} from '@nestjs/microservices';
 import {TxController} from "./tx.controller";
 import {TxService} from "./tx.service";
+import {AuthModule} from "../auth/auth.module";
 
 @Module({
     imports: [
+        AuthModule,
         ClientsModule.register([
             {
                 name: 'YAPE_TX_MICROSERVICE',

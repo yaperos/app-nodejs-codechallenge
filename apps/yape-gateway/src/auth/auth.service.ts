@@ -15,4 +15,10 @@ export class AuthService {
 
     return await firstValueFrom(this.authClient.send({cmd: 'auth.login'}, login));
   }
+
+  async validate(token: string) {
+    console.log('before emit validate');
+
+    return await firstValueFrom(this.authClient.send({cmd: 'auth.validate'}, token));
+  }
 }

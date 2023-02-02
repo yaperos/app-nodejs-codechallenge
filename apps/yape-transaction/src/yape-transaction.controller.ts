@@ -4,15 +4,16 @@ import {MessagePattern} from "@nestjs/microservices";
 import {TxCreateDto} from "@yape/yape-domain/dto/tx.create.dto";
 import {TxEntity} from "@yape/yape-domain/entity/tx.entity";
 import {TxDto} from "@yape/yape-domain/dto/tx.dto";
+import {AuthDto} from "@yape/yape-domain/dto/auth.dto";
 
 @Controller()
 export class YapeTransactionController {
   constructor(private readonly yapeTransactionService: YapeTransactionService) {}
 
   @MessagePattern({cmd: 'tx.create'})
-  create(@Body() tx: TxCreateDto) {
+  create(@Body() data: {tx: TxCreateDto, user: AuthDto}) {
     console.log('tx create');
-    return this.yapeTransactionService.create(tx);
+    return this.yapeTransactionService.create(data);
   }
 
   @MessagePattern({cmd: 'tx.validate'})
