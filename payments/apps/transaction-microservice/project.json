@@ -55,6 +55,54 @@
           "codeCoverage": true
         }
       }
+    },
+    "generate-migration": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:generate -d src/app/infrastructure/config/typeorm-config/typeorm.config.ts",
+        "cwd": "apps/transaction-microservice"
+      }
+    },
+    "create-migration": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:create -d src/app/infrastructure/config/typeorm-config/typeorm.config.ts",
+        "cwd": "apps/transaction-microservice"
+      }
+    },
+    "run-migration": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:run -d src/app/infrastructure/config/typeorm-config/typeorm.config.ts",
+        "cwd": "apps/transaction-microservice"
+      }
+    },
+    "revert-migration": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:revert -d src/app/infrastructure/config/typeorm-config/typeorm.config.ts",
+        "cwd": "apps/transaction-microservice"
+      }
+    },
+    "drop-schema": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node  --project tsconfig.app.json ../../node_modules/.bin/typeorm schema:drop -d src/app/infrastructure/config/typeorm-config/typeorm.config.ts",
+        "cwd": "apps/transaction-microservice"
+      }
+    },
+    "run-seed": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm-seeding seed -d src/app/infrastructure/config/typeorm-config/typeorm.config.ts src/database/seeders/*.ts",
+        "cwd": "apps/transaction-microservice"
+      }
     }
   },
   "tags": []

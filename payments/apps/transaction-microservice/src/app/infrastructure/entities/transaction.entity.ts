@@ -27,7 +27,7 @@ export class Transaction{
     @JoinColumn()
     status: TransactionStatus
 
-    @CreateDateColumn({ type: 'timestamp' })
+    @CreateDateColumn({ type: 'timestamp', default: 'LOCALTIMESTAMP'})
     createdAt: Date;
 
     @UpdateDateColumn({ type: 'timestamp', nullable: true})

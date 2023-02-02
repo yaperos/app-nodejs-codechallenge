@@ -20,6 +20,14 @@ cd payments/
 ```bash
 npm install
 ```
+- migrate database schema (tables):
+```bash
+npx nx run transaction-microservice:run-migration
+```
+- seeding initial data:
+```bash
+npx nx run transaction-microservice:run-seed
+```
 
 **Commands to each project**
 - go to project: 

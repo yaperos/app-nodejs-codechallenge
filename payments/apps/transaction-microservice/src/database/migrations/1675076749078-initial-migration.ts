@@ -19,7 +19,8 @@ export class InitialMigration1675076749078 implements MigrationInterface{
             },
             {
                 name: 'createdAt',
-                type: 'timestamp'
+                type: 'timestamp',
+                default: 'LOCALTIMESTAMP'
             },
             {
                 name: 'updatedAt',
@@ -45,7 +46,8 @@ export class InitialMigration1675076749078 implements MigrationInterface{
         },
         {
             name: 'createdAt',
-            type: 'timestamp'
+            type: 'timestamp',
+            default: 'LOCALTIMESTAMP'
         },
         {
             name: 'updatedAt',

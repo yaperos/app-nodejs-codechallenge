@@ -9,7 +9,7 @@ export class TransactionType{
     @Column({ type:'varchar'})
     description: string;
 
-    @CreateDateColumn({ type: 'timestamp' })
+    @CreateDateColumn({ type: 'timestamp', default: 'LOCALTIMESTAMP'})
     createdAt: Date;
 
     @UpdateDateColumn({ type: 'timestamp', nullable: true})

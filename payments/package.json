@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@jorgebodega/typeorm-seeding": "^6.0.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
