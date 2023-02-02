@@ -1,13 +1,20 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { TransactionDto } from 'src/domain/transaction.dto';
+import { Body, Controller, Post, Logger } from '@nestjs/common';
+import { CreateTransactionDto } from '../domain/create-transaction.dto';
+import { Transaction } from 'src/domain/transaction.entity';
 import { TransactionService } from './transaction.service';
 
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  private readonly logger = new Logger(TransactionController.name);
+  constructor(private readonly transactionService: TransactionService) { }
 
   @Post('add')
-  createTransaction(@Body() transaction: TransactionDto): Promise<void> {
+  createTransaction(
+    @Body() transaction: CreateTransactionDto,
+  ): Promise<Transaction> {
+    this.logger.log({
+      bodyParams: transaction,
+    });
     return this.transactionService.add(transaction);
   }
 }

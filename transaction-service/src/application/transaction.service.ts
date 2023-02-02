@@ -1,24 +1,68 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TransactionDto } from 'src/domain/transaction.dto';
+import { CreateTransactionDto } from 'src/domain/create-transaction.dto';
 import { Repository } from 'typeorm';
 import { Transaction } from '../domain/transaction.entity';
 
 @Injectable()
 export class TransactionService {
+  private readonly logger = new Logger(TransactionService.name);
+
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
-  ) {}
+  ) { }
 
-  async add(transactionDto: TransactionDto): Promise<void> {
+  async add(transactionDto: CreateTransactionDto): Promise<Transaction> {
+    const context = 'add';
+    this.logger.log({
+      context,
+      status: 'start',
+      payload: {
+        bodyParams: transactionDto,
+      },
+    });
+
     const transaction = new Transaction();
     transaction.accountExternalIdDebit = transactionDto.accountExternalIdDebit;
     transaction.accountExternalIdCredit =
       transactionDto.accountExternalIdCredit;
-    transaction.tranferTypeId = transactionDto.tranferTypeId;
     transaction.value = transactionDto.value;
 
-    await this.transactionRepository.save(transaction);
+    const savedTransaction = await this.transactionRepository.save(transaction);
+    this.logger.log({
+      context,
+      status: 'end',
+      payload: {
+        savedTransaction,
+      },
+    });
+    return savedTransaction;
+  }
+
+  private async getOne(id: number): Promise<Transaction> {
+    const context = 'getOne';
+    this.logger.log({
+      context,
+      status: 'start',
+      payload: {
+        id,
+      },
+    });
+    const transaction = await this.transactionRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    this.logger.log({
+      context: 'getOne',
+      status: 'end',
+      id,
+      payload: {
+        transaction,
+      },
+    });
+    return transaction;
   }
 }

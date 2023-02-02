@@ -11,7 +11,7 @@ export class Transaction {
   @Column({ length: 36 })
   accountExternalIdCredit: string;
 
-  @Column('int')
+  @Column('int', { default: 1 })
   tranferTypeId: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
