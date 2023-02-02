@@ -6,7 +6,7 @@ import { StatusInterface } from '@payments/shared/model';
 import { Observable, of, switchMap } from 'rxjs';
 
 @Injectable()
-export class AppService {
+export class AntifraudService {
   constructor( @Inject(MicroserviceClient.Transaction) private readonly transactionMicroserviceClient: ClientProxy){}
 
   validateAndUpdateTransaction(transaction: TransactionPresenter): Observable<TransactionPresenter>{

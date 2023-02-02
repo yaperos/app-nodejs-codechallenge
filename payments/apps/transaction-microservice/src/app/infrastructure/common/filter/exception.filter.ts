@@ -14,6 +14,7 @@ export class AllExceptionFilter extends BaseRpcExceptionFilter {
     }
 
     catch(exception: any, host: ArgumentsHost) {
+        console.log('entro a exception');
         const message =
             exception instanceof HttpException
                 ? (exception.getResponse() as IError)

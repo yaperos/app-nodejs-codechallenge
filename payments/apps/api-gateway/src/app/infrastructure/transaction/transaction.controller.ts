@@ -12,7 +12,7 @@ export class TransactionController {
   async createTransaction(@Body() createTransactionDto: CreateTransactionDto){
     const createTransaction$ = this.appService.createTransaction(createTransactionDto);
     const transactionPresenter = await lastValueFrom(createTransaction$);
-    if(!(transactionPresenter instanceof TransactionPresenter)){
+    if(!transactionPresenter.transactionExternalId){
       throw new BadRequestException(transactionPresenter);
     }
     return transactionPresenter;
@@ -22,7 +22,7 @@ export class TransactionController {
   async getTransaction(@Param('id') id: string){
       const getTransaction$ = this.appService.getTransaction(id);
       const transactionPresenter = await lastValueFrom(getTransaction$); 
-      if(!(transactionPresenter instanceof TransactionPresenter)){
+      if(!transactionPresenter.transactionExternalId){
         throw new BadRequestException(transactionPresenter);
       }
       return transactionPresenter;

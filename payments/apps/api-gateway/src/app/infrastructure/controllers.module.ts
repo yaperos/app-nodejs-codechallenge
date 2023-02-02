@@ -10,8 +10,8 @@ import { TransactionService } from './transaction/transaction.service';
             name: MicroserviceClient.Transaction,
             transport: Transport.TCP,
             options: {
-                host: '127.0.0.1',
-                port: 5555
+                host: process.env.TRANSACTION_MICROSERVICE_HOST,
+                port: parseInt(process.env.TRANSACTION_MICROSERVICE_PORT)
             }
         },
         {
@@ -20,11 +20,11 @@ import { TransactionService } from './transaction/transaction.service';
             options: {
                 client: {
                     clientId: 'transaction',
-                    brokers: ['localhost:9092'],
+                    brokers: [`${process.env.KAFKA_HOST}:${process.env.KAFKA_PORT}`],
                 },
                 producerOnlyMode: true,
                 consumer: {
-                    groupId: 'transaction-consumer',
+                    groupId: process.env.KAFKA_CONSUMER_GROUP_ID,
                 },
             }
         }
