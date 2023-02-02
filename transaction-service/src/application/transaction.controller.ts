@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Logger } from '@nestjs/common';
 import { CreateTransactionDto } from '../domain/create-transaction.dto';
-import { Transaction } from 'src/domain/transaction.entity';
 import { TransactionService } from './transaction.service';
+import { ShowTransactionDto } from '../domain/show-transaction.dto';
 
 @Controller('transaction')
 export class TransactionController {
@@ -11,7 +11,7 @@ export class TransactionController {
   @Post('add')
   createTransaction(
     @Body() transaction: CreateTransactionDto,
-  ): Promise<Transaction> {
+  ): Promise<ShowTransactionDto> {
     this.logger.log({
       bodyParams: transaction,
     });
