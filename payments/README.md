@@ -1,6 +1,6 @@
-## Project Specifications
+# Project Specifications
 
-**Environment**  
+# Environment
 
 - Node: 18.12.1
 - Docker: 20.10.22
