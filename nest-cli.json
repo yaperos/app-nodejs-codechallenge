@@ -36,6 +36,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/yape-domain/tsconfig.lib.json"
       }
+    },
+    "yape-transaction": {
+      "type": "application",
+      "root": "apps/yape-transaction",
+      "entryFile": "main",
+      "sourceRoot": "apps/yape-transaction/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/yape-transaction/tsconfig.app.json"
+      }
+    },
+    "yape-anti-fraud": {
+      "type": "application",
+      "root": "apps/yape-anti-fraud",
+      "entryFile": "main",
+      "sourceRoot": "apps/yape-anti-fraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/yape-anti-fraud/tsconfig.app.json"
+      }
     }
   }
 }
