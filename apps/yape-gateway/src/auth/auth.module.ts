@@ -8,16 +8,10 @@ import { AuthService } from './auth.service';
     ClientsModule.register([
       {
         name: 'YAPE_AUTH_MICROSERVICE',
-        transport: Transport.KAFKA,
+        transport: Transport.TCP,
         options: {
-          client: {
-            clientId: 'yape-auth',
-            brokers: ['kafka:9092'],
-          },
-          producerOnlyMode: true,
-          consumer: {
-            groupId: 'yape-auth-consumer',
-          },
+          host: 'localhost',
+          port: 8081
         },
       },
     ]),
