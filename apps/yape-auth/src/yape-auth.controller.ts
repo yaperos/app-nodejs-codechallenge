@@ -1,12 +1,15 @@
 import { Controller, Get } from '@nestjs/common';
 import { YapeAuthService } from './yape-auth.service';
+import {EventPattern, Payload} from "@nestjs/microservices";
+import {LoginDto} from "@yape/yape-domain/dto/auth.dto";
 
 @Controller()
 export class YapeAuthController {
-  constructor(private readonly yapeAuthService: YapeAuthService) {}
+  constructor(private readonly authService: YapeAuthService) {}
 
-  @Get()
-  getHello(): string {
-    return this.yapeAuthService.getHello();
+  @EventPattern({cmd: 'auth.login'})
+  handleLogin(@Payload() data: LoginDto) {
+    console.log('login event received');
+    return this.authService.login(data.username, data.password);
   }
 }
