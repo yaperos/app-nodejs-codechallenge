@@ -48,3 +48,6 @@ http://127.0.0.1:3333/api/transactions
 ```bash
 http://127.0.0.1:3333/api/transactions/14903f2d-0759-412c-aea3-758ef6c170c6
 ```
+
+**Test**
+![DB Migration](https://i.postimg.cc/GhPcHXhf/01-migration.png)
