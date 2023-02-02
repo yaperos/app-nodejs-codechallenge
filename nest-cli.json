@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/yape-auth/tsconfig.app.json"
       }
+    },
+    "yape-domain": {
+      "type": "library",
+      "root": "libs/yape-domain",
+      "entryFile": "index",
+      "sourceRoot": "libs/yape-domain/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/yape-domain/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -17,6 +17,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@yape/yape-domain": [
+        "libs/yape-domain/src"
+      ],
+      "@yape/yape-domain/*": [
+        "libs/yape-domain/src/*"
+      ]
+    }
   }
 }

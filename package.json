@@ -17,16 +17,23 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/yape-gateway/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/yape-gateway/test/jest-e2e.json",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "migrations:run": "npm run typeorm migration:run -- -d database/data-source.ts",
+    "migrations:generate": "npm run typeorm -- -d database/data-source.ts migration:generate ./database/migrations/$npm_config_name"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/microservices": "^9.3.1",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/typeorm": "^9.0.1",
+    "dotenv": "^16.0.3",
     "kafkajs": "^2.2.3",
+    "pg": "^8.9.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.3.11"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -68,7 +75,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@yape/yape-domain(|/.*)$": "<rootDir>/libs/yape-domain/src/$1"
+    }
   }
 }
