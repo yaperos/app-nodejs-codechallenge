@@ -18,9 +18,6 @@ import { TransactionService } from '../domain/transaction.service';
             brokers: ['localhost:9092'],
           },
           producerOnlyMode: true,
-          // consumer: {
-          //   groupId: 'yape-af-consumer',
-          // },
         },
       },
     ]),

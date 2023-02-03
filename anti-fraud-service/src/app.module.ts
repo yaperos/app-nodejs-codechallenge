@@ -13,13 +13,10 @@ import { AntiFraudService } from './domain/anti-fraud.service';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'transaction',
+            clientId: 'anti-fraud',
             brokers: ['localhost:9092'],
           },
           producerOnlyMode: true,
-          // consumer: {
-          //   groupId: 'transactionn-consumer',
-          // },
         },
       },
     ]),
