@@ -24,7 +24,7 @@ export class ValidateService {
       status = IStatus.REJECTED;
     }
     this.eventClient.emit('update-transaction', {
-      id: transaction.id,
+      transactionExternalId: transaction.transactionExternalId,
       statusId: status,
     });
   }

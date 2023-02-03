@@ -1,5 +1,5 @@
 export class ShowTransactionDto {
-  readonly id: number;
+  readonly transactionExternalId: string;
   readonly accountExternalIdDebit: string;
   readonly accountExternalIdCredit: string;
   readonly tranferTypeId: number;

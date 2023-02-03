@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 @Entity('transaction')
 export class Transaction {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Column({ primary: true, generated: 'uuid' })
+  transactionExternalId: string;
 
   @Column({ length: 36 })
   accountExternalIdDebit: string;

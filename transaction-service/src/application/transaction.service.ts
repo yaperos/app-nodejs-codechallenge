@@ -50,6 +50,7 @@ export class TransactionService {
   }
 
   async update(transaction: UpdateTransactionDto): Promise<void> {
+    console.log(transaction);
     const context = 'update';
     this.logger.log({
       context,
@@ -63,28 +64,31 @@ export class TransactionService {
       transactionStatusId: transaction.statusId,
     };
 
-    this.transactionRepository.update(transaction.id, toUpdate);
+    this.transactionRepository.update(
+      transaction.transactionExternalId,
+      toUpdate,
+    );
   }
 
-  private async getOne(id: number): Promise<Transaction> {
+  private async getOne(transactionExternalId: string): Promise<Transaction> {
     const context = 'getOne';
     this.logger.log({
       context,
       status: 'start',
       payload: {
-        id,
+        transactionExternalId,
       },
     });
     const transaction = await this.transactionRepository.findOne({
       where: {
-        id,
+        transactionExternalId,
       },
     });
 
     this.logger.log({
       context: 'getOne',
       status: 'end',
-      id,
+      transactionExternalId,
       payload: {
         transaction,
       },

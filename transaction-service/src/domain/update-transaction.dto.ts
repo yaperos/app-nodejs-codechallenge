@@ -1,4 +1,4 @@
 export class UpdateTransactionDto {
-  readonly id: number;
+  readonly transactionExternalId: string;
   readonly statusId: number;
 }
