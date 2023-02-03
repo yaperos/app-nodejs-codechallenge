@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AppController } from './application/app.controller';
+import { AntiFraudController } from './application/anti-fraud.controller';
 import { AntiFraudService } from './domain/anti-fraud.service';
+import { LoggerModule } from './infraestructure/logger/logger.module';
 
 @Module({
   imports: [
@@ -20,8 +21,9 @@ import { AntiFraudService } from './domain/anti-fraud.service';
         },
       },
     ]),
+    LoggerModule,
   ],
-  controllers: [AppController],
-  providers: [AntiFraudService],
+  controllers: [AntiFraudController],
+  providers: [AntiFraudService, LoggerModule],
 })
 export class AppModule {}

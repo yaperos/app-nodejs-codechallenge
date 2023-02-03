@@ -11,7 +11,6 @@ import { LoggerModule } from './infraestructure/logger/logger.module';
     TransactionModule,
     LoggerModule,
   ],
-  exports: [LoggerModule],
   providers: [LoggerModule],
 })
 export class AppModule {}
