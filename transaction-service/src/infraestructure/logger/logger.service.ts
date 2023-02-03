@@ -14,7 +14,7 @@ export class LoggerService implements ILogger {
 
   log(context: string, status: StatusType, message: Record<string, any>): void {
     this.logger.log(
-      `[INFO] ${circularJSON.stringify(message)} | ${status}`,
+      `[${status}] [INFO] ${circularJSON.stringify(message)}`,
       context,
     );
   }
@@ -25,7 +25,7 @@ export class LoggerService implements ILogger {
     message: Record<string, any>,
   ): void {
     this.logger.error(
-      `[ERROR] ${circularJSON.stringify(message)} | ${status}`,
+      `[${status}] [ERROR] ${circularJSON.stringify(message)}`,
       context,
     );
   }
@@ -36,7 +36,7 @@ export class LoggerService implements ILogger {
     message: Record<string, any>,
   ): void {
     this.logger.warn(
-      `[WARN] ${circularJSON.stringify(message)} | ${status}`,
+      `[${status}] [WARN] ${circularJSON.stringify(message)}`,
       context,
     );
   }
@@ -47,7 +47,7 @@ export class LoggerService implements ILogger {
     message: Record<string, any>,
   ): void {
     this.logger.verbose(
-      `[DEBUG] ${circularJSON.stringify(message)} | ${status}`,
+      `[${status}] [DEBUG] ${circularJSON.stringify(message)}`,
       context,
     );
   }
@@ -59,7 +59,7 @@ export class LoggerService implements ILogger {
   ): void {
     if (this.enviroment !== 'production') {
       this.logger.debug(
-        `[VERBOSE] ${circularJSON.stringify(message)} | ${status}`,
+        `[${status}] [VERBOSE] ${circularJSON.stringify(message)}`,
         context,
       );
     }

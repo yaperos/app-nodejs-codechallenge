@@ -5,40 +5,75 @@ import { EventPattern } from '@nestjs/microservices';
 import { UpdateTransactionDto } from '../domain/dto/update-transaction.dto';
 import { GetTransactionDto } from '../domain/dto/get-transaction.dto';
 import { ShowTransactionDto } from '../domain/dto/show-transaction.dto';
+import { LoggerService } from 'src/infraestructure/logger/logger.service';
 
 @Controller('transaction')
 export class TransactionController {
-  private readonly logger = new Logger(TransactionController.name);
-  constructor(private readonly transactionService: TransactionService) { }
+  private context = 'TransactionController';
+
+  constructor(
+    private readonly transactionService: TransactionService,
+    private readonly logger: LoggerService,
+  ) {}
 
   @Post('add')
   createTransaction(
     @Body() transaction: CreateTransactionDto,
   ): Promise<ShowTransactionDto> {
-    this.logger.log({
-      bodyParams: transaction,
+    const context = `${this.context}-createTransaction`;
+    this.logger.log(context, 'start', {
+      CreateTransactionDto: transaction,
     });
-    return this.transactionService.add(transaction);
+
+    return this.transactionService
+      .add(transaction)
+      .then((createdTransaction) => {
+        this.logger.log(context, 'end', {
+          createdTransaction,
+        });
+        return createdTransaction;
+      });
   }
 
   @EventPattern('update-transaction')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async validateTransaction(transaction: UpdateTransactionDto) {
-    // validateTransaction(transaction: ShowTransactionDto) {
-    console.log(`Received update-transaction event: ${transaction}`);
-    console.log(transaction);
-    await this.transactionService.update(transaction);
+  validateTransaction(transaction: UpdateTransactionDto) {
+    const context = `${this.context}-validateTransaction`;
+    this.logger.log(context, 'start', {
+      UpdateTransactionDto: transaction,
+    });
+
+    this.transactionService
+      .update(transaction)
+      .then((updatedTransaction) => {
+        this.logger.log(context, 'end', {
+          updatedTransaction,
+        });
+        return true;
+      })
+      .catch((error) => {
+        this.logger.error(context, 'end', {
+          error,
+        });
+        return false;
+      });
   }
 
   @Get(':transactionExternalId')
-  getTransaction(
+  async getTransaction(
     @Param() getTransactionDto: GetTransactionDto,
   ): Promise<ShowTransactionDto> {
-    this.logger.log({
-      params: getTransactionDto,
+    const context = `${this.context}-createTransaction`;
+    this.logger.log(context, 'start', {
+      GetTransactionDto: getTransactionDto,
     });
-    return this.transactionService.getOne(
-      getTransactionDto.transactionExternalId,
-    );
+
+    return this.transactionService
+      .getOne(getTransactionDto.transactionExternalId)
+      .then((transaction) => {
+        this.logger.log(context, 'end', {
+          transaction,
+        });
+        return transaction;
+      });
   }
 }

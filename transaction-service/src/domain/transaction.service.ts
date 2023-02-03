@@ -43,10 +43,10 @@ export class TransactionService {
     return savedTransaction;
   }
 
-  async update(transaction: UpdateTransactionDto): Promise<void> {
+  async update(transaction: UpdateTransactionDto): Promise<boolean> {
     const context = `${this.context}-update`;
 
-    this.logger.log(context, 'end', {
+    this.logger.log(context, 'start', {
       UpdateTransactionDto: transaction,
     });
 
@@ -54,10 +54,20 @@ export class TransactionService {
       transactionStatusId: transaction.statusId,
     };
 
-    this.transactionRepository.update(
-      transaction.transactionExternalId,
-      toUpdate,
-    );
+    return this.transactionRepository
+      .update(transaction.transactionExternalId, toUpdate)
+      .then((updatedTransaction) => {
+        this.logger.log(context, 'end', {
+          updatedTransaction,
+        });
+        return true;
+      })
+      .catch((error) => {
+        this.logger.error(context, 'end', {
+          error,
+        });
+        return false;
+      });
   }
 
   async getOne(transactionExternalId: string): Promise<ShowTransactionDto> {
@@ -71,15 +81,16 @@ export class TransactionService {
       },
     });
 
-    this.logger.log(context, 'end', {
-      transaction,
-    });
-    return {
+    const showTransactionDto = {
       transactionExternalId: transaction.transactionExternalId,
       tranferTypeId: transaction.tranferTypeId,
       transactionStatusId: transaction.transactionStatusId,
       value: transaction.value,
       createdAt: transaction.createdAt,
     };
+    this.logger.log(context, 'end', {
+      showTransactionDto,
+    });
+    return showTransactionDto;
   }
 }
