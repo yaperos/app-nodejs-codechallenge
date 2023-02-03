@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AppController } from './app.controller';
-import { ValidateService } from './validate.service';
+import { AppController } from './application/app.controller';
+import { AntiFraudService } from './domain/anti-fraud.service';
 
 @Module({
   imports: [
@@ -25,6 +25,6 @@ import { ValidateService } from './validate.service';
     ]),
   ],
   controllers: [AppController],
-  providers: [ValidateService],
+  providers: [AntiFraudService],
 })
 export class AppModule {}

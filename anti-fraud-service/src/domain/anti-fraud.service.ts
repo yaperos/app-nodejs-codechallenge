@@ -9,7 +9,7 @@ export enum IStatus {
 }
 
 @Injectable()
-export class ValidateService {
+export class AntiFraudService {
   constructor(
     @Inject('YAPE_EVENT_BUS')
     private readonly eventClient: ClientKafka,
