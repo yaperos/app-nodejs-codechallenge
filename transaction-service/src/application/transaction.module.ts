@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from 'src/domain/transaction.entity';
 import { TransactionController } from './transaction.controller';
 import { TransactionService } from '../domain/transaction.service';
+import { LoggerModule } from '../infraestructure/logger/logger.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TransactionService } from '../domain/transaction.service';
         },
       },
     ]),
+    LoggerModule,
   ],
   controllers: [TransactionController],
   providers: [TransactionService],

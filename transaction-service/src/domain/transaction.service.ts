@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,26 +6,22 @@ import { Transaction } from './transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { ShowTransactionDto } from './dto/show-transaction.dto';
-
+import { LoggerService } from '../infraestructure/logger/logger.service';
 @Injectable()
 export class TransactionService {
-  private readonly logger = new Logger(TransactionService.name);
-
+  private context = 'TransactionService';
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
     @Inject('YAPE_EVENT_BUS')
     private readonly eventClient: ClientKafka,
-  ) { }
+    private readonly logger: LoggerService,
+  ) {}
 
   async add(transactionDto: CreateTransactionDto): Promise<Transaction> {
-    const context = 'add';
-    this.logger.log({
-      context,
-      status: 'start',
-      payload: {
-        bodyParams: transactionDto,
-      },
+    const context = `${this.context}-add`;
+    this.logger.log(context, 'start', {
+      CreateTransactionDto: transactionDto,
     });
 
     const transaction = new Transaction();
@@ -35,12 +31,9 @@ export class TransactionService {
     transaction.value = transactionDto.value;
 
     const savedTransaction = await this.transactionRepository.save(transaction);
-    this.logger.log({
-      context,
-      status: 'end',
-      payload: {
-        savedTransaction,
-      },
+
+    this.logger.log(context, 'end', {
+      savedTransaction,
     });
 
     this.eventClient.emit(
@@ -51,14 +44,10 @@ export class TransactionService {
   }
 
   async update(transaction: UpdateTransactionDto): Promise<void> {
-    console.log(transaction);
-    const context = 'update';
-    this.logger.log({
-      context,
-      status: 'start',
-      payload: {
-        transaction,
-      },
+    const context = `${this.context}-update`;
+
+    this.logger.log(context, 'end', {
+      UpdateTransactionDto: transaction,
     });
 
     const toUpdate = {
@@ -72,13 +61,9 @@ export class TransactionService {
   }
 
   async getOne(transactionExternalId: string): Promise<ShowTransactionDto> {
-    const context = 'getOne';
-    this.logger.log({
-      context,
-      status: 'start',
-      payload: {
-        transactionExternalId,
-      },
+    const context = `${this.context}-getOne`;
+    this.logger.log(context, 'start', {
+      transactionExternalId,
     });
     const transaction = await this.transactionRepository.findOne({
       where: {
@@ -86,13 +71,8 @@ export class TransactionService {
       },
     });
 
-    this.logger.log({
-      context: 'getOne',
-      status: 'end',
-      transactionExternalId,
-      payload: {
-        transaction,
-      },
+    this.logger.log(context, 'end', {
+      transaction,
     });
     return {
       transactionExternalId: transaction.transactionExternalId,
