@@ -13,10 +13,6 @@ export class AppController {
     // validateTransaction(transaction: ShowTransactionDto) {
     console.log(`Received event: ${transaction}`);
     console.log(transaction);
-    const result = this.validateService.validate(transaction);
-    console.log(
-      '🚀 ~ file: app.controller.ts:17 ~ AppController ~ validateTransaction ~ result',
-      result,
-    );
+    this.validateService.validate(transaction);
   }
 }
