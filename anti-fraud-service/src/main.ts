@@ -16,7 +16,7 @@ async function bootstrap() {
       transport: Transport.KAFKA,
       options: {
         client: {
-          clientId: 'update-transaction',
+          clientId: 'anti-fraud',
           brokers: [configService.get<string>('KAFKA_BROKER')],
         },
         consumer: {
