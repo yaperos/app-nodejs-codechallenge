@@ -30,13 +30,15 @@ export class TransactionController {
     await this.transactionService.update(transaction);
   }
 
-  @Get(':id')
+  @Get(':transactionExternalId')
   getTransaction(
-    @Param('id') transactionExternalId: string,
+    @Param() getTransactionDto: GetTransactionDto,
   ): Promise<ShowTransactionDto> {
     this.logger.log({
-      params: transactionExternalId,
+      params: getTransactionDto,
     });
-    return this.transactionService.getOne(transactionExternalId);
+    return this.transactionService.getOne(
+      getTransactionDto.transactionExternalId,
+    );
   }
 }
