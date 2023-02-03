@@ -1,4 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTransactionDto } from 'src/domain/create-transaction.dto';
 import { Repository } from 'typeorm';
@@ -11,6 +12,8 @@ export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
+    @Inject('YAPE_EVENT_BUS')
+    private readonly eventClient: ClientKafka,
   ) { }
 
   async add(transactionDto: CreateTransactionDto): Promise<Transaction> {
@@ -37,6 +40,13 @@ export class TransactionService {
         savedTransaction,
       },
     });
+
+    this.eventClient.emit(
+      'transaction',
+      JSON.stringify({
+        savedTransaction,
+      }),
+    );
     return savedTransaction;
   }
 

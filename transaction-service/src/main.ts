@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { Transport } from '@nestjs/microservices';
-import { MicroserviceOptions } from '@nestjs/microservices/interfaces';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -15,22 +13,5 @@ async function bootstrap() {
     );
   });
 
-  const microservice =
-    await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-      transport: Transport.KAFKA,
-      options: {
-        client: {
-          clientId: 'transaction',
-          brokers: [configService.get<string>('KAFKA_BROKER')],
-        },
-        consumer: {
-          groupId: 'transaction-consumer',
-        },
-      },
-    });
-
-  await microservice.listen().then(() => {
-    Logger.log(`Microservice is listening...`);
-  });
 }
 bootstrap();
