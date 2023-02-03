@@ -2,6 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTransactionDto } from 'src/domain/create-transaction.dto';
+import { UpdateTransactionDto } from 'src/domain/update-transaction.dto';
 import { Repository } from 'typeorm';
 import { Transaction } from '../domain/transaction.entity';
 
@@ -46,6 +47,23 @@ export class TransactionService {
       JSON.stringify(savedTransaction),
     );
     return savedTransaction;
+  }
+
+  async update(transaction: UpdateTransactionDto): Promise<void> {
+    const context = 'update';
+    this.logger.log({
+      context,
+      status: 'start',
+      payload: {
+        transaction,
+      },
+    });
+
+    const toUpdate = {
+      transactionStatusId: transaction.statusId,
+    };
+
+    this.transactionRepository.update(transaction.id, toUpdate);
   }
 
   private async getOne(id: number): Promise<Transaction> {
