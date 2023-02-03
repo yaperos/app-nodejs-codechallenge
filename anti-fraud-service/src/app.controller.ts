@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { Ctx, EventPattern } from '@nestjs/microservices';
+import { Controller } from '@nestjs/common';
+import { EventPattern } from '@nestjs/microservices';
 import { ShowTransactionDto } from './dto/show-transaction.dto';
 import { ValidateService } from './validate.service';
 
