@@ -16,4 +16,7 @@ export class Transaction {
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   value: number;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 }
