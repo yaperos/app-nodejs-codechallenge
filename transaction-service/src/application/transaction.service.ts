@@ -41,7 +41,10 @@ export class TransactionService {
       },
     });
 
-    this.eventClient.emit('transaction', JSON.stringify(savedTransaction));
+    this.eventClient.emit(
+      'validate-transaction',
+      JSON.stringify(savedTransaction),
+    );
     return savedTransaction;
   }
 
