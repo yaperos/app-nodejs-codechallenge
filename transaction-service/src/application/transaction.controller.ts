@@ -1,9 +1,10 @@
-import { Body, Controller, Post, Logger } from '@nestjs/common';
+import { Body, Controller, Post, Logger, Get, Param } from '@nestjs/common';
 import { CreateTransactionDto } from '../domain/create-transaction.dto';
 import { TransactionService } from './transaction.service';
 import { ShowTransactionDto } from '../domain/show-transaction.dto';
 import { EventPattern } from '@nestjs/microservices';
-import { UpdateTransactionDto } from 'src/domain/update-transaction.dto';
+import { UpdateTransactionDto } from '../domain/update-transaction.dto';
+import { GetTransactionDto } from '../domain/get-transaction.dto';
 
 @Controller('transaction')
 export class TransactionController {
@@ -27,6 +28,15 @@ export class TransactionController {
     console.log(`Received update-transaction event: ${transaction}`);
     console.log(transaction);
     await this.transactionService.update(transaction);
+  }
 
+  @Get(':id')
+  getTransaction(
+    @Param('id') transactionExternalId: string,
+  ): Promise<ShowTransactionDto> {
+    this.logger.log({
+      params: transactionExternalId,
+    });
+    return this.transactionService.getOne(transactionExternalId);
   }
 }

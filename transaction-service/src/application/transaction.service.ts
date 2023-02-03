@@ -70,7 +70,7 @@ export class TransactionService {
     );
   }
 
-  private async getOne(transactionExternalId: string): Promise<Transaction> {
+  async getOne(transactionExternalId: string): Promise<Transaction> {
     const context = 'getOne';
     this.logger.log({
       context,
