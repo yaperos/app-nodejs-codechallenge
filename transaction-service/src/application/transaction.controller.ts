@@ -1,10 +1,10 @@
 import { Body, Controller, Post, Logger, Get, Param } from '@nestjs/common';
-import { CreateTransactionDto } from '../domain/create-transaction.dto';
-import { TransactionService } from './transaction.service';
-import { ShowTransactionDto } from '../domain/show-transaction.dto';
+import { CreateTransactionDto } from '../domain/dto/create-transaction.dto';
+import { TransactionService } from '../domain/transaction.service';
 import { EventPattern } from '@nestjs/microservices';
-import { UpdateTransactionDto } from '../domain/update-transaction.dto';
-import { GetTransactionDto } from '../domain/get-transaction.dto';
+import { UpdateTransactionDto } from '../domain/dto/update-transaction.dto';
+import { GetTransactionDto } from '../domain/dto/get-transaction.dto';
+import { ShowTransactionDto } from '../domain/dto/show-transaction.dto';
 
 @Controller('transaction')
 export class TransactionController {
