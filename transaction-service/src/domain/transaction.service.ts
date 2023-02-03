@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Transaction } from './transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { ShowTransactionDto } from './dto/show-transaction.dto';
 
 @Injectable()
 export class TransactionService {
@@ -70,7 +71,7 @@ export class TransactionService {
     );
   }
 
-  async getOne(transactionExternalId: string): Promise<Transaction> {
+  async getOne(transactionExternalId: string): Promise<ShowTransactionDto> {
     const context = 'getOne';
     this.logger.log({
       context,
@@ -93,6 +94,12 @@ export class TransactionService {
         transaction,
       },
     });
-    return transaction;
+    return {
+      transactionExternalId: transaction.transactionExternalId,
+      tranferTypeId: transaction.tranferTypeId,
+      transactionStatusId: transaction.transactionStatusId,
+      value: transaction.value,
+      createdAt: transaction.createdAt,
+    };
   }
 }

@@ -1,6 +1,7 @@
 export class ShowTransactionDto {
-  readonly accountExternalIdDebit: string;
-  readonly accountExternalIdCredit: string;
+  readonly transactionExternalId: string;
   readonly tranferTypeId: number;
+  readonly transactionStatusId: number;
   readonly value: number;
+  readonly createdAt: Date;
 }
