@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TransactionModule } from './application/transaction.module';
+import { RedisModule } from './infraestructure/cache/redis.module';
 import { DatabaseModule } from './infraestructure/database/database.module';
 import { LoggerModule } from './infraestructure/logger/logger.module';
 
@@ -10,6 +11,7 @@ import { LoggerModule } from './infraestructure/logger/logger.module';
     DatabaseModule,
     TransactionModule,
     LoggerModule,
+    RedisModule,
   ],
   providers: [LoggerModule],
 })

@@ -7,6 +7,7 @@ import { TransactionService } from '../domain/transaction.service';
 import { LoggerModule } from '../infraestructure/logger/logger.module';
 import { TransactionConfig } from 'src/domain/transaction.config';
 import { TransferType } from 'src/domain/transaction-type.entity';
+import { RedisModule } from '../infraestructure/cache/redis.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { TransferType } from 'src/domain/transaction-type.entity';
       },
     ]),
     LoggerModule,
+    RedisModule,
   ],
   controllers: [TransactionController],
   providers: [TransactionService, TransactionConfig],
