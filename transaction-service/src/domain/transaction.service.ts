@@ -7,9 +7,12 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { ShowTransactionDto } from './dto/show-transaction.dto';
 import { LoggerService } from '../infraestructure/logger/logger.service';
+import { statusTransaction } from './transaction.consts';
+
 @Injectable()
 export class TransactionService {
   private context = 'TransactionService';
+
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
@@ -51,8 +54,12 @@ export class TransactionService {
     });
 
     const toUpdate = {
-      transactionStatusId: transaction.statusId,
+      transactionStatusId: statusTransaction[transaction.result],
     };
+
+    this.logger.log(context, 'processing', {
+      toUpdate,
+    });
 
     return this.transactionRepository
       .update(transaction.transactionExternalId, toUpdate)

@@ -36,8 +36,8 @@ export class TransactionController {
   }
 
   @EventPattern('update-transaction')
-  validateTransaction(transaction: UpdateTransactionDto) {
-    const context = `${this.context}-validateTransaction`;
+  updateTransaction(transaction: UpdateTransactionDto) {
+    const context = `${this.context}-updateTransaction`;
     this.logger.log(context, 'start', {
       UpdateTransactionDto: transaction,
     });

@@ -1,5 +1,6 @@
 export type ResultType = 'approved' | 'rejected';
-export class UpdateTransactionDto {
+
+export class EvaluationResultDto {
   readonly transactionExternalId: string;
   readonly result: ResultType;
 }
