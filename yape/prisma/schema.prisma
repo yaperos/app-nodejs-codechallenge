@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  id                      Int       @id @default(autoincrement())
+  transactionExternalId   String    @unique @default(uuid()) @db.VarChar()
+  accountExternalIdDebit  String    @default(uuid()) @db.VarChar()
+  accountExternalIdCredit String    @default(uuid()) @db.VarChar()
+  type                    Int
+  status                  Int
+  value                   Decimal   @db.Decimal(10, 2)
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime? @updatedAt
+
+  @@map("transactions")
+}
+
+model TransactionLog {
+  id                      Int      @id @default(autoincrement())
+  data                    String
+  status                  String
+  createdAt               DateTime @default(now())
+
+  @@map("transactions_logs")
+}

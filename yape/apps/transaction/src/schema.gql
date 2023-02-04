@@ -1,0 +1,12 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  """iam a transaction"""
+  findTransaction: String!
+}
+
+type Mutation {
+  saveTransaction(postId: Int!): Int!
+}
