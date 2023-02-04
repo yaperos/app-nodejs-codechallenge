@@ -5,10 +5,12 @@ import { Transaction } from 'src/domain/transaction.entity';
 import { TransactionController } from './transaction.controller';
 import { TransactionService } from '../domain/transaction.service';
 import { LoggerModule } from '../infraestructure/logger/logger.module';
+import { TransactionConfig } from 'src/domain/transaction.config';
+import { TransferType } from 'src/domain/transaction-type.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Transaction]),
+    TypeOrmModule.forFeature([Transaction, TransferType]),
     ClientsModule.register([
       {
         name: 'YAPE_EVENT_BUS',
@@ -25,6 +27,6 @@ import { LoggerModule } from '../infraestructure/logger/logger.module';
     LoggerModule,
   ],
   controllers: [TransactionController],
-  providers: [TransactionService],
+  providers: [TransactionService, TransactionConfig],
 })
 export class TransactionModule {}

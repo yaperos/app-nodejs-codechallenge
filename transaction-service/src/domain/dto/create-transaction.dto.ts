@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsUUID, Min } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsUUID, Min } from 'class-validator';
 
 export class CreateTransactionDto {
   @IsUUID()
@@ -6,6 +6,9 @@ export class CreateTransactionDto {
 
   @IsUUID()
   readonly accountExternalIdCredit: string;
+
+  @IsInt()
+  readonly tranferTypeId: number;
 
   @Min(0.1)
   @IsNotEmpty()
