@@ -5,6 +5,7 @@ import { Transactions } from './transactions.entity';
 import { ClientKafka } from '@nestjs/microservices';
 import { CreateTransactionRequest } from './DTO/create-transactions.dto';
 import { TransactionCreatedEvent } from './events/transaction-created.event';
+import { UpdateTransactionRequest } from './DTO/update-transaction.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -23,16 +24,52 @@ export class TransactionsService {
       tranferTypeId,
       amount,
       transactionId,
+      status,
+      createdAt,
     } = await this.transactionRepository.save(newTransaction);
-    this.antifraudClient.emit(
-      'transaction_created',
-      new TransactionCreatedEvent(
+
+    this.antifraudClient
+      .send(
+        'transaction_created',
+        new TransactionCreatedEvent(
+          transactionId,
+          accountExternalIdDebit,
+          accountExternalIdCredit,
+          tranferTypeId,
+          amount,
+          status,
+          createdAt,
+        ),
+      )
+      .subscribe((transactionData) => {
+        this.updateTransaction(transactionData.transactionId, transactionData);
+        console.log(
+          `Transaction updated successfully ${transactionData.transactionId}`,
+        );
+      });
+
+    return {
+      transactionExternalId: transactionId,
+      transactionType: { name: 'YAPE VALIDATION' },
+      transactionStatus: { name: status },
+      amount,
+      createdAt,
+    };
+  }
+
+  async getTransaction(transactionId: number) {
+    return this.transactionRepository.findOne({
+      where: {
         transactionId,
-        accountExternalIdDebit,
-        accountExternalIdCredit,
-        tranferTypeId,
-        amount,
-      ),
-    );
+      },
+    });
+  }
+
+  async updateTransaction(
+    transactionId: number,
+    upTransaction: UpdateTransactionRequest,
+  ) {
+    upTransaction.transactionId = transactionId;
+    return this.transactionRepository.save(upTransaction);
   }
 }

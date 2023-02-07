@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
 @Controller()
@@ -11,8 +11,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @EventPattern('transaction_created')
+  @MessagePattern('transaction_created')
   handleTransactionCreated(data: any) {
-    this.appService.handleTransactionCreated(data);
+    data.status = data.amount > 1000 ? 'REJECTED' : 'APPROVED';
+    const dataToReturn = this.appService.handleTransactionCreated(data);
+    console.log(dataToReturn);
+    return dataToReturn;
   }
 }

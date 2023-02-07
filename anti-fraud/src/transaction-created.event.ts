@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export class TransactionCreatedEvent {
   constructor(
     public readonly transactionId: number,
@@ -5,6 +6,8 @@ export class TransactionCreatedEvent {
     public readonly accountExternalIdCredit: string,
     public readonly tranferTypeId: number,
     public readonly amount: number,
+    public readonly status: string,
+    public readonly createdAt: string,
   ) {}
 
 }

@@ -8,7 +8,6 @@ export class AppService {
   }
 
   handleTransactionCreated(transactionCreatedEvent: TransactionCreatedEvent) {
-    // TODO: Validar transacciones y sus respectivos montos y aplicar lógica, luego enviar un update según corresponda.
-    console.log(transactionCreatedEvent);
+    return transactionCreatedEvent;
   }
 }

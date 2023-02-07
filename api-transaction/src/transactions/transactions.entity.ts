@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+/* eslint-disable prettier/prettier */
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Transactions {
@@ -16,4 +17,13 @@ export class Transactions {
 
   @Column({type: 'float8'})
   amount;
+
+  @Column({type: 'varchar', default: 'PENDING'})
+  status;
+
+  @CreateDateColumn()
+  createdAt;
+
+  @UpdateDateColumn()
+  updatedAt;
 }
