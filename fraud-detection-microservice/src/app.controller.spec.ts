@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return 0 if value is less than 1000', () => {
+      expect(appController.detectFraud(10)).toBe(0);
     });
   });
 });

@@ -1,82 +1,49 @@
-# Yape Code Challenge :rocket:
-
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
+# Fork: Yape Code Challenge :rocket:
+## Problem
 
 Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+## Solution
+The solution consists of an api-gateway and two microservices. The api-gateway has the responsability of receiving two requests (see postman file attached):
+- Transaction creation
+- Search transaction by transactionExternalId
 
-Every transaction with a value greater than 1000 should be rejected.
+The transaction microservice creates the transaction with the initial state in PENDING, then validates the transaction created with the anti-fraud microservice which receives the value of the transaction created and if it exceeds the value of 1000 it's detected as fraud and the state change to REJECTED. In opposite case is detected as valid and the state change to APPROVED.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+## Requirements
+- Node 16
+- Docker cli
+- Docker compose cli
+- Database management client (dbeaver)
+
+## Installation
+First use docker compose to up database and kafka service in your local machine.
+```
+docker-compose up
+```
+Create database with name `transaction-db` to use in transaction-microservice.
+Then insert these commands inside each project:
+- api-gateway
+- fraud-detection-microservice
+- transaction-microservice
+
+### api-gateway
+```
+npm i
+npm start
+```
+### transaction-microservice
+```
+npm i
+cp .env.example .env
+npm start
 ```
 
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+### fraud-detection-microservice
+```
+npm i
+npm start
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+## Usage
+With the project ready you can send request to create transaction and get data about transaction created. You should export [endpoints-documentation.json](endpoints-documentation.json) file in postman.
