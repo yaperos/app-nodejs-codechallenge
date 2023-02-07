@@ -2,11 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     ClientsModule.register([
       {
         name: 'ANTIFRAUDSERVICE',
@@ -17,7 +15,7 @@ import { ConfigModule } from '@nestjs/config';
             brokers: ['localhost:9092'],
           },
           consumer: {
-            groupId: 'kafka-transactions-16',
+            groupId: 'kafka-transactions-22',
           },
         },
       },

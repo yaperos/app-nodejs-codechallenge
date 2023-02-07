@@ -12,6 +12,7 @@ import {
 } from '@nestjs/microservices';
 import { CreateTransactionInput } from '../dto/create-transaction.input';
 import { Consumer } from '@nestjs/microservices/external/kafka.interface';
+import { TransactionCreatedEvent } from '../events/transaction.create.event';
 
 @Injectable()
 export class TransactionsService {
@@ -56,6 +57,28 @@ export class TransactionsService {
     return response_save;
   }
 
+  async getOne(id: string) {
+    const transaction_value = await this.transactionRepo.findOne({
+      where: {
+        transactionId: id,
+      },
+    });
+
+    const Response = {
+      transactionExternalId: transaction_value.transactionId,
+      transactionType: {
+        name: 'Test',
+      },
+      transactionStatus: {
+        name: transaction_value.transactionStatus,
+      },
+      value: transaction_value.value,
+      createdAt: transaction_value.createdAt,
+    };
+
+    return Response;
+  }
+
   async update(id: any, body: any) {
     const transaction = await this.transactionRepo.findOne({
       where: {
@@ -67,12 +90,18 @@ export class TransactionsService {
   }
 
   async emitTransaction(response_save: any) {
-    const transactionId = response_save.transactionId;
-    const transactionAmount = response_save.value;
+    const { transactionId, value } = response_save;
 
-    this.client.emit('transaction.validate', {
-      transactionId,
-      transactionAmount,
-    });
+    this.client
+      .send('transaction.validate', {
+        transactionId,
+        value,
+      })
+      .subscribe((transactionData) => {
+        // this.updateTransaction(transactionData.transactionId, transactionData);
+        console.log(
+          `Transaction updated successfullsady ${transactionData.transactionId}`,
+        );
+      });
   }
 }

@@ -6,6 +6,8 @@ import {
   Param,
   Inject,
   OnModuleInit,
+  OnModuleDestroy,
+  Get,
 } from '@nestjs/common';
 import { TransactionsService } from '../services/transactions.service';
 import {
@@ -18,15 +20,24 @@ import { Kafka } from 'kafkajs';
 
 @Controller('transactions')
 export class TransactionsController {
-  constructor(private transactionService: TransactionsService) {}
+  constructor(
+    private transactionService: TransactionsService,
+
+    @Inject('TRANSACTIONSERVICE')
+    private readonly client: ClientKafka,
+  ) {}
 
   // async onModuleInit() {
-  //   // this.client.getConsumerAssignments('transaction.update.reply')
-  //   this.client.subscribeToResponseOf('transaction.update.reply');
-  //   await this.client.connect();
+  //   ['update', 'response'].forEach((key) =>
+  //     this.client.subscribeToResponseOf(`transaction.${key}`),
+  //   );
   // }
 
-  @MessagePattern('transaction.update')
+  // onModuleDestroy() {
+  //   this.client.close();
+  // }
+
+  @MessagePattern('transaction.validate')
   async updateTransaction(@Payload() transaction_message: any) {
     console.log(
       '@EventPattern(transaction.validate.update)',
@@ -39,14 +50,11 @@ export class TransactionsController {
     return this.transactionService.create(body);
   }
 
-  @Put(':id')
-  update(
+  @Get('find/:id')
+  getOneByFindId(
     @Param('id')
-    id: number,
-
-    @Body()
-    body: any,
+    id: string,
   ) {
-    return this.transactionService.update(id, body);
+    return this.transactionService.getOne(id);
   }
 }

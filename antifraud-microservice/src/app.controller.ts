@@ -1,12 +1,11 @@
-import { Controller, Inject, OnModuleInit } from '@nestjs/common';
-import { AppService } from './app.service';
 import {
-  ClientKafka,
-  EventPattern,
-  MessagePattern,
-  Payload,
-} from '@nestjs/microservices';
-import { Kafka } from 'kafkajs';
+  Controller,
+  Inject,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
+import { AppService } from './app.service';
+import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
@@ -18,10 +17,7 @@ export class AppController {
   ) {}
 
   @MessagePattern('transaction.validate')
-  public transactionValidate(
-    @Payload()
-    transaction: any,
-  ) {
+  public transactionValidate(transaction: any) {
     const { transactionId, transactionAmount } = transaction;
     const valid = this.appService.validate(transactionAmount);
     this.transactionValidation(transactionId, valid);
@@ -33,9 +29,9 @@ export class AppController {
       transactionStatus: status,
     });
 
-    this.client.emit('transaction.update', {
+    return {
       transactionId: id,
       transactionStatus: status,
-    });
+    };
   }
 }
