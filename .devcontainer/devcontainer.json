@@ -15,7 +15,8 @@
 			],
 			"settings": {
 				"editor.formatOnSave": true,
-				"files.insertFinalNewline": true
+				"files.insertFinalNewline": true,
+				"workbench.editor.highlightModifiedTabs": true
 			}
 		}
 	},
