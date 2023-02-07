@@ -11,10 +11,10 @@ datasource db {
 }
 
 model Transactions {
-  id                      String @id @default(uuid()) @map("_id")
+  id                      String   @id @default(uuid()) @map("_id")
   accountExternalIdDebit  String
   accountExternalIdCredit String
-  transferTypeId           Int
+  transferTypeId          Int
   value                   Float
   createdAt               DateTime @default(now())
   updatedAt               DateTime @updatedAt
