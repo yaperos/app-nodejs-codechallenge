@@ -16,6 +16,9 @@
 			],
 			"settings": {
 				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"source.organizeImports": true
+				},
 				"files.insertFinalNewline": true,
 				"workbench.editor.highlightModifiedTabs": true,
 				"sqltools.connections": [
