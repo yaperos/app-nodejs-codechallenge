@@ -6,7 +6,8 @@
         "usernamehw.errorlens",
         "mtxr.sqltools",
         "mtxr.sqltools-driver-pg",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "rangav.vscode-thunder-client"
       ],
       "settings": {
         "[typescript]": {
