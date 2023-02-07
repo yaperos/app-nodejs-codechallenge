@@ -3,16 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Transaction } from '../entities/transaction.entity';
-import {
-  ClientKafka,
-  ClientProxy,
-  Ctx,
-  KafkaContext,
-  MessagePattern,
-} from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
 import { CreateTransactionInput } from '../dto/create-transaction.input';
-import { Consumer } from '@nestjs/microservices/external/kafka.interface';
-import { TransactionCreatedEvent } from '../events/transaction.create.event';
 
 @Injectable()
 export class TransactionsService {
@@ -23,11 +15,6 @@ export class TransactionsService {
     @Inject('TRANSACTIONSERVICE')
     private readonly client: ClientProxy,
   ) {}
-
-  // async onModuleInit() {
-  //   this.client.subscribeToResponseOf('transaction.validate');
-  //   await this.client.connect();
-  // }
 
   async creategraphql(
     transaction: CreateTransactionInput,
@@ -93,7 +80,7 @@ export class TransactionsService {
           transactionReturn.transactionId,
           transactionReturn.transactionStatus,
         );
-        console.log('Transaction updated successfullsady', transactionReturn);
+        console.log('Transaction Validation', transactionReturn);
       });
   }
 }
