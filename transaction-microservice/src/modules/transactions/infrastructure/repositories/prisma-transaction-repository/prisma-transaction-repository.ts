@@ -9,6 +9,7 @@ import {
   TransactionRepository,
   ZRegisterTransactionInput,
 } from '../../../domain/repositories';
+import { ZTransactionStatus } from '../../../domain/types';
 
 @Injectable()
 export class PrismaTransactionRepository implements TransactionRepository {
@@ -24,9 +25,15 @@ export class PrismaTransactionRepository implements TransactionRepository {
     return schemaEither.chain((parsed) => {
       return EitherAsync(async () => {
         const transaction = await this.prisma.transactions.create({
-          data: parsed,
+          data: {
+            ...parsed,
+            status: ZTransactionStatus.Enum.PENDING,
+          },
         });
-        return transaction;
+        return {
+          ...transaction,
+          status: ZTransactionStatus.Enum.PENDING,
+        };
       });
     });
   }

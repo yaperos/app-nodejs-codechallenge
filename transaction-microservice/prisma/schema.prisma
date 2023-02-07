@@ -11,11 +11,21 @@ datasource db {
 }
 
 model Transactions {
-  id                      String   @id @default(uuid()) @map("_id")
+  id                      String        @id @default(uuid()) @map("_id")
   accountExternalIdDebit  String
   accountExternalIdCredit String
   transferTypeId          Int
   value                   Float
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  TransactionTypes        TransferTypes @relation(fields: [transferTypeId], references: [id])
+  status                  String
+}
+
+model TransferTypes {
+  id           Int            @id @default(autoincrement())
+  name         String
+  transactions Transactions[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
