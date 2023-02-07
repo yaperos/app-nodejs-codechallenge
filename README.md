@@ -1,12 +1,12 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+-   [Problem](#problem)
+-   [Tech Stack](#tech_stack)
+-   [Send us your challenge](#send_us_your_challenge)
 
 # Problem
 
@@ -46,10 +46,10 @@ You must have two resources:
 
 ```json
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+	"accountExternalIdDebit": "Guid",
+	"accountExternalIdCredit": "Guid",
+	"tranferTypeId": 1,
+	"value": 120
 }
 ```
 
@@ -57,15 +57,15 @@ You must have two resources:
 
 ```json
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+	"transactionExternalId": "Guid",
+	"transactionType": {
+		"name": ""
+	},
+	"transactionStatus": {
+		"name": ""
+	},
+	"value": 120,
+	"createdAt": "Date"
 }
 ```
 
