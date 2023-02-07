@@ -3,16 +3,19 @@ services:
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
+      - POSTGRES_DB=yape
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:latest
+    # image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
+    image: confluentinc/cp-enterprise-kafka:latest
+    # image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
