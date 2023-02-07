@@ -11,12 +11,18 @@
 				"eamodio.gitlens",
 				"usernamehw.errorlens",
 				"mtxr.sqltools",
-				"mtxr.sqltools-driver-sqlite"
+				"mtxr.sqltools-driver-pg"
 			],
 			"settings": {
 				"editor.formatOnSave": true,
 				"files.insertFinalNewline": true,
-				"workbench.editor.highlightModifiedTabs": true
+				"workbench.editor.highlightModifiedTabs": true,
+				"sqltools.connections": [
+					{
+						"connectString": "postgres://postgres:postgres@db:5432/postgres",
+						"driver": "PostgreSQL"
+					}
+				]
 			}
 		}
 	},
