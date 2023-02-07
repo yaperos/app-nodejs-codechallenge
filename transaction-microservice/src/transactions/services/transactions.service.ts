@@ -90,18 +90,19 @@ export class TransactionsService {
   }
 
   async emitTransaction(response_save: any) {
-    const { transactionId, value } = response_save;
+    // const transactionId = response_save.transactionId;
+    // const value = response_save.value;
+
+    console.log('emitTransaction', response_save);
 
     this.client
       .send('transaction.validate', {
-        transactionId,
-        value,
+        transactionId: response_save.transactionId,
+        transactionAmount: response_save.value,
       })
       .subscribe((transactionData) => {
         // this.updateTransaction(transactionData.transactionId, transactionData);
-        console.log(
-          `Transaction updated successfullsady ${transactionData.transactionId}`,
-        );
+        console.log('Transaction updated successfullsady', transactionData);
       });
   }
 }

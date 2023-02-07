@@ -9,12 +9,7 @@ import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-
-    @Inject('ANTIFRAUDSERVICE')
-    private readonly client: ClientKafka,
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @MessagePattern('transaction.validate')
   public transactionValidate(transaction: any) {
@@ -24,11 +19,10 @@ export class AppController {
   }
 
   async transactionValidation(id: string, status: string) {
-    console.log('RPTA de la validaciones', {
+    console.log('RPTA', {
       transactionId: id,
       transactionStatus: status,
     });
-
     return {
       transactionId: id,
       transactionStatus: status,

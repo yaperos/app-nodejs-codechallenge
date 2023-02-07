@@ -19,7 +19,7 @@ import {
 import { Kafka } from 'kafkajs';
 
 @Controller('transactions')
-export class TransactionsController {
+export class TransactionsController implements OnModuleInit {
   constructor(
     private transactionService: TransactionsService,
 
@@ -27,11 +27,11 @@ export class TransactionsController {
     private readonly client: ClientKafka,
   ) {}
 
-  // async onModuleInit() {
-  //   ['update', 'response'].forEach((key) =>
-  //     this.client.subscribeToResponseOf(`transaction.${key}`),
-  //   );
-  // }
+  async onModuleInit() {
+    ['validate', 'response'].forEach((key) =>
+      this.client.subscribeToResponseOf(`transaction.${key}`),
+    );
+  }
 
   // onModuleDestroy() {
   //   this.client.close();
