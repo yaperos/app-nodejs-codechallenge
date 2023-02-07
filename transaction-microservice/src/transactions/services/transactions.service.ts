@@ -35,13 +35,6 @@ export class TransactionsService {
     const newTransaction = this.transactionRepo.create(transaction);
     newTransaction.transactionStatus = 'pending';
     const response_save = await this.transactionRepo.save(newTransaction);
-
-    console.log(
-      'transactionValidation',
-      response_save.transactionId,
-      response_save.value,
-    );
-
     this.emitTransaction(response_save);
 
     return response_save;
@@ -79,14 +72,14 @@ export class TransactionsService {
     return Response;
   }
 
-  async update(id: any, body: any) {
+  async update(id: string, status: string) {
     const transaction = await this.transactionRepo.findOne({
       where: {
         transactionId: id,
       },
     });
-    this.transactionRepo.merge(transaction, body);
-    return this.transactionRepo.save(transaction);
+    transaction.transactionStatus = status;
+    return await this.transactionRepo.save(transaction);
   }
 
   async emitTransaction(response_save: any) {
@@ -98,7 +91,7 @@ export class TransactionsService {
       .subscribe((transactionReturn) => {
         this.update(
           transactionReturn.transactionId,
-          transactionReturn.transactionAmount,
+          transactionReturn.transactionStatus,
         );
         console.log('Transaction updated successfullsady', transactionReturn);
       });
