@@ -5,6 +5,7 @@
     "@nestjs/config": "^2.3.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/mapped-types": "^1.2.2",
+    "@nestjs/microservices": "^9.3.5",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "pg": "^8.9.0",
