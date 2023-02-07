@@ -11,7 +11,8 @@
 				"eamodio.gitlens",
 				"usernamehw.errorlens",
 				"mtxr.sqltools",
-				"mtxr.sqltools-driver-pg"
+				"mtxr.sqltools-driver-pg",
+				"esbenp.prettier-vscode"
 			],
 			"settings": {
 				"editor.formatOnSave": true,
@@ -22,7 +23,10 @@
 						"connectString": "postgres://postgres:postgres@db:5432/postgres",
 						"driver": "PostgreSQL"
 					}
-				]
+				],
+				"[typescript]": {
+					"editor.defaultFormatter": "esbenp.prettier-vscode"
+				}
 			}
 		}
 	},
