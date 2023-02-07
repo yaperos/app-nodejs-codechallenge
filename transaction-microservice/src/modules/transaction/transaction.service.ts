@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ClientKafka } from '@nestjs/microservices';
 import { Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
-import { serialize, deserialize } from 'class-transformer';
 import {
   TransactionEntity,
   TransactionType,
+  TransactionStatus,
 } from './entities/transaction.entity';
 
 @Injectable()
@@ -14,14 +14,27 @@ export class TransactionService {
   @InjectRepository(TransactionEntity)
   private readonly repository: Repository<TransactionEntity>;
 
-  create(data: CreateTransactionDto) {
+  constructor(
+    @Inject('FRAUD_DETECTION_MICROSERVICE')
+    private readonly fraudDetectionClient: ClientKafka,
+  ) {}
+
+  async create(data: CreateTransactionDto) {
     const transaction: TransactionEntity = new TransactionEntity();
     transaction.accountExternalIdCredit = data.accountExternalIdCredit;
     transaction.accountExternalIdDebit = data.accountExternalIdDebit;
     transaction.value = data.value;
     transaction.transactionType =
       Object.values(TransactionType)[data.transactionTypeId];
-    this.repository.save(transaction);
+    await this.repository.save(transaction);
+    this.fraudDetectionClient
+      .send('detect_fraud', transaction.value)
+      .subscribe((result) => {
+        transaction.transactionStatus = Number(result)
+          ? TransactionStatus.REJECTED
+          : TransactionStatus.APPROVED;
+        this.repository.save(transaction);
+      });
   }
 
   async findOne(transactionExternalId: string) {
@@ -32,7 +45,7 @@ export class TransactionService {
       .then((transaction) => JSON.stringify(transaction.toJSON()));
   }
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
+  async onModuleInit() {
+    this.fraudDetectionClient.subscribeToResponseOf('detect_fraud');
   }
 }

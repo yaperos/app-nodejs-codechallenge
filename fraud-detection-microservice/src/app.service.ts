@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  validateTransactionValue(transactionValue: number): number {
+    return transactionValue > 1000 ? 1 : 0;
   }
 }

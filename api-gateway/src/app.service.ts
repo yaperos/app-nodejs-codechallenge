@@ -28,6 +28,5 @@ export class AppService {
 
   async onModuleInit() {
     this.transactionClient.subscribeToResponseOf('get_transaction');
-    // await this.transactionClient.connect();
   }
 }
