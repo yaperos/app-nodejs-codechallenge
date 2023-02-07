@@ -1,8 +1,22 @@
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AntiFraudModule } from './anti-fraud.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AntiFraudModule);
-  await app.listen(3000);
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AntiFraudModule,
+    {
+      transport: Transport.KAFKA,
+      options: {
+        client: {
+          brokers: ['kafka:9092'],
+        },
+        consumer: {
+          groupId: 'anti-fraud-consumer',
+        },
+      },
+    },
+  );
+  await app.listen();
 }
 bootstrap();

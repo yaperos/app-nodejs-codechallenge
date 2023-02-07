@@ -15,8 +15,14 @@ describe('AntiFraudController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(antiFraudController.getHello()).toBe('Hello World!');
+    it('should return "approved"', () => {
+      expect(antiFraudController.verifyTransaction(999)).toBe('approved');
+    });
+    it('should return "approved"', () => {
+      expect(antiFraudController.verifyTransaction(1000)).toBe('approved');
+    });
+    it('should return "rejected"', () => {
+      expect(antiFraudController.verifyTransaction(1001)).toBe('rejected');
     });
   });
 });

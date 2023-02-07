@@ -1,4 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
@@ -11,15 +12,31 @@ export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
+    @Inject('ANTI-FRAUD-MICROSERVICE')
+    private antiFraudMicroservice: ClientKafka,
   ) {}
 
-  create(dto: CreateTransactionDto) {
+  async create(dto: CreateTransactionDto) {
     const transaction = new Transaction();
     transaction.accountExternalIdCredit = dto.accountExternalIdCredit;
     transaction.accountExternalIdDebit = dto.accountExternalIdDebit;
     transaction.value = dto.value;
-    const instance = this.transactionRepository.save(transaction);
+
+    await this.transactionRepository.save(transaction);
     this.logger.debug('transaction saved');
-    return instance;
+
+    this.antiFraudMicroservice
+      .send('transaction-created', transaction)
+      .subscribe((result) => {
+        transaction.status = result;
+        this.transactionRepository.save(transaction);
+        this.logger.debug('transaction updated');
+      });
+
+    return transaction;
+  }
+
+  async onModuleInit() {
+    this.antiFraudMicroservice.subscribeToResponseOf('transaction-created');
   }
 }

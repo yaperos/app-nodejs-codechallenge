@@ -20,6 +20,9 @@ export class Transaction {
   @Column()
   value: number;
 
+  @Column({ default: 'pending' })
+  status: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

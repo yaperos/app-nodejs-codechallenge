@@ -21,6 +21,7 @@ services:
     environment:
       - DATABASE_SYNC=true
       - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - KAFKA_URL=kafka:9092
 
   db:
     image: postgres:latest
