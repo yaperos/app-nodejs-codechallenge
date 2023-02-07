@@ -80,3 +80,40 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Solution
+
+## Running the app
+
+```bash
+## Inplementation
+1. npm install all projects: 
+- cd api-transaction && npm install
+- cd consumer-anti-fraud && npm install
+- cd consumer-transaction && npm install
+2. cd transaction and rename .env.example to .env
+3. docker-compose up -d
+
+# execute proyect
+$ cd anti-fraud && nest start
+$ cd port-services && nest start
+$ cd transaqction && nest start
+
+# routes
+POST http://localhost:3000/transaction
+
+# example body for approved transaction
+{
+  "accountExternalIdDebit": "",
+  "accountExternalIdCredit": "fe79f8a5-bd1c-4644-8d56-d8d1255bd115",
+  "tranferTypeId": 2,
+  "value": 999
+}
+
+# example body for rejected transaction
+{
+  "accountExternalIdDebit": "",
+  "accountExternalIdCredit": "fe79f8a5-bd1c-4644-8d56-d8d1255bd115",
+  "tranferTypeId": 2,
+  "value": 999
+}
