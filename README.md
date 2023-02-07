@@ -80,3 +80,38 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Pasos para levantar e iniciar el proyecto
+
+1. Una vez descargado el repositorio y estando en la raíz ejecutamos la siguiente linea de comando
+```
+npm i
+```
+
+2. Nos movemos a hacia la carpeta anti-fraud y ejecutamos la siguiente linea de comando
+```
+pnpm install
+```
+
+3. Nos movemos a hacia la carpeta api-transaction y ejecutamos la siguiente linea de comando
+```
+pnpm install
+```
+
+4. Abrimos 3 diferentes terminales una para la carpeta raíz, otra para la carpeta anti-fraud y otra para la carpeta, api-transaction y ejecutamos las siguientes lineas de comando, es importante resaltar que debe esperarse que el docker levante correctamente antes de levantar las aplicaciones de nestjs
+```
+#para la raiz
+#validar que se tiene el docker activo e iniciado
+docker compose up
+
+#para anti-fraud
+pnpm run start:dev
+
+#para api-transaction
+pnpm run start:dev
+```
+
+## Nota importante:
+El sistema se realizo como una prueba de desarrollo, por ello todo lo que sucede en el mismo está para un ambiente que no implica produccion, siendo esto una prueba concepto y teniendo dicho comportamiento.
+
+En la raiz del repositorio se encuentra un archivo de peticiones de insonmia para testear el flujo solicitado.
