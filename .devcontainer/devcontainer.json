@@ -1,47 +1,35 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-postgres
 {
-	"name": "Node.js & PostgreSQL",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"eamodio.gitlens",
-				"usernamehw.errorlens",
-				"mtxr.sqltools",
-				"mtxr.sqltools-driver-pg",
-				"esbenp.prettier-vscode"
-			],
-			"settings": {
-				"editor.formatOnSave": true,
-				"editor.codeActionsOnSave": {
-					"source.organizeImports": true
-				},
-				"files.insertFinalNewline": true,
-				"workbench.editor.highlightModifiedTabs": true,
-				"sqltools.connections": [
-					{
-						"connectString": "postgres://postgres:postgres@db:5432/postgres",
-						"driver": "PostgreSQL"
-					}
-				],
-				"[typescript]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
-				}
-			}
-		}
-	},
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// This can be used to network with other containers or with the host.
-	// "forwardPorts": [3000, 5432],
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "./.devcontainer/postCreateCommand.sh"
-	// Configure tool-specific properties.
-	// "customizations": {},
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "eamodio.gitlens",
+        "usernamehw.errorlens",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": true
+        },
+        "editor.formatOnSave": true,
+        "files.insertFinalNewline": true,
+        "sqltools.connections": [
+          {
+            "connectString": "postgres://postgres:postgres@db:5432/postgres",
+            "driver": "PostgreSQL"
+          }
+        ],
+        "workbench.editor.highlightModifiedTabs": true
+      }
+    }
+  },
+  "dockerComposeFile": "docker-compose.yml",
+  "name": "Node.js & PostgreSQL",
+  "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
 }
