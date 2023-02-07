@@ -14,7 +14,8 @@
 				"mtxr.sqltools-driver-sqlite"
 			],
 			"settings": {
-				"editor.formatOnSave": true
+				"editor.formatOnSave": true,
+				"files.insertFinalNewline": true
 			}
 		}
 	}
