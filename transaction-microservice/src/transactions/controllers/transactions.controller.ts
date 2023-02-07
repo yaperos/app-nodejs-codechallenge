@@ -8,7 +8,7 @@ import {
   Get,
 } from '@nestjs/common';
 import { TransactionsService } from '../services/transactions.service';
-import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Controller('transactions')
 export class TransactionsController implements OnModuleInit {
