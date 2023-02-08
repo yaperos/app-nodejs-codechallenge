@@ -77,6 +77,7 @@ nest start anti-fraud --watch
 - Both application make use of environment variables for easy deployment across different environments (development, staging, production).
 - API documentation for transaction micro service is available under [/docs](http://localhost:3001/docs) path.
 - Application metrics are exposed on [/metrics](http://localhost:3001/metrics) path using Prometheus API.
+- Application monitoring dashboard is exposed in [Grafana](http://localhost:3000/d/x3_YZ904k) (Use username `admin` and password `admin` to access).
 
 ## Next steps
 

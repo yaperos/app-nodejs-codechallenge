@@ -56,11 +56,10 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
       - ../infra/grafana:/etc/grafana/provisioning
+      - ../infra/grafana/json:/etc/dashboards
 
   prometheus:
     image: prom/prometheus
-    ports:
-      - 9090:9090
     volumes:
       - ../infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
