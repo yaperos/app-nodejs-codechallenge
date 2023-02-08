@@ -46,6 +46,34 @@ The solution consists of two microservices:
 4. VSCode will prompt if you want to open the project in a devcontainer.
 5. The project should get configured automatically, wait until you see the process finished. Open logs to see progress, you should see a message like below when the setup is done.
 
+```zsh
+Done in 495.62s.
+pre-commit installed at .git/hooks/pre-commit
+Done. Press any key to close the terminal.
+```
+
+6. Once the installation process is done. Open two terminal windows to start both services separately:
+
+```zsh
+nest start transaction --watch
+```
+
+```zsh
+nest start anti-fraud --watch
+```
+
+7. Use the included extension `Thunder Client` to POST a request to `http://localhost:3000/transaction` with payload:
+
+```json
+{
+  "accountExternalIdDebit": "42a2f7d9-e857-4f2c-a4ad-a779905b77e7",
+  "accountExternalIdCredit": "3d102217-2b30-4307-a1e2-71dc85cb76b6",
+  "value": 120
+}
+```
+
+> Use `SQLTools` and `Kafka` extensions to inspect both database table and kafka topic respectively.
+
 ## Highlights
 
 - The development environment setup is automated using [Visual Studio Code DevContainers](https://code.visualstudio.com/docs/devcontainers/containers).
