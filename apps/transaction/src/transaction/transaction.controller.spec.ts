@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Transaction } from './entities/transaction.entity';
 import { TransactionController } from './transaction.controller';
 import { TransactionService } from './transaction.service';
 
@@ -8,7 +10,16 @@ describe('TransactionController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TransactionController],
-      providers: [TransactionService],
+      providers: [
+        TransactionService,
+        {
+          provide: getRepositoryToken(Transaction),
+          useValue: {
+            save: jest.fn(),
+          },
+        },
+        { provide: 'ANTI-FRAUD-MICROSERVICE', useValue: { send: jest.fn() } },
+      ],
     }).compile();
 
     controller = module.get<TransactionController>(TransactionController);
