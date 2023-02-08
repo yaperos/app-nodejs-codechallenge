@@ -19,6 +19,14 @@ describe('TransactionController', () => {
           },
         },
         { provide: 'ANTI-FRAUD-MICROSERVICE', useValue: { send: jest.fn() } },
+        {
+          provide: 'PROM_METRIC_TRANSACTIONS_SAVED',
+          useValue: { inc: jest.fn() },
+        },
+        {
+          provide: 'PROM_METRIC_TRANSACTIONS_UPDATED',
+          useValue: { inc: jest.fn() },
+        },
       ],
     }).compile();
 

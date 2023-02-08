@@ -26,6 +26,18 @@ describe('TransactionService', () => {
             }),
           },
         },
+        {
+          provide: 'PROM_METRIC_TRANSACTIONS_SAVED',
+          useValue: {
+            inc: jest.fn(),
+          },
+        },
+        {
+          provide: 'PROM_METRIC_TRANSACTIONS_UPDATED',
+          useValue: {
+            inc: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
