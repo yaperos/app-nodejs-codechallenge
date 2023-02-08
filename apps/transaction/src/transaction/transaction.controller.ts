@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { GetTransactionDto } from './dto/get-transaction.dto';
 import { TransactionService } from './transaction.service';
@@ -10,10 +10,10 @@ export class TransactionController {
 
   constructor(private readonly transactionService: TransactionService) {}
 
+  @Post()
   @ApiCreatedResponse({
     type: GetTransactionDto,
   })
-  @Post()
   create(
     @Body() createTransactionDto: CreateTransactionDto,
   ): Promise<GetTransactionDto> {
@@ -22,11 +22,23 @@ export class TransactionController {
   }
 
   @Get()
+  @ApiOkResponse({
+    type: GetTransactionDto,
+    isArray: true,
+  })
   findAll() {
     return this.transactionService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse({
+    type: GetTransactionDto,
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: '60c06d21-9fd2-4de6-89b6-c196c66e9aa2',
+  })
   findOne(@Param('id') id: string) {
     return this.transactionService.findOne(id);
   }
