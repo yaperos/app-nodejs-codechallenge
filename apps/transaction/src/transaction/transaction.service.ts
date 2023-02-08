@@ -44,12 +44,30 @@ export class TransactionService {
     return response;
   }
 
-  findAll() {
-    return this.transactionRepository.find();
+  findAll(): Promise<GetTransactionDto[]> {
+    return this.transactionRepository.find().then((transactions) => {
+      return transactions.map((t) => {
+        const dto = new GetTransactionDto();
+        dto.id = t.id;
+        dto.status = t.status;
+        dto.value = t.value;
+        dto.createdAt = t.createdAt;
+        dto.updatedAt = t.updatedAt;
+        return dto;
+      });
+    });
   }
 
-  findOne(id: string) {
-    return this.transactionRepository.findOneBy({ id });
+  findOne(id: string): Promise<GetTransactionDto> {
+    return this.transactionRepository.findOneBy({ id }).then((t) => {
+      const dto = new GetTransactionDto();
+      dto.id = t.id;
+      dto.status = t.status;
+      dto.value = t.value;
+      dto.createdAt = t.createdAt;
+      dto.updatedAt = t.updatedAt;
+      return dto;
+    });
   }
 
   async onModuleInit() {

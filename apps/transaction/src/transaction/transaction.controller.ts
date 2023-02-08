@@ -26,7 +26,7 @@ export class TransactionController {
     type: GetTransactionDto,
     isArray: true,
   })
-  findAll() {
+  findAll(): Promise<GetTransactionDto[]> {
     return this.transactionService.findAll();
   }
 
@@ -39,7 +39,7 @@ export class TransactionController {
     type: String,
     example: '60c06d21-9fd2-4de6-89b6-c196c66e9aa2',
   })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<GetTransactionDto> {
     return this.transactionService.findOne(id);
   }
 }
