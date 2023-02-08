@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TransactionStatus } from '../enums/status';
 
 @Entity()
 export class Transaction {
@@ -20,8 +21,12 @@ export class Transaction {
   @Column()
   value: number;
 
-  @Column({ default: 'pending' })
-  status: string;
+  @Column({
+    type: 'enum',
+    enum: TransactionStatus,
+    default: TransactionStatus.PENDING,
+  })
+  status: TransactionStatus;
 
   @CreateDateColumn()
   createdAt: Date;

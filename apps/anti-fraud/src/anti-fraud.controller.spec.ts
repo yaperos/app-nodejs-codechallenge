@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AntiFraudController } from './anti-fraud.controller';
 import { AntiFraudService } from './anti-fraud.service';
+import { TransactionStatus } from './enums/status';
 
 describe('AntiFraudController', () => {
   let antiFraudController: AntiFraudController;
@@ -16,15 +17,21 @@ describe('AntiFraudController', () => {
 
   describe('root', () => {
     it('should return "approved"', () => {
-      expect(antiFraudController.verifyTransaction(999)).toBe('approved');
+      expect(antiFraudController.verifyTransaction(999)).toBe(
+        TransactionStatus.APPROVED,
+      );
     });
 
     it('should return "approved"', () => {
-      expect(antiFraudController.verifyTransaction(1000)).toBe('approved');
+      expect(antiFraudController.verifyTransaction(1000)).toBe(
+        TransactionStatus.APPROVED,
+      );
     });
 
     it('should return "rejected"', () => {
-      expect(antiFraudController.verifyTransaction(1001)).toBe('rejected');
+      expect(antiFraudController.verifyTransaction(1001)).toBe(
+        TransactionStatus.REJECTED,
+      );
     });
   });
 });
