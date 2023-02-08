@@ -1,6 +1,8 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
+import { InjectMetric } from '@willsoto/nestjs-prometheus';
+import { Counter } from 'prom-client';
 import { Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { GetTransactionDto } from './dto/get-transaction.dto';
@@ -15,6 +17,10 @@ export class TransactionService {
     private transactionRepository: Repository<Transaction>,
     @Inject('ANTI-FRAUD-MICROSERVICE')
     private antiFraudMicroservice: ClientKafka,
+    @InjectMetric('transactions_saved')
+    public transactions_saved_counter: Counter<string>,
+    @InjectMetric('transactions_updated')
+    public transactions_updated_counter: Counter<string>,
   ) {}
 
   async create(dto: CreateTransactionDto): Promise<GetTransactionDto> {
@@ -25,6 +31,7 @@ export class TransactionService {
 
     await this.transactionRepository.save(transaction);
     this.logger.debug('transaction saved');
+    this.transactions_saved_counter.inc();
 
     this.antiFraudMicroservice
       .send('transaction-created', transaction)
@@ -32,6 +39,7 @@ export class TransactionService {
         transaction.status = result;
         this.transactionRepository.save(transaction);
         this.logger.debug('transaction updated');
+        this.transactions_updated_counter.inc();
       });
 
     const response = new GetTransactionDto();

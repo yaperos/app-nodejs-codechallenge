@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { makeCounterProvider } from '@willsoto/nestjs-prometheus';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionController } from './transaction.controller';
 import { TransactionService } from './transaction.service';
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([Transaction]),
@@ -25,6 +25,16 @@ import { TransactionService } from './transaction.service';
     ]),
   ],
   controllers: [TransactionController],
-  providers: [TransactionService],
+  providers: [
+    TransactionService,
+    makeCounterProvider({
+      name: 'transactions_saved',
+      help: 'Saved transactions counter',
+    }),
+    makeCounterProvider({
+      name: 'transactions_updated',
+      help: 'Updated transactions counter',
+    }),
+  ],
 })
 export class TransactionModule {}
