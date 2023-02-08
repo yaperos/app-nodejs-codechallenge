@@ -9,8 +9,10 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.2.1",
     "@nestjs/typeorm": "^9.0.1",
+    "@willsoto/nestjs-prometheus": "^5.1.0",
     "kafkajs": "^2.2.3",
     "pg": "^8.9.0",
+    "prom-client": "^14.1.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.11"
