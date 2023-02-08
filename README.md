@@ -1,14 +1,8 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge by Oscar Diaz Iberico
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:.
+This coding challenge was submitted for the technical assessment of Yape.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
+## Problem
 
 Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
 For now, we have only three transaction statuses:
@@ -30,53 +24,47 @@ Every transaction with a value greater than 1000 should be rejected.
     Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
 ```
 
-# Tech Stack
+## Solution
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>
-</ol>
+The solution consists of two microservices:
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+- `transaction`: exposes a REST API to retrieve / create transactions. When a transaction is created, it is stored in the database and an message is published to a Kafka topic. Once the event is processed, the database record is updated with the result of the message processing.
+- `anti-fraud`: it consumes a Kafka topic to verify transactions. Once a transaction is processed, it returns the result to be updated by the transaction service.
 
-You must have two resources:
+## Stack
 
-1. Resource to create a transaction that must containt:
+- Node JS: NestJS, TypeORM, Yarn
+- Postgres
+- Kafka
+- Docker
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
+## Development
 
-2. Resource to retrieve a transaction
+1. Install [Docker](https://docs.docker.com/get-docker/) and [VSCode](https://code.visualstudio.com/download)
+2. Go to VSCode extensions and install [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+3. Download this repository and open it with VSCode.
+4. VSCode will prompt if you want to open the project in a devcontainer.
+5. The project should get configured automatically, wait until you see the process finished. Open logs to see progress, you should see a message like below when the setup is done.
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+## Highlights
 
-## Optional
+- The development environment setup is automated using [Visual Studio Code DevContainers](https://code.visualstudio.com/docs/devcontainers/containers).
+  - It packs all the dependencies required to run the project via docker compose (Postgres, Kafka).
+  - The installation includes useful extensions to inspect Git, Postgres database, Kafka topics and HTTP requests.
+- The project automatically runs checks to enforce commons practices and styling in the code. There are multiple checks configured in this project and they are all executed before code is committed to the repository using [pre-commit](https://pre-commit.com/).
+- The repository implements a monorepo strategy keeping microservices boundaries.
+- It implements a CI pipeline using Github actions, which builds the projects and executes the unit tests.
+- Both application make use of environment variables for easy deployment across different environments (development, staging, production).
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## Next steps
 
-You can use Graphql;
+- Use migrations instead of automatic synchronization.
+- Use event-based message style for scalability.
+- Increase code coverage with unit tests.
+- Swagger API documentation.
+- Implement a security layer.
 
-# Send us your challenge
+## Comments
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+- It was a very interesting challenge. It is my first time building an application on NodeJS.
+- It was challenging to communicate both services via Kafka. NestJS provides multiple resources to implement the communication and eventually makes it very easy to build.
