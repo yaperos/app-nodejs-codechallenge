@@ -1,22 +1,17 @@
 import {Controller, Logger} from '@nestjs/common';
-import { AntiFraudService } from './anti-fraud.service';
 import {Ctx, KafkaContext, MessagePattern, Payload} from "@nestjs/microservices";
-import {CreateTransactionInput} from "../../common/dto/create_transaction_input";
 import {TransactionStatus} from "../../common/enums/transaction-status";
-
-type AntiFraudInput = CreateTransactionInput & {
-  transactionExternalId: string
-}
+import {AntiFraudInput} from "./dto/anti_fraud.input";
 
 @Controller()
-export class AntiFraudController {
+export class Anti_fraudController {
   constructor() {}
 
   @MessagePattern('transaction_created')
   async handleAntiFraud(
       @Payload() message: AntiFraudInput,
-      @Ctx() context: KafkaContext
-  ): Promise<any>{
+      @Ctx() context?: KafkaContext
+  ): Promise<string>{
 
     let status = TransactionStatus.APPROVED
 

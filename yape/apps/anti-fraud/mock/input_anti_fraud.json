@@ -1,0 +1,34 @@
+{
+    "REJECTED": [
+        {
+            "accountExternalIdCredit": "b233d450-b103-4559-be26-59aae0940329",
+            "accountExternalIdDebit": "d150be5b-faa6-46e3-99c5-948926d2b26b",
+            "transactionExternalId": "af4908e0-9681-41f1-be02-88d3383a09ca",
+            "transferTypeId": 2,
+            "value": 1001
+        },
+        {
+            "accountExternalIdCredit": "b233d450-b103-4559-be26-59aae0940329",
+            "accountExternalIdDebit": "d150be5b-faa6-46e3-99c5-948926d2b26b",
+            "transactionExternalId": "af4908e0-9681-41f1-be02-88d3383a09ca",
+            "transferTypeId": 1,
+            "value": 3000
+        }
+    ],
+    "APPROVED": [
+        {
+            "accountExternalIdCredit": "b233d450-b103-4559-be26-59aae0940329",
+            "accountExternalIdDebit": "d150be5b-faa6-46e3-99c5-948926d2b26b",
+            "transactionExternalId": "af4908e0-9681-41f1-be02-88d3383a09ca",
+            "transferTypeId": 3,
+            "value": 1000
+        },
+        {
+            "accountExternalIdCredit": "b233d450-b103-4559-be26-59aae0940329",
+            "accountExternalIdDebit": "d150be5b-faa6-46e3-99c5-948926d2b26b",
+            "transactionExternalId": "af4908e0-9681-41f1-be02-88d3383a09ca",
+            "transferTypeId": 4,
+            "value": 999
+        }
+    ]
+}

@@ -1,11 +1,11 @@
 import {NestFactory} from '@nestjs/core';
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
-import {AntiFraudModule} from './anti-fraud.module';
+import {Anti_fraudModule} from './anti_fraud.module';
 import {CompressionTypes} from "@nestjs/microservices/external/kafka.interface";
 
 async function bootstrap() {
     const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-        AntiFraudModule,
+        Anti_fraudModule,
         {
             transport: Transport.KAFKA,
             options: {
