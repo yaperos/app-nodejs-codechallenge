@@ -55,24 +55,16 @@ Done. Press any key to close the terminal.
 6. Once the installation process is done. Open two terminal windows to start both services separately:
 
 ```zsh
-nest start transaction --watch
+nest start transaction --watch # This application is exposed on http://localhost:3001
 ```
 
 ```zsh
 nest start anti-fraud --watch
 ```
 
-7. Use the included extension `Thunder Client` to POST a request to `http://localhost:3000/transaction` with payload:
+7. Go to `http://localhost:3001/docs` for more information about available endpoints.
 
-```json
-{
-  "accountExternalIdDebit": "42a2f7d9-e857-4f2c-a4ad-a779905b77e7",
-  "accountExternalIdCredit": "3d102217-2b30-4307-a1e2-71dc85cb76b6",
-  "value": 120
-}
-```
-
-> Use `SQLTools` and `Kafka` extensions to inspect both database table and kafka topic respectively.
+> Note: Additionally you can use `SQLTools` and `Kafka` extensions to inspect both database table and kafka topic respectively.
 
 ## Highlights
 
@@ -83,7 +75,8 @@ nest start anti-fraud --watch
 - The repository implements a monorepo strategy keeping microservices boundaries.
 - It implements a CI pipeline using Github actions, which builds the projects and executes the unit tests.
 - Both application make use of environment variables for easy deployment across different environments (development, staging, production).
-- API documentation for transaction micro service is available under [/docs](http://localhost:3000/docs) path.
+- API documentation for transaction micro service is available under [/docs](http://localhost:3001/docs) path.
+- Application metrics are exposed on [/metrics](http://localhost:3001/metrics) path using Prometheus API.
 
 ## Next steps
 
@@ -92,7 +85,6 @@ nest start anti-fraud --watch
 - Increase code coverage with unit tests.
 - Implement a security layer.
 - Use structured logging.
-- Expose metrics for monitoring.
 
 ## Comments
 
