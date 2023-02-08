@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
+import { DataService } from './core/infrastructure/services';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 
 @Module({
@@ -6,4 +7,8 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  onModuleInit() {
+    DataService.insertInitialData();
+  }
+}
