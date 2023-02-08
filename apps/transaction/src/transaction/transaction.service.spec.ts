@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CreateTransactionResponseDto } from './dto/create-transaction-response.dto';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { GetTransactionDto } from './dto/get-transaction.dto';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionService } from './transaction.service';
 
@@ -39,7 +39,7 @@ describe('TransactionService', () => {
   it('should return an instance of Transaction', () => {
     const dto = new CreateTransactionDto();
     return service.create(dto).then((response) => {
-      expect(response).toBeInstanceOf(CreateTransactionResponseDto);
+      expect(response).toBeInstanceOf(GetTransactionDto);
     });
   });
 });

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
-import { CreateTransactionResponseDto } from './dto/create-transaction-response.dto';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { GetTransactionDto } from './dto/get-transaction.dto';
 import { TransactionService } from './transaction.service';
 
 @Controller('transaction')
@@ -11,12 +11,12 @@ export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @ApiCreatedResponse({
-    type: CreateTransactionResponseDto,
+    type: GetTransactionDto,
   })
   @Post()
   create(
     @Body() createTransactionDto: CreateTransactionDto,
-  ): Promise<CreateTransactionResponseDto> {
+  ): Promise<GetTransactionDto> {
     this.logger.debug('transaction request received');
     return this.transactionService.create(createTransactionDto);
   }

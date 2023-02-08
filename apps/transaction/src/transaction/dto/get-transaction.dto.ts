@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTransactionResponseDto {
+export class GetTransactionDto {
   @ApiProperty({
     description: 'Transaction id',
     type: String,
@@ -14,6 +14,13 @@ export class CreateTransactionResponseDto {
     example: 'approved',
   })
   status: string;
+
+  @ApiProperty({
+    description: 'Value',
+    type: Number,
+    example: '120.00',
+  })
+  value: number;
 
   @ApiProperty({
     description: 'Created date',

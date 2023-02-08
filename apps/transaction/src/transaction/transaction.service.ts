@@ -2,8 +2,8 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateTransactionResponseDto } from './dto/create-transaction-response.dto';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { GetTransactionDto } from './dto/get-transaction.dto';
 import { Transaction } from './entities/transaction.entity';
 
 @Injectable()
@@ -17,9 +17,7 @@ export class TransactionService {
     private antiFraudMicroservice: ClientKafka,
   ) {}
 
-  async create(
-    dto: CreateTransactionDto,
-  ): Promise<CreateTransactionResponseDto> {
+  async create(dto: CreateTransactionDto): Promise<GetTransactionDto> {
     const transaction = new Transaction();
     transaction.accountExternalIdCredit = dto.accountExternalIdCredit;
     transaction.accountExternalIdDebit = dto.accountExternalIdDebit;
@@ -36,9 +34,10 @@ export class TransactionService {
         this.logger.debug('transaction updated');
       });
 
-    const response = new CreateTransactionResponseDto();
+    const response = new GetTransactionDto();
     response.id = transaction.id;
     response.status = transaction.status;
+    response.value = transaction.value;
     response.createdAt = transaction.createdAt;
     response.updatedAt = transaction.updatedAt;
 
