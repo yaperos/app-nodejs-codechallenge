@@ -83,14 +83,16 @@ nest start anti-fraud --watch
 - The repository implements a monorepo strategy keeping microservices boundaries.
 - It implements a CI pipeline using Github actions, which builds the projects and executes the unit tests.
 - Both application make use of environment variables for easy deployment across different environments (development, staging, production).
+- API documentation for transaction micro service is available under [/docs](http://localhost:3000/docs) path.
 
 ## Next steps
 
 - Use migrations instead of automatic synchronization.
 - Use event-based message style for scalability.
 - Increase code coverage with unit tests.
-- Swagger API documentation.
 - Implement a security layer.
+- Use structured logging.
+- Expose metrics for monitoring.
 
 ## Comments
 
