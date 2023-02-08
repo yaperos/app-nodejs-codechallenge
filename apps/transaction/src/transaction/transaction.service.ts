@@ -36,6 +36,14 @@ export class TransactionService {
     return transaction;
   }
 
+  findAll() {
+    return this.transactionRepository.find();
+  }
+
+  findOne(id: string) {
+    return this.transactionRepository.findOneBy({ id });
+  }
+
   async onModuleInit() {
     this.antiFraudMicroservice.subscribeToResponseOf('transaction-created');
   }

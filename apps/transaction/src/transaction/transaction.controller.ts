@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionService } from './transaction.service';
 
@@ -12,5 +12,15 @@ export class TransactionController {
   create(@Body() createTransactionDto: CreateTransactionDto) {
     this.logger.debug('transaction request received');
     return this.transactionService.create(createTransactionDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.transactionService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.transactionService.findOne(id);
   }
 }
