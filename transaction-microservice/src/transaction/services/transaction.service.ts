@@ -9,18 +9,15 @@ import { ClientKafka } from '@nestjs/microservices/client';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cache } from 'cache-manager';
 import { first } from 'rxjs';
-import { TransactionStatus } from 'src/database/entities/transaction-status.entity';
-import { Transaction } from 'src/database/entities/transaction.entity';
-import { TransactionType } from 'src/database/entities/transaction.type.entity';
-import { NotFoundError } from 'src/errors/not-found.error';
 import { Repository } from 'typeorm';
-import CreateTransactionInput from '../dto/create-transaction.input';
-
-enum TransactionStatusEnum {
-  PENDING = 1,
-  APPROVED = 2,
-  REJECTED = 3,
-}
+import {
+  Transaction,
+  TransactionStatus,
+  TransactionType,
+} from '../../database/entities';
+import { TransactionStatusEnum } from '../../enums';
+import { NotFoundError } from '../../errors';
+import { CreateTransactionInput } from '../dto';
 
 @Injectable()
 export class TransactionService implements OnModuleInit {
@@ -46,7 +43,6 @@ export class TransactionService implements OnModuleInit {
     const value = await this.cacheManager.get<string>(transactionExternalId);
 
     if (value !== undefined && value !== null) {
-      console.log(value);
       return JSON.parse(value);
     }
 
@@ -62,8 +58,6 @@ export class TransactionService implements OnModuleInit {
       return new NotFoundError('Transaction not found');
     }
 
-    console.log(transaction);
-
     await this.cacheManager.set(
       transactionExternalId,
       JSON.stringify(transaction),
@@ -75,12 +69,6 @@ export class TransactionService implements OnModuleInit {
   // TODO Paginate
   async getTransactions() {
     return this.transactionRepository.find();
-  }
-
-  async getTransactionStatus(statusId: number) {
-    return this.transactionStatusRepository.findOne({
-      where: { id: statusId },
-    });
   }
 
   async getTransactionStatusOfTransactionList(transactionStatusIds: number[]) {
@@ -104,10 +92,6 @@ export class TransactionService implements OnModuleInit {
     });
 
     return mappedResults;
-  }
-
-  async getTransactionType(typeId: number) {
-    return this.transactionTypeRepository.findOne({ where: { id: typeId } });
   }
 
   async getTransactionTypeOfTransactionList(transactionTypeIds: number[]) {

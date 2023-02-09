@@ -4,16 +4,10 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import {
-  KafkaRetriableException,
-  MessagePattern,
-  Payload,
-  RpcException,
-} from '@nestjs/microservices';
-import { throwError } from 'rxjs';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { NewTransactionMessage } from './dto/NewTransactionMessage';
-import { KafkaExceptionFilter } from './KafkaExceptionFilter';
+import { KafkaExceptionFilter } from './kafkaException.filter';
 
 @Controller()
 export class AppController {

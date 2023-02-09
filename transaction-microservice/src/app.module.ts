@@ -5,13 +5,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CacheConfigService } from './cache-config-service/cache-config-service';
 import configuration from './config/configuration';
-import { DateScalar } from './helpers/DateScalar';
+import { DateScalar } from './helpers';
+import { CacheConfigService } from './services';
+import { TypeOrmConfigService } from './services/type-orm-config-service/type-orm-config.service';
 import { DataLoaderService } from './transaction/services/data-loader.service';
 import { TransactionModule } from './transaction/transaction.module';
-import { TypeOrmConfigService } from './type-orm-config-service/type-orm-config.service';
 @Module({
   imports: [
     TransactionModule,
@@ -36,7 +35,7 @@ import { TypeOrmConfigService } from './type-orm-config-service/type-orm-config.
     }),
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
   ],
+  providers: [TypeOrmConfigService, CacheConfigService, DateScalar],
   controllers: [AppController],
-  providers: [AppService, TypeOrmConfigService, CacheConfigService, DateScalar],
 })
 export class AppModule {}

@@ -7,11 +7,13 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { TransactionStatus } from 'src/database/entities/transaction-status.entity';
-import { Transaction } from 'src/database/entities/transaction.entity';
-import { IDataloaders } from 'src/interfaces/data-loaders.interface';
-import CreateTransactionInput from './dto/create-transaction.input';
-import GetTransactionArgs from './dto/get-transaction.args';
+import {
+  Transaction,
+  TransactionStatus,
+  TransactionType,
+} from '../database/entities';
+import { IDataloaders } from '../interfaces/data-loaders.interface';
+import { CreateTransactionInput, GetTransactionArgs } from './dto';
 import { TransactionService } from './services/transaction.service';
 
 @Resolver(() => Transaction)
@@ -47,7 +49,7 @@ export class TransactionResolver {
   async transactionType(
     @Parent() parent: Transaction,
     @Context() { loaders }: { loaders: IDataloaders },
-  ): Promise<TransactionStatus> {
+  ): Promise<TransactionType> {
     return loaders.transactionTypeLoader.load(parent.transactionTypeId);
   }
 }

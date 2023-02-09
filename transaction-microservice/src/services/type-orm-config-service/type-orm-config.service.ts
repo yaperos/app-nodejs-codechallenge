@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist';
-import { TransactionType } from 'src/database/entities/transaction.type.entity';
-import { IDatabaseConfig } from 'src/interfaces/database-config.interface';
-import { TransactionStatus } from '../database/entities/transaction-status.entity';
-import { Transaction } from '../database/entities/transaction.entity';
+import { IDatabaseConfig } from '../../../src/interfaces/database-config.interface';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -22,7 +19,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database,
       username,
       password,
-      entities: [Transaction, TransactionStatus, TransactionType],
+      autoLoadEntities: true,
       logger: 'file',
       synchronize: false,
     };

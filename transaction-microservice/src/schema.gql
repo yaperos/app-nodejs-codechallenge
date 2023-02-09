@@ -4,10 +4,10 @@
 
 input CreateTransactionInput {
   """External account credit GUID ID"""
-  accountExternalIdCredit: String
+  accountExternalIdCredit: String!
 
   """External account debit GUID ID"""
-  accountExternalIdDebit: String
+  accountExternalIdDebit: String!
 
   """Transfer type id"""
   tranferTypeId: Int!

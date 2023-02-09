@@ -3,11 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { ClientProxyFactory } from '@nestjs/microservices';
 import { Transport } from '@nestjs/microservices/enums';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheConfigService } from 'src/cache-config-service/cache-config-service';
-import { TransactionStatus } from 'src/database/entities/transaction-status.entity';
-import { Transaction } from 'src/database/entities/transaction.entity';
-import { TransactionType } from 'src/database/entities/transaction.type.entity';
+import {
+  Transaction,
+  TransactionStatus,
+  TransactionType,
+} from 'src/database/entities';
 import { IKafkaConfig } from 'src/interfaces/kafka-config.interface';
+import { CacheConfigService } from '../services';
 import { DataLoaderService } from './services/data-loader.service';
 import { TransactionService } from './services/transaction.service';
 import { TransactionResolver } from './transaction.resolver';

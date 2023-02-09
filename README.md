@@ -1,6 +1,112 @@
-# Yape Code Challenge :rocket:
+# YAPE CHALLENGE RESOLVED
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Technologies used
+
+- NestJS
+- TypeORM
+- Kafka
+- Zookeeper
+- Docker
+- GraphQL
+- Dataloader (For GraphQL)
+- Redis (For data cache)
+
+Also both services have unit tests.
+
+## Install
+
+Just run `docker-compose up -d` this will run the following docker projects:
+
+- Transaction Service (NestJS)
+- Anti fraud micro service (NestJS)
+- Postgres
+- Kafka
+- Zookeeper
+- Redis
+
+If you don't want to run the services at once run `docker-compose -f docker-compose-db-only.yml up -d` then go to `anti_fraud-microservices` and `transaction-microservices` to run `npm install` and `npm start`.
+
+`(This docker composer was tested on windows 11 and Ubuntu 20)`
+
+## Usage
+
+This app uses GraphQL, the app will run on the port 2000 go to `http://[::1]:2000/graphql` to use the playground:
+
+### Create a transaction
+
+```graphql
+mutation CreateTransaction($data: CreateTransactionInput!) {
+  transaction(data: $data) {
+    transactionExternalId
+    transactionStatus {
+      name
+    }
+    transactionType {
+      name
+    }
+    value
+  }
+}
+```
+
+With the query variables:
+
+```json
+{
+  "data": {
+    "value": 111111545,
+    "tranferTypeId": 1,
+    "accountExternalIdDebit": "some-guid",
+    "accountExternalIdCredit": "some-guid"
+  }
+}
+```
+
+`PSA: There is only 2 types of transactions 1 or 2.`
+
+### Get a transaction
+
+```graphql
+query GetTransaction {
+  transaction(transactionExternalId: "guid-of-generated-transaction") {
+    transactionExternalId
+    value
+    transactionStatus {
+      name
+    }
+    transactionType {
+      name
+    }
+    createdAt
+  }
+}
+```
+
+Where the `transactionExternalId` is the GUID of the generated transaction.
+
+### Get all transactions
+
+```graphql
+query GetTransactions {
+  transactions {
+    transactionExternalId
+    value
+    transactionStatus {
+      name
+    }
+    transactionType {
+      name
+    }
+    createdAt
+  }
+}
+```
+
+`PSA: The is an env file that is pushed only for the purpose of this challenge.`
+
+# Yape Code Challenge :rocket
+
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
@@ -35,7 +141,7 @@ Every transaction with a value greater than 1000 should be rejected.
 <ol>
   <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
   <li>Any database</li>
-  <li>Kafka</li>    
+  <li>Kafka</li>
 </ol>
 
 We do provide a `Dockerfile` to help you get started with a dev environment.

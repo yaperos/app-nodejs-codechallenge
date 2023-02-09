@@ -7,7 +7,7 @@ import { TransactionService } from './transaction.service';
 
 @Injectable()
 export class DataLoaderService {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(private transactionService: TransactionService) {}
 
   getLoaders(): IDataloaders {
     const transactionStatusLoader = this._createTransactionStatusLoader();
