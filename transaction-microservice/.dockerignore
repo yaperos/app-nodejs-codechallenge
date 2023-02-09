@@ -1,0 +1,8 @@
+.env
+node_modules
+Dockerfile
+.git
+.gitignore
+dist
+coverage
+.for-yape-test.env
