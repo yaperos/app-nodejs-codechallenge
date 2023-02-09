@@ -16,10 +16,8 @@ input CreateTransactionInput {
   value: Float!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+"""Date custom scalar type"""
+scalar Date
 
 type Mutation {
   transaction(data: CreateTransactionInput!): Transaction!
@@ -34,7 +32,7 @@ type Query {
 }
 
 type Transaction {
-  createdAt: DateTime!
+  createdAt: Date!
   transactionExternalId: String!
   transactionStatus: TransactionStatus!
   transactionStatusId: Int!

@@ -15,6 +15,7 @@ services:
       KAFKA_PORT: 29092
     networks:
       - app_network
+    depends_on: [kafka]
     deploy:
       resources:
         limits:
@@ -36,9 +37,16 @@ services:
       DATABASE_NAME: transactions_yape
       KAFKA_HOST: kafka
       KAFKA_PORT: 29092
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       postgres:
         condition: service_healthy
+      kafka:
+        condition: service_started
+      redis:
+        condition: service_started
+
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     networks:
@@ -69,6 +77,8 @@ services:
       - app_network
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - '2181:2181'
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -84,6 +94,13 @@ services:
       - app_network
     ports:
       - '9092:9092'
+  redis:
+    image: redis:6.2.5
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+      - app_network
 networks:
   app_network:
     driver: bridge

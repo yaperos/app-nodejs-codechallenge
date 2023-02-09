@@ -11,4 +11,8 @@ export default () => ({
     host: process.env.KAFKA_HOST,
     port: parseInt(process.env.KAFKA_PORT, 10) || 9092,
   },
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+  },
 });

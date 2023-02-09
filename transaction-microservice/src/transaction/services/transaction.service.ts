@@ -1,6 +1,13 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices/client';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cache } from 'cache-manager';
 import { first } from 'rxjs';
 import { TransactionStatus } from 'src/database/entities/transaction-status.entity';
 import { Transaction } from 'src/database/entities/transaction.entity';
@@ -21,6 +28,7 @@ export class TransactionService implements OnModuleInit {
 
   constructor(
     @Inject('YAPE_SERVICE') private client: ClientKafka,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
     @InjectRepository(TransactionStatus)
@@ -35,6 +43,13 @@ export class TransactionService implements OnModuleInit {
   }
 
   async getTransaction(transactionExternalId: string) {
+    const value = await this.cacheManager.get<string>(transactionExternalId);
+
+    if (value !== undefined && value !== null) {
+      console.log(value);
+      return JSON.parse(value);
+    }
+
     const transaction = await this.transactionRepository.findOne({
       where: { transactionExternalId },
     });
@@ -46,6 +61,13 @@ export class TransactionService implements OnModuleInit {
       );
       return new NotFoundError('Transaction not found');
     }
+
+    console.log(transaction);
+
+    await this.cacheManager.set(
+      transactionExternalId,
+      JSON.stringify(transaction),
+    );
 
     return transaction;
   }
