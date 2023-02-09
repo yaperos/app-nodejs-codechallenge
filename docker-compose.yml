@@ -1,12 +1,15 @@
-version: "3.7"
+version: "3.8"
 services:
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - "5431:5432"
+    volumes:
+    - postgres:/var/lib/postgresql/data
+    env_file:
+      - docker.env
+    networks:
+      - app-network
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +26,50 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - app-network
+  server:
+    image: "server_${NODE_ENV}"
+    container_name: "server_${NODE_ENV}"
+    environment:
+      - NODE_ENV:${NODE_ENV}
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file:
+      - .env    
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    command: npm start
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+  validation-server:
+    image: "validation_server_${NODE_ENV}"
+    container_name: "validation_server_${NODE_ENV}"
+    env_file: .env
+    environment:
+      - VALIDATION_SERVER_PORT:${VALIDATION_SERVER_PORT}
+    build:
+      context: ./validation-server
+      dockerfile: Dockerfile
+    command: npm start
+    ports:
+      - ${VALIDATION_SERVER_PORT}:${VALIDATION_SERVER_PORT}
+    volumes:
+      - ./validation-server:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - app-network
+  
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+  postgres:
+    driver: local
