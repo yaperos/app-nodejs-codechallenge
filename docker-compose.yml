@@ -1,5 +1,11 @@
 version: "3.7"
 services:
+  transactions:
+    build: ./transactions 
+    ports:
+      - 4000:4000
+    depends_on:
+      - postgres
   postgres:
     image: postgres:14
     ports:

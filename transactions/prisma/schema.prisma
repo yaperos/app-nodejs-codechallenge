@@ -10,19 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Status {
-  PENDING
-  APPROVED
-  REJECTED
+model TransactionType {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+}
+
+model TransactionStatus {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
 }
 
 model Transaction {
-  id                    String   @id @default(uuid())
+  id                    String            @id @default(uuid())
   transactionExternalId String
-  transactionType       String
   value                 Decimal
-  transactionStatus     Status   @default(PENDING)
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  transactionStatus     TransactionStatus @relation(fields: [transactionStatusId], references: [id])
+  transactionStatusId   Int               @default(1)
+  transactionType      TransactionType   @relation(fields: [transactionTypeId], references: [id])
+  transactionTypeId     Int
 }
-
