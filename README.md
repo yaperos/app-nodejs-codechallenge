@@ -1,4 +1,4 @@
-# YAPE CHALLENGE RESOLVED
+# YAPE CHALLENGE: Solution
 
 ## Technologies used
 
@@ -26,7 +26,7 @@ Just run `docker-compose up -d` this will run the following docker projects:
 
 If you don't want to run the services at once run `docker-compose -f docker-compose-db-only.yml up -d` then go to `anti_fraud-microservices` and `transaction-microservices` to run `npm install` and `npm start`.
 
-`(This docker composer was tested on windows 11 and Ubuntu 20)`
+`(Those docker composer files were tested on windows 11 and Ubuntu 22.04)`
 
 ## Usage
 

@@ -138,7 +138,7 @@ export class TransactionService implements OnModuleInit {
 
     this.client
       .send('yape.new.transaction', dataToSend)
-      .pipe(first())
+      .pipe(first()) // ? So it auto unsubscribes and doesn't keep listening (For this challenge I Only need the first response)
       .subscribe({
         next: this.handleAntiFraudResponse,
         error: (err) => {
