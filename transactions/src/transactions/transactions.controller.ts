@@ -2,29 +2,36 @@ import { Controller } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 import { PrismaService } from 'src/prisma/prisma.service';
 
+interface Moderator {
+  id: string;
+  status: 'approved' | 'rejected';
+}
+
 @Controller()
 export class TransactionController {
   constructor(private readonly prisma: PrismaService) {}
 
   @EventPattern('transaction_moderated')
-  public transactionModerated(data: any) {
-    console.log(data);
-    // if (topic === 'transaction-approved') {
-    //   this.prisma.transaction.update({
-    //     data: {
-    //       transactionStatusId: 2,
-    //     },
-    //     where: { id: value.toString() },
-    //   });
-    // }
+  public async transactionModerated(data: Moderator) {
+    const { id, status } = data;
+    let statusId = 1;
 
-    // if (topic === 'transaction-rejected') {
-    //   this.prisma.transaction.update({
-    //     data: {
-    //       transactionStatusId: 3,
-    //     },
-    //     where: { id: value.toString() },
-    //   });
-    // }
+    if (status === 'approved') statusId = 2;
+    if (status === 'rejected') statusId = 3;
+
+    try {
+      await this.prisma.transaction.update({
+        where: { id },
+        data: {
+          transactionStatus: {
+            connect: {
+              id: statusId,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
