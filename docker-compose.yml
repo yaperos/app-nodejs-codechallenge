@@ -6,6 +6,13 @@ services:
       - 4000:4000
     depends_on:
       - postgres
+      - kafka
+  anti-fraud:
+    build: ./anti-fraud 
+    ports:
+      - 4001:4001
+    depends_on:
+      - kafka
   postgres:
     image: postgres:14
     ports:
@@ -19,7 +26,8 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: 
+      - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092

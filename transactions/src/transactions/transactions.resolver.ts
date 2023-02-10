@@ -1,4 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { ProducerService } from 'src/kafka/producer/producer.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTransactionInput } from './dto/createTransaction.input';
 import { UpdateTransactionInput } from './dto/updateTransaction.input';
@@ -6,7 +7,10 @@ import { Transaction } from './models/transaction.model';
 
 @Resolver()
 export class TransactionsResolver {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly producerService: ProducerService,
+  ) {}
 
   @Query(() => [Transaction])
   async transaction() {
@@ -27,7 +31,7 @@ export class TransactionsResolver {
       ...transaction
     } = data;
 
-    const newTransaction = this.prisma.transaction.create({
+    const newTransaction = await this.prisma.transaction.create({
       data: {
         transactionExternalId: accountExternalIdCredit,
         transactionTypeId: tranferTypeId,
@@ -37,6 +41,15 @@ export class TransactionsResolver {
         transactionStatus: true,
         transactionType: true,
       },
+    });
+
+    await this.producerService.produce({
+      topic: 'transaction-created',
+      messages: [
+        {
+          value: JSON.stringify(newTransaction),
+        },
+      ],
     });
 
     return newTransaction;
