@@ -1,4 +1,4 @@
-export interface Transaction {
+export interface TransactionCreatedEvent {
   id: string;
   value: string;
 }

@@ -1,9 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateTransactionInput } from './dto/createTransaction.input';
-import { UpdateTransactionInput } from './dto/updateTransaction.input';
 import { Transaction } from './models/transaction.model';
 
 @Resolver()
@@ -49,24 +48,6 @@ export class TransactionsResolver {
       value: {
         id: newTransaction.id,
         value: newTransaction.value.toString(),
-      },
-    });
-
-    return newTransaction;
-  }
-
-  @Mutation(() => Transaction)
-  async updateTransaction(@Args('data') data: UpdateTransactionInput) {
-    const { id, tranferStatusId } = data;
-
-    const newTransaction = this.prisma.transaction.update({
-      data: {
-        transactionStatusId: tranferStatusId,
-      },
-      where: { id },
-      include: {
-        transactionStatus: true,
-        transactionType: true,
       },
     });
 

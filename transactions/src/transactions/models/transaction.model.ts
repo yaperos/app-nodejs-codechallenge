@@ -1,6 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { TransactionStatus } from 'src/transactionStatus/models/transactionStatus.model';
-import { TransactionType } from 'src/transactionType/models/transactionType.model';
+import { TransactionStatus } from '../../transactionStatus/models/transactionStatus.model';
+import { TransactionType } from '../../transactionType/models/transactionType.model';
 import { BaseModel } from '../../common/models/base.model';
 
 @ObjectType()
