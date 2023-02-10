@@ -1,9 +1,27 @@
 import { Module } from '@nestjs/common';
-import { KafkaModule } from 'src/kafka/kafka.module';
-import { AntiFraudConsumer } from './anti-fraud.consumer';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AntiFraudController } from './anti-fraud.controller';
+import { AntiFraudService } from './anti-fraud.service';
 
 @Module({
-  imports: [KafkaModule],
-  providers: [AntiFraudConsumer]
+  imports: [
+    ClientsModule.register([
+      {
+        name: 'KAFKA',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'anti-fraud-service',
+            brokers: ['kafka:29092'],
+          },
+          consumer: {
+            groupId: 'anti-fraud'
+          }
+        },
+      },
+    ]),
+  ],
+  controllers: [AntiFraudController],
+  providers: [AntiFraudService],
 })
 export class AntiFraudModule {}
