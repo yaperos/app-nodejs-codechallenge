@@ -9,3 +9,9 @@ export const transactionStatus = {
     2: 'pending',
     3: 'rejected',
 }
+
+export const TransactionStatusAllowed = [
+    TransactionStatus.APPROVED,
+    TransactionStatus.PENDING,
+    TransactionStatus.REJECTED,
+];

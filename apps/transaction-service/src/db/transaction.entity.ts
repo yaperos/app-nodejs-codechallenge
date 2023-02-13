@@ -3,6 +3,11 @@ import {
     Entity, 
     PrimaryGeneratedColumn
 } from 'typeorm';
+import {
+    TransactionStatusAllowed,
+    TransactionStatus,
+    transferTypes,
+} from '../../../../@shared';
 
 @Entity({ name: 'transaction' })
 export class Transaction {
@@ -51,13 +56,18 @@ export class Transaction {
 
     @Column({ 
         name: 'transaction_status_id', 
-        nullable: false 
+        nullable: false ,
+        type: 'enum',
+        enum: TransactionStatusAllowed,
+        default: TransactionStatus.PENDING,
     })
     transactionStatusId: number;
 
     @Column({ 
         name: 'transaction_type_id', 
-        nullable: false 
+        nullable: false,
+        type: 'enum',
+        enum: transferTypes,
     })
     transactionTypeId: number;
 }
