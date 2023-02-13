@@ -19,7 +19,7 @@ import {
   EVENT_CREATE_TRANSACTION_REQUEST,
   EVENT_UPDATE_TRANSACTION_STATUS_REQUEST,
   EVENT_GET_TRANSACTION_REQUEST,
-} from '../../@shared';
+} from '../../../@shared';
 import {
   CreateTransactionReq,
   TransactionCreatedResponseDTO,

@@ -4,7 +4,7 @@ import {
   EVENT_CREATE_TRANSACTION_REQUEST,
   EVENT_GET_TRANSACTION_REQUEST,
   TRANSACTION_SERVICE,
-} from '../../../@shared';
+} from '../../../../@shared';
 import {
   TransactionRes,
   CreateTransactionReq,

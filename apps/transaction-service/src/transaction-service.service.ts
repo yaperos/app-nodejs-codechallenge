@@ -30,7 +30,7 @@ import {
   ANTIFRAUD_SERVICE,
   transactionStatus,
   transferTypeName,
-} from '../../@shared';
+} from '../../../@shared';
 import {
   Cache,
 } from 'cache-manager';

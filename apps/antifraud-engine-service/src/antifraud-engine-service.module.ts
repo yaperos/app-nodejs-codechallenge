@@ -6,6 +6,9 @@ import {
 import {
   TypeOrmModule
 } from '@nestjs/typeorm';
+import { 
+  ConfigModule,
+} from '@nestjs/config';
 import {
   dbConfig,
 } from './config';
@@ -20,10 +23,15 @@ import {
 } from './antifraud-engine-service.service';
 import {
   TRANSACTION_SERVICE,
-} from '../../@shared';
+} from '../../../@shared';
+import {
+  configOptions,
+  TRANSACTION_CONSUMER,
+} from '../../../@shared';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot(dbConfig),
     TypeOrmModule.forFeature([AntifraudFeature]),
     ClientsModule.register([
@@ -33,10 +41,10 @@ import {
         options: {
           client: {
             clientId: 'transaction-service',
-            brokers: ['localhost:9091'],
+            brokers: configOptions().kafka.brokers,
           },
           consumer: {
-            groupId: 'transaction-consumer',
+            groupId: TRANSACTION_CONSUMER,
           },
         },
       },

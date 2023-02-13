@@ -3,7 +3,9 @@ import {
   CacheModule,
 } from '@nestjs/common';
 import type { RedisClientOptions } from 'redis';
-import * as redisStore from 'cache-manager-redis-store';
+import { 
+  ConfigModule,
+} from '@nestjs/config';
 import { 
   ClientsModule,
    Transport 
@@ -14,7 +16,7 @@ import {
 import { TransactionServiceController } from './transaction-service.controller';
 import { TransactionServiceService } from './transaction-service.service';
 import {
-  dbConfig
+  dbConfig,
 } from './config';
 import {
   Transaction,
@@ -22,20 +24,22 @@ import {
 } from './db';
 import {
   ANTIFRAUD_SERVICE,
-} from '../../@shared';
+  configOptions,
+  ANTIFRAUD_ENGINE_CONSUMER,
+} from '../../../@shared';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [configOptions],
+    }),
     TypeOrmModule.forRoot(dbConfig),
     TypeOrmModule.forFeature([
       Transaction,
       TransactionType,
     ]),
     CacheModule.register<RedisClientOptions>({
-      //store: redisStore,
-      url: 'redis://localhost:6379',
-      //host: 'localhost',
-      //port: 6379,
+      url: configOptions().redis.url,
     }),
     ClientsModule.register([
       {
@@ -44,10 +48,10 @@ import {
         options: {
           client: {
             clientId: 'antifraud-engine-service',
-            brokers: ['localhost:9091'],
+            brokers: configOptions().kafka.brokers,
           },
           consumer: {
-            groupId: 'antifraud-engine-consumer',
+            groupId: ANTIFRAUD_ENGINE_CONSUMER,
           },
         },
       },

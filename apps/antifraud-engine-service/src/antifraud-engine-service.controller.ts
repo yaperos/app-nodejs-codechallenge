@@ -9,7 +9,7 @@ import {
   KafkaExceptionFilter,
   EVENT_GET_PENDING_TRANSACTION_REQUEST,
   KafkaValidationPipe,
-} from '../../@shared';
+} from '../../../@shared';
 import {
   GetPendingTransactionReq,
   GetPendingTransactionMessageDTO,

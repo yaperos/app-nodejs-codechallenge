@@ -2,15 +2,20 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import {
     AntifraudFeature,
 } from '../db';
+import {
+    configOptions,
+} from '../../../../@shared';
 
 export const dbConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    username: process.env.USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    entities: [AntifraudFeature],
+    host: configOptions().database.host,
+    port: Number(configOptions().database.port),
+    username: configOptions().database.username,
+    password: configOptions().database.password,
+    database: configOptions().database.name,
+    entities: [
+        AntifraudFeature,
+    ],
     synchronize: true,
     autoLoadEntities: true,
 };

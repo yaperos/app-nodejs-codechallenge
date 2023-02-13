@@ -9,7 +9,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import {
   EVENT_UPDATE_TRANSACTION_STATUS_REQUEST,
   TRANSACTION_SERVICE,
-} from '../../@shared';
+} from '../../../@shared';
 import {
   AntifraudFeature,
 } from './db';

@@ -2,7 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import { Logger, } from '@nestjs/common';
 import { TransactionServiceModule } from './transaction-service.module';
-
+import {
+  TRANSACTION_CONSUMER,
+  configOptions,
+} from '../../../@shared';
 const logger = new Logger('transaction-service');
 
 async function bootstrap() {
@@ -11,10 +14,10 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: ['localhost:9091'],
+        brokers: configOptions().kafka.brokers,
       },
       consumer: {
-        groupId: 'transaction-consumer' 
+        groupId: TRANSACTION_CONSUMER,
       },
     }
   });

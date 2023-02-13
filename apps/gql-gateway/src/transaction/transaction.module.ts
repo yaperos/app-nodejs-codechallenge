@@ -7,8 +7,10 @@ import {
   TransactionResolver,
 } from './transaction.resolver';
 import {
-  TRANSACTION_SERVICE
-} from '../../../@shared';
+  TRANSACTION_SERVICE,
+  TRANSACTION_CONSUMER,
+  configOptions,
+} from '../../../../@shared';
 
 @Module({
   imports: [
@@ -25,10 +27,10 @@ import {
         options: {
           client: {
             clientId: 'transaction-service',
-            brokers: ['localhost:9091'],
+            brokers: configOptions().kafka.brokers,
           },
           consumer: {
-            groupId: 'transaction-consumer',
+            groupId: TRANSACTION_CONSUMER,
           },
         },
       },
