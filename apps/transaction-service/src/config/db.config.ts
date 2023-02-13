@@ -6,11 +6,11 @@ import {
 } from '../db';
 export const dbConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: 'postgres',
-    database: 'main',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    username: process.env.USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     entities: [
         Transaction, 
         TransactionStatus, 

@@ -1,20 +1,16 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-// import {
-    // Transaction,
-    // TransactionStatus,
-    // TransactionType,
-// } from '../db';
+import {
+    AntifraudFeature,
+} from '../db';
 
 export const dbConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: 'postgres',
-    database: 'main',
-    entities: [
-        
-    ],
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    username: process.env.USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    entities: [AntifraudFeature],
     synchronize: true,
     autoLoadEntities: true,
 };
