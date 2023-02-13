@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/gql-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/gql-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/gql-gateway",
+  "projects": {
+    "gql-gateway": {
+      "type": "application",
+      "root": "apps/gql-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/gql-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gql-gateway/tsconfig.app.json"
+      }
+    },
+    "transaction-service": {
+      "type": "application",
+      "root": "apps/transaction-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/transaction-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transaction-service/tsconfig.app.json"
+      }
+    },
+    "antifraud-engine-service": {
+      "type": "application",
+      "root": "apps/antifraud-engine-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/antifraud-engine-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/antifraud-engine-service/tsconfig.app.json"
+      }
+    }
+  }
+}

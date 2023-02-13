@@ -80,3 +80,44 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+
+## Description
+
+Monorepo TypeScript-based for YAPE Challenge.
+
+## Installation
+
+```bash
+$ yarn install
+```
+
+## Running the app
+
+```bash
+# run docker-compose previously
+$ docker-compose up
+
+# watch mode GQL SERVICE
+$ yarn run start:dev
+
+# watch mode TRANSACTION SERVICE
+$ yarn run start:dev transaction-service
+
+# watch mode ANTIFRAUD SERVICE
+$ yarn run start:dev antifraud-engine-service
+
+```
+
+## Test
+
+```bash
+# unit tests
+$ yarn run test
+
+# e2e tests
+$ yarn run test:e2e
+
+# test coverage
+$ yarn run test:cov
+```
