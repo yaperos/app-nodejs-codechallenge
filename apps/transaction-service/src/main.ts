@@ -11,6 +11,7 @@ const logger = new Logger('transaction-service');
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(
     TransactionServiceModule, {
+    logger: ['error', 'warn', 'log'],
     transport: Transport.KAFKA,
     options: {
       client: {

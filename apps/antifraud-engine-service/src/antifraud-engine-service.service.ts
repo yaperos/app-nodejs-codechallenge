@@ -1,4 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { 
+  Injectable, 
+  Inject, 
+  Logger,
+} from '@nestjs/common';
 import { 
   Repository,
 } from 'typeorm';
@@ -16,6 +20,8 @@ import {
 
 @Injectable()
 export class AntifraudEngineServiceService {
+  private readonly logger = new Logger(AntifraudEngineServiceService.name);
+
   constructor(
     @Inject(TRANSACTION_SERVICE) private readonly transactionClient: ClientKafka,
     @InjectRepository(AntifraudFeature)
@@ -33,18 +39,22 @@ export class AntifraudEngineServiceService {
         active: true,
       }
     });
-    void this.transactionClient
-      .emit(EVENT_UPDATE_TRANSACTION_STATUS_REQUEST, {
-          value: {
-            features,
-            transactionId,
-          },
+    void this._emit(EVENT_UPDATE_TRANSACTION_STATUS_REQUEST, {
+      features,
+      transactionId,
+    })
+  }
+
+  private async _emit<T>(topic: string, value: T): Promise<void> {
+    this.transactionClient
+      .emit(topic, {
+          value,
       })
       .subscribe({
         error: (err) => {
-          console.error(
+          this.logger.error(
+            `_emit -> [${topic}] = ${err.message}`,
             err,
-            `getAntifraudFeatures -> [${EVENT_UPDATE_TRANSACTION_STATUS_REQUEST}] = ${err.message}`,
           );
         },        
     });

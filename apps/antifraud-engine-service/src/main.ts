@@ -8,6 +8,7 @@ const logger = new Logger('antifraud-engine-service');
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(
     AntifraudEngineServiceModule, {
+    logger: ['error', 'warn', 'log'],
     transport: Transport.KAFKA,
     options: {
       client: {

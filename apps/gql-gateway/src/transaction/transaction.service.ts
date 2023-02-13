@@ -1,4 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { 
+  Injectable, 
+  Inject,    
+  Logger,
+} from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
   EVENT_CREATE_TRANSACTION_REQUEST,
@@ -12,6 +16,8 @@ import {
 
 @Injectable()
 export class TransactionService {
+  private readonly logger = new Logger(TransactionService.name);
+
   constructor(
     @Inject(TRANSACTION_SERVICE) private readonly transactionClient: ClientKafka,
   ) {}
@@ -50,9 +56,9 @@ export class TransactionService {
           return resolve(response);
         },
         error: (err) => {
-          console.error(
-            err,
+          this.logger.error(
             `[${topic}] = Error sending message to kafka`,
+            err,
           );
           return reject(err);
         },        
