@@ -7,7 +7,7 @@ import { TypeOrmModule} from '@nestjs/typeorm';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TransactionType])],
-  providers: [TransactionTypeResolver, TransactionTypeService],
+  providers: [TransactionTypeService, TransactionTypeResolver],
   exports: [TransactionTypeService]  
 
 })

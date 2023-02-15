@@ -9,6 +9,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { TransactionStatus } from 'src/transaction-status/transaction-status.entity';
+import { TransactionType } from 'src/transaction-type/transaction-type.entity';
 
 @ObjectType()
 @Entity()
@@ -34,21 +35,24 @@ export class Transaction extends BaseEntity {
   createdAt: Date;
 
   @Column()
-  @Field(() => Int)
-  transactionStatusID: string;
+  @Field((type) => String)
+  transactionStatusID: string = '1';
 
   @Field(() => TransactionStatus)
   @ManyToOne(
     () => TransactionStatus,
-    transactionStatus => transactionStatus.transactions,
+    (transactionStatus) => transactionStatus.transactions,
   )
   transactionStatus: TransactionStatus;
 
-  //@Column()
-  //@Field(() => [TransactionStatus], {nullable:true})
-  //transactionStatusId: string;
-
   @Column()
-  @Field((type) => Int)
+  @Field((type) => String)
   transacionTypeId: string;
-} 
+
+  @Field(() => TransactionType)
+  @ManyToOne(
+    () => TransactionType,
+    (transactionType) => transactionType.transactions,
+  )
+  transactionType: TransactionType;
+}

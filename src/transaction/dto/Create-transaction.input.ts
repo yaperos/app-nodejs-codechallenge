@@ -9,7 +9,7 @@ export class CreateTransactionInput {
     accountExternalIdCredit: string
     
     @Field()
-    tranferTypeId: number
+    transacionTypeId: string
     
     @Field()
     value: number

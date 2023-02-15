@@ -1,8 +1,8 @@
-import { Injectable, Options } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTransactionStatusInput } from './dto/create-transaction-status.input';
 import { UpdateTransactionStatusInput } from './dto/update-transaction-status.input';
 import { TransactionStatus } from './transaction-status.entity';
-import { Repository, FindOneOptions } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -13,6 +13,8 @@ export class TransactionStatusService {
   ) {}
 
   createTransaction(transactionStatus: CreateTransactionStatusInput): Promise<TransactionStatus> {
+    console.log(CreateTransactionStatusInput);
+
     const newTransactionStatus = this.transactionsStatusRepository.create(transactionStatus);
     return this.transactionsStatusRepository.save(newTransactionStatus);
   }

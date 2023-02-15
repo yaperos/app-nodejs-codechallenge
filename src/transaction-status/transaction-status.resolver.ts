@@ -3,11 +3,17 @@ import { TransactionStatusService } from './transaction-status.service';
 import { TransactionStatus } from './transaction-status.entity';
 import { CreateTransactionStatusInput } from './dto/create-transaction-status.input';
 import { UpdateTransactionStatusInput } from './dto/update-transaction-status.input';
-import { query } from 'express';
 
 @Resolver(() => TransactionStatus)
 export class TransactionStatusResolver {
   constructor(private readonly service: TransactionStatusService) {}
+
+  @Mutation(() => TransactionStatus)
+  createTransactionStatus(@Args('transactionStatusInput') transactionStatusInput: CreateTransactionStatusInput)
+  {
+    console.log(transactionStatusInput);
+    return this.service.createTransaction(transactionStatusInput);
+  }
 
   @Query((returns) => [TransactionStatus], { name: 'transactionStatus' })
   transactionStatus() {
@@ -20,12 +26,4 @@ export class TransactionStatusResolver {
   findOne(@Args('id') id: string) {
     return this.service.findOne(id);
   }
-
-  @Mutation(() => TransactionStatus)
-  createTransactionStatus(@Args('transactionStatusInput') transactionStatusInput: CreateTransactionStatusInput)
-  {
-    console.log(transactionStatusInput);
-    return this.service.createTransaction(transactionStatusInput);
-  }
-
 }

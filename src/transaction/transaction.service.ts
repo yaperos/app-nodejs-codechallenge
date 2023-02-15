@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTransactionInput } from './dto/create-transaction.input';
 import { TransactionStatus } from 'src/transaction-status/transaction-status.entity';
+import { TransactionType } from 'src/transaction-type/transaction-type.entity';
+
 import { TransactionStatusService } from 'src/transaction-status/transaction-status.service';
 
 @Injectable()
@@ -29,14 +31,19 @@ export class TransactionService {
   createTransaction(transacion: CreateTransactionInput): Promise<Transaction> {
     const newTransaction = this.transactionsRepository.create(transacion);
     newTransaction.createdAt = new Date();
-    newTransaction.transactionStatusID = "2";
+  
  
     var status: TransactionStatus = new TransactionStatus();
-    status.id = "2";
-    status.name = "Debito";
-
-
+    status.id = "1";
+    status.name = "Pending";
     newTransaction.transactionStatus = status;
+
+    var type: TransactionType = new TransactionType();
+    type.id = "1";
+    type.name = "Debito";
+    newTransaction.transactionType = type;
+
+
     return this.transactionsRepository.save(newTransaction);
   }
 

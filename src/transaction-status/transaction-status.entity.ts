@@ -2,7 +2,6 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   BaseEntity,
   Column,
-  PrimaryGeneratedColumn,
   PrimaryColumn,
   Entity,
   OneToMany,
@@ -21,7 +20,6 @@ import { Transaction} from 'src/transaction/transaction.entity'
     name: string;
    
   
-    //@Field(() => [Transaction],{nullable:true})
     @Field(() => Transaction,{nullable:true})
     @OneToMany(() => Transaction, transaction => transaction.transactionStatus)
     transactions: Transaction[]; 

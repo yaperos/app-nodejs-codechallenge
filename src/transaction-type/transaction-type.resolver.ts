@@ -6,30 +6,22 @@ import { UpdateTransactionTypeInput } from './dto/update-transaction-type.input'
 
 @Resolver(() => TransactionType)
 export class TransactionTypeResolver {
-  constructor(private readonly transactionTypeService: TransactionTypeService) {}
+  constructor(private readonly service: TransactionTypeService) {}
 
   @Mutation(() => TransactionType)
-  createTransactionType(@Args('createTransactionTypeInput') createTransactionTypeInput: CreateTransactionTypeInput) {
-    return this.transactionTypeService.create(createTransactionTypeInput);
+  createTransactionType(@Args('transactionTypeInput') transactionTypeInput: CreateTransactionTypeInput) 
+  {
+    console.log(transactionTypeInput);
+    return this.service.createTransaction(transactionTypeInput);
   }
 
   @Query(() => [TransactionType], { name: 'transactionType' })
-  findAll() {
-    return this.transactionTypeService.findAll();
+  transactionType() {
+    return this.service.findAll();
   }
 
-  @Query(() => TransactionType, { name: 'transactionType' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.transactionTypeService.findOne(id);
+  @Query(() => TransactionType, { name: 'transactionTypeByID' })
+  findOne(@Args('id') id: string) {
+    return this.service.findOne(id);
   }
-
-  @Mutation(() => TransactionType)
-  updateTransactionType(@Args('updateTransactionTypeInput') updateTransactionTypeInput: UpdateTransactionTypeInput) {
-    return this.transactionTypeService.update(updateTransactionTypeInput.id, updateTransactionTypeInput);
-  }
-
-  @Mutation(() => TransactionType)
-  removeTransactionType(@Args('id', { type: () => Int }) id: number) {
-    return this.transactionTypeService.remove(id);
-  }
-}
+} 
