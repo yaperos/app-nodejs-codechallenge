@@ -25,7 +25,7 @@ Graphql wil reduce the number of database requests by grouping requests coming f
 
 
 ## Running the project
-
+Instead of running the project, you can see me testing the project [here](https://www.youtube.com/watch?v=JOMq55FhS-M)
 ### Create and build all services
 
 Go to the repo root and run
