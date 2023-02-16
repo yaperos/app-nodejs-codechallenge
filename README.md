@@ -1,82 +1,159 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge: Done :frog:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Following all the requirements given by Yape, this project was developed with
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+<ul>
+<li>Docker Componse</li>
+<li>Nest.js</li>
+<li>Apache Kafka</li>
+<li>TypeOrm: Migrations, Entities</li>
+<li>GraphQL</li>
+<li>Prometheus</li>
+<li>Grafana</li>
+<li>Stress Test made with K6</li>
+</ul>
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+The main idea of this architecture is to implement a microservice that takes care of the transaction validation async so the main server can continue processing new incoming transactions.
 
-# Problem
+## Kafka
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Kafka will ensure that all data will be delivered to the server and antifraud service, so they just need to wait to Kafa to come with a request.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+## GraphQL
 
-Every transaction with a value greater than 1000 should be rejected.
+Graphql wil reduce the number of database requests by grouping requests coming from clients and sharing between those requests the response of only one db query, Otherwise we must do a db query for eaach request.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
 
-# Tech Stack
+## Running the project
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+### Create and build all services
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+Go to the repo root and run
+`docker-compose up`
 
-You must have two resources:
+Now all containers will be created and each of them will install all the dependendencies.
 
-1. Resource to create a transaction that must containt:
+This project already has migrations added, so the entities are going to be created and then initialized with seed data coming from the first migration.
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+### Test
+
+We first must have all the services running.
+
+There are multitple ways to test the project, since we have GraphQL added to the project.
+
+##### First way
+
+###### Step one
+
+Enter [http://localhost:8080](http://localhost:8080) or [http://localhost:8080/graphql](http://localhost:8080/graphql)
+
+###### Step two
+
+```graphql
+mutation CreateTransaction($data: CreateTransactionInput!) {
+  transaction(data: $data) {
+    transactionExternalId
+    transactionStatus {
+      name
+    }
+    transactionType {
+      name
+    }
+    value
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
+With the query variables:
 
 ```json
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+  "data": {
+    "value": 111111545,
+    "tranferTypeId": 1,
+    "accountExternalIdDebit": "some-guid",
+    "accountExternalIdCredit": "some-guid"
+  }
 }
 ```
 
-## Optional
+It should be something like this
+![GraphQL create transaction](images/graphq-CreateTransaction.png "Create Transaction GraphQL")
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+##### Second way
 
-You can use Graphql;
+Use the curl to create one transaction.
 
-# Send us your challenge
+Go to the curls directory and execute.
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+```bash
+  chmod +x create-transaction-curl.sh
+```
 
-If you have any questions, please let us know.
+Then execute the curl!
+
+```bash
+  ./create-transaction-curl.sh
+```
+
+It should display something like this
+
+```bash
+./create-transaction-curl.sh
+{"data":{"transaction":{"transactionExternalId":"cfbdae29-bc01-4239-a1ec-6e22c3c68855","transactionStatus":{"name":"pending"},"transactionType":{"name":"type-1"},"value":1002}}}
+```
+
+You can also do a get all transactions. Here we'll see how important is GraphQL to increase the performance, because it will reduce the number of db requests.
+
+Here it is the mutation that is going to be used
+
+```graphql
+query GetTransactions {
+  transactions {
+    transactionExternalId
+    value
+    transactionStatus {
+      name
+    }
+    transactionType {
+      name
+    }
+    createdAt
+  }
+}
+```
+
+or you can use the curl that it is in the curls dir (remember to do chmod +x <bash-file> before).
+
+### Additional features
+
+#### Grafana && Prometheus
+This two components will take care of capturing data in realtime and displaying in dashboards
+
+#### K6 stress testing
+
+Made a stress test with K6 to the project.
+Stress test: 1000 requests in 5ms
+![1000 requests in 5ms](images/k6StressTest1000.png)
+
+Stress test: 5000 requests in 15ms
+![5000 requests in 15ms](images/k6StressTest5000.png )
+
+Stress test: 10000 requests in 10ms
+![10000 requests in 10ms](images/k6StressTest10000.png )
+
+Stress test: 20000 requests in 10ms
+![20000 requests in 10ms](images/k6StressTest10000.png )
+
+Stress test: 30000 requests in 15s
+![30000 requests in 15s](images/k6StressTest30000.png )
+
+
+And we can se how Grafana with Prometheus were showing the rate transactions created in real-time
+
+Transactions created during stress tests in real-time
+![grafana transaction created](images/grafanaTransactionsCreated.png )
+
+
+If you want to see the dashboards in real time, go to [http://localhost:3000](http://localhost:3000) and enter with username ```admin``` and password ```admin```. 
+Then go to Dashboards and then enter the Transactions Server folder. At the beginning it should be all empty, so start using the create transaction mutations or the curl to see changes. 

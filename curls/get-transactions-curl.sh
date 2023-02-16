@@ -1,0 +1,2 @@
+#!/bin/sh
+curl 'http://localhost:8080/graphql' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: http://localhost:8080' --data-binary '{"query":"query GetTransactions {\n  transactions {\n    transactionExternalId\n    value\n    transactionStatus {\n      name\n    }\n    transactionType {\n      name\n    }\n    createdAt\n  }\n}\n"}' --compressed
