@@ -12,15 +12,23 @@ export class TransactionResolver {
   constructor(private service: TransactionService) {}
   
   @Query((returns => [Transaction]))
-  transacion() {
-    console.log("transacion :)");
+  Transaction() {
+    //console.log("transacion :)");
     return this.service.findAll();
   }
+
+  @Query(() => Transaction, { name: 'TransactionByID' })
+  findOne(@Args('id') id: string) {
+    //console.log("transacion :)");
+    return this.service.findOne(id);
+  }
+
+
 
   @Mutation(returns => Transaction)
   createTransaction(@Args('transactionInput') transactionInput: CreateTransactionInput)
   {
-    return this.service.createTransaction(transactionInput);
+     return this.service.createTransaction(transactionInput);
   }
 
   @Mutation((returns) => Transaction)
@@ -32,14 +40,14 @@ export class TransactionResolver {
   @ResolveField((returns) => TransactionStatus)
    transactionStatus(@Parent() transacion: Transaction): Promise<TransactionStatus>{
     
-    console.log(transacion);
+    //console.log(transacion);
     return  this.service.getTransactionStatus(transacion.transactionStatusID);
   }
 
   @ResolveField((returns) => TransactionType)
  transactionType(@Parent() transacion: Transaction): Promise<TransactionType>{
   
-  console.log(transacion);
+  //console.log(transacion);
   return  this.service.getTransactionType(transacion.transacionTypeId);
 }
 }

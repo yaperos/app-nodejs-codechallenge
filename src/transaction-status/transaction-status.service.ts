@@ -21,13 +21,13 @@ export class TransactionStatusService {
 
   async findAll(): Promise<TransactionStatus[]> {
     const transationsStatus = await this.transactionsStatusRepository.find();
-    console.log('find');
-    console.log(transationsStatus);
+    //console.log('find');
+    //console.log(transationsStatus);
     return transationsStatus;
   }
 
   async findOne(id: string): Promise<TransactionStatus> {
-    console.log('findOne');
+    //console.log('findOne');
  
     return this.transactionsStatusRepository.findOne({ where: [{ id: id }] });
   }

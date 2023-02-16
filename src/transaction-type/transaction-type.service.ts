@@ -21,8 +21,8 @@ export class TransactionTypeService {
 
   async findAll(): Promise<TransactionType[]> {
     const transationsType = await this.transactionsTypeRepository.find();
-    console.log('find');
-    console.log(transationsType);
+    //console.log('find');
+    //console.log(transationsType);
     return transationsType;
 
   }

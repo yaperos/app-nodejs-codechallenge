@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionModule} from './transaction/transaction.module';
 import { TransactionStatusModule } from './transaction-status/transaction-status.module';
 import { TransactionTypeModule } from './transaction-type/transaction-type.module';
+import { KafkaModule } from './kafka/kafka.module';
+import { CreateConsumer } from './kafka/create.consumer';
 
 @Module({
   imports: [
@@ -28,9 +30,11 @@ import { TransactionTypeModule } from './transaction-type/transaction-type.modul
     }),
     TransactionModule,
     TransactionStatusModule,
-    TransactionTypeModule
+    TransactionTypeModule,
+    KafkaModule,
   ], 
   controllers: [AppController],
-  providers: [AppService],
-})
+  providers: [AppService, CreateConsumer,],
+  exports: []
+}) 
 export class AppModule {}

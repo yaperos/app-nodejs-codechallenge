@@ -10,6 +10,7 @@ import { TransactionType } from 'src/transaction-type/transaction-type.entity';
 import { TransactionStatusService } from 'src/transaction-status/transaction-status.service';
 import { TransactionTypeService } from 'src/transaction-type/transaction-type.service';
 import { UpdateTransactionInput } from './dto/Update-transaction.input';
+import { CreateProducer } from '../kafka/create.producer';
 
 @Injectable()
 export class TransactionService {
@@ -18,40 +19,49 @@ export class TransactionService {
     private transactionsRepository: Repository<Transaction>,
     private transactionStatusServices: TransactionStatusService,
     private transactionTypeServices: TransactionTypeService,
+    private createProducer: CreateProducer,
   ) {}
-
-  async create() {
-    console.log('create service');
-    let uuidv4: string = uuid.v4();
-    console.log(uuidv4);
-  }
 
   async findAll(): Promise<Transaction[]> {
     const transations = await this.transactionsRepository.find();
     return transations;
   }
 
+  async findOne(id:string): Promise<Transaction> {
+    return  this.transactionsRepository.findOne({ where: [{  transactionExternalId: id }] });
+    
+  }
+
   createTransaction(transacion: CreateTransactionInput): Promise<Transaction> {
     const newTransaction = this.transactionsRepository.create(transacion);
 
-    if (newTransaction.value >= 1000)
-    {
-        newTransaction.transactionStatusID = "3";
+    if (newTransaction.value >= 1000) {
+      newTransaction.transactionStatusID = '3';
     }
-    return this.transactionsRepository.save(newTransaction);
+
+    const saveTransaction = this.transactionsRepository.save(newTransaction);
+    saveTransaction.then((result) => {
+      console.log(result.transactionExternalId);
+      this.createProducer.create(result.transactionExternalId);
+
+    });
+    return saveTransaction;
   }
 
-  updateTransaction(id:string, updatetransactionInput: UpdateTransactionInput): Promise<Transaction>
-  {
-    console.log('updateTransaction');
-    console.log(updatetransactionInput)
-    let editTransaction = this.transactionsRepository.create(updatetransactionInput);
+  updateTransaction(
+    id: string,
+    updatetransactionInput: UpdateTransactionInput,
+  ): Promise<Transaction> {
+    //console.log('updateTransaction');
+    //console.log(updatetransactionInput)
+    let editTransaction = this.transactionsRepository.create(
+      updatetransactionInput,
+    );
     editTransaction.transactionExternalId = id;
     return this.transactionsRepository.save(editTransaction);
-
   }
 
-   async getTransactionStatus(id: string): Promise<TransactionStatus> {
+  async getTransactionStatus(id: string): Promise<TransactionStatus> {
     return this.transactionStatusServices.findOne(id);
   }
 
