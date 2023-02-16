@@ -41,6 +41,7 @@ type Query {
 
 type Mutation {
   createTransaction(transactionInput: CreateTransactionInput!): Transaction!
+  updateTransaction(updatetransactionInput: UpdateTransactionInput!): Transaction!
   createTransactionStatus(transactionStatusInput: CreateTransactionStatusInput!): TransactionStatus!
   createTransactionType(transactionTypeInput: CreateTransactionTypeInput!): TransactionType!
 }
@@ -50,6 +51,11 @@ input CreateTransactionInput {
   accountExternalIdCredit: String!
   transacionTypeId: String!
   value: Float!
+}
+
+input UpdateTransactionInput {
+  transactionExternalId: String!
+  transactionStatusID: String!
 }
 
 input CreateTransactionStatusInput {

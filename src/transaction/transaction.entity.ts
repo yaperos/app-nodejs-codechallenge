@@ -18,11 +18,11 @@ export class Transaction extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   transactionExternalId: string;
 
-  @PrimaryColumn('uuid')
+  @Column()
   @Field()
   accountExternalIdDebit: string;
 
-  @PrimaryColumn('uuid')
+  @Column()
   @Field()
   accountExternalIdCredit: string;
 
@@ -32,7 +32,7 @@ export class Transaction extends BaseEntity {
 
   @Column()
   @Field()
-  createdAt: Date;
+  createdAt: Date = new Date();;
 
   @Column()
   @Field((type) => String)

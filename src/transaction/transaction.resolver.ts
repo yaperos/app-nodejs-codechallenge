@@ -3,8 +3,11 @@ import { TransactionService } from './transaction.service';
 import { Transaction} from './transaction.entity'
 import { CreateTransactionInput } from './dto/create-transaction.input';
 import { TransactionStatus } from 'src/transaction-status/transaction-status.entity';
+import { TransactionType } from 'src/transaction-type/transaction-type.entity';
+import { UpdateTransactionInput } from './dto/Update-transaction.input';
 
-@Resolver()
+
+@Resolver((of) => Transaction)
 export class TransactionResolver {
   constructor(private service: TransactionService) {}
   
@@ -20,10 +23,23 @@ export class TransactionResolver {
     return this.service.createTransaction(transactionInput);
   }
 
-  //@ResolveField(() => TransactionStatus)
-   transactionStatus(@Parent() transacion: Transaction){
-    console.log('***OJO**');
+  @Mutation((returns) => Transaction)
+  updateTransaction(@Args('updatetransactionInput') updatetransactionInput: UpdateTransactionInput)
+  {
+    return this.service.updateTransaction(updatetransactionInput.transactionExternalId, updatetransactionInput)
+  }
+
+  @ResolveField((returns) => TransactionStatus)
+   transactionStatus(@Parent() transacion: Transaction): Promise<TransactionStatus>{
+    
     console.log(transacion);
     return  this.service.getTransactionStatus(transacion.transactionStatusID);
   }
-} 
+
+  @ResolveField((returns) => TransactionType)
+ transactionType(@Parent() transacion: Transaction): Promise<TransactionType>{
+  
+  console.log(transacion);
+  return  this.service.getTransactionType(transacion.transacionTypeId);
+}
+}
