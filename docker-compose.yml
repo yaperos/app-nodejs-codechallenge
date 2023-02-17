@@ -12,13 +12,25 @@ services:
     container_name: transaction-api
     build: 
       context: .
-      dockerfile: dockerfile
+      dockerfile: transaction-microservice/dockerfile
     ports:
       - "3000:3000"
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/transaction
     depends_on:
       - postgres
+      - kafka
+  anti-fraud-microservices:
+    container_name: anti-fraud-api
+    build: 
+      context: .
+      dockerfile: anti-fraud-microservice/dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/transaction
+    depends_on:
+      - transaction-microservices
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:

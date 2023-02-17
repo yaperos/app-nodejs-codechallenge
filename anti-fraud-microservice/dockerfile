@@ -1,0 +1,16 @@
+FROM node:16 as builder
+
+WORKDIR /app
+COPY ./anti-fraud-microservice/package*.json ./
+RUN npm i
+COPY ./anti-fraud-microservice .
+RUN npm run build
+
+FROM node:16
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 3000
+CMD [  "npm", "run", "start:prod" ]
