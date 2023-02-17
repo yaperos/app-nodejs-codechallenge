@@ -1,0 +1,9 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "../../../dist/src/apps/transactions-ms"
+  },
+  "include": ["./**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts", "tsconfig.app.json"]
+}
