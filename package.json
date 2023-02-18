@@ -1,0 +1,68 @@
+{
+  "name": "yape-codechallenge",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "url": "https://github.com/luigilizares/app-nodejs"
+  },
+  "license": "",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.14.0"
+  },
+  "scripts": {
+    "dev:antifraud:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/antifraud/start.ts",
+    "dev:transaction:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/transation/start.ts",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "npm run test:unit && npm run test:features",
+    "test:unit": "NODE_ENV=test jest",
+    "test:antifraud:features": "NODE_ENV=test cucumber-js -p antifraud",
+    "test:transaction:features": "NODE_ENV=test cucumber-js -p transaction",
+    "build": "npm run build:clean && npm run build:tsc",
+    "build:tsc": "tsc -p tsconfig.prod.json",
+    "build:clean": "rm -r dist; exit 0"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "express-promise-router": "^4.1.0",
+    "glob": "^7.2.0",
+    "helmet": "^4.6.0",
+    "http-status": "^1.5.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.2",
+    "@types/cucumber": "^6.0.1",
+    "@types/errorhandler": "1.5.0",
+    "@types/express": "^4.17.13",
+    "@types/glob": "^7.1.4",
+    "@types/helmet": "0.0.48",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.10.2",
+    "cucumber": "^6.0.5",
+    "eslint": "^8.33.0",
+    "eslint-config-codely": "^2.1.3",
+    "husky": "^7.0.2",
+    "jest": "^27.2.4",
+    "lint-staged": "11.2.0",
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.5",
+    "ts-node-dev": "^1.1.8"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{src,tests}/**/*.ts": [
+      "npm run lint:fix",
+      "git add"
+    ]
+  }
+}
