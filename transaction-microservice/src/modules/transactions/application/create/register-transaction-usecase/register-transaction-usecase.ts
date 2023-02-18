@@ -2,6 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { ClientKafka } from '@nestjs/microservices';
 import { EitherAsync } from 'purify-ts';
+import { firstValueFrom } from 'rxjs';
 import { eitherFromParseResult } from '../../../../../core/domain/errors';
 import { TransactionRepository } from '../../../domain/repositories';
 import {
@@ -23,9 +24,18 @@ export class RegisterTransactionUseCase {
   ): EitherAsync<HttpException, RegisterTransactionUseCaseOutputType> {
     return EitherAsync.liftEither(
       eitherFromParseResult(RegisterTransactionUseCaseInput.safeParse(input)),
-    ).chain(async (parsed) => {
-      this.transactionClient.emit('validate-transaction', parsed);
-      return this.transactionRepository.registerTransaction(parsed);
-    });
+    )
+      .chain((parsed) => this.transactionRepository.registerTransaction(parsed))
+      .chain((transaction) => {
+        return EitherAsync(async () => {
+          await firstValueFrom(
+            this.transactionClient.emit(
+              'validate-transaction',
+              JSON.stringify(transaction),
+            ),
+          );
+          return transaction;
+        });
+      });
   }
 }

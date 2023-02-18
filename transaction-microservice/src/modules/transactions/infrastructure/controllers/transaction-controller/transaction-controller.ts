@@ -1,5 +1,4 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common/decorators';
-import { ClientKafka } from '@nestjs/microservices';
+import { Body, Controller, Post } from '@nestjs/common/decorators';
 import {
   eitherAsyncFromParseResult,
   returnValueOrThrowException,

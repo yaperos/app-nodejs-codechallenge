@@ -28,7 +28,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/transaction
+      MAX_VALUE_TRANSACTION: 1000
     depends_on:
       - transaction-microservices
   zookeeper:
