@@ -15,11 +15,11 @@ export class TransactionType extends EnumValueObject<TransactionTypes> {
 			case TransactionTypes.TRANSFERS:
 				return new TransactionType(TransactionTypes.TRANSFERS);
 			default:
-				throw new InvalidArgumentError(`The filter operator ${value} is invalid`);
+				throw new InvalidArgumentError(`The transaction type ${value} is invalid`);
 		}
 	}
 
 	protected throwErrorForInvalidValue(value: TransactionTypes): void {
-		throw new InvalidArgumentError(`The filter operator ${value} is invalid`);
+		throw new InvalidArgumentError(`The transaction type ${value} is invalid`);
 	}
 }

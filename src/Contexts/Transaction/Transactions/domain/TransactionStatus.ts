@@ -21,7 +21,7 @@ export class TransactionStatus extends EnumValueObject<TransactionStatuses> {
 			case TransactionStatuses.REJECTED:
 				return new TransactionStatus(TransactionStatuses.REJECTED);
 			default:
-				throw new InvalidArgumentError(`The filter operator ${value} is invalid`);
+				throw new InvalidArgumentError(`The transaction status ${value} is invalid`);
 		}
 	}
 
@@ -30,6 +30,6 @@ export class TransactionStatus extends EnumValueObject<TransactionStatuses> {
 	}
 
 	protected throwErrorForInvalidValue(value: TransactionStatuses): void {
-		throw new InvalidArgumentError(`The filter operator ${value} is invalid`);
+		throw new InvalidArgumentError(`The transaction status ${value} is invalid`);
 	}
 }

@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev:antifraud:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/antifraud/start.ts",
-    "dev:transaction:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/transation/start.ts",
+    "dev:transaction:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/transaction/start.ts",
     "lint": "eslint --ignore-path .gitignore .",
     "lint:fix": "npm run lint -- --fix",
     "test": "npm run test:unit && npm run test:features",
@@ -26,18 +26,24 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
+    "convict": "^6.2.4",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "express-promise-router": "^4.1.0",
+    "express-validator": "^6.15.0",
     "glob": "^7.2.0",
     "helmet": "^4.6.0",
     "http-status": "^1.5.0",
+    "node-dependency-injection": "^3.0.5",
+    "pg": "^8.9.0",
     "ts-node": "^10.2.1",
+    "typeorm": "^0.2.37",
     "typescript": "^4.4.3",
     "uuid-validate": "^0.0.3"
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",
+    "@types/convict": "^6.1.1",
     "@types/cucumber": "^6.0.1",
     "@types/errorhandler": "1.5.0",
     "@types/express": "^4.17.13",
@@ -54,7 +60,7 @@
     "lint-staged": "11.2.0",
     "prettier": "^2.4.1",
     "ts-jest": "^27.0.5",
-    "ts-node-dev": "^1.1.8"
+    "ts-node-dev": "^2.0.0"
   },
   "husky": {
     "hooks": {
