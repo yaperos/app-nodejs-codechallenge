@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { HealthCheckUseCase } from 'src/contexts/transactions-ms/application/health-check/health-check.usecase';
+import { HealthCheckController } from './controllers/health-check.controller';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [ConfigModule.forRoot({ envFilePath: '.env.transactions' })],
+    controllers: [HealthCheckController],
+    providers: [HealthCheckUseCase],
 })
 export class AppModule {}
