@@ -5,3 +5,17 @@
 3. Exec `npm run dev` for development.
 4. Exec `npm run build` and then `npm run start` for production.
 5. Exec `npm run lint` to apply linter.
+
+# Services
+
+## Validate transaction
+
+```mermaid
+sequenceDiagram
+    Kafka->>+[Infraestructure] ValidateTransaction: {consumerMessage, producer}
+    [Infraestructure] ValidateTransaction->>+[Domain] TransactionValidator: validate(amount)
+    [Domain] TransactionValidator->>-[Infraestructure] ValidateTransaction: status
+    [Infraestructure] ValidateTransaction->>+[Infraestructure] ValidationResource: new({ transactionId, amount, status })
+    [Infraestructure] ValidationResource->>-[Infraestructure] ValidateTransaction: resource
+    [Infraestructure] ValidateTransaction->>-kafka: send(resource)
+```
