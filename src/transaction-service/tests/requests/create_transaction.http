@@ -1,9 +1,0 @@
-POST http://localhost:3000/transactions
-Content-Type: application/json
-
-{
-    "accountExternalIdDebit": "ed7b223a-24e9-4dac-98a2-7bd1b9828b0f",
-    "accountExternalIdCredit": "4031cb47-66e3-44ff-b8b6-4ae21230471b",
-    "transferTypeId": 1,
-    "value": 1500
-}
