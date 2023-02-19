@@ -1,6 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
-import { HealthCheckUseCase } from 'src/contexts/transactions-ms/application/health-check/health-check.usecase';
+import { ApiTags } from '@nestjs/swagger';
+import { HealthCheckUseCase } from 'src/contexts/transactions-ms/transaction/application/health-check/health-check.usecase';
 
+@ApiTags('Health Check')
 @Controller()
 export class HealthCheckController {
     constructor(private readonly healthCheckUseCase: HealthCheckUseCase) {}
