@@ -19,7 +19,7 @@ export class Transaction {
     accountExternalIdCredit: string;
 
     @Column({ nullable: false })
-    tranferTypeId: boolean;
+    tranferTypeId: number;
 
     @Column({ nullable: false })
     status: string;
