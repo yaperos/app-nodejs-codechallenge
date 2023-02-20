@@ -30,6 +30,7 @@ import { Transaction } from '../../../transaction/infraestructure/persistence/en
                 };
             },
         }),
+        TypeOrmModule.forFeature([Transaction]),
     ],
     exports: [TypeOrmModule],
 })
