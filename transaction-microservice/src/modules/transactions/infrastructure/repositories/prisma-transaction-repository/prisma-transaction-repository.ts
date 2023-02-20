@@ -95,9 +95,9 @@ export class PrismaTransactionRepository implements TransactionRepository {
               TransactionTypes: true,
             },
           });
-          if (!transaction) {
+          if (!transaction) 
             return throwE(new BadRequestException('Transaction not found'));
-          }
+            
           return {
             ...transaction,
             status: ZTransactionStatus.Enum[transaction.status],

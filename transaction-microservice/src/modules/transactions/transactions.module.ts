@@ -4,9 +4,15 @@ import { PrismaService } from '../../core/infrastructure/services';
 import { RegisterTransactionUseCase } from './application/create';
 import { FindOneTransactionByIdUseCase } from './application/find';
 import { UpdateTransactionStatusUseCase } from './application/update';
-import { TransactionRepository } from './domain/repositories';
+import {
+  TransactionRepository,
+  TransactionTypeRepository,
+} from './domain/repositories';
 import { TransactionController } from './infrastructure/controllers';
-import { PrismaTransactionRepository } from './infrastructure/repositories';
+import {
+  PrismaTransactionRepository,
+  PrismaTransactionTypeRepository,
+} from './infrastructure/repositories';
 
 @Module({
   imports: [
@@ -33,6 +39,10 @@ import { PrismaTransactionRepository } from './infrastructure/repositories';
     UpdateTransactionStatusUseCase,
     FindOneTransactionByIdUseCase,
     { provide: TransactionRepository, useClass: PrismaTransactionRepository },
+    {
+      provide: TransactionTypeRepository,
+      useClass: PrismaTransactionTypeRepository,
+    },
   ],
 })
 export class TransactionsModule {}
