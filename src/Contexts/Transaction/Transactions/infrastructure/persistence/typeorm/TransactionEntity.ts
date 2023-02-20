@@ -6,6 +6,7 @@ import { ValueObjectTransformer } from '../../../../../Shared/infrastructure/per
 import { Transaction } from '../../../domain/Transaction';
 import { TransactionAccountExternalIdCredit } from '../../../domain/TransactionAccountExternalIdCredit';
 import { TransactionAccountExternalIdDebit } from '../../../domain/TransactionAccountExternalIdDebit';
+import { TransactionCreatedAt } from '../../../domain/TransactionCreatedAt';
 import { TransactionId } from '../../../domain/TransactionId';
 import { TransactionStatus } from '../../../domain/TransactionStatus';
 import { TransactionTransferType } from '../../../domain/TransactionTransferType';
@@ -45,6 +46,10 @@ export const TransactionEntity = new EntitySchema<Transaction>({
 		value: {
 			type: Number,
 			transformer: ValueObjectTransformer(TransactionValue)
+		},
+		createdAt: {
+			type: Date,
+			transformer: ValueObjectTransformer(TransactionCreatedAt)
 		}
 	}
 });

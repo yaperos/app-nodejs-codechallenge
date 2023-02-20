@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { AggregateRoot } from '../../../Shared/domain/AggregateRoot';
 import { TransactionAccountExternalIdCredit } from './TransactionAccountExternalIdCredit';
 import { TransactionAccountExternalIdDebit } from './TransactionAccountExternalIdDebit';
+import { TransactionCreatedAt } from './TransactionCreatedAt';
 import { TransactionId } from './TransactionId';
 import { TransactionStatus } from './TransactionStatus';
 import { TransactionTransferType } from './TransactionTransferType';
@@ -15,6 +17,7 @@ export class Transaction extends AggregateRoot {
 	readonly transferType: TransactionTransferType;
 	readonly type: TransactionType;
 	readonly value: TransactionValue;
+	readonly createdAt: TransactionCreatedAt;
 
 	constructor(
 		id: TransactionId,
@@ -23,7 +26,8 @@ export class Transaction extends AggregateRoot {
 		status: TransactionStatus,
 		transferType: TransactionTransferType,
 		type: TransactionType,
-		value: TransactionValue
+		value: TransactionValue,
+		createdAt: TransactionCreatedAt
 	) {
 		super();
 		this.id = id;
@@ -33,6 +37,7 @@ export class Transaction extends AggregateRoot {
 		this.transferType = transferType;
 		this.type = type;
 		this.value = value;
+		this.createdAt = createdAt;
 	}
 
 	static create(
@@ -42,7 +47,8 @@ export class Transaction extends AggregateRoot {
 		status: TransactionStatus,
 		transferType: TransactionTransferType,
 		type: TransactionType,
-		value: TransactionValue
+		value: TransactionValue,
+		createdAt: TransactionCreatedAt
 	): Transaction {
 		const transaction = new Transaction(
 			id,
@@ -51,7 +57,8 @@ export class Transaction extends AggregateRoot {
 			status,
 			transferType,
 			type,
-			value
+			value,
+			createdAt
 		);
 
 		return transaction;
@@ -65,6 +72,7 @@ export class Transaction extends AggregateRoot {
 		transferTypeId: number;
 		type: string;
 		value: number;
+		createdAt: Date;
 	}): Transaction {
 		return new Transaction(
 			new TransactionId(plainData.id),
@@ -73,11 +81,12 @@ export class Transaction extends AggregateRoot {
 			TransactionStatus.fromValue(plainData.status),
 			TransactionTransferType.fromValue(String(plainData.transferTypeId)),
 			TransactionType.fromValue(plainData.type),
-			new TransactionValue(plainData.value)
+			new TransactionValue(plainData.value),
+			new TransactionCreatedAt(plainData.createdAt)
 		);
 	}
 
-	toPrimitives(): any {
+	toPrimitives() {
 		return {
 			id: this.id.value,
 			accountExternalIdDebit: this.accountExternalIdDebit.value,
@@ -85,7 +94,8 @@ export class Transaction extends AggregateRoot {
 			status: this.status.value,
 			tranferTypeId: this.transferType.value,
 			type: this.type.value,
-			value: this.value.value
+			value: this.value.value,
+			createdAt: this.createdAt.value
 		};
 	}
 }

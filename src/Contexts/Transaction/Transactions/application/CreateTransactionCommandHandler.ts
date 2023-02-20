@@ -3,6 +3,7 @@ import { CommandHandler } from '../../../Shared/domain/CommandHandler';
 import { CreateTransactionCommand } from '../domain/CreateTransactionCommand';
 import { TransactionAccountExternalIdCredit } from '../domain/TransactionAccountExternalIdCredit';
 import { TransactionAccountExternalIdDebit } from '../domain/TransactionAccountExternalIdDebit';
+import { TransactionCreatedAt } from '../domain/TransactionCreatedAt';
 import { TransactionId } from '../domain/TransactionId';
 import { TransactionStatus, TransactionStatuses } from '../domain/TransactionStatus';
 import { TransactionTransferType } from '../domain/TransactionTransferType';
@@ -29,6 +30,7 @@ export class CreateTransactionCommandHandler implements CommandHandler<CreateTra
 		const transferType = TransactionTransferType.fromValue(String(command.tranferTypeId));
 		const type = new TransactionType(TransactionTypes.TRANSFERS);
 		const value = new TransactionValue(command.value);
+		const createdAt = new TransactionCreatedAt(new Date());
 		await this.transactionCreator.run({
 			id,
 			accountExternalIdCredit,
@@ -36,7 +38,8 @@ export class CreateTransactionCommandHandler implements CommandHandler<CreateTra
 			status,
 			transferType,
 			type,
-			value
+			value,
+			createdAt
 		});
 	}
 }

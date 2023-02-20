@@ -1,6 +1,7 @@
 import { Transaction } from '../domain/Transaction';
 import { TransactionAccountExternalIdCredit } from '../domain/TransactionAccountExternalIdCredit';
 import { TransactionAccountExternalIdDebit } from '../domain/TransactionAccountExternalIdDebit';
+import { TransactionCreatedAt } from '../domain/TransactionCreatedAt';
 import { TransactionId } from '../domain/TransactionId';
 import { TransactionRepository } from '../domain/TransactionRepository';
 import { TransactionStatus } from '../domain/TransactionStatus';
@@ -19,6 +20,7 @@ export class TransactionCreator {
 		transferType: TransactionTransferType;
 		type: TransactionType;
 		value: TransactionValue;
+		createdAt: TransactionCreatedAt;
 	}): Promise<void> {
 		const transaction = Transaction.create(
 			params.id,
@@ -27,7 +29,8 @@ export class TransactionCreator {
 			params.status,
 			params.transferType,
 			params.type,
-			params.value
+			params.value,
+			params.createdAt
 		);
 
 		return this.transactionRepository.save(transaction);
