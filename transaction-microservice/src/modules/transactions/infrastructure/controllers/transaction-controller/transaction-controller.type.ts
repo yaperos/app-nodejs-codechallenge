@@ -13,8 +13,16 @@ export type RegisterTransactionRequest = z.infer<
   typeof ZRegisterTransactionRequest
 >;
 
-export const ZRegisterTransactionResponse = ZTransaction.omit({
-  transferType: true,
+export const ZRegisterTransactionResponse = z.object({
+  transactionExternalId: z.string().uuid(),
+  transactionType: z.object({
+    name: z.string(),
+  }),
+  transactionStatus: z.object({
+    name: z.string(),
+  }),
+  value: z.number().positive(),
+  createdAt: z.string(),
 });
 export type RegisterTransactionResponse = z.infer<
   typeof ZRegisterTransactionResponse
@@ -46,7 +54,7 @@ export const ZFindOneTransactionByIdResponse = z.object({
     name: z.string(),
   }),
   value: z.number().positive(),
-  createdAt: z.date(),
+  createdAt: z.string(),
 });
 export type FindOneTransactionByIdResponse = z.infer<
   typeof ZFindOneTransactionByIdResponse

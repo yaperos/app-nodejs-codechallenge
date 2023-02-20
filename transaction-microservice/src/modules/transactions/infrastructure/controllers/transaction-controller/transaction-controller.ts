@@ -32,7 +32,21 @@ export class TransactionController {
   ): Promise<RegisterTransactionResponse> {
     const response = await eitherAsyncFromParseResult(
       ZRegisterTransactionRequest.safeParse(body),
-    ).chain((parsed) => this.registerTransactionUseCase.execute(parsed));
+    )
+      .chain((parsed) => this.registerTransactionUseCase.execute(parsed))
+      .map((transaction) => {
+        return {
+          transactionExternalId: transaction.id,
+          transactionType: {
+            name: transaction.transferType.name,
+          },
+          transactionStatus: {
+            name: transaction.status,
+          },
+          value: transaction.value,
+          createdAt: transaction.createdAt.toISOString().split('T')[0],
+        };
+      });
     return returnValueOrThrowException(response);
   }
 
@@ -65,7 +79,7 @@ export class TransactionController {
             name: transaction.status,
           },
           value: transaction.value,
-          createdAt: transaction.createdAt,
+          createdAt: transaction.createdAt.toISOString().split('T')[0],
         };
       });
     return returnValueOrThrowException(response);

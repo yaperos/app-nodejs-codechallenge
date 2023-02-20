@@ -13,9 +13,7 @@ export type RegisterTransactionUseCaseInputType = z.infer<
   typeof RegisterTransactionUseCaseInput
 >;
 
-export const RegisterTransactionUseCaseOutput = ZTransaction.omit({
-  transferType: true,
-});
+export const RegisterTransactionUseCaseOutput = ZTransaction;
 export type RegisterTransactionUseCaseOutputType = z.infer<
   typeof RegisterTransactionUseCaseOutput
 >;

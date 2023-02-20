@@ -36,10 +36,14 @@ export class PrismaTransactionRepository implements TransactionRepository {
               ...parsed,
               status: ZTransactionStatus.Enum.PENDING,
             },
+            include: {
+              TransactionTypes: true,
+            },
           });
           return {
             ...transaction,
             status: ZTransactionStatus.Enum.PENDING,
+            transferType: transaction.TransactionTypes,
           };
         } catch (error) {
           return throwE(new InternalServerErrorException(error));
