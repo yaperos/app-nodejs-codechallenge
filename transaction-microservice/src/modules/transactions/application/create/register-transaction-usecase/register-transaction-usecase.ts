@@ -1,18 +1,16 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { Inject } from '@nestjs/common/decorators';
-import { ClientKafka } from '@nestjs/microservices';
 import { EitherAsync } from 'purify-ts';
-import { firstValueFrom } from 'rxjs';
-import { envConstants } from 'src/core/domain/constants';
+import { envConstants } from '../../../../../core/domain/constants';
 import { eitherFromParseResult } from '../../../../../core/domain/errors';
 import {
   TransactionRepository,
-  TransactionTypeRepository,
+  TransactionTypeRepository
 } from '../../../domain/repositories';
+import { EventClientService } from '../../../domain/services';
 import {
   RegisterTransactionUseCaseInput,
   RegisterTransactionUseCaseInputType,
-  RegisterTransactionUseCaseOutputType,
+  RegisterTransactionUseCaseOutputType
 } from './register-transaction-usecase.type';
 
 @Injectable()
@@ -20,8 +18,7 @@ export class RegisterTransactionUseCase {
   constructor(
     private readonly transactionRepository: TransactionRepository,
     private readonly transactionTypeRepository: TransactionTypeRepository,
-    @Inject(envConstants.KAFKA_NAME_MODULE)
-    private readonly transactionClient: ClientKafka,
+    private readonly eventClientService: EventClientService,
   ) {}
 
   execute(
@@ -37,11 +34,9 @@ export class RegisterTransactionUseCase {
       )
       .chain((transaction) => {
         return EitherAsync(async () => {
-          await firstValueFrom(
-            this.transactionClient.emit(
-              envConstants.EVENT_NAME_VALIDATE_TRANSACTION,
-              JSON.stringify(transaction),
-            ),
+          this.eventClientService.emitEvent(
+            envConstants.EVENT_NAME_VALIDATE_TRANSACTION,
+            transaction,
           );
           return transaction;
         });

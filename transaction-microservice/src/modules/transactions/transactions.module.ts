@@ -7,13 +7,15 @@ import { FindOneTransactionByIdUseCase } from './application/find';
 import { UpdateTransactionStatusUseCase } from './application/update';
 import {
   TransactionRepository,
-  TransactionTypeRepository
+  TransactionTypeRepository,
 } from './domain/repositories';
+import { EventClientService } from './domain/services';
 import { TransactionController } from './infrastructure/controllers';
 import {
   PrismaTransactionRepository,
-  PrismaTransactionTypeRepository
+  PrismaTransactionTypeRepository,
 } from './infrastructure/repositories';
+import { KafkaEventClientService } from './infrastructure/services';
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import {
       provide: TransactionTypeRepository,
       useClass: PrismaTransactionTypeRepository,
     },
+    { provide: EventClientService, useClass: KafkaEventClientService },
   ],
 })
 export class TransactionsModule {}
