@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { envConstants } from './core/domain/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -8,11 +9,11 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: 'TRANSACTION',
-        brokers: ['kafka:29092'],
+        clientId: envConstants.KAFKA_CLIENT_ID,
+        brokers: [envConstants.KAFKA_BROKER],
       },
       consumer: {
-        groupId: 'anti-fraud-consumer',
+        groupId: envConstants.KAFKA_CONSUMER_GROUP_ID,
       },
     },
   });

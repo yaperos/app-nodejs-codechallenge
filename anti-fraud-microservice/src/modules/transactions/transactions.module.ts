@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { env } from 'process';
 import { ValidateTransactionUseCase } from './application/update';
 import { EventClientService } from './domain/services';
 import { TransactionController } from './infrastructure/controller';
@@ -9,14 +10,15 @@ import { KafkaEventClientService } from './infrastructure/services';
   imports: [
     ClientsModule.register([
       {
-        name: 'ANTI-FRAUD-MICROSERVICE',
+        name: env.KAFKA_NAME_MODULE,
         transport: Transport.KAFKA,
         options: {
           client: {
-            brokers: ['kafka:29092'],
+            clientId: env.KAFKA_CLIENT_ID,
+            brokers: [env.KAFKA_BROKER],
           },
           consumer: {
-            groupId: 'anti-fraud-consumer',
+            groupId: env.KAFKA_PRODUCER_GROUP_ID,
           },
         },
       },

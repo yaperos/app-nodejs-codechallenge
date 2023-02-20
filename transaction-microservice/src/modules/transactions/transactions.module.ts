@@ -1,32 +1,33 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { envConstants } from '../../core/domain/constants';
 import { PrismaService } from '../../core/infrastructure/services';
 import { RegisterTransactionUseCase } from './application/create';
 import { FindOneTransactionByIdUseCase } from './application/find';
 import { UpdateTransactionStatusUseCase } from './application/update';
 import {
   TransactionRepository,
-  TransactionTypeRepository,
+  TransactionTypeRepository
 } from './domain/repositories';
 import { TransactionController } from './infrastructure/controllers';
 import {
   PrismaTransactionRepository,
-  PrismaTransactionTypeRepository,
+  PrismaTransactionTypeRepository
 } from './infrastructure/repositories';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: 'TRANSACTION_MICROSERVICE',
+        name: envConstants.KAFKA_NAME_MODULE,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'transaction',
-            brokers: ['kafka:29092'],
+            clientId: envConstants.KAFKA_CLIENT_ID,
+            brokers: [envConstants.KAFKA_BROKER],
           },
           consumer: {
-            groupId: 'transaction-consumer',
+            groupId: envConstants.KAFKA_PRODUCER_GROUP_ID,
           },
         },
       },

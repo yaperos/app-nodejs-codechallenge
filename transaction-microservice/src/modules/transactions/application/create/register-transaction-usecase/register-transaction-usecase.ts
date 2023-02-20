@@ -3,6 +3,7 @@ import { Inject } from '@nestjs/common/decorators';
 import { ClientKafka } from '@nestjs/microservices';
 import { EitherAsync } from 'purify-ts';
 import { firstValueFrom } from 'rxjs';
+import { envConstants } from 'src/core/domain/constants';
 import { eitherFromParseResult } from '../../../../../core/domain/errors';
 import {
   TransactionRepository,
@@ -19,7 +20,7 @@ export class RegisterTransactionUseCase {
   constructor(
     private readonly transactionRepository: TransactionRepository,
     private readonly transactionTypeRepository: TransactionTypeRepository,
-    @Inject('TRANSACTION_MICROSERVICE')
+    @Inject(envConstants.KAFKA_NAME_MODULE)
     private readonly transactionClient: ClientKafka,
   ) {}
 
@@ -38,7 +39,7 @@ export class RegisterTransactionUseCase {
         return EitherAsync(async () => {
           await firstValueFrom(
             this.transactionClient.emit(
-              'validate-transaction',
+              envConstants.EVENT_NAME_VALIDATE_TRANSACTION,
               JSON.stringify(transaction),
             ),
           );

@@ -17,6 +17,12 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/transaction
+      EVENT_NAME_VALIDATE_TRANSACTION: validate-transaction
+      KAFKA_BROKER: kafka:29092
+      KAFKA_CLIENT_ID: transaction
+      KAFKA_CONSUMER_GROUP_ID: anti-fraud-consumer
+      KAFKA_PRODUCER_GROUP_ID: transaction-consumer
+      KAFKA_NAME_MODULE: tranasction-microservice
     depends_on:
       - postgres
       - kafka
@@ -29,6 +35,12 @@ services:
       - "3001:3001"
     environment:
       MAX_VALUE_TRANSACTION: 1000
+      EVENT_NAME_TRANSACTION_VALIDATED: validated-transaction
+      KAFKA_BROKER: kafka:29092
+      KAFKA_CLIENT_ID: anti-fraud
+      KAFKA_CONSUMER_GROUP_ID: transaction-consumer
+      KAFKA_PRODUCER_GROUP_ID: anti-fraud-consumer
+      KAFKA_NAME_MODULE: anti-fraud-microservice
     depends_on:
       - transaction-microservices
   zookeeper:
