@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PrismaService } from '../../core/infrastructure/services';
 import { RegisterTransactionUseCase } from './application/create';
+import { FindOneTransactionByIdUseCase } from './application/find';
+import { UpdateTransactionStatusUseCase } from './application/update';
 import { TransactionRepository } from './domain/repositories';
-import { TransactionController } from './infrastructure/controllers/transaction-controller/transaction-controller';
+import { TransactionController } from './infrastructure/controllers';
 import { PrismaTransactionRepository } from './infrastructure/repositories';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -17,7 +19,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             clientId: 'transaction',
             brokers: ['kafka:29092'],
           },
-          producerOnlyMode: true,
           consumer: {
             groupId: 'transaction-consumer',
           },
@@ -29,6 +30,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   providers: [
     PrismaService,
     RegisterTransactionUseCase,
+    UpdateTransactionStatusUseCase,
+    FindOneTransactionByIdUseCase,
     { provide: TransactionRepository, useClass: PrismaTransactionRepository },
   ],
 })

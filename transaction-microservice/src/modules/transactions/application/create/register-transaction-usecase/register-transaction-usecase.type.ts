@@ -1,5 +1,5 @@
-import { ZTransaction } from '../../../domain/types';
 import { z } from 'zod';
+import { ZTransaction } from '../../../domain/types';
 
 // ***** RegisterTransactionUseCase ***** //
 export const RegisterTransactionUseCaseInput = ZTransaction.omit({

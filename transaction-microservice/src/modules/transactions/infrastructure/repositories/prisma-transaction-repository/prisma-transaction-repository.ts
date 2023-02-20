@@ -1,13 +1,19 @@
-import { HttpException } from '@nestjs/common';
+import { HttpException, InternalServerErrorException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common/decorators';
+import { BadRequestException } from '@nestjs/common/exceptions';
 import { EitherAsync } from 'purify-ts';
 import { eitherAsyncFromSchema } from '../../../../../core/domain/errors';
 import { PrismaService } from '../../../../../core/infrastructure/services';
 import {
+  FindOneTransactionByIdInput,
+  FindOneTransactionByIdOutput,
   RegisterTransactionInput,
   RegisterTransactionOutput,
   TransactionRepository,
+  UpdateTransactionStatusInput,
+  ZFindOneTransactionByIdInput,
   ZRegisterTransactionInput,
+  ZUpdateTransactionStatusInput,
 } from '../../../domain/repositories';
 import { ZTransactionStatus } from '../../../domain/types';
 
@@ -23,17 +29,81 @@ export class PrismaTransactionRepository implements TransactionRepository {
       input,
     );
     return schemaEither.chain((parsed) => {
-      return EitherAsync(async () => {
-        const transaction = await this.prisma.transactions.create({
-          data: {
-            ...parsed,
+      return EitherAsync(async ({ throwE }) => {
+        try {
+          const transaction = await this.prisma.transactions.create({
+            data: {
+              ...parsed,
+              status: ZTransactionStatus.Enum.PENDING,
+            },
+          });
+          return {
+            ...transaction,
             status: ZTransactionStatus.Enum.PENDING,
-          },
-        });
-        return {
-          ...transaction,
-          status: ZTransactionStatus.Enum.PENDING,
-        };
+          };
+        } catch (error) {
+          return throwE(new InternalServerErrorException(error));
+        }
+      });
+    });
+  }
+
+  updateTransactionStatus(
+    input: UpdateTransactionStatusInput,
+  ): EitherAsync<HttpException, void> {
+    const schemaEither = eitherAsyncFromSchema(
+      ZUpdateTransactionStatusInput,
+      input,
+    );
+    return schemaEither.chain((parsed) => {
+      return EitherAsync(async ({ throwE }) => {
+        try {
+          await this.prisma.transactions.update({
+            where: {
+              id: parsed.id,
+            },
+            data: {
+              status: parsed.status,
+            },
+          });
+        } catch (error) {
+          return throwE(new InternalServerErrorException(error));
+        }
+      });
+    });
+  }
+
+  findOneTransactionById(
+    input: FindOneTransactionByIdInput,
+  ): EitherAsync<HttpException, FindOneTransactionByIdOutput> {
+    const schemaEither = eitherAsyncFromSchema(
+      ZFindOneTransactionByIdInput,
+      input,
+    );
+    return schemaEither.chain((parsed) => {
+      return EitherAsync(async ({ throwE }) => {
+        try {
+          const transaction = await this.prisma.transactions.findUnique({
+            where: {
+              id: parsed.id,
+            },
+            include: {
+              TransactionTypes: true,
+            },
+          });
+          if (!transaction) {
+            return throwE(new BadRequestException('Transaction not found'));
+          }
+          return {
+            ...transaction,
+            status: ZTransactionStatus.Enum[transaction.status],
+            transferType: transaction.TransactionTypes,
+          };
+        } catch (error) {
+          if(error instanceof HttpException)
+            return throwE(error);
+          return throwE(new InternalServerErrorException(error));
+        }
       });
     });
   }

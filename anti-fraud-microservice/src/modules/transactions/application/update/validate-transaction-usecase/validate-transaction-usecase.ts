@@ -1,29 +1,30 @@
-import { HttpException, InternalServerErrorException } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common/decorators';
-import { Either, Left } from 'purify-ts';
+import { Either } from 'purify-ts';
+import { EventClientService } from '../../../domain/services';
+import { ZTransactionStatus } from '../../../domain/types';
 import { eitherFromParseResult } from '../../../../../core/domain/errors';
 import {
   ValidateTransactionUseCaseInput,
-  ValidateTransactionUseCaseInputType,
+  ValidateTransactionUseCaseInputType
 } from './validate-transaction-usecase.type';
 
 @Injectable()
 export class ValidateTransactionUseCase {
-  //constructor(private readonly eventClientService: EventClientService) {}
+  constructor(private readonly eventClientService: EventClientService) {}
   execute(
     input: ValidateTransactionUseCaseInputType,
-  ): Either<HttpException, any> {
-    return eitherFromParseResult(
+  ): Either<HttpException, void> {
+    const parseInput = eitherFromParseResult(
       ValidateTransactionUseCaseInput.safeParse(input),
-    ).chainLeft((e) =>
-      Either.encase(() => {
-        try {
-          console.log('e: ', e.getResponse());
-          return;
-        } catch (error) {
-          return Left(new InternalServerErrorException(error));
-        }
-      }),
     );
+    const status = parseInput.isRight()
+      ? ZTransactionStatus.Enum.APPROVED
+      : ZTransactionStatus.Enum.REJECTED;
+    const response = {
+      id: input.id,
+      status: status,
+    };
+    return this.eventClientService.emitEvent('validated-transaction', response);
   }
 }

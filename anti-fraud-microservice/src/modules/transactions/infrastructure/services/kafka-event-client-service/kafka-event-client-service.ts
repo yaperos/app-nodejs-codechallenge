@@ -1,19 +1,20 @@
 import { HttpException, Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { EitherAsync } from 'purify-ts';
+import { Either } from 'purify-ts';
 import { EventClientService } from '../../../domain/services';
 
 export class KafkaEventClientService implements EventClientService {
   constructor(
-    @Inject('TRANSACTION_MICROSERVICE')
+    @Inject('ANTI-FRAUD-MICROSERVICE')
     private readonly client: ClientKafka,
   ) {}
 
-  emitEvent<T>(topic: string, data: T): EitherAsync<HttpException, void> {
-    return EitherAsync(async () => {
+  emitEvent<T>(topic: string, data: T): Either<HttpException, void> {
+    return Either.encase(() => {
       try {
-        this.client.emit(topic, data);
+        this.client.emit(topic, JSON.stringify(data));
       } catch (error) {
+        console.log(error);
         throw new HttpException(error, 500);
       }
     });
