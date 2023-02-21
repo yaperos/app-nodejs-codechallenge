@@ -15,6 +15,7 @@ const {
   } = require("../services/transaction.services");
  
 
+const Response = require("../utils/formattResponse");
 const LimitValue = require("../data/validate.data");
 let result = {
   error: false,
@@ -41,7 +42,7 @@ const getTransaction = async (req, reply) => {
     const transaction = await findTransaction();
    
     if(transaction.length > 0 ){
-     let res = await formattResponse(transaction);     
+     let res = await Response.formattResponse(transaction);     
       result.data = res;
       result.msg = "List all transactions";
       result.count = transaction.length;
@@ -62,7 +63,7 @@ const getTransactionID = async (req, reply) => {
     var miArray = [];
      miArray.push(transaction);  
  
-      let res = await formattResponse(miArray);     
+      let res = await Response.formattResponse(miArray);     
        result.data = res;
        result.msg = "get transactions";
        result.count = transaction.length;
@@ -107,7 +108,7 @@ const createTransactionPost = async (req, reply) => {
   }
 };
 
-
+/* 
 const formattResponse = async (transaction) => { 
    
 let data_f = Array(); 
@@ -140,7 +141,7 @@ let status;
   });  
   return data_f;
 }
- 
+  */
 
 module.exports = {
   createTransactionPost,
