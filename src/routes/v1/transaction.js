@@ -20,7 +20,7 @@ const TransactionRoutes = async (fastify) => {
     method: ["POST"],
     url: "/transaction/createTransaction",
     logLevel: "warn", 
-    handler: TransactionController.createTransaction,
+    handler: TransactionController.createTransactionPost,
   });
 
   //List transactions
@@ -30,6 +30,12 @@ const TransactionRoutes = async (fastify) => {
     logLevel: "warn", 
     handler: TransactionController.getTransaction,
   }); 
+  fastify.route({
+    method: ["GET"],
+    url: "/transaction/getTransactionId/:id",
+    logLevel: "warn", 
+    handler: TransactionController.getTransactionID,
+  });
 };
 
 module.exports = TransactionRoutes;

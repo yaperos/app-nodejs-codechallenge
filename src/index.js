@@ -7,8 +7,8 @@ const fastify = require("fastify")({
 
   const PORT = process.env.PORT;
   
-  const connectDB = require("./utils/mongoose");
-  connectDB();
+/*   const connectDB = require("./utils/mongoose");
+  connectDB(); */
    
   //fastify.register(prismaPlugin)
 

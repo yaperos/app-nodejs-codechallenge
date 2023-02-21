@@ -1,10 +1,21 @@
 require("dotenv").config({ path: ".env" });
 
-const {STATUS_TRANSACTION,TYPE_TRANSACTION,STATUS_ID_TRANSACTION} = require("../config/constants.config");
-const Transaction = require("../models/transaction.model");   
-const LimitValue = require("../data/validate.data");
+const {
+  STATUS_TRANSACTION,
+  TYPE_TRANSACTION,
+  STATUS_ID_TRANSACTION
+} = require("../config/constants.config");
+  
+ 
+const {
+   createTransaction,
+   findTransactionById,
+   findTransaction,
+   updateStatusTransaction
+  } = require("../services/transaction.services");
  
 
+const LimitValue = require("../data/validate.data");
 let result = {
   error: false,
   msg: "OK",
@@ -24,18 +35,17 @@ let res = {
   createdAt:""  
 }
 
-//get all transactions
+//get all transactions Ok
 const getTransaction = async (req, reply) => {
   try {
-    const transaction = await prisma.Transaction.findMany();
+    const transaction = await findTransaction();
    
     if(transaction.length > 0 ){
-    let res = await formattResponse(transaction);
-     
+     let res = await formattResponse(transaction);     
       result.data = res;
       result.msg = "List all transactions";
       result.count = transaction.length;
-    }
+    }  
 
     reply.code(200).send(result);
   } catch (err) {
@@ -44,73 +54,41 @@ const getTransaction = async (req, reply) => {
 };
 
 
-//get all transactions
-const getTransactionbyId = async (id) => {
+// interno
+//get id transactions Ok
+const getTransactionID = async (req, reply) => {
   try {
-    const transaction =  await Transaction.find({
-      _id: id,
-    }).sort({ index: 1 });
-console.log("getTransactionbyId",transaction)
-    return transaction;
- 
-  } catch (err) {
-    reply.status(500).send({ error: err })
-  }
-};
- 
-
-const getTransactionStatus = async (req, reply) => {  
-  
-  const status = req.query?.status.toUpperCase()  || "PENDING";
- 
-  try {    
-    
- console.log("asd------------",status)
-    const transaction = await Transaction.find({
-      tranferStatusId: 1,
-    }).sort({ index: 1 });
-
-
-      if(transaction.length > 0 ){
-              result.data = transaction;
-              result.msg = "List all transactions";
-              result.count = transaction.length;
-        }else{
-          result.data = [];
-          result.msg = "No transactions found";
-        }
-
-   
-    reply.code(200).send(result);
-  } catch (err) {
-    reply.status(500).send({ error: err })
-  }  
-};
- 
-const createTransaction = async (req, reply) => {
- 
-  try {
-  
-    const data = new Transaction({
-      accountExternalIdDebit:req.body.accountExternalIdDebit,
-      accountExternalIdCredit: req.body.accountExternalIdCredit,
-      tranferTypeId: req.body.tranferTypeId,
-      value : req.body.value,
-      tranferStatusId : 1
-    });
+    const transaction = await findTransactionById(req.params?.id); 
+    console.log("getTransactionbyId--------------------2,transaction.length",transaction.length)
      
-    let id = await data.save();
-    console.log("create Transaction",id);   
-    let result =  await sendTransactionAntiFraud(data.value);
-  
-     result ?  await updateTransactionStatus(id._id,STATUS_TRANSACTION.APPROVED) :  await updateTransactionStatus(id._id,STATUS_TRANSACTION.REJECTED)
-      console.log("----id----",id._id);
-     let transaction =  await  getTransactionbyId(id._id );
-
+      let res = await formattResponseObject(transaction);     
+       result.data = res;
+       result.msg = " transactions";
+       result.count = transaction.length;
+       
+     reply.code(200).send(result);
+ 
+  } catch (err) {
+   return err
+  }
+};
+ 
+ 
+ 
+const createTransactionPost = async (req, reply) => { 
+  try {  
+     
+    let id = await createTransaction(req.body);
+    console.log("create Transaction ---1---",id);   
+    let result =  await sendTransactionAntiFraud(req.body?.value);
+    
+     result ?  await updateStatusTransaction(id.id,STATUS_TRANSACTION.APPROVED) :  await updateStatusTransaction(id.id,STATUS_TRANSACTION.REJECTED)
+     
+     let transaction = await findTransactionById(id.id); 
      let res = await formattResponse(transaction);
      if(res){
       result.data = res;
-      result.msg = "Save Transaction"; }
+      result.msg = "Save Transaction"; } 
    
     reply.code(200).send({ result });
   } catch (err) {
@@ -119,35 +97,24 @@ const createTransaction = async (req, reply) => {
   }
 }; 
 
-    
-const updateTransactionStatus = async (id, tranferStatusId) => {
-  try {    
-    console.log("updateTransactionStatus",id);
-    console.log("updateTransactionStatus---",tranferStatusId);
-    await Transaction.findOneAndUpdate({ _id: id }, { tranferStatusId: tranferStatusId }); 
-  } catch (err) {
-    throw boom.boomify(err);
-  }
-};
+ 
 
   const sendTransactionAntiFraud = async (value) => {
-  try {
-      console.log("sendTransactionAntiFraud",value);
-     return await LimitValue.LimitedTransaction(value);
-         
+  try {     
+     return await LimitValue.LimitedTransaction(value);         
   } catch (err) {
-    throw boom.boomify(err);
+   return err
   }
 };
 
 
 const formattResponse = async (transaction) => { 
+  console.log("entra al formato",transaction)
 let data_f = Array(); 
-let status;
-for (let i = 0; i < transaction.length; i++) {
+let status; 
  
-/* transaction.for((resultado) =>  {  */
-  switch (transaction[i].tranferStatusId){
+ transaction.forEach((resultado) =>  {   
+  switch (resultado.tranferStatusId){
     case 1:
     status = STATUS_ID_TRANSACTION[1];
     break;
@@ -160,23 +127,79 @@ for (let i = 0; i < transaction.length; i++) {
   }
  
   const result =  {
-      transactionExternalId: transaction[i]._id,
+      transactionExternalId: resultado.id,
       transactionType: {
-        name: transaction[i].tranferTypeId == 1 ?  TYPE_TRANSACTION.SEND : TYPE_TRANSACTION.REQUEST
+        name: resultado.tranferTypeId == 1 ?  TYPE_TRANSACTION.SEND : TYPE_TRANSACTION.REQUEST
       },
       transactionStatus: {
         name: status
       },
-      value: transaction[i].value,
-      createdAt: transaction[i].createdAt,
+      value: resultado.value,
+      createdAt: resultado.createdAt,
     }
     data_f.push(result);
-  } 
+  }); 
+  console.log("data formateada", data_f);
   return data_f;
 }
  
+const formattResponseObject= async (transaction) => { 
+  console.log("entra al formato Object",transaction)
+let data_f = Array(); 
+let status; 
+for(const [key, value] of Object.entries(transaction)){
+  console.log(value)
+  console.log(key)
+  if(key === 'tranferStatusId'){
+  switch (value){
+    case 1:
+    status = STATUS_ID_TRANSACTION[1];
+    break;
+    case 2:
+    status = STATUS_ID_TRANSACTION[2];
+    break;
+    case 3:
+    status = STATUS_ID_TRANSACTION[3];
+    break;
+  }
+  
+   return   {
+      transactionExternalId: key == 'id' ? value : null,
+      transactionType: {
+        name: key == 'tranferTypeId' ? value == 1 ?  TYPE_TRANSACTION.SEND : TYPE_TRANSACTION.REQUEST :null
+      },
+      transactionStatus: {
+        name: status
+      },
+      value: key == 'value' ? value : null,
+      createdAt:   key == 'createdAt' ? value : null,
+    }
+    
+   
+  
+}
+
+}
+console.log("---status-----getid", status);
+ 
+/*   const result =  {
+      transactionExternalId: resultado.id,
+      transactionType: {
+        name: resultado.tranferTypeId == 1 ?  TYPE_TRANSACTION.SEND : TYPE_TRANSACTION.REQUEST
+      },
+      transactionStatus: {
+        name: status
+      },
+      value: resultado.value,
+      createdAt: resultado.createdAt,
+    }
+    data_f.push(result);
+  });   */
+  console.log("data formateada", data_f);
+  return data_f;
+}
 module.exports = {
-  createTransaction,
-  getTransaction,
-  getTransactionStatus
+  createTransactionPost,
+  getTransaction, 
+  getTransactionID
 };

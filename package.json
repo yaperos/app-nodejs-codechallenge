@@ -28,6 +28,7 @@
     "@fastify/cors": "^8.2.0",
     "@fastify/redis": "^6.1.0",
     "@fastify/sensible": "^4.1.0",
+    "@prisma/client": "^4.10.1",
     "dotenv": "^16.0.3",
     "fastify": "^4.13.0",
     "fastify-auth": "^1.2.0",
