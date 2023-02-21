@@ -35,10 +35,12 @@ const formattResponse = async (transaction) => {
       });  
       return data_f;
     }
-
-     
+    function isEmptyArray(value) {
+      return value == null || value.length === 0;
+    };
   
   module.exports = { 
-    formattResponse
+    formattResponse,
+    isEmptyArray
   };
   
