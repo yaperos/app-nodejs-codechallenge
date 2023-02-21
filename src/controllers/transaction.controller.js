@@ -59,15 +59,15 @@ const getTransaction = async (req, reply) => {
 const getTransactionID = async (req, reply) => {
   try {
     const transaction = await findTransactionById(req.params?.id); 
-    console.log("getTransactionbyId--------------------2,transaction.length",transaction.length)
-     
-      let res = await formattResponseObject(transaction);     
+    var miArray = [];
+     miArray.push(transaction);  
+ 
+      let res = await formattResponse(miArray);     
        result.data = res;
-       result.msg = " transactions";
+       result.msg = "get transactions";
        result.count = transaction.length;
        
-     reply.code(200).send(result);
- 
+     reply.code(200).send(result); 
   } catch (err) {
    return err
   }
@@ -109,10 +109,9 @@ const createTransactionPost = async (req, reply) => {
 
 
 const formattResponse = async (transaction) => { 
-  console.log("entra al formato",transaction)
+   
 let data_f = Array(); 
-let status; 
- 
+let status;  
  transaction.forEach((resultado) =>  {   
   switch (resultado.tranferStatusId){
     case 1:
@@ -138,66 +137,11 @@ let status;
       createdAt: resultado.createdAt,
     }
     data_f.push(result);
-  }); 
-  console.log("data formateada", data_f);
+  });  
   return data_f;
 }
  
-const formattResponseObject= async (transaction) => { 
-  console.log("entra al formato Object",transaction)
-let data_f = Array(); 
-let status; 
-for(const [key, value] of Object.entries(transaction)){
-  console.log(value)
-  console.log(key)
-  if(key === 'tranferStatusId'){
-  switch (value){
-    case 1:
-    status = STATUS_ID_TRANSACTION[1];
-    break;
-    case 2:
-    status = STATUS_ID_TRANSACTION[2];
-    break;
-    case 3:
-    status = STATUS_ID_TRANSACTION[3];
-    break;
-  }
-  
-   return   {
-      transactionExternalId: key == 'id' ? value : null,
-      transactionType: {
-        name: key == 'tranferTypeId' ? value == 1 ?  TYPE_TRANSACTION.SEND : TYPE_TRANSACTION.REQUEST :null
-      },
-      transactionStatus: {
-        name: status
-      },
-      value: key == 'value' ? value : null,
-      createdAt:   key == 'createdAt' ? value : null,
-    }
-    
-   
-  
-}
 
-}
-console.log("---status-----getid", status);
- 
-/*   const result =  {
-      transactionExternalId: resultado.id,
-      transactionType: {
-        name: resultado.tranferTypeId == 1 ?  TYPE_TRANSACTION.SEND : TYPE_TRANSACTION.REQUEST
-      },
-      transactionStatus: {
-        name: status
-      },
-      value: resultado.value,
-      createdAt: resultado.createdAt,
-    }
-    data_f.push(result);
-  });   */
-  console.log("data formateada", data_f);
-  return data_f;
-}
 module.exports = {
   createTransactionPost,
   getTransaction, 
