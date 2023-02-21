@@ -1,7 +1,7 @@
-import { Transaction } from './transaction.model';
+import { TransactionModel } from './transaction.model';
 
 export interface TransactionRepository {
-    save(transaction: Transaction): Promise<Transaction>;
+    save(transaction: TransactionModel): Promise<TransactionModel>;
 }
 
 export const TransactionRepository = Symbol('TransactionRepository');

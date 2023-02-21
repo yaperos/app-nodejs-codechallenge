@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
-import { Transaction } from '../../domain/transaction.model';
+import { TransactionModel } from '../../domain/transaction.model';
 
 export class CreateTransactionDto {
     @ApiProperty()

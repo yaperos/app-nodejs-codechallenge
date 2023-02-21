@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { Transaction } from '../../domain/transaction.model';
+import { TransactionModel } from '../../domain/transaction.model';
 import { TransactionRepository } from '../../domain/transaction.repository';
 import { CreateTransactionDto } from '../../infraestructure/dtos/create-transaction.dto';
 
@@ -13,8 +13,9 @@ export class CreateTransactionUsecase {
 
     public createTransaction(
         createTransactionDto: CreateTransactionDto,
-    ): Promise<Transaction> {
-        const transaction = Transaction.fromCreateDto(createTransactionDto);
+    ): Promise<TransactionModel> {
+        const transaction =
+            TransactionModel.fromCreateDto(createTransactionDto);
         return this.transactionRepository.save(transaction);
     }
 }

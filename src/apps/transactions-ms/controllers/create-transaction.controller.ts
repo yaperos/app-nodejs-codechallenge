@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateTransactionUsecase } from 'src/contexts/transactions-ms/transaction/application/create/create-transaction.usecase';
-import { Transaction } from 'src/contexts/transactions-ms/transaction/domain/transaction.model';
+import { TransactionModel } from 'src/contexts/transactions-ms/transaction/domain/transaction.model';
 import { CreateTransactionDto } from 'src/contexts/transactions-ms/transaction/infraestructure/dtos/create-transaction.dto';
 
 @ApiTags('Create transaction')
@@ -13,7 +13,7 @@ export class CreateTransactionController {
     @ApiOperation({ summary: 'Creates a transaction' })
     public create(
         @Body() createTransactionDto: CreateTransactionDto,
-    ): Promise<Transaction> {
+    ): Promise<TransactionModel> {
         return this.usecase.createTransaction(createTransactionDto);
     }
 }

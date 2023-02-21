@@ -1,9 +1,10 @@
 import { Expose } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
 
+import { TransactionStatus } from '../../shared/domain/enums/transaction-status.enum';
 import { CreateTransactionDto } from '../infraestructure/dtos/create-transaction.dto';
 
-export class Transaction {
+export class TransactionModel {
     @Expose()
     id: string;
     @Expose()
@@ -15,16 +16,16 @@ export class Transaction {
     @Expose()
     value: number;
     @Expose()
-    status: string;
+    status: TransactionStatus;
 
-    public static fromCreateDto(dto: CreateTransactionDto): Transaction {
+    public static fromCreateDto(dto: CreateTransactionDto): TransactionModel {
         return {
             id: uuid(),
             accountExternalIdCredit: dto.accountExternalIdCredit,
             accountExternalIdDebit: dto.accountExternalIdDebit,
             tranferTypeId: dto.tranferTypeId,
             value: dto.value,
-            status: 'Pending',
+            status: TransactionStatus.PENDING,
         };
     }
 }

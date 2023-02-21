@@ -17,16 +17,8 @@ import { Transaction } from '../../../transaction/infraestructure/persistence/en
                     password: configService.get('POSTGRES_PASSWORD'),
                     database: configService.get('POSTGRES_DB'),
                     entities: [Transaction],
-                    synchronize: true, // For practice purposes
+                    synchronize: true, // For practical purposes
                     autoLoadEntities: true,
-                    migrationsTableName: 'migrations',
-                    migrations: [
-                        'src/contexts/shared/infraestructure/persistence/migrations/*.ts',
-                    ],
-                    cli: {
-                        migrationsDir:
-                            'src/contexts/shared/infraestructure/persistence/migrations',
-                    },
                 };
             },
         }),

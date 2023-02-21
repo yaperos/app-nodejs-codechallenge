@@ -1,8 +1,8 @@
-import { Transaction } from '../../domain/transaction.model';
+import { TransactionModel } from '../../domain/transaction.model';
 import { TransactionRepository } from '../../domain/transaction.repository';
 
 export class MockTransactionRepository implements TransactionRepository {
-    save(transaction: Transaction): Promise<Transaction> {
+    save(transaction: TransactionModel): Promise<TransactionModel> {
         return Promise.resolve(transaction);
     }
 }
