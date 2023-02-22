@@ -27,9 +27,9 @@ export class TransationApp {
 	}
 
 	async stop(): Promise<void> {
-		const config = KafkaConfigFactory.createConfig();
-		const connection = new KafkaConnection(config);
-		await connection.close();
+		// const config = KafkaConfigFactory.createConfig();
+		// const connection = new KafkaConnection(config);
+		// await connection.close();
 
 		return this.server?.stop();
 	}

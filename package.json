@@ -52,6 +52,7 @@
     "@types/helmet": "0.0.48",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.2",
+    "@types/supertest": "^2.0.12",
     "@types/uuid-validate": "^0.0.1",
     "cucumber": "^6.0.5",
     "eslint": "^8.33.0",
@@ -60,6 +61,7 @@
     "jest": "^27.2.4",
     "lint-staged": "11.2.0",
     "prettier": "^2.4.1",
+    "supertest": "^6.3.3",
     "ts-jest": "^27.0.5",
     "ts-node-dev": "^2.0.0"
   },
