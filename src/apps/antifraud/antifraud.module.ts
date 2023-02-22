@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AntifraudController } from './antifraud.controller';
-import { AntifraudService } from './antifraud.service';
+import { ConfigModule } from '@nestjs/config';
+import EventBusModule from 'src/contexts/antifraud/shared/infraestructure/event-bus.module.ts/event-bus.module';
+import { ValidateTransactionController } from './controllers/validate-transaction.controller';
 
 @Module({
-  imports: [],
-  controllers: [AntifraudController],
-  providers: [AntifraudService],
+    imports: [
+        ConfigModule.forRoot({
+            envFilePath: '.env.antifraud',
+        }),
+        EventBusModule,
+    ],
+    controllers: [ValidateTransactionController],
+    providers: [],
 })
 export class AntifraudModule {}

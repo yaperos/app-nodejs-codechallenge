@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
-import { TransactionModel } from '../../domain/transaction.model';
-import { TransactionRepository } from '../../domain/transaction.repository';
+import { TransactionModel } from '../../../domain/transaction.model';
+import { TransactionRepository } from '../../../domain/transaction.repository';
 import { Transaction } from './entities/transaction.entity';
 
 @Injectable()

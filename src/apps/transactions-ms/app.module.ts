@@ -7,6 +7,7 @@ import { CreateTransactionController } from './controllers/create-transaction.co
 import { HealthCheckController } from './controllers/health-check.controller';
 import TransactionProviderRepository from 'src/contexts/transactions-ms/transaction/infraestructure/persistence/transaction-provider.repository';
 import DatabaseModule from 'src/contexts/transactions-ms/shared/infraestructure/persistence/database.module';
+import EventBusModule from 'src/contexts/transactions-ms/shared/infraestructure/event-bus/event-bus.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import DatabaseModule from 'src/contexts/transactions-ms/shared/infraestructure/
             envFilePath: '.env.transactions',
         }),
         DatabaseModule,
+        EventBusModule,
     ],
     controllers: [HealthCheckController, CreateTransactionController],
     providers: [
