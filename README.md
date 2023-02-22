@@ -1,6 +1,6 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
@@ -16,7 +16,7 @@ For now, we have only three transaction statuses:
 <ol>
   <li>pending</li>
   <li>approved</li>
-  <li>rejected</li>  
+  <li>rejected</li>
 </ol>
 
 Every transaction with a value greater than 1000 should be rejected.
@@ -35,7 +35,7 @@ Every transaction with a value greater than 1000 should be rejected.
 <ol>
   <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
   <li>Any database</li>
-  <li>Kafka</li>    
+  <li>Kafka</li>
 </ol>
 
 We do provide a `Dockerfile` to help you get started with a dev environment.
@@ -69,14 +69,38 @@ You must have two resources:
 }
 ```
 
-## Optional
+# Installation
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+Before running the application, you need to install its dependencies by running the following command:
 
-You can use Graphql;
+```
+npm install
+```
 
-# Send us your challenge
+# Usage
+To start the development server for the antifraud service, run the following command:
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+```
+npm run dev:antifraud:backend
+```
 
-If you have any questions, please let us know.
+To start the development server for the transaction service, run the following command:
+
+```
+npm run dev:transaction:backend
+```
+
+To run the tests, run the following command:
+
+```
+npm test
+```
+
+This application also includes a docker-compose.yml file for running a PostgreSQL database and a Kafka server. To use it, run the following command:
+
+```
+docker-compose up
+```
+The PostgreSQL database will be available on port 5432, and the Kafka server will be available on port 9092.
+
+
