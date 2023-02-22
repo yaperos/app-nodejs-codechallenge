@@ -3,8 +3,7 @@ const {
     STATUS_ID_TRANSACTION
   } = require("../config/constants.config");
     
-const formattResponse = async (transaction) => { 
-   
+const formattResponse = async (transaction) => {  
     let data_f = Array(); 
     let status;  
      transaction.forEach((resultado) =>  {   
@@ -35,6 +34,7 @@ const formattResponse = async (transaction) => {
       });  
       return data_f;
     }
+    
     function isEmptyArray(value) {
       return value == null || value.length === 0;
     };
