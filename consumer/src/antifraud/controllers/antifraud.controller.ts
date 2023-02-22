@@ -8,7 +8,7 @@ export class AntifraudController {
     private readonly antifraudService: AntifraudService
   ) {}
 
-  @EventPattern('ahua')
+  @EventPattern('transaction_check')
   handleAntifraud(data: any) {
 
     console.log("YEAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
