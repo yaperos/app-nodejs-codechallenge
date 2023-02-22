@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {Transaction} from './common/entities/transaction.entity';
 import { TransactionModule } from './transaction/transaction.module';
+import { AntifraudModule } from './antifraud/antifraud.module';
 import { getEnvPath } from './common/helper/env.helper';
 import { ConfigModule } from '@nestjs/config';
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
@@ -23,6 +24,7 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
       retryAttempts: 10,
     }),
     TransactionModule,
+    AntifraudModule,
     ConfigModule.forRoot({ envFilePath, isGlobal: true })
   ],
   controllers: [],

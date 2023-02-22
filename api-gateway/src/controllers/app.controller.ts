@@ -6,7 +6,7 @@ import { ISchemaRegistry } from 'avro-schema-registry';
 import { AppService } from '../services/app.service';
 import { CreateTransactionRequest } from '../dto/create-transaction-request.dto';
 
-@Controller()
+@Controller('app')
 export class AppController {
   producer: Producer;
   registry: ISchemaRegistry;
