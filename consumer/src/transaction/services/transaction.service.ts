@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DataCreated } from '../../common/models/transaction-created.event';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import {Transaction} from '../../common/entities/transaction.entity';
+import { Transaction } from '../../common/entities/transaction.entity';
 import { ConfigService } from '@nestjs/config';
 import { TRANSACTION_STATUS } from 'src/common/util/util.common';
 

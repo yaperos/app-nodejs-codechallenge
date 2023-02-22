@@ -40,22 +40,4 @@ export class AppService {
     };
   }
 
-  // async producex(topic:any, xValue:any) {
-
-  //   console.log("to produce  t>> ", JSON.stringify(topic))
-  //   console.log("to produce  v>> ", JSON.stringify(xValue))
-
-  //   this.client.emit(
-  //     JSON.stringify(topic),
-
-  //       JSON.stringify({
-  //         xValue: xValue
-  //       }).toString()
-
-  //   );
-  //   return {
-  //     process: topic,
-  //     status: true,
-  //   };
-  // }
 }

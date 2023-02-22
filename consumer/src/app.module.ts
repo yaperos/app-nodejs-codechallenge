@@ -18,7 +18,7 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
       username: 'postgres',
       password: 'postgres',
       database: 'yape',
-      entities: ['dist/**/*.entity{.ts,.js}'],
+      entities: [Transaction],
       synchronize: false,
       retryDelay: 3000,
       retryAttempts: 10,
