@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Partitioners } from 'kafkajs';
 
 @Module({
     imports: [
@@ -10,11 +11,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
                 options: {
                     client: {
                         clientId: 'transaction',
-                        brokers: ['kafka:9092'],
+                        brokers: ['localhost:9092'],
                     },
                     consumer: {
                         groupId: 'transaction-consumer',
                     },
+                    producer: {
+                        createPartitioner: Partitioners.DefaultPartitioner
+                    }
                 },
             },
         ]),
