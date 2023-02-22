@@ -15,7 +15,7 @@ export class TypeOrmClientFactory {
 				database: config.database,
 				entities: [`${__dirname}/../../../../**/**/infrastructure/persistence/typeorm/*{.js,.ts}`],
 				synchronize: true,
-				logging: true
+				logging: false
 			});
 
 			return connection;

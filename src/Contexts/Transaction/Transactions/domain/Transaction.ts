@@ -3,6 +3,7 @@ import { AggregateRoot } from '../../../Shared/domain/AggregateRoot';
 import { TransactionAccountExternalIdCredit } from './TransactionAccountExternalIdCredit';
 import { TransactionAccountExternalIdDebit } from './TransactionAccountExternalIdDebit';
 import { TransactionCreatedAt } from './TransactionCreatedAt';
+import { TransactionCreatedDomainEvent } from './TransactionCreatedDomainEvent';
 import { TransactionId } from './TransactionId';
 import { TransactionStatus } from './TransactionStatus';
 import { TransactionTransferType } from './TransactionTransferType';
@@ -13,7 +14,7 @@ export class Transaction extends AggregateRoot {
 	readonly id: TransactionId;
 	readonly accountExternalIdCredit: TransactionAccountExternalIdCredit;
 	readonly accountExternalIdDebit: TransactionAccountExternalIdDebit;
-	readonly status: TransactionStatus;
+	status: TransactionStatus;
 	readonly transferType: TransactionTransferType;
 	readonly type: TransactionType;
 	readonly value: TransactionValue;
@@ -61,6 +62,14 @@ export class Transaction extends AggregateRoot {
 			createdAt
 		);
 
+		transaction.record(
+			new TransactionCreatedDomainEvent({
+				aggregateId: transaction.id.value,
+				value: transaction.value.value,
+				status: transaction.status.value
+			})
+		);
+
 		return transaction;
 	}
 
@@ -84,6 +93,10 @@ export class Transaction extends AggregateRoot {
 			new TransactionValue(plainData.value),
 			new TransactionCreatedAt(plainData.createdAt)
 		);
+	}
+
+	updateStatus(transactionStatus: TransactionStatus) {
+		this.status = transactionStatus;
 	}
 
 	toPrimitives() {

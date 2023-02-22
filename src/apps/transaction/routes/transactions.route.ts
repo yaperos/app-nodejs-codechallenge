@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Request, Response, Router } from 'express';
@@ -5,9 +6,12 @@ import { body, param } from 'express-validator';
 
 import { CommandHandlers } from '../../../Contexts/Shared/infrastructure/CommandBus/CommandHandlers';
 import { InMemoryCommandBus } from '../../../Contexts/Shared/infrastructure/CommandBus/InMemoryCommandBus';
+import { KafkaConnection } from '../../../Contexts/Shared/infrastructure/EventBus/Kafka/KafkaConnection';
 import { TypeOrmClientFactory } from '../../../Contexts/Shared/infrastructure/persistence/typeorm/TypeOrmClientFactory';
 import { InMemoryQueryBus } from '../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus';
 import { QueryHandlers } from '../../../Contexts/Shared/infrastructure/QueryBus/QueryHandlers';
+import { KafkaConfigFactory } from '../../../Contexts/Transaction/Shared/infrastructure/Kafka/KafkaConfigFactory';
+import { KafkaEventBusFactory } from '../../../Contexts/Transaction/Shared/infrastructure/Kafka/KafkaEventBusFactory';
 import { TypeOrmConfigFactory } from '../../../Contexts/Transaction/Shared/infrastructure/persistence/postgres/TypeOrmConfigFactory';
 import { CreateTransactionCommandHandler } from '../../../Contexts/Transaction/Transactions/application/CreateTransactionCommandHandler';
 import { FindTransactionQueryHandler } from '../../../Contexts/Transaction/Transactions/application/FindTransactionQueryHandler';
@@ -22,10 +26,15 @@ import { TransactionsPostController } from '../controllers/TransactionsPostContr
 import { validateReqSchema } from '.';
 
 export const register = (router: Router) => {
+	const kafkaConfig = KafkaConfigFactory.createConfig();
+	const kafkaConnection = new KafkaConnection(kafkaConfig);
+	const eventBus = KafkaEventBusFactory.create(kafkaConnection, kafkaConfig);
+	kafkaConnection.connect();
+
 	const config = TypeOrmConfigFactory.createConfig();
 	const connection = TypeOrmClientFactory.createClient('transaction', config);
 	const transactionRepository = new TypeOrmTransactionRepository(connection);
-	const transactionCreator = new TransactionCreator(transactionRepository);
+	const transactionCreator = new TransactionCreator(transactionRepository, eventBus);
 	const commandHandlers = new CommandHandlers([
 		new CreateTransactionCommandHandler(transactionCreator)
 	]);

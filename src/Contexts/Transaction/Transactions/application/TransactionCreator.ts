@@ -1,3 +1,4 @@
+import { EventBus } from '../../../Shared/domain/EventBus';
 import { Transaction } from '../domain/Transaction';
 import { TransactionAccountExternalIdCredit } from '../domain/TransactionAccountExternalIdCredit';
 import { TransactionAccountExternalIdDebit } from '../domain/TransactionAccountExternalIdDebit';
@@ -10,7 +11,10 @@ import { TransactionType } from '../domain/TransactionType';
 import { TransactionValue } from '../domain/TransactionValue';
 
 export class TransactionCreator {
-	constructor(private readonly transactionRepository: TransactionRepository) {}
+	constructor(
+		private readonly transactionRepository: TransactionRepository,
+		private readonly eventBus: EventBus
+	) {}
 
 	async run(params: {
 		id: TransactionId;
@@ -33,6 +37,7 @@ export class TransactionCreator {
 			params.createdAt
 		);
 
-		return this.transactionRepository.save(transaction);
+		await this.transactionRepository.save(transaction);
+		await this.eventBus.publish(transaction.pullDomainEvents());
 	}
 }

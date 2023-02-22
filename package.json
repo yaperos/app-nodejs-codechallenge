@@ -11,8 +11,8 @@
     "npm": ">=6.14.0"
   },
   "scripts": {
-    "dev:antifraud:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/antifraud/start.ts",
-    "dev:transaction:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/transaction/start.ts",
+    "dev:antifraud:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/antifraud/start",
+    "dev:transaction:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/transaction/start",
     "lint": "eslint --ignore-path .gitignore .",
     "lint:fix": "npm run lint -- --fix",
     "test": "npm run test:unit && npm run test:features",
@@ -34,6 +34,7 @@
     "glob": "^7.2.0",
     "helmet": "^4.6.0",
     "http-status": "^1.5.0",
+    "kafka-node": "^5.0.0",
     "node-dependency-injection": "^3.0.5",
     "pg": "^8.9.0",
     "ts-node": "^10.2.1",
