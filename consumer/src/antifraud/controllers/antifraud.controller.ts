@@ -8,9 +8,10 @@ export class AntifraudController {
     private readonly antifraudService: AntifraudService
   ) {}
 
-  @MessagePattern('transaction_post_created')
+  @MessagePattern('ahua')
   handleTransactionCreated(data: any) {
 
+    console.log("YEAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
     console.log("data entrada", data);
     this.antifraudService.handleAntifraudCheck(data.value);
   }

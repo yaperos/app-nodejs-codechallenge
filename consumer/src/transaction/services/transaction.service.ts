@@ -18,16 +18,8 @@ export class TransactionService {
 
 
     const result = await this.transactionRepo.findOne({where: {transactionExternalId: transaccionEvent.transactionExternalId}})
-    
-    const maximo: number = this.config.get('MAXIMO_VALOR_PERMITIDO');
 
-    if(transaccionEvent.valueTx>maximo){
-      console.log("el valor es mayor al esperado");
-      transaccionEvent.transactionStatus=TRANSACTION_STATUS.REJECTED.id;
-    }
-    else{
-      console.log("el valor es menor permitido");
-    }
+    transaccionEvent.transactionStatus=TRANSACTION_STATUS.PENDING.id;
 
     console.log(result);
     if(result ===null || Object.keys(result).length === 0){

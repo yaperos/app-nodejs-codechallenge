@@ -1,14 +1,16 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { KafkaService } from 'nestjs-rdkafka/dist/kafka/services/kafka.service';
 import { CreateTransactionRequest } from '../dto/create-transaction-request.dto';
 import { TransactionCreatedEvent } from '../transaction-created.event';
 import { PARAMETER } from '../constants/app.constant';
 
+
 @Injectable()
 export class AppService {
-  constructor(
-    @Inject('CLIENT_SERVICE') private readonly client: ClientKafka,
-  ) {}
+  constructor (
+    @Inject('CLIENT_SERVICE') private readonly client: ClientKafka,private readonly kafkaService: KafkaService
+  ){}
 
   createTransaction(createTransactionRequest: CreateTransactionRequest) {
 
@@ -37,4 +39,23 @@ export class AppService {
       status: true,
     };
   }
+
+  // async producex(topic:any, xValue:any) {
+
+  //   console.log("to produce  t>> ", JSON.stringify(topic))
+  //   console.log("to produce  v>> ", JSON.stringify(xValue))
+
+  //   this.client.emit(
+  //     JSON.stringify(topic),
+
+  //       JSON.stringify({
+  //         xValue: xValue
+  //       }).toString()
+
+  //   );
+  //   return {
+  //     process: topic,
+  //     status: true,
+  //   };
+  // }
 }
