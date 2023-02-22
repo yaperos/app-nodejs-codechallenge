@@ -21,7 +21,7 @@ export class AntifraudService {
     const result = await this.transactionRepo.findOne({where: {transactionExternalId: transaccionEvent.transactionExternalId}})
     const maximo: number = this.config.get('MAXIMO_VALOR_PERMITIDO');
     //ANTIFRAUD VERIFICATIONS
-    if(transaccionEvent.valueTx > maximo){
+    if(result.valueTx > maximo){
       console.log("Value greather than 1000");
       transaccionEvent.transactionStatus = TRANSACTION_STATUS.REJECTED.id;
     }
