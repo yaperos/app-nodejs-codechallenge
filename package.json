@@ -17,6 +17,7 @@
     "lint:fix": "npm run lint -- --fix",
     "test": "npm run test:unit && npm run test:features",
     "test:unit": "NODE_ENV=test jest",
+    "test:features": "npm run test:transaction:features && npm run test:antifraud:features",
     "test:antifraud:features": "NODE_ENV=test cucumber-js -p antifraud",
     "test:transaction:features": "NODE_ENV=test cucumber-js -p transaction",
     "build": "npm run build:clean && npm run build:tsc",
@@ -43,6 +44,7 @@
     "uuid-validate": "^0.0.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/compression": "^1.7.2",
     "@types/convict": "^6.1.1",
     "@types/cucumber": "^6.0.1",
