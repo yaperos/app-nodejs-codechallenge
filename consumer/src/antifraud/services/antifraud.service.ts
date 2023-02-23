@@ -20,21 +20,20 @@ export class AntifraudService {
     
     const result = await this.transactionRepo.findOne({where: {transactionExternalId: transaccionEvent.transactionExternalId}})
     const maximo: number = this.config.get('MAXIMO_VALOR_PERMITIDO');
+   
     //ANTIFRAUD VERIFICATIONS
-    if(result.valueTx > maximo){
-      console.log("Value greather than 1000");
-      transaccionEvent.transactionStatus = TRANSACTION_STATUS.REJECTED.id;
-    }
-    else{
-      transaccionEvent.transactionStatus = TRANSACTION_STATUS.APPROVED.id;
-      console.log("Value Accepted");
-    }
-
-
     if(result === null || Object.keys(result).length === 0){
       console.log("result    >   " , JSON.stringify(result))
     }
     else{
+      if(result.valueTx > maximo){
+        console.log("Value greather than 1000");
+        transaccionEvent.transactionStatus = TRANSACTION_STATUS.REJECTED.id;
+      }
+      else{
+        transaccionEvent.transactionStatus = TRANSACTION_STATUS.APPROVED.id;
+        console.log("Value Accepted");
+      }
       this.transactionRepo.merge(result, transaccionEvent);
       this.transactionRepo.save(result);
     }

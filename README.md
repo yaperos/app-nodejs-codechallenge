@@ -80,3 +80,39 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+
+INSTRUCTIONS FOR TEST
+
+1. run docker compose up
+
+2. run script for databases in folder bd
+
+3. run the api-gateway project: yarn install, yarn start:dev
+
+4. run the consumer project: yarn install, yarn start:dev
+
+5. Test Postman 
+
+curl --location 'localhost:3000/app/create' \
+--header 'Content-Type: application/json' \
+--data '{
+  "accountExternalIdDebit": "aaa",
+  "accountExternalIdCredit": "aaa",
+  "tranferTypeId": 1,
+  "AmountValue": 999
+}'
+
+curl --location 'localhost:3000/app/create' \
+--header 'Content-Type: application/json' \
+--data '{
+  "accountExternalIdDebit": "bbb",
+  "accountExternalIdCredit": "bbb",
+  "tranferTypeId": 1,
+  "AmountValue": 1001
+}'
+
+
+![alt text](https://imgur.com/oJbmrw6)
+![alt text](https://imgur.com/roGq6Gt)
+![alt text](https://imgur.com/4mSK4ox)
