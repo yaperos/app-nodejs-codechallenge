@@ -113,6 +113,6 @@ curl --location 'localhost:3000/app/create' \
 }'
 
 
-![alt text](https://imgur.com/oJbmrw6)
-![alt text](https://imgur.com/roGq6Gt)
-![alt text](https://imgur.com/4mSK4ox)
+
+![TRANSACTION APPROVED](https://i.imgur.com/roGq6Gt.png)
+![TRANSACTION REJECTED](https://i.imgur.com/4mSK4ox.png)
