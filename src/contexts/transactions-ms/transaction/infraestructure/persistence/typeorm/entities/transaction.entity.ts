@@ -24,6 +24,9 @@ export class Transaction {
     @Column({ nullable: false })
     status: string;
 
+    @Column({ nullable: false })
+    value: number;
+
     @CreateDateColumn({
         type: 'timestamptz',
         default: () => 'CURRENT_TIMESTAMP',

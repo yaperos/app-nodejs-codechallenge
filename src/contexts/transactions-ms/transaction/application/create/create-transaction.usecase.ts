@@ -2,9 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
 import { MessageBrokerDto } from 'src/contexts/shared/infraestructure/message-broker.dto';
+import { TransactionStatus } from 'src/contexts/transactions-ms/shared/domain/enums/transaction-status.enum';
 import { TransactionModel } from '../../domain/transaction.model';
 import { TransactionRepository } from '../../domain/transaction.repository';
 import { CreateTransactionDto } from '../../infraestructure/dtos/create-transaction.dto';
+import { ValidationTransactionDto } from '../../infraestructure/dtos/validation-transaction.dto';
 
 @Injectable()
 export class CreateTransactionUsecase {
@@ -30,11 +32,17 @@ export class CreateTransactionUsecase {
             occurredOn: new Date(),
             attributes: transactionCreated,
         };
-
         this.clientKafa
             .send('transaction_created', JSON.stringify(messageBroker))
-            .subscribe((response) => {
-                console.log('REPSONSEEE', response);
+            .subscribe((response: ValidationTransactionDto) => {
+                const newStatus = response.isValid
+                    ? TransactionStatus.APPROVED
+                    : TransactionStatus.REJECTED;
+                this.transactionRepository
+                    .updateStatus(response.transactionId, newStatus)
+                    .then(() => {
+                        console.log('Transaction status process updated.');
+                    });
             });
 
         return transactionCreated;
