@@ -8,7 +8,7 @@ const TransactionRoutes = async (fastify) => {
     logLevel: "warn",
     handler: async () => {
       return {
-        name: "API-YAPE",
+        name: "API-YAPE-TRANSACTION",
         version: `${process.env.API_VERSION}`,
         success: true,
       };

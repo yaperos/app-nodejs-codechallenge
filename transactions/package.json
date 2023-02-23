@@ -1,0 +1,50 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with Fastify-CLI.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node ./src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "mocha test/user.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nescobar2102/app-nodejs-codechallenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nescobar2102/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/nescobar2102/app-nodejs-codechallenge#readme",
+  "dependencies": {
+    "@fastify/auth": "^4.2.0",
+    "@fastify/autoload": "^5.7.1",
+    "@fastify/cors": "^8.2.0",
+    "@fastify/kafka": "^2.1.0",
+    "@fastify/redis": "^6.1.0",
+    "@fastify/sensible": "^4.1.0",
+    "@prisma/client": "^4.10.1",
+    "axios": "^1.3.4",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.13.0",
+    "fastify-auth": "^1.2.0",
+    "fastify-autoload": "^3.13.0",
+    "fastify-cli": "^4.4.0",
+    "fastify-cors": "^6.1.0",
+    "fastify-cron": "^1.3.1",
+    "fastify-graphql": "^4.0.1",
+    "fastify-plugin": "^3.0.0",
+    "fastify-redis": "^4.4.0",
+    "mongoose": "^6.9.2"
+  },
+  "devDependencies": {
+    "prisma": "^4.10.1",
+    "tap": "^16.1.0"
+  }
+}

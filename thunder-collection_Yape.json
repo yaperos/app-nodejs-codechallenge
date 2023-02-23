@@ -1,0 +1,103 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Yape",
+    "dateExported": "2023-02-23T18:01:51.172Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "270d1c1f-1e25-4a68-a04d-1839376040ea",
+            "colId": "38e20af8-a4b8-4451-a9e3-3bd50f9074bc",
+            "containerId": "",
+            "name": "Status Transactions",
+            "url": "http://127.0.0.1:3000/api/v1/status",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-02-17T21:26:34.494Z",
+            "modified": "2023-02-22T23:01:17.667Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "4bbd5018-fa8e-46fd-8812-a542fae78f3e",
+            "colId": "38e20af8-a4b8-4451-a9e3-3bd50f9074bc",
+            "containerId": "",
+            "name": "Status AntiFraude",
+            "url": "http://127.0.0.1:3001/api/v2/status",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-02-22T23:28:25.229Z",
+            "modified": "2023-02-22T23:29:32.648Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e540a6f3-54c0-4480-886e-a988d207eb63",
+            "colId": "38e20af8-a4b8-4451-a9e3-3bd50f9074bc",
+            "containerId": "",
+            "name": "createTransaction",
+            "url": "http://127.0.0.1:3000/api/v1/transaction/createTransaction",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-02-19T03:14:21.931Z",
+            "modified": "2023-02-23T17:11:23.214Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"accountExternalIdDebit\": \":1676788119304\",\n   \"accountExternalIdCredit\": \"1676788129140\",\n   \"tranferTypeId\": 1,\n   \"value\": 120\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "215ae65e-cfeb-4e04-8b9b-cd32564f7a11",
+            "colId": "38e20af8-a4b8-4451-a9e3-3bd50f9074bc",
+            "containerId": "",
+            "name": "getTransaction",
+            "url": "http://127.0.0.1:3000/api/v1/transaction/getTransaction",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-02-19T03:38:13.022Z",
+            "modified": "2023-02-21T21:40:22.608Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c5909db6-3479-49f1-8b30-9a9e99054436",
+            "colId": "38e20af8-a4b8-4451-a9e3-3bd50f9074bc",
+            "containerId": "",
+            "name": "getTransactionID",
+            "url": "http://127.0.0.1:3000/api/v1/transaction/getTransactionId/63f79e32afbd976083295c28",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-02-21T00:18:26.408Z",
+            "modified": "2023-02-23T17:13:12.983Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9aa340b3-2c0b-4fba-8d6c-eb263948f722",
+            "colId": "38e20af8-a4b8-4451-a9e3-3bd50f9074bc",
+            "containerId": "",
+            "name": "ValidateTransaction",
+            "url": "http://127.0.0.1:3001/api/v2/anti-fraud/validateTransaction",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2023-02-22T23:49:21.108Z",
+            "modified": "2023-02-23T17:15:15.187Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n \"id\": \"63f79e32afbd976083295c28\",\n \"value\":1000\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

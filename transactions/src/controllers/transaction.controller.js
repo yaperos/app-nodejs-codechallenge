@@ -2,13 +2,14 @@ require("dotenv").config({ path: ".env" });
 
 const { STATUS_TRANSACTION } = require("../config/constants.config");
 
+const {sendTransactionAntiFraud} = require("../consumers/broker");
+
 const {
   createTransaction,
   findTransactionById,
   findTransaction,
   updateStatusTransaction,
 } = require("../services/transaction.services");
-
 const Utils = require("../utils/formattResponse");
 const LimitValue = require("../data/validate.data");
 let result = {
@@ -19,7 +20,7 @@ let result = {
 };
 
 //get all transactions Ok
-const getTransaction = async (req, reply) => {
+const getTransaction = async (req,reply) => {
   try {
     const transaction = await findTransaction();
 
@@ -41,12 +42,11 @@ const getTransactionID = async (req, reply) => {
   try {
     const id = await req.params?.id;
     const transaction = await findTransactionById(id);
-    let miArray = [];
-    result.msg = `Transaction with transactionExternalId # ${id} not found`;
+    let miArray = [];    
 
     transaction != null
       ? miArray.push(transaction)
-      : reply.code(404).send(result);
+      : reply.code(404).send({msg:`Transaction with transactionExternalId # ${id} not found`});
 
     if (!Utils.isEmptyArray(miArray)) {
       let res = await Utils.formattResponse(miArray);
@@ -63,40 +63,35 @@ const getTransactionID = async (req, reply) => {
 const createTransactionPost = async (req, reply) => {
   try {
     let id = await createTransaction(req.body);
-    let anti_fraud = await sendTransactionAntiFraud(req.body?.value);
+    let data = {
+      id:id.id,
+      value:id.value
+    }
 
-    anti_fraud
-      ? await updateStatusTransaction(id.id, STATUS_TRANSACTION.APPROVED)
-      : await updateStatusTransaction(id.id, STATUS_TRANSACTION.REJECTED);
-
+    let response = await sendTransactionAntiFraud(data);
+    if(!response.error && response.data) { 
+         await updateStatusTransaction(response.data.transactionExternalId,response.data.status);
+    } 
     let transaction = await findTransactionById(id.id);
     let miArray = [];
-    result.msg = `Transaction with transactionExternalId # ${id} not found`;
-
+    
     transaction != null
       ? miArray.push(transaction)
       : reply.code(404).send(result);
     if (!Utils.isEmptyArray(miArray)) {
       let res = await Utils.formattResponse(miArray);
       result.transaction = res;
-      result.msg = `Save Transaction with transactionExternalId # ${res.transactionExternalId}`;
+      result.msg = `Save Transaction with transactionExternalId # ${id.id}`;
     }
 
-    reply.code(200).send(result);
+    reply.code(201).send(result);
   } catch (err) {
     console.error(err);
     return err;
   }
 };
 
-const sendTransactionAntiFraud = async (value) => {
-  try {
-    return await LimitValue.LimitedTransaction(value);
-  } catch (err) {
-    return err;
-  }
-};
-
+ 
 module.exports = {
   createTransactionPost,
   getTransaction,
