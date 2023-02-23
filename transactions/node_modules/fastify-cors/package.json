@@ -1,0 +1,14 @@
+{
+  "name": "fastify-cors",
+  "version": "6.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "repository": {
+    "url": "git://github.com/fastify/fastify-cors.git"
+  },
+  "homepage": "https://github.com/fastify/fastify-cors",
+  "dependencies": {
+    "process-warning": "^1.0.0",
+    "fastify-cors-deprecated": "npm:fastify-cors@6.0.3"
+  }
+}

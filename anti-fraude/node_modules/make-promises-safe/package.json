@@ -1,0 +1,34 @@
+{
+  "name": "make-promises-safe",
+  "version": "5.1.0",
+  "description": "Crash or abort if you get an unhandledRejection or multipleResolves",
+  "main": "make-promises-safe.js",
+  "scripts": {
+    "test": "standard | snazzy && tap test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcollina/make-promises-safe.git"
+  },
+  "keywords": [
+    "promise",
+    "promises",
+    "safe",
+    "unhandled",
+    "rejection",
+    "unhandledRejection"
+  ],
+  "author": "Matteo Collina <hello@matteocollina.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mcollina/make-promises-safe/issues"
+  },
+  "homepage": "https://github.com/mcollina/make-promises-safe#readme",
+  "devDependencies": {
+    "pre-commit": "^1.2.2",
+    "sinon": "^7.5.0",
+    "snazzy": "^8.0.0",
+    "standard": "^14.3.1",
+    "tap": "^12.5.2"
+  }
+}

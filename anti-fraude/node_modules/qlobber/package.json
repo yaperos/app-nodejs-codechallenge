@@ -1,0 +1,57 @@
+{
+  "name": "qlobber",
+  "description": "Node.js globbing for amqp-like topics",
+  "version": "7.0.1",
+  "homepage": "https://github.com/davedoesdev/qlobber",
+  "author": {
+    "name": "David Halls",
+    "email": "dave@davedoesdev.com",
+    "url": "http://www.davedoesdev.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davedoesdev/qlobber.git"
+  },
+  "bugs": {
+    "url": "https://github.com/davedoesdev/qlobber/issues"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "(cd native && npm install && node-gyp rebuild --debug) && grunt test",
+    "coverage": "(cd native && npm install && node-gyp rebuild --debug) && grunt coverage"
+  },
+  "directories": {
+    "test": "test",
+    "lib": "lib"
+  },
+  "keywords": [
+    "amqp",
+    "mqtt",
+    "rabbitmq",
+    "ascoltatore"
+  ],
+  "engines": {
+    "node": ">= 14"
+  },
+  "devDependencies": {
+    "b": "davedoesdev/b",
+    "c8": "^7.11.3",
+    "chai": "^4.3.6",
+    "grunt": "^1.5.3",
+    "grunt-apidox": "^2.0.17",
+    "grunt-contrib-jshint": "^3.2.0",
+    "grunt-exec": "^3.0.0",
+    "JSONStream": "^1.3.5",
+    "mocha": "^10.0.0",
+    "stream-buffers": "^3.0.2"
+  },
+  "overrides": {
+    "jsdoctypeparser": {
+      "lodash": "^4.17.21"
+    },
+    "dox": {
+      "markdown-it": "^12.3.2"
+    }
+  }
+}

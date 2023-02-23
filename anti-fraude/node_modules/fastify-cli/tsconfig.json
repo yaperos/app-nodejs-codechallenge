@@ -1,0 +1,13 @@
+{
+    "extends": "fastify-tsconfig",
+    "compilerOptions": {
+      "esModuleInterop": true,
+      "noEmit": true
+    },
+    "include": [
+        "routes/**/*.ts",
+        "plugins/**/*.ts",
+        "test/**/*.ts",
+        "app.ts"
+    ]
+}
