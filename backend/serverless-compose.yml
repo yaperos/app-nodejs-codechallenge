@@ -1,0 +1,13 @@
+services:
+  layers:
+    path: layers
+
+  transactions:
+    path: transactions
+    dependsOn:
+      - layers
+
+  anti-fraud:
+    path: anti-fraud
+    dependsOn:
+      - layers

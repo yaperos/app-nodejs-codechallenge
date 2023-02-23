@@ -1,0 +1,9 @@
+{
+    "transactions": {
+        "NOT_FOUND": {
+            "code": "YP0001",
+            "message": "transaction not found",
+            "httpCode": 400
+        }
+    }
+}

@@ -1,6 +1,6 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
@@ -80,3 +80,32 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Solution
+
+## tech stack
+
+Serverless solution
+
+<ol>
+  <li>Node with serverless framework deployed in lambdas</li>
+  <li>NoSQL Databse with DynamoDB</li>
+  <li>Kafka serverless with upstash </li>    
+</ol>
+
+## endpoints
+
+Base Url: https://wwmz2dquld.execute-api.us-east-1.amazonaws.com
+POST /transactions
+GET /transactions/{id}
+
+## project structure
+
+- backend:
+  - transactions microservice:
+    - create: function that creates the transaction and triggers the event "created-transaction"
+    - get: function that returns the transaction information
+    - update: function triggered by event "validated-transaction" and updates the transaction status
+  - anti-fraud microservice:
+    - validate: function triggered by event "created-transaction" that validates the transaction and triggers "validated-transaction" event
+- infra: The cloud provider for this solution is AWS and all the resources where created using IaC with AWS CDK framework. (except kafka that was created with upstash)

@@ -1,0 +1,13 @@
+validateAntiFraud:
+  handler: src/validate-anti-fraud.handler
+  events:
+    - kafka:
+        accessConfigurations:
+          saslScram256Auth: arn:aws:secretsmanager:us-east-1:489162129883:secret:yape-kafka-secret-test-sX8mEm
+        topic: created-transaction
+        bootstrapServers:
+          - intent-osprey-11732-us1-kafka.upstash.io:9092
+  package:
+    patterns:
+      - "!./**"
+      - "src/validate-anti-fraud.js"

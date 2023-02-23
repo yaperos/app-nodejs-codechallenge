@@ -1,0 +1,34 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
+  "main": "index.js",
+  "scripts": {
+    "createTable": "aws dynamodb create-table --cli-input-json file://.dynamodb/$table.json --endpoint-url http://localhost:8000 2>&1 > /dev/null",
+    "createTables": "table=transactions npm run createTable",
+    "deleteTable": "aws dynamodb delete-table --table-name yape-$table-test --endpoint-url http://localhost:8000 2>&1 > /dev/null",
+    "deleteTables": "table=transactions npm run deleteTable",
+    "deploy": "serverless deploy --stage $npm_config_env",
+    "deployStack": "serverless deploy --service $npm_config_stack --stage $npm_config_env --verbose",
+    "destroy": "serverless remove --stage $npm_config_env",
+    "destroyStack": "serverless remove --service $npm_config_stack --stage $npm_config_env",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camposgonzalo/app-nodejs-codechallenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/camposgonzalo/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/camposgonzalo/app-nodejs-codechallenge#readme",
+  "devDependencies": {
+    "@serverless/compose": "^1.3.0",
+    "serverless": "^3.27.0",
+    "serverless-latest-layer-version": "^2.1.2",
+    "serverless-offline": "^12.0.4"
+  }
+}

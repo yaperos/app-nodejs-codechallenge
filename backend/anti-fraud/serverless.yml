@@ -1,0 +1,43 @@
+service: ${self:custom.app.name}-backend-anti-fraud
+
+frameworkVersion: "3"
+
+package:
+  individually: true
+
+custom: ${file(../serverless.common.yml):custom}
+
+params: ${file(../serverless.common.yml):custom.params}
+
+useDotenv: true
+
+provider:
+  name: aws
+  logRetentionInDays: ${param:logRetentionInDays}
+  region: ${param:accountRegion}
+  profile: ${self:custom.profile}
+  stage: ${self:custom.stage}
+  runtime: ${self:custom.runtime}
+  architecture: ${param:architecture}
+  versionFunctions: false
+  httpApi:
+    id:
+      Fn::ImportValue: ${self:custom.app.name}-api-id-${self:custom.stage}
+  iam:
+    role:
+      Fn::ImportValue: ${self:custom.app.name}-lambda-anti-fraud-role-arn-${self:custom.stage}
+  memorySize: ${param:defaultMemory}
+  layers:
+    - ${param:commonLayerArn}
+  environment:
+    ENV: ${self:custom.stage}
+    APP_NAME: ${self:custom.app.name}
+    TRANSACTION_MAX_VALUE: 1000
+    TRANSACTION_VALIDATED_TOPIC: validated-transaction
+
+functions:
+  validateAntiFraud: ${file(./functions.yml):validateAntiFraud}
+
+plugins:
+  - serverless-offline
+  - serverless-latest-layer-version

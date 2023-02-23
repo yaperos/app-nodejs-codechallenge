@@ -1,0 +1,38 @@
+createTransaction:
+  name: ${self:custom.app.name}-create-transaction-${self:custom.stage}
+  handler: src/create-transaction.handler
+  events:
+    - httpApi:
+        method: post
+        path: /transactions
+  package:
+    patterns:
+      - "!./**"
+      - "src/create-transaction.js"
+
+getTransaction:
+  name: ${self:custom.app.name}-get-transaction-${self:custom.stage}
+  handler: src/get-transaction.handler
+  events:
+    - httpApi:
+        method: get
+        path: /transactions/{id}
+  package:
+    patterns:
+      - "!./**"
+      - "src/get-transaction.js"
+
+updateTransaction:
+  name: ${self:custom.app.name}-update-transaction-${self:custom.stage}
+  handler: src/update-transaction.handler
+  events:
+    - kafka:
+        accessConfigurations:
+          saslScram256Auth: arn:aws:secretsmanager:us-east-1:489162129883:secret:yape-kafka-secret-test-sX8mEm
+        topic: validated-transaction
+        bootstrapServers:
+          - intent-osprey-11732-us1-kafka.upstash.io:9092
+  package:
+    patterns:
+      - "!./**"
+      - "src/update-transaction.js"

@@ -1,0 +1,19 @@
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+    noAuth: true
+  stage: ${opt:stage, 'test'}
+  profile: aws-${self:custom.stage}
+  runtime: nodejs14.x
+  app:
+    name: yape
+    version: 1
+  params:
+    default:
+      architecture: arm64
+      defaultMemory: 256
+      accountRegion: us-east-1
+    test:
+      accountId: 489162129883
+      commonLayerArn: arn:aws:lambda:${param:accountRegion}:${param:accountId}:layer:${self:custom.app.name}-common-test:latest
+      logRetentionInDays: 1

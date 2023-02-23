@@ -1,0 +1,36 @@
+{
+  "name": "infra",
+  "version": "0.1.0",
+  "bin": {
+    "infra": "bin/infra.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "bootstrap": "cdk bootstrap --profile=aws-$npm_config_env -c env=$npm_config_env",
+    "synth": "cdk synth *-$npm_config_env --profile=aws-$npm_config_env -c env=$npm_config_env",
+    "diff": "cdk diff *-$npm_config_env --profile=aws-$npm_config_env -c env=$npm_config_env",
+    "deploy": "cdk deploy *-$npm_config_env --profile=aws-$npm_config_env -c env=$npm_config_env --require-approval never",
+    "deployStack": "cdk deploy $npm_config_stack-$npm_config_env --profile=aws-$npm_config_env -e -c env=$npm_config_env --require-approval never",
+    "destroy": "cdk destroy *-$npm_config_env --profile=aws-$npm_config_env -c env=$npm_config_env",
+    "destroyStack": "cdk destroy $npm_config_stack-$npm_config_env --profile=aws-$npm_config_env -c env=$npm_config_env"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "@types/node": "18.13.0",
+    "aws-cdk": "2.66.0",
+    "jest": "^29.4.2",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1",
+    "typescript": "~4.9.5"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-apigatewayv2-alpha": "^2.66.0-alpha.0",
+    "aws-cdk-lib": "2.66.0",
+    "constructs": "^10.0.0",
+    "dotenv": "^16.0.3",
+    "source-map-support": "^0.5.21"
+  }
+}

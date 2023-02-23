@@ -1,0 +1,24 @@
+service: ${self:custom.app.name}-backend-layers
+
+frameworkVersion: "3"
+
+custom: ${file(../serverless.common.yml):custom}
+
+params: ${file(../serverless.common.yml):custom.params}
+
+useDotenv: true
+
+provider:
+  name: aws
+  region: us-east-1
+  profile: ${self:custom.profile}
+  stage: ${self:custom.stage}
+  runtime: ${self:custom.runtime}
+
+layers:
+  common:
+    path: src/common
+    name: ${self:custom.app.name}-common-${self:custom.stage}
+    retain: false
+    compatibleArchitectures:
+      - ${param:architecture}
