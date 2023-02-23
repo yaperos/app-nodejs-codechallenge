@@ -3,6 +3,13 @@ This project was bootstrapped with Fastify-CLI.
 
 ## Available Scripts
 
+
+Run in cmd:
+
+npm install
+npm run dev
+
+
 In the project directory, you can run:
 
 ### `npm run dev`
