@@ -1,7 +1,5 @@
 require("dotenv").config({ path: ".env" });
-
-const { STATUS_TRANSACTION } = require("../config/constants.config");
-
+ 
 const {sendTransactionAntiFraud} = require("../consumers/broker");
 
 const {
@@ -10,8 +8,9 @@ const {
   findTransaction,
   updateStatusTransaction,
 } = require("../services/transaction.services");
+
 const Utils = require("../utils/formattResponse");
-const LimitValue = require("../data/validate.data");
+
 let result = {
   error: false,
   msg: "OK",
