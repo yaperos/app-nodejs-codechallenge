@@ -7,6 +7,7 @@ export interface TransactionRepository {
         transactionId: string,
         status: TransactionStatus,
     ): Promise<void>;
+    getById(id: string): Promise<TransactionModel>;
 }
 
 export const TransactionRepository = Symbol('TransactionRepository');

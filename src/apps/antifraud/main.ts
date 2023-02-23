@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
 import { AntifraudModule } from './antifraud.module';
 
 async function bootstrap() {

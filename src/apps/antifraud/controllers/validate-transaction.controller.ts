@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
-
 import { MessagePattern, Payload } from '@nestjs/microservices';
+
 import { ValidateTransactionUseCase } from 'src/contexts/antifraud/validator/application/validate/validate-transaction.usecase';
 import { TransactionValidationModel } from 'src/contexts/antifraud/validator/domain/transaction-validation.model';
 import { TransactionCreatedDto } from 'src/contexts/antifraud/validator/infraestructure/dtos/transaction-created.dto';

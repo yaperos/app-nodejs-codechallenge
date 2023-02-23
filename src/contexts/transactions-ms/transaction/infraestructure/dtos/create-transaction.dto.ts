@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
-import { TransactionModel } from '../../domain/transaction.model';
+import { IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+
+import { TransactionType } from 'src/contexts/transactions-ms/shared/domain/enums/transaction-type.enum';
 
 export class CreateTransactionDto {
     @ApiProperty()
@@ -13,9 +14,14 @@ export class CreateTransactionDto {
     @IsNotEmpty()
     accountExternalIdCredit: string;
 
-    @ApiProperty()
+    @ApiProperty({
+        enum: TransactionType,
+        example: TransactionType.DEBIT,
+    })
     @IsNumber()
-    @IsNotEmpty()
+    @IsEnum(TransactionType, {
+        message: 'Invalid transaction type',
+    })
     tranferTypeId: number;
 
     @ApiProperty()

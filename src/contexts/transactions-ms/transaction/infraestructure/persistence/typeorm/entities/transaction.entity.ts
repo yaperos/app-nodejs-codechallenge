@@ -10,7 +10,7 @@ import {
 @Entity('transactions')
 export class Transaction {
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column({ nullable: false })
     accountExternalIdDebit: string;

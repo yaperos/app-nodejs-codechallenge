@@ -8,6 +8,8 @@ import { HealthCheckController } from './controllers/health-check.controller';
 import TransactionProviderRepository from 'src/contexts/transactions-ms/transaction/infraestructure/persistence/transaction-provider.repository';
 import DatabaseModule from 'src/contexts/transactions-ms/shared/infraestructure/persistence/database.module';
 import EventBusModule from 'src/contexts/transactions-ms/shared/infraestructure/event-bus/event-bus.module';
+import { RetrieveTransactionController } from './controllers/retrieve-transaction.controller';
+import { RetrieveTransactionUsecase } from 'src/contexts/transactions-ms/transaction/application/create/retrieve-transaction.usecase';
 
 @Module({
     imports: [
@@ -17,10 +19,15 @@ import EventBusModule from 'src/contexts/transactions-ms/shared/infraestructure/
         DatabaseModule,
         EventBusModule,
     ],
-    controllers: [HealthCheckController, CreateTransactionController],
+    controllers: [
+        HealthCheckController,
+        CreateTransactionController,
+        RetrieveTransactionController,
+    ],
     providers: [
         HealthCheckUseCase,
         CreateTransactionUsecase,
+        RetrieveTransactionUsecase,
         TransactionProviderRepository,
     ],
 })

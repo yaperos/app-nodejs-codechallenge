@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { TransactionValidationModel } from '../../domain/transaction-validation.model';
 import { TransactionCreatedDto } from '../../infraestructure/dtos/transaction-created.dto';
 

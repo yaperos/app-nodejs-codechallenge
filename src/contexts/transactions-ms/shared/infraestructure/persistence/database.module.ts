@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { Transaction } from '../../../transaction/infraestructure/persistence/typeorm/entities/transaction.entity';
 
 @Module({
