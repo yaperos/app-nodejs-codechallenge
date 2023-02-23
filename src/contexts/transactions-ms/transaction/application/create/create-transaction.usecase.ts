@@ -1,5 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+
+import { MessageBrokerDto } from 'src/contexts/shared/infraestructure/message-broker.dto';
 import { TransactionModel } from '../../domain/transaction.model';
 import { TransactionRepository } from '../../domain/transaction.repository';
 import { CreateTransactionDto } from '../../infraestructure/dtos/create-transaction.dto';
@@ -22,8 +24,15 @@ export class CreateTransactionUsecase {
             transaction,
         );
 
+        const messageBroker: MessageBrokerDto<TransactionModel> = {
+            id: `transaction_created.${transactionCreated.id}`,
+            type: 'transaction_created',
+            occurredOn: new Date(),
+            attributes: transactionCreated,
+        };
+
         this.clientKafa
-            .send('transaction_created', JSON.stringify(transactionCreated))
+            .send('transaction_created', JSON.stringify(messageBroker))
             .subscribe((response) => {
                 console.log('REPSONSEEE', response);
             });
