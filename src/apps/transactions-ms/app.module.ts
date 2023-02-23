@@ -10,6 +10,7 @@ import DatabaseModule from 'src/contexts/transactions-ms/shared/infraestructure/
 import EventBusModule from 'src/contexts/transactions-ms/shared/infraestructure/event-bus/event-bus.module';
 import { RetrieveTransactionController } from './controllers/retrieve-transaction.controller';
 import { RetrieveTransactionUsecase } from 'src/contexts/transactions-ms/transaction/application/create/retrieve-transaction.usecase';
+import { UpdateTransactionStatusUsecase } from 'src/contexts/transactions-ms/transaction/application/create/update-transaction-status.usecase';
 
 @Module({
     imports: [
@@ -25,10 +26,11 @@ import { RetrieveTransactionUsecase } from 'src/contexts/transactions-ms/transac
         RetrieveTransactionController,
     ],
     providers: [
+        TransactionProviderRepository,
         HealthCheckUseCase,
         CreateTransactionUsecase,
         RetrieveTransactionUsecase,
-        TransactionProviderRepository,
+        UpdateTransactionStatusUsecase,
     ],
 })
 export class AppModule {}

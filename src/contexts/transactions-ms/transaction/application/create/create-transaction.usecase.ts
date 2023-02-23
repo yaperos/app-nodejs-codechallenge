@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClientKafka } from '@nestjs/microservices';
 
 import { MessageBrokerDto } from 'src/contexts/shared/infraestructure/message-broker.dto';
-import { TransactionStatus } from 'src/contexts/transactions-ms/shared/domain/enums/transaction-status.enum';
 import { TransactionModel } from '../../domain/transaction.model';
 import { TransactionRepository } from '../../domain/transaction.repository';
 import { CreateTransactionDto } from '../../infraestructure/dtos/create-transaction.dto';
@@ -15,6 +15,7 @@ export class CreateTransactionUsecase {
         private readonly transactionRepository: TransactionRepository,
         @Inject('TRANSACTION_CREATED_SERVICE')
         private readonly clientKafa: ClientKafka,
+        private readonly eventEmitter: EventEmitter2,
     ) {}
 
     public async createTransaction(
@@ -35,14 +36,7 @@ export class CreateTransactionUsecase {
         this.clientKafa
             .send('transaction_created', JSON.stringify(messageBroker))
             .subscribe((response: ValidationTransactionDto) => {
-                const newStatus = response.isValid
-                    ? TransactionStatus.APPROVED
-                    : TransactionStatus.REJECTED;
-                this.transactionRepository
-                    .updateStatus(response.transactionId, newStatus)
-                    .then(() => {
-                        console.log('Transaction status process updated.');
-                    });
+                this.eventEmitter.emit('transaction_validation', response);
             });
 
         return transactionCreated;
@@ -50,5 +44,9 @@ export class CreateTransactionUsecase {
 
     onModuleInit() {
         this.clientKafa.subscribeToResponseOf('transaction_created');
+    }
+
+    async onModuleDestroy() {
+        await this.clientKafa.close();
     }
 }

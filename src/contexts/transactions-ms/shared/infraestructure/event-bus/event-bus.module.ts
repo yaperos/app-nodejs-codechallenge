@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Partitioners } from 'kafkajs';
 
@@ -17,13 +18,14 @@ import { Partitioners } from 'kafkajs';
                         groupId: 'transaction-consumer',
                     },
                     producer: {
-                        createPartitioner: Partitioners.DefaultPartitioner
-                    }
+                        createPartitioner: Partitioners.DefaultPartitioner,
+                    },
                 },
             },
         ]),
+        EventEmitterModule.forRoot(),
     ],
-    exports: [ClientsModule],
+    exports: [ClientsModule, EventEmitterModule],
 })
 class EventBusModule {}
 
