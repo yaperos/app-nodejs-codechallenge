@@ -7,6 +7,7 @@ This project was bootstrapped with Fastify-CLI.
 Run in cmd:
 
 npm install
+cp .env.example .env
 npm run dev
 
 
