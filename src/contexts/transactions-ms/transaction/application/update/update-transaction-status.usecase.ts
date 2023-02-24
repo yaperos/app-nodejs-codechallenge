@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { TransactionStatus } from 'src/contexts/transactions-ms/shared/domain/enums/transaction-status.enum';
+import { TransactionStatus } from '../../../../transactions-ms/shared/domain/enums/transaction-status.enum';
 import { TransactionRepository } from '../../domain/transaction.repository';
 import { ValidationTransactionDto } from '../../infraestructure/dtos/validation-transaction.dto';
 

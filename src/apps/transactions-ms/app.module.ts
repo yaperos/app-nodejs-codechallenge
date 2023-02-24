@@ -9,8 +9,8 @@ import TransactionProviderRepository from 'src/contexts/transactions-ms/transact
 import DatabaseModule from 'src/contexts/transactions-ms/shared/infraestructure/persistence/database.module';
 import EventBusModule from 'src/contexts/transactions-ms/shared/infraestructure/event-bus/event-bus.module';
 import { RetrieveTransactionController } from './controllers/retrieve-transaction.controller';
-import { RetrieveTransactionUsecase } from 'src/contexts/transactions-ms/transaction/application/create/retrieve-transaction.usecase';
-import { UpdateTransactionStatusUsecase } from 'src/contexts/transactions-ms/transaction/application/create/update-transaction-status.usecase';
+import { RetrieveTransactionUsecase } from 'src/contexts/transactions-ms/transaction/application/get/retrieve-transaction.usecase';
+import { UpdateTransactionStatusUsecase } from 'src/contexts/transactions-ms/transaction/application/update/update-transaction-status.usecase';
 
 @Module({
     imports: [

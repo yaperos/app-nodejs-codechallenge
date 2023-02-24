@@ -27,6 +27,12 @@ export class CreateTransactionUsecase {
             transaction,
         );
 
+        this.emitTransactionCreatedEvent(transactionCreated);
+
+        return transactionCreated;
+    }
+
+    private emitTransactionCreatedEvent(transactionCreated: TransactionModel) {
         const messageBroker: MessageBrokerDto<TransactionModel> = {
             id: `transaction_created.${transactionCreated.id}`,
             type: 'transaction_created',
@@ -38,8 +44,6 @@ export class CreateTransactionUsecase {
             .subscribe((response: ValidationTransactionDto) => {
                 this.eventEmitter.emit('transaction_validation', response);
             });
-
-        return transactionCreated;
     }
 
     onModuleInit() {

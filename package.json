@@ -14,7 +14,9 @@
     "start:antifraud": "nest start antifraud",
     "start:antifraud:dev": "nest start antifraud --watch",
     "start:debug": "nest start --debug --watch",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:unit": "jest .spec.ts"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -36,6 +38,7 @@
     "typeorm": "^0.3.12"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.3.0",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
@@ -76,7 +79,7 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/src"
+      "<rootDir>/tests"
     ]
   }
 }

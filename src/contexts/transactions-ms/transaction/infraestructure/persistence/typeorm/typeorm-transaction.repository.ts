@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
 
-import { TransactionStatus } from 'src/contexts/transactions-ms/shared/domain/enums/transaction-status.enum';
+import { TransactionStatus } from '../../../../../transactions-ms/shared/domain/enums/transaction-status.enum';
 import { TransactionModel } from '../../../domain/transaction.model';
 import { TransactionRepository } from '../../../domain/transaction.repository';
 import { Transaction } from './entities/transaction.entity';
