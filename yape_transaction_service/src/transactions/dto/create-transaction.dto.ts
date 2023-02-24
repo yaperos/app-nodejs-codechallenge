@@ -3,4 +3,5 @@ export class CreateTransactionDto {
     accountExternalIdCredit: string;
     tranferTypeId: number;
     value: number;
+    validatedByAntiFraud: boolean;
 }
