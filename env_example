@@ -1,0 +1,21 @@
+# For .env.transactions
+
+PORT=4000
+
+POSTGRES_HOST=localhost
+POSTGRES_DB=transactions-ms-db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_PORT=5432
+
+CLIENT_ID=transaction
+CONSUMER_GROUP_ID=transaction-consumer
+BROKER=localhost:9092
+
+# For .env.antifraud
+
+CLIENT_ID=transaction
+CONSUMER_GROUP_ID=transaction-consumer
+BROKER=localhost:9092
+
+LIMIT_TRANSACTION=1000

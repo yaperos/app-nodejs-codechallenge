@@ -7,7 +7,7 @@ import { Partitioners } from 'kafkajs';
     imports: [
         ClientsModule.registerAsync([
             {
-                name: 'BUS',
+                name: 'ANTIFRAUD_SERVICE',
                 imports: [ConfigModule],
                 inject: [ConfigService],
                 useFactory: (configService: ConfigService) => {
@@ -16,11 +16,11 @@ import { Partitioners } from 'kafkajs';
                         transport: Transport.KAFKA,
                         options: {
                             client: {
-                                clientId: 'transaction',
-                                brokers: ['localhost:9092'],
+                                clientId: configService.get('CLIENT_ID'),
+                                brokers: [configService.get('BROKER')],
                             },
                             consumer: {
-                                groupId: 'transaction-consumer',
+                                groupId: configService.get('CONSUMER_GROUP_ID'),
                             },
                             producer: {
                                 createPartitioner:
