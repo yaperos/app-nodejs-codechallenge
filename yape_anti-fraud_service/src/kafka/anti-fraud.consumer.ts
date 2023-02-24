@@ -7,6 +7,7 @@ export class AntiFraudConsumer implements OnModuleInit {
     async onModuleInit() {
         this.consumerService.consume({ topic: 'test' }, {
             eachMessage: async ({ topic, partition, message }) => {
+                // Update event and 
                 console.log({
                     value: message.value.toString(),
                     topic: topic.toString(),
