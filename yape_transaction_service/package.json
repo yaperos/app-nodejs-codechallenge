@@ -25,6 +25,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.10.1",
+    "kafkajs": "^2.2.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
