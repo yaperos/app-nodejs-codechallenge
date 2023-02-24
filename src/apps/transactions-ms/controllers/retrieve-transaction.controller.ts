@@ -1,8 +1,8 @@
 import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { RetrieveTransactionUsecase } from 'src/contexts/transactions-ms/transaction/application/get/retrieve-transaction.usecase';
-import { TransactionResponseDto } from 'src/contexts/transactions-ms/transaction/infraestructure/dtos/transaction-response.dto';
+import { RetrieveTransactionUsecase } from '../../../../src/contexts/transactions-ms/transaction/application/get/retrieve-transaction.usecase';
+import { TransactionResponseDto } from '../../../../src/contexts/transactions-ms/transaction/infraestructure/dtos/transaction-response.dto';
 
 @ApiTags('Retrieve transaction')
 @Controller('transactions')

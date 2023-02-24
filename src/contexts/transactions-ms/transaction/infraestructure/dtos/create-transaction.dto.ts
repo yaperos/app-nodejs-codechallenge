@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 
-import { TransactionType } from 'src/contexts/transactions-ms/shared/domain/enums/transaction-type.enum';
+import { TransactionType } from '../../../../transactions-ms/shared/domain/enums/transaction-type.enum';
 
 export class CreateTransactionDto {
     @ApiProperty()
