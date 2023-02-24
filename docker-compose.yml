@@ -3,10 +3,16 @@ services:
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -15,7 +21,7 @@ services:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
@@ -23,3 +29,73 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 10
+  transaction-microservice:
+    restart: always
+    build:
+      context: .
+      dockerfile: transaction-microservice/Dockerfile
+    environment:
+      ENVIRONMENT: production
+      KAFKA_HOST: kafka
+      KAFKA_PORT: 29092
+      KAFKA_GROUPID: transaction-consumer
+      ANTIFRAUD_KAFKA_HOST: kafka
+      ANTIFRAUD_KAFKA_PORT: 29092
+      ANTIFRAUD_KAFKA_NAME: ANTIFRAUD_SERVICE
+      ANTIFRAUD_KAFKA_CLIENTID: antifraud
+      ANTIFRAUD_KAFKA_GROUPID: antifraud-consumer
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+  antifraud-microservice:
+    restart: always
+    build:
+      context: .
+      dockerfile: antifraud-microservice/Dockerfile
+    environment:
+      ENVIRONMENT: production
+      KAFKA_HOST: kafka
+      KAFKA_PORT: 29092
+      KAFKA_GROUPID: antifraud-consumer
+      TRANSACTION_LIMIT: 1000
+      TRANSACTION_KAFKA_HOST: kafka
+      TRANSACTION_KAFKA_PORT: 29092
+      TRANSACTION_KAFKA_NAME: TRANSACTION_SERVICE
+      TRANSACTION_KAFKA_CLIENTID: transaction
+      TRANSACTION_KAFKA_GROUPID: transaction-consumer
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+  api-gateway:
+    restart: always
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      PORT: 3000
+      ENVIRONMENT: production
+      KAFKA_HOST: kafka
+      KAFKA_PORT: 29092
+      KAFKA_NAME: TRANSACTION_SERVICE
+      KAFKA_CLIENTID: transaction
+      KAFKA_GROUPID: transaction-consumer
+    depends_on:
+      - transaction-microservice
+      - antifraud-microservice

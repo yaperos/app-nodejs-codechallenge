@@ -4,9 +4,12 @@ Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
+- [Yape Code Challenge :rocket:](#yape-code-challenge-rocket)
 - [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+- [Tech Stack](#tech-stack)
+  - [Optional](#optional)
+- [Send us your challenge](#send-us-your-challenge)
+- [Solution](#solution)
 
 # Problem
 
@@ -80,3 +83,34 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Solution
+
+These are the following steps to run this application:
+
+- Run the command `docker-compose up -d` and wait until all the services started
+- 
+- Go to `transaction-microservice` folder and install the packages with `yarn install`
+- After node module installation finish run the next command: `yarn db:seed`
+- Test the service using this command in postman (Accepted value transaction): 
+  - `curl --location --request POST 'http://localhost:3000/api/transactions/create' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "accountExternalIdDebit": "12345",
+  "accountExternalIdCredit": "123456",
+  "tranferTypeId": 1,
+  "value": 500
+}'`
+- Test the service using this command in postman (Rejected value transaction): 
+  - `curl --location --request POST 'http://localhost:3000/api/transactions/create' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "accountExternalIdDebit": "12345",
+  "accountExternalIdCredit": "123456",
+  "tranferTypeId": 1,
+  "value": 1500
+}'`
+- Then check in postgres db the saved transactions with the next query: 
+  
+  - `SELECT id, created_at, updated_at, account_external_id_debit, account_external_id_credit, value, "transactionTypeId", "transactionStatusId"
+FROM public."transaction" order by id desc`
