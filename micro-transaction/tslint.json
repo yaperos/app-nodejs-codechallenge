@@ -1,0 +1,12 @@
+{
+  "extends": ["tslint:latest", "tslint-plugin-prettier", "tslint-config-prettier"],
+  "rules": {
+    "no-implicit-dependencies": [true],
+    "no-console": [false],
+    "no-namespace": [false],
+    "object-literal-sort-keys": [false],
+    "prettier": [true, "./.prettierrc.js"],
+    "no-empty-interface": false,
+    "no-var-requires": false
+  }
+}

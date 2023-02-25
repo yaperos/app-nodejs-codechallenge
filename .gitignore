@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+micro-anti-fraud/node_modules
+micro-transaction/node_modules

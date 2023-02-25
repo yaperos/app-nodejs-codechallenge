@@ -1,0 +1,7 @@
+PORT=3000
+API='/api/v1'
+ENVIRONMENT=dev
+LOG_LEVEL=info
+NAME=micro-transaction
+
+KAFKA_URL=127.0.0.1:9092

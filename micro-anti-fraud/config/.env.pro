@@ -1,0 +1,5 @@
+ENVIRONMENT=pro
+LOG_LEVEL=info
+NAME=micro-anti-fraud
+
+KAFKA_URL=127.0.0.1:9092
