@@ -1,12 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { TransactionRepository } from '../repositories';
 import { CreateTransactionInput } from '../dtos/inputs';
 import { TransactionModel } from '../models';
 import { TransactionStatusEnum } from '../dtos/enums/index';
+import { ClientKafka } from '@nestjs/microservices';
+import { first } from 'rxjs';
 
 @Injectable()
-export class TransactionService {
-  constructor(private transactionRepository: TransactionRepository) {}
+export class TransactionService implements OnModuleInit {
+  constructor(
+    @Inject('TRANSACTION_MICROSERVICE')
+    private readonly clientKafka: ClientKafka,
+    private transactionRepository: TransactionRepository,
+  ) {}
+
+  async onModuleInit() {
+    this.clientKafka.subscribeToResponseOf('anti_fraud');
+    await this.clientKafka.connect();
+  }
+
+  async OnModuleDestroy() {
+    await this.clientKafka.close();
+  }
 
   async getTransactionById(id: string): Promise<TransactionModel> {
     try {
@@ -48,6 +63,18 @@ export class TransactionService {
         ...transactionData,
         transactionExternalId: id,
       } as TransactionModel;
+
+      const dataMsg = {
+        value: { value: transactionData.value, transactionExternalId: id },
+      };
+      console.log('dataMsg', JSON.stringify(dataMsg, null, 3));
+      this.clientKafka
+        .send('anti_fraud', dataMsg)
+        .pipe(first())
+        .subscribe((response: any) => {
+          console.log('response', JSON.stringify(response, null, 3));
+        });
+
       return transactionResponse;
     } catch (err) {
       throw new Error(err.message);

@@ -24,7 +24,9 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/microservices": "^8.4.5",
     "reflect-metadata": "^0.1.13",
+    "kafkajs": "^2.2.3",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
   },
