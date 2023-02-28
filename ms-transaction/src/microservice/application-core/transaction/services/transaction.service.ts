@@ -5,26 +5,23 @@ import { TransactionModel } from '../models';
 import { TransactionStatusEnum } from '../dtos/enums/index';
 import { ClientKafka } from '@nestjs/microservices';
 import { first } from 'rxjs';
-import { Producer } from 'kafkajs';
 
 @Injectable()
-export class TransactionService /* implements OnModuleInit */ {
+export class TransactionService implements OnModuleInit {
   constructor(
-    /*  @Inject('TRANSACTION_MICROSERVICE')
-    private readonly clientKafka: ClientKafka, */
-    @Inject('KAFKA_PRODUCER')
-    private kafkaProducer: Producer,
+    @Inject('TRANSACTION_MICROSERVICE')
+    private readonly clientKafka: ClientKafka,
     private transactionRepository: TransactionRepository,
   ) {}
 
-  /* async onModuleInit() {
+  async onModuleInit() {
     this.clientKafka.subscribeToResponseOf('anti_fraud');
     await this.clientKafka.connect();
   }
 
   async OnModuleDestroy() {
     await this.clientKafka.close();
-  } */
+  }
 
   async getTransactionById(id: string): Promise<TransactionModel> {
     try {
@@ -68,17 +65,15 @@ export class TransactionService /* implements OnModuleInit */ {
       } as TransactionModel;
 
       const dataMsg = {
-        value: transactionData.value,
-        transactionExternalId: id,
+        value: { value: transactionData.value, transactionExternalId: id },
       };
       console.log('dataMsg', JSON.stringify(dataMsg, null, 3));
-
-      await this.kafkaProducer.send({
-        topic: 'created_transaction',
-        messages: [
-          { key: 'validation_anti_fraud', value: JSON.stringify(dataMsg) },
-        ],
-      });
+      this.clientKafka
+        .send('anti_fraud', dataMsg)
+        .pipe(first())
+        .subscribe((response: any) => {
+          console.log('response', JSON.stringify(response, null, 3));
+        });
 
       return transactionResponse;
     } catch (err) {

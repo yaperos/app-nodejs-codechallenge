@@ -1,20 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { InfrastructureModule } from '../infrastructure/infrastructure.module';
 import { TransactionRepository } from './transaction/repositories';
 import { TransactionService } from './transaction/services';
 
-const services = [
-  TransactionRepository,
-  TransactionService,
-  {
-    provide: 'KAFKA_PRODUCER',
-    useFactory: async (kafkaService: ClientKafka) => {
-      return kafkaService.connect();
-    },
-    inject: ['TRANSACTION_MICROSERVICE'],
-  },
-];
+const services = [TransactionRepository, TransactionService];
 
 @Module({
   imports: [
