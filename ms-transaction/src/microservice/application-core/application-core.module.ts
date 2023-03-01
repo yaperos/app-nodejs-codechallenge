@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
 import { InfrastructureModule } from '../infrastructure/infrastructure.module';
-import { TransactionRepository } from './transaction/repositories';
+import {
+  TransactionRepository,
+  TransactionTypeRepository,
+} from './transaction/repositories';
 import { TransactionService } from './transaction/services';
 
 const services = [
   TransactionRepository,
+  TransactionTypeRepository,
   TransactionService,
   {
     provide: 'KAFKA_PRODUCER',

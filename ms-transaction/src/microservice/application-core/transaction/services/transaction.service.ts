@@ -1,5 +1,8 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
-import { TransactionRepository } from '../repositories';
+import {
+  TransactionRepository,
+  TransactionTypeRepository,
+} from '../repositories';
 import { CreateTransactionInput } from '../dtos/inputs';
 import { TransactionCreateModel, TransactionModel } from '../models';
 import {
@@ -17,6 +20,7 @@ export class TransactionService {
     private kafkaProducer: Producer,
     @Inject(CACHE_MANAGER) private cacheService: Cache,
     private transactionRepository: TransactionRepository,
+    private transactionTypeRepository: TransactionTypeRepository,
   ) {}
 
   async getTransactionById(id: string): Promise<TransactionModel> {
@@ -70,6 +74,8 @@ export class TransactionService {
     data: CreateTransactionInput,
   ): Promise<TransactionCreateModel> {
     try {
+      await this.validateData(data);
+
       const payload = {
         ...data,
         transactionStatusId: TransactionStatusEnum.PENDING,
@@ -135,6 +141,20 @@ export class TransactionService {
       return true;
     } catch (err) {
       throw new Error(err.message);
+    }
+  }
+
+  private async validateData(data: CreateTransactionInput) {
+    if (data.value <= 0) {
+      throw new Error('Value must be greater than 0');
+    }
+
+    const transactionType = await this.transactionTypeRepository.getById(
+      data.transactionTypeId,
+    );
+
+    if (!transactionType) {
+      throw new Error('Transaction type not found');
     }
   }
 }

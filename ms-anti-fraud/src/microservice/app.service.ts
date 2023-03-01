@@ -11,36 +11,40 @@ export class AppService {
   ) {}
 
   async validateValue(message: any) {
-    const { transactionExternalId, value } = message;
+    try {
+      const { transactionExternalId, value } = message;
 
-    if (value > TransactionEnum.MAX_VALUE) {
+      if (value > TransactionEnum.MAX_VALUE) {
+        await this.kafkaProducer.send({
+          topic: 'update_transaction_status',
+          messages: [
+            {
+              key: 'transaction_rejected',
+              value: JSON.stringify({
+                transactionExternalId,
+                status: TransactionStatusEnum.REJECTED,
+              }),
+            },
+          ],
+        });
+
+        return;
+      }
+
       await this.kafkaProducer.send({
         topic: 'update_transaction_status',
         messages: [
           {
-            key: 'transaction_rejected',
+            key: 'transaction_approved',
             value: JSON.stringify({
               transactionExternalId,
-              status: TransactionStatusEnum.REJECTED,
+              status: TransactionStatusEnum.APPROVED,
             }),
           },
         ],
       });
-
-      return;
+    } catch (error) {
+      throw new Error(error.message);
     }
-
-    await this.kafkaProducer.send({
-      topic: 'update_transaction_status',
-      messages: [
-        {
-          key: 'transaction_approved',
-          value: JSON.stringify({
-            transactionExternalId,
-            status: TransactionStatusEnum.APPROVED,
-          }),
-        },
-      ],
-    });
   }
 }
