@@ -17,6 +17,13 @@ services:
       - 5432:5432
     volumes:
       - ./postgres:/var/lib/postgresql/data
+  yaperedis:
+    container_name: yaperedis
+    image: redis
+    ports:
+      - 6379:6379
+    volumes: 
+      - redis:/data
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
@@ -41,3 +48,6 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1  
+volumes:
+  redis:
+    driver: local

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Transaction } from '@prisma/client';
 import { PrismaService } from '../../../infrastructure/persistence/prisma/prisma.service';
-import { TransactionStatusEnum } from '../dtos/enums';
 
 @Injectable()
 export class TransactionRepository {
@@ -12,26 +11,12 @@ export class TransactionRepository {
       where: {
         id,
       },
-      include: {
-        transactionType: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        transactionStatus: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
     });
   }
 
   async getByIdRaw(id: string) {
     return await this.prisma.$queryRaw`
-      select t.id as "transactionExternalId", t.value, t."createdAt",
+      select t.id, t.value, t."createdAt",
       (select ts.name from transaction_statuses ts where ts.id = t."transactionStatusId") as "transactionStatus",
       (select tt.name from transaction_types tt where tt.id = t."transactionTypeId") as "transactionType"
       from transactions t

@@ -3,3 +3,7 @@ export enum TransactionStatusEnum {
   APPROVED = 2,
   REJECTED = 3,
 }
+
+export enum TransactionTypeEnum {
+  NORMAL = 1,
+}

@@ -1,7 +1,13 @@
 export class TransactionResponseDB {
-  transactionExternalId: string;
-  transactionStatus: string;
-  transactionType: string;
-  value: number;
-  createdAt: Date;
+  transactionStatus?: string;
+  transactionType?: string;
+  value?: number;
+  createdAt?: Date;
+  id?: string;
+  accountExternalIdDebit?: string;
+  accountExternalIdCredit?: string;
+  updatedAt?: Date;
+  transactionTypeId?: number;
+  transactionStatusId?: number;
+  version?: number;
 }

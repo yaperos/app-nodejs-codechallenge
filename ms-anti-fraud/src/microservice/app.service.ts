@@ -13,9 +13,6 @@ export class AppService {
   async validateValue(message: any) {
     const { transactionExternalId, value } = message;
 
-    console.log('transactionExternalId: ', transactionExternalId);
-    console.log('value: ', value);
-
     if (value > TransactionEnum.MAX_VALUE) {
       await this.kafkaProducer.send({
         topic: 'update_transaction_status',

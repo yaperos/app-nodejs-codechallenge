@@ -9,9 +9,6 @@ export class AppController {
 
   @EventPattern('created_transaction')
   validateTransaction(@Payload() message: KafkaMessage) {
-    console.log(
-      `created_transaction: ${JSON.stringify(message.value, null, 3)}`,
-    );
     this.appService.validateValue(message.value);
   }
 }
