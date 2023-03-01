@@ -1,82 +1,65 @@
-# Yape Code Challenge :rocket:
+# YAPE TRANSACTIONS 🤖
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Tecnologías utilizadas
 
 <ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
+  <li>Nest.js</li>
+  <li>GraphQL</li>
+  <li>Prisma</li>
+  <li>Postgres</li>
+  <li>Redis</li>
+  <li>Kafka</li>
+  <li>Docker</li>
 </ol>
 
-Every transaction with a value greater than 1000 should be rejected.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+Menú
 
-# Tech Stack
+- [Configuración en local](#configuración)
+- [Servicios](#Servicios)
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+# Servicios 🚀
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+## Crear transacción
 
-You must have two resources:
+Servicio construido con GraphQL y expuesto en el microservicio `ms-transaction`
 
-1. Resource to create a transaction that must containt:
+![create_transaction](/images/create_transaction.PNG)
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
 
-2. Resource to retrieve a transaction
+Después de creada la transacción se enviará un evento al microservicio `ms-anti-fraud` 
+para validar el valor ingresado.
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+![create_transaction](/images/sent_event_create_transaction.PNG)
 
-## Optional
+Estará a la escucha de que llegue el evento en `ms-anti-fraud`
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+![create_transaction](/images/subs_event_create_transaction.PNG)
 
-You can use Graphql;
+Validará según el valor máximo y emitirá un evento al microservicio
+`ms-transaction` para actualizar el estatus de la transacción.
 
-# Send us your challenge
+![create_transaction](/images/sent_event_update.PNG)
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+Estará a la escucha que llegue el evento en `ms-transaction`
 
-If you have any questions, please let us know.
+![create_transaction](/images/subs_event_update.PNG)
+
+
+> Ante la gran demanda de actualizar concurrentemente el estado de la transacción apliqué
+ **EL CONTROL DE CONCURRENCIA OPTIMISTA (OOC)**, usamos un token de concurrencia (una marca de tiempo o un campo de versión) para detectar cambios en un registro.
+
+_ _ _ _
+
+
+## Recuperar una transacción
+
+Utilizo `Redis` para una respuesta más rápida y en la consulta como tal en Postgres
+utilizo consultas sin procesar (Raw database access)
+
+
+![create_transaction](/images/get_transaction.PNG)
+
+
+# Configuración 🔧
+
