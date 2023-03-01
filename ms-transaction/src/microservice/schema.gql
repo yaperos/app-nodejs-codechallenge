@@ -12,15 +12,10 @@ type TransactionStatusType {
 
 type TransactionModel {
   transactionExternalId: String
-  accountExternalIdDebit: String
-  accountExternalIdCredit: String
-  transactionTypeId: Int
-  transactionStatusId: Int
-  value: Float
   transactionType: TransactionTypes
   transactionStatus: TransactionStatusType
+  value: Float
   createdAt: DateTime
-  updatedAt: DateTime
 }
 
 """
@@ -28,12 +23,22 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type TransactionCreateModel {
+  transactionExternalId: String
+  accountExternalIdDebit: String
+  accountExternalIdCredit: String
+  transactionTypeId: Int
+  transactionStatusId: Int
+  value: Float
+  createdAt: DateTime
+}
+
 type Query {
   getTransaction(transactionExternalId: String!): TransactionModel!
 }
 
 type Mutation {
-  createTransaction(createTransactionInput: CreateTransactionInput!): TransactionModel!
+  createTransaction(createTransactionInput: CreateTransactionInput!): TransactionCreateModel!
   updateTransactionStatus(transactionExternalId: String!, transactionStatus: Float!): Boolean!
 }
 

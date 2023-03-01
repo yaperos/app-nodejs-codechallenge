@@ -1,44 +1,35 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { TransactionRepository } from '../repositories';
 import { CreateTransactionInput } from '../dtos/inputs';
-import { TransactionModel } from '../models';
+import { TransactionCreateModel, TransactionModel } from '../models';
 import { TransactionStatusEnum } from '../dtos/enums/index';
-import { ClientKafka } from '@nestjs/microservices';
-import { first } from 'rxjs';
 import { Producer } from 'kafkajs';
+import { TransactionResponseDB } from '../dtos';
 
 @Injectable()
-export class TransactionService /* implements OnModuleInit */ {
+export class TransactionService {
   constructor(
-    /*  @Inject('TRANSACTION_MICROSERVICE')
-    private readonly clientKafka: ClientKafka, */
     @Inject('KAFKA_PRODUCER')
     private kafkaProducer: Producer,
     private transactionRepository: TransactionRepository,
   ) {}
 
-  /* async onModuleInit() {
-    this.clientKafka.subscribeToResponseOf('anti_fraud');
-    await this.clientKafka.connect();
-  }
-
-  async OnModuleDestroy() {
-    await this.clientKafka.close();
-  } */
-
   async getTransactionById(id: string): Promise<TransactionModel> {
     try {
-      const transaction = await this.transactionRepository.getById(id);
-      if (!transaction) {
+      const respRaw = await this.transactionRepository.getByIdRaw(id);
+
+      if (!respRaw[0]) {
         throw new Error('Transaction not found');
       }
 
+      const transRaw = respRaw[0] as TransactionResponseDB;
+
       const transactionResponse = {
-        transactionExternalId: transaction.id,
-        transactionType: { name: transaction.transactionType.name },
-        transactionStatus: { name: transaction.transactionStatus.name },
-        value: transaction.value,
-        createdAt: transaction.createdAt,
+        transactionExternalId: transRaw.transactionExternalId,
+        transactionType: { name: transRaw.transactionType },
+        transactionStatus: { name: transRaw.transactionStatus },
+        value: transRaw.value,
+        createdAt: transRaw.createdAt,
       } as TransactionModel;
 
       return transactionResponse;
@@ -49,7 +40,7 @@ export class TransactionService /* implements OnModuleInit */ {
 
   async createTransaction(
     data: CreateTransactionInput,
-  ): Promise<TransactionModel> {
+  ): Promise<TransactionCreateModel> {
     try {
       const payload = {
         ...data,
@@ -65,18 +56,18 @@ export class TransactionService /* implements OnModuleInit */ {
       const transactionResponse = {
         ...transactionData,
         transactionExternalId: id,
-      } as TransactionModel;
+      } as TransactionCreateModel;
 
-      const dataMsg = {
+      const eventMessage = {
         value: transactionData.value,
         transactionExternalId: id,
       };
-      console.log('dataMsg', JSON.stringify(dataMsg, null, 3));
+      console.log('dataMsg', JSON.stringify(eventMessage, null, 3));
 
       await this.kafkaProducer.send({
         topic: 'created_transaction',
         messages: [
-          { key: 'validation_anti_fraud', value: JSON.stringify(dataMsg) },
+          { key: 'validation_anti_fraud', value: JSON.stringify(eventMessage) },
         ],
       });
 

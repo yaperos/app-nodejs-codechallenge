@@ -18,6 +18,24 @@ export class TransactionModel {
   @Field(() => String, { nullable: true })
   transactionExternalId: TransactionDB[`id`];
 
+  @Field({ nullable: true })
+  transactionType: TransactionTypes;
+
+  @Field({ nullable: true })
+  transactionStatus: TransactionStatusType;
+
+  @Field(() => Number, { nullable: true })
+  value: TransactionDB[`value`];
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  createdAt: Date;
+}
+
+@ObjectType()
+export class TransactionCreateModel {
+  @Field(() => String, { nullable: true })
+  transactionExternalId: TransactionDB[`id`];
+
   @Field(() => String, { nullable: true })
   accountExternalIdDebit: TransactionDB[`accountExternalIdDebit`];
 
@@ -33,15 +51,6 @@ export class TransactionModel {
   @Field(() => Number, { nullable: true })
   value: TransactionDB[`value`];
 
-  @Field({ nullable: true })
-  transactionType: TransactionTypes;
-
-  @Field({ nullable: true })
-  transactionStatus: TransactionStatusType;
-
   @Field(() => GraphQLISODateTime, { nullable: true })
   createdAt: Date;
-
-  @Field(() => GraphQLISODateTime, { nullable: true })
-  updatedAt: TransactionDB[`updatedAt`];
 }

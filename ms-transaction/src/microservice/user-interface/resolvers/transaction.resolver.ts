@@ -1,5 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { TransactionModel } from '../../application-core/transaction/models';
+import {
+  TransactionCreateModel,
+  TransactionModel,
+} from '../../application-core/transaction/models';
 import { TransactionService } from '../../application-core/transaction/services';
 import { CreateTransactionInput } from '../../application-core/transaction/dtos/inputs/index';
 import { TransactionStatusEnum } from '../../application-core/transaction/dtos/enums/index';
@@ -16,11 +19,11 @@ export class TransactionResolver {
     return transaction;
   }
 
-  @Mutation(() => TransactionModel)
+  @Mutation(() => TransactionCreateModel)
   async createTransaction(
     @Args('createTransactionInput')
     createTransactionInput: CreateTransactionInput,
-  ): Promise<TransactionModel> {
+  ): Promise<TransactionCreateModel> {
     const newTransaction = await this.transactionService.createTransaction(
       createTransactionInput,
     );
