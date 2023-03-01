@@ -1,0 +1,49 @@
+[
+  {
+    "_id": "01eeda49-5b0a-4a79-a1e5-b9ef1f4f0552",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:3000/transaction/idk",
+    "url": "localhost:3000/transaction/idk",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-27T19:35:25.256Z",
+    "modified": "2023-02-27T19:35:25.256Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "83f545b6-c21e-408a-a4c6-a173f7da9bc0",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:3000/transaction/119630ed-9f0d-4453-a27e-a534161a81ad",
+    "url": "localhost:3000/transaction/119630ed-9f0d-4453-a27e-a534161a81ad",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-02-27T19:36:54.937Z",
+    "modified": "2023-02-27T19:36:54.937Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "d011e2ca-abae-473a-a291-f314c912fac1",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:3000/transaction/",
+    "url": "localhost:3000/transaction/",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-01T15:05:16.265Z",
+    "modified": "2023-03-01T17:01:02.745Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"accountExternalIdDebit\": \"a5f2d018-b5ed-4b62-a43b-ad506ea48515\",\n  \"accountExternalIdCredit\": \"5b020341-1ad8-4143-aaf7-c30e75c467ca\",\n  \"tranferTypeId\": 1,\n  \"value\": 200\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]

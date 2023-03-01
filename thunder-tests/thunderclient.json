@@ -1,0 +1,68 @@
+[
+  {
+    "_id": "0d7b6e45-2a81-4bd5-bd22-175753f1da69",
+    "colId": "b7eba883-255d-43c0-8b1f-c2013c3ae6f2",
+    "containerId": "",
+    "name": "get list",
+    "url": "localhost:3000/transaction",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2023-03-01T19:48:00.923Z",
+    "modified": "2023-03-01T20:18:42.851Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "status",
+        "value": "PENDING",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "status",
+        "value": "APPROVED",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "status",
+        "value": "REJECTED",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "64442543-257f-45b1-b1c6-fdb3933cb569",
+    "colId": "b7eba883-255d-43c0-8b1f-c2013c3ae6f2",
+    "containerId": "",
+    "name": "create transaction",
+    "url": "localhost:3000/transaction",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2023-03-01T19:48:57.571Z",
+    "modified": "2023-03-01T21:06:21.955Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"accountExternalIdDebit\": \"a5f2d018-b5ed-4b62-a43b-ad506ea48515\",\n  \"accountExternalIdCredit\": \"5b020341-1ad8-4143-aaf7-c30e75c467ca\",\n  \"tranferTypeId\": 1,\n  \"value\": 2000\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "6d04bf79-da74-4940-add3-45da4012765f",
+    "colId": "b7eba883-255d-43c0-8b1f-c2013c3ae6f2",
+    "containerId": "",
+    "name": "get one",
+    "url": "localhost:3000/transaction/357890a7-29f2-4a4f-a406-1f1b5fbd9c12",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2023-03-01T19:50:25.386Z",
+    "modified": "2023-03-01T21:06:41.196Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  }
+]
