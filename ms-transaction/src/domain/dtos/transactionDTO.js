@@ -3,7 +3,7 @@ class TransactionDTO {
     this.transactionId = data.id
     this.transactionExternalId = data.transaction_external_id
     this.transactionType = {
-      name: data.transaction_type
+      name: data.tranfer_type_id
     }
     this.transactionStatus = {
       name: data.status

@@ -102,9 +102,11 @@ ALTER TABLE IF EXISTS public.frauds
 * 3: levantar microservicios
     ```
     $ cd ms-transaction/
+    $ npm i
     $ npm start
 
     $ cd ms-fraud/
+    $ npm i
     $ npm start
     ```
 * 4: Ejecutar curls
