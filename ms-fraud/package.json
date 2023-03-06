@@ -1,0 +1,41 @@
+{
+  "name": "app-nodejs-codechallenge-ms-fraud",
+  "version": "1.0.0",
+  "description": "app nodejs codechallenge",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.2.0",
+    "@fastify/formbody": "^7.4.0",
+    "@fastify/routes": "^5.1.0",
+    "@fastify/static": "^6.9.0",
+    "@fastify/swagger": "^8.3.1",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.13.0",
+    "jest": "^29.4.2",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.9.0",
+    "postgres": "^3.3.3",
+    "uuid": "^9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwinsono/app-nodejs-codechallenge.git"
+  },
+  "author": "newip",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edwinsono/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/edwinsono/app-nodejs-codechallenge#readme",
+  "devDependencies": {
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  }
+}
