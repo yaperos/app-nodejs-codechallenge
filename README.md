@@ -14,7 +14,7 @@ Don't forget that the proper way to submit your work is to fork the repo and cre
   <li>docker-composer up -d</li>
   <li>(Optional) disable other process they use the same ports<li>
   <li>cd transaction && yarn install && yarn run seed $$ yarn run start:dev</li>
-  <li>cd transaction && yarn install $$ yarn run start:dev</li>  
+  <li>cd antifraud-microservice && yarn install $$ yarn run start:dev</li>  
 </ol>
 
 # Setup Production
