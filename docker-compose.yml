@@ -7,19 +7,38 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-  kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+  # zookeeper:
+  #   image: confluentinc/cp-zookeeper:5.5.3
+  #   environment:
+  #     ZOOKEEPER_CLIENT_PORT: 2181
+  # kafka:
+  #   image: confluentinc/cp-enterprise-kafka:5.5.3
+  #   depends_on: [zookeeper]
+  #   environment:
+  #     KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  #     KAFKA_BROKER_ID: 1
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #     KAFKA_JMX_PORT: 9991
+  #   ports:
+  #     - 9092:9092
+  ws-frauds:
+    image: node:18
+    user: "node"
+    working_dir: /home/node/app
+    volumes:
+      - ./ws-frauds:/home/node/app/
+    command: bash -c "npm i && npm run start"
     ports:
-      - 9092:9092
+      - "3001:3001"
+  ws-transactions:
+    image: node:18
+    user: "node"
+    depends_on: [postgres]
+    working_dir: /home/node/app
+    volumes:
+      - ./ws-transactions:/home/node/app/
+    command: bash -c "npm i && npx prisma generate && npx prisma migrate dev --name init && npm run start"
+    ports:
+      - "3000:3000"

@@ -1,82 +1,33 @@
-# Yape Code Challenge :rocket:
+# Yape Challenge
+Realiza el registro de una transacción a través de un microservicio que a la vez invoca a otro microservicio para dictaminar si la operación se aprueba o se rechaza.
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Elbaorado con Nestjs / Prisma / PostgreSQL / Docker.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Compilación
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```sh
+docker-compose up
 ```
 
-# Tech Stack
+![Compilación](resources/compilacion.png?raw=true "Compilación")
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## Endpoints
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+API Transactions
 
-You must have two resources:
+| Método | Endpoint | Descripción |
+| ------ | ------ | ------ |
+| POST | /transactions| Registra una transacción e invoca a la API Frauds. |
+| PATCH | /transactions/{transaction-id} | Actualiza el estado: APROBADO o RECHAZADO |
 
-1. Resource to create a transaction that must containt:
+API Frauds
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
+| Método | Endpoint | Descripción |
+| ------ | ------ | ------ |
+| POST | /frauds/evaluate | Valida la el importe e invoca a la API Transactions para actualizar el estado. |
 
-2. Resource to retrieve a transaction
+## Postman
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+[Collection.json](resources/collection.json)
 
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+![Postman](resources/postman.png?raw=true "Postman")
