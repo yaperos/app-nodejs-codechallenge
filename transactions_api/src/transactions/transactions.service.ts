@@ -1,9 +1,4 @@
-import {
-    Inject,
-    Injectable,
-    OnModuleDestroy,
-    OnModuleInit,
-} from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -11,14 +6,14 @@ import { Transaction } from "./entities/Transaction.entity";
 import { TransactionType } from "./entities/TransactionType.entity";
 import { TransactionStatus } from "./entities/TransactionStatus.entity";
 import { NewTransactionDto } from "./dto/NewTransactionDto";
-import { TransactionDto } from "./dto/TransactionDto";
-import { ClientKafka, MessagePattern, Payload } from "@nestjs/microservices";
 import { ValidationRequestDto } from "./dto/ValidationRequestDto";
-import { ValidationResultDto } from "./dto/ValidationResultDto";
-import { TransactionStatuses, TransactionStatusesType } from "./helper/TransactionStatuses";
+import { TransactionStatusesType } from "./helper/TransactionStatuses";
+import { ProducerService } from "src/kafka/producer/producer.service";
 
 @Injectable()
-export class TransactionsService implements OnModuleInit, OnModuleDestroy {
+export class TransactionsService {
+    private logger = new Logger(TransactionsService.name);
+
     constructor(
         @InjectRepository(Transaction)
         private readonly transactionRepository: Repository<Transaction>,
@@ -26,8 +21,8 @@ export class TransactionsService implements OnModuleInit, OnModuleDestroy {
         private readonly transactionTypeRepository: Repository<TransactionType>,
         @InjectRepository(TransactionStatus)
         private readonly transactionStatusRepository: Repository<TransactionStatus>,
-        @Inject("KAFKA_CLIENT")
-        private readonly clientKafka: ClientKafka,
+        // Kafka producer
+        private readonly kafka: ProducerService,
     ) {
         (async () => {
             // Agregamos los tipos de transaccion
@@ -51,18 +46,7 @@ export class TransactionsService implements OnModuleInit, OnModuleDestroy {
         })();
     }
 
-    async onModuleInit() {
-        this.clientKafka.subscribeToResponseOf("transaction.validated");
-        await this.clientKafka.connect();
-    }
-
-    async onModuleDestroy() {
-        await this.clientKafka.close();
-    }
-
-    async createTransaction(
-        newTransaction: NewTransactionDto,
-    ): Promise<Transaction> {
+    async createTransaction(newTransaction: NewTransactionDto): Promise<Transaction> {
         const transaction = this.transactionRepository.create({
             accountExternalIdDebit: newTransaction.accountExternalIdDebit,
             accountExternalIdCredit: newTransaction.accountExternalIdCredit,
@@ -70,23 +54,30 @@ export class TransactionsService implements OnModuleInit, OnModuleDestroy {
             value: newTransaction.value,
             createdAt: new Date(),
         });
-        return this.transactionRepository.save(transaction).then((result) => {
-            return this.getTransaction(result.transactionExternalId);
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
+        return this.transactionRepository
+            .save(transaction)
+            .then((result) => {
+                return this.getTransaction(result.transactionExternalId);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
     }
 
     async updateTransactionStatus(
         transactionId: string,
         status: TransactionStatusesType,
     ): Promise<Transaction> {
-        const saved_transaction = await this.getTransaction(transactionId);
+        let saved_transaction = await this.getTransaction(transactionId);
+        if (saved_transaction === undefined) return Promise.reject("Transaction not found, could not update");
 
-        if (saved_transaction === undefined)
-            return Promise.reject("Transaction not found, could not update");
-        saved_transaction.transactionStatusId = status;
-        return this.transactionRepository.save(saved_transaction);
+        saved_transaction.transactionStatus.transactionStatusId = status;
+        let updated_transaction = await this.transactionRepository.save(saved_transaction);
+        const updated_status = await this.transactionStatusRepository.findOne({
+            where: { transactionStatusId: updated_transaction.transactionStatusId },
+        });
+        updated_transaction.transactionStatus.name = updated_status.name;
+        return updated_transaction;
     }
 
     async getTransaction(transactionExternalId: string): Promise<Transaction> {
@@ -99,21 +90,15 @@ export class TransactionsService implements OnModuleInit, OnModuleDestroy {
     }
 
     async sendTransactionForValidation(transaction: Transaction) {
-        this.clientKafka.emit("transaction.validate", {
-            value: {
-                transactionExternalId: transaction.transactionExternalId,
-                value: transaction.value,
-            } as ValidationRequestDto,
-        });
-    }
+        this.logger.log("Sending transaction for validation: " + transaction.transactionExternalId);
+        const validation_request = {
+            transactionExternalId: transaction.transactionExternalId,
+            value: transaction.value,
+        } as ValidationRequestDto;
 
-    @MessagePattern("transaction.validated_result")
-    onTransactionValidated(@Payload() result: ValidationResultDto) {
-        this.updateTransactionStatus(
-            result.transactionExternalId,
-            result.valid
-                ? TransactionStatuses.APPROVED
-                : TransactionStatuses.REJECTED,
-        );
+        this.kafka.produce({
+            topic: "transaction.validation_request",
+            messages: [{ value: JSON.stringify(validation_request) }],
+        });
     }
 }

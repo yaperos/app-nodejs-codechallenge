@@ -23,7 +23,7 @@ interface KafkaConfig {
 }
 
 const getConfig = () => ({
-    port: parseInt(process.env.API_PORT) || 3000,
+    port: parseInt(process.env.TRANSACTIONS_API_PORT) || 3000,
     database: {
         host: process.env.PG_HOST,
         port: parseInt(process.env.PG_PORT) || 5432,

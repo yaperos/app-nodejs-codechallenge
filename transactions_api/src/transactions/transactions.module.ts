@@ -1,9 +1,12 @@
 import { Module } from "@nestjs/common";
+import { ClientsModule, Transport } from "@nestjs/microservices";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import KafkaClient from "src/kafka_client/kafka_client";
+import { Partitioners } from "kafkajs";
+import { KafkaModule } from "src/kafka/kafka.module";
 import { Transaction } from "./entities/Transaction.entity";
 import { TransactionStatus } from "./entities/TransactionStatus.entity";
 import { TransactionType } from "./entities/TransactionType.entity";
+import { ValidationResultConsumer } from "./events/ValidationResultConsumer";
 import { TransactionsController } from "./transactions.controller";
 import { TransactionsService } from "./transactions.service";
 
@@ -14,11 +17,12 @@ import { TransactionsService } from "./transactions.service";
             TransactionType,
             TransactionStatus,
         ]),
+        KafkaModule,
     ],
     controllers: [TransactionsController],
     providers: [
-        KafkaClient,
-        TransactionsService
+        TransactionsService, 
+        ValidationResultConsumer
     ],
 })
 export class TransactionsModule {}

@@ -3,7 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/anti_fraud_service" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/nestjs-crud-todo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/nestjs-kafka" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/transactions_api" vcs="Git" />
   </component>
 </project>

@@ -5,7 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { AppController } from "./app.controller";
 import { Config } from "./config/config.module";
 import { TypeOrmConfigService } from "./config/typeorm.config";
-import KafkaClient from "./kafka_client/kafka_client";
+import { KafkaModule } from "./kafka/kafka.module";
 import { TransactionsModule } from "./transactions/transactions.module";
 
 @Module({
@@ -15,6 +15,6 @@ import { TransactionsModule } from "./transactions/transactions.module";
         TransactionsModule,
     ],
     controllers: [AppController],
-    providers: [ConfigService],
+    providers: [Config],
 })
 export class AppModule {}
