@@ -18,12 +18,13 @@ interface TypeOrmConfig {
 }
 
 interface KafkaConfig {
-    broker: string;
+    host: string;
+    port: number;
     groupId: string;
 }
 
 const getConfig = () => ({
-    port: parseInt(process.env.TRANSACTIONS_API_PORT) || 3000,
+    port: parseInt(process.env.TRANSACTIONS_API_PORT, 10) || 3000,
     database: {
         host: process.env.PG_HOST,
         port: parseInt(process.env.PG_PORT) || 5432,
@@ -39,15 +40,10 @@ const getConfig = () => ({
         },
     },
     kafka: {
-        broker: process.env.KAFKA_BROKER,
-        groupId: process.env.KAFKA_GROUP_ID,
+        host: process.env.KAFKA_HOST,
+        port: parseInt(process.env.KAFKA_PORT, 10) || 9092,
+        groupId: process.env.KAFKA_TRANSACTIONS_GROUP_ID,
     },
 });
 
-export {
-    type Config,
-    type DatabaseConfig,
-    type TypeOrmConfig,
-    type KafkaConfig,
-    getConfig,
-};
+export { type Config, type DatabaseConfig, type TypeOrmConfig, type KafkaConfig, getConfig };

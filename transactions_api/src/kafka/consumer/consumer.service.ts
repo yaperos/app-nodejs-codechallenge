@@ -1,26 +1,14 @@
-import {
-    Injectable,
-    Logger,
-    OnApplicationShutdown,
-} from "@nestjs/common";
+import { Injectable, Logger, OnApplicationShutdown } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import {
-    Consumer,
-    ConsumerRunConfig,
-    ConsumerSubscribeTopics,
-    Kafka,
-} from "kafkajs";
+import { Consumer, ConsumerRunConfig, ConsumerSubscribeTopics, Kafka } from "kafkajs";
 import { KafkaConfig } from "src/config/config";
 
 @Injectable()
 export class ConsumerService implements OnApplicationShutdown {
-
     constructor(private readonly configService: ConfigService) {}
 
-    private logger = new Logger(ConsumerService.name);
     private kafkaConfig = this.configService.get<KafkaConfig>("kafka");
-
-
+    private logger = new Logger(ConsumerService.name);
 
     async onApplicationShutdown() {
         for (const consumer of this.consumers) {
@@ -29,16 +17,13 @@ export class ConsumerService implements OnApplicationShutdown {
     }
 
     private readonly kafka = new Kafka({
-        brokers: [this.kafkaConfig.broker],
+        brokers: [`${this.kafkaConfig.host}:${this.kafkaConfig.port}`],
     });
 
     private readonly consumers: Consumer[] = [];
 
-    async consume(
-        topic: ConsumerSubscribeTopics,
-        config: ConsumerRunConfig,
-    ) {
-        const cosumer: Consumer = this.kafka.consumer({ groupId: "transaction_consumer_group" });
+    async consume(topic: ConsumerSubscribeTopics, config: ConsumerRunConfig) {
+        const cosumer: Consumer = this.kafka.consumer({ groupId: this.kafkaConfig.groupId });
         await cosumer.connect().catch((err) => this.logger.error(err));
         await cosumer.subscribe(topic);
         await cosumer.run(config);
