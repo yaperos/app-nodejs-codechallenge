@@ -1,0 +1,212 @@
+name: Yape Chanllenge
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  yape-anti-fraud-build:
+    name: Yape Anti Fraud Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          path: yape-anti-fraud/
+      - name: Run Install Dependences
+        run: cd yape-anti-fraud && npm i
+      - uses: actions/cache@v3
+        id: restore-build-yape-anti-fraud
+        with:
+          path: yape-anti-fraud/
+          key: ${{ github.sha }}
+
+  yape-transaction-build:
+    name: Yape Transaction Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          path: yape-transaction/
+      - name: Run Install Dependences
+        run: cd yape-transaction && npm i
+      - uses: actions/cache@v3
+        id: restore-build-yape-transaction
+        with:
+          path: yape-transaction/
+          key: ${{ github.sha }}
+
+  yape-gateway-build:
+    name: Yape Gateway Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          path: yape-gateway/
+      - name: Run Install Dependences
+        run: cd yape-gateway && npm i
+      - uses: actions/cache@v3
+        id: restore-build-yape-gateway
+        with:
+          path: yape-gateway/
+          key: ${{ github.sha }}
+
+  yape-anti-fraud-unit-test:
+    name: Yape Anti Fraud Unit Test Jest
+    needs: yape-anti-fraud-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: yape-anti-fraud/
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: actions/cache@v3
+        id: restore-build-yape-anti-fraud
+        with:
+          path: yape-anti-fraud/
+          key: ${{ github.sha }}
+      - name: Run All Unit Tests
+        run: cd yape-anti-fraud &&  npm run test:cov
+      - uses: actions/cache@v3
+        id: build-unit-test
+        with:
+          path: yape-anti-fraud/
+          key: ${{ github.sha }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: reports-unit-test-yape-anti-fraud
+          path: yape-anti-fraud/coverage/*
+
+  yape-gateway-unit-test:
+    name: Yape Gateway Unit Test Jest
+    needs: yape-gateway-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: yape-gateway/
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: actions/cache@v3
+        id: restore-build-yape-gateway
+        with:
+          path: yape-gateway/
+          key: ${{ github.sha }}
+      - name: Run All Unit Tests
+        run: cd yape-gateway &&  npm run test:cov
+      - uses: actions/cache@v3
+        id: build-unit-test
+        with:
+          path: yape-gateway/
+          key: ${{ github.sha }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: reports-unit-test-yape-gateway
+          path: yape-gateway/coverage/*
+
+  yape-transaction-unit-test:
+    name: Yape Transaction Unit Test Jest
+    needs: yape-transaction-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: yape-transaction/
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: actions/cache@v3
+        id: restore-build-yape-transaction
+        with:
+          path: yape-transaction/
+          key: ${{ github.sha }}
+      - name: Run All Unit Tests
+        run: cd yape-transaction &&  npm run test:cov
+      - uses: actions/cache@v3
+        id: build-unit-test
+        with:
+          path: yape-transaction/
+          key: ${{ github.sha }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: reports-unit-test-yape-transaction
+          path: yape-transaction/coverage/*
+
+  yape-gateway-sonar:
+    name: Yape Gateway Sonar
+    needs: [yape-gateway-build, yape-gateway-unit-test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v3
+        with:
+          name: reports-unit-test-yape-gateway
+          path: yape-gateway/coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_GATEWAY }}
+        with:
+          projectBaseDir: yape-gateway/
+
+  yape-anti-fraud-sonar:
+    name: Yape Anti Fraud Sonar
+    needs: [yape-anti-fraud-build, yape-anti-fraud-unit-test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v3
+        with:
+          name: reports-unit-test-yape-anti-fraud
+          path: yape-anti-fraud/coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_ANTI_FRAUD }}
+        with:
+          projectBaseDir: yape-anti-fraud/
+
+  yape-transaction-sonar:
+    name: Yape Transaction Sonar
+    needs: [yape-transaction-build, yape-transaction-unit-test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v3
+        with:
+          name: reports-unit-test-yape-transaction
+          path: yape-transaction/coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_TRANSACTION }}
+        with:
+          projectBaseDir: yape-transaction/

@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "f1ec54b2-ad8a-4faa-ab2b-bc7e8027d6aa",
+		"name": "Yape Changelle",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11872668"
+	},
+	"item": [
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Find Transaction",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/transactions/1f53c32f-c561-41dd-8374-f17992e2b718",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"transactions",
+								"1f53c32f-c561-41dd-8374-f17992e2b718"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/transactions?page=1&take=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"accountExternalIdDebit\": \"e7991681-16bd-4a57-b112-a96796ba4a21\",\r\n  \"accountExternalIdCredit\": \"e7991681-16bd-4557-b112-a96796ba4a21\",\r\n  \"tranferTypeId\": 1, \r\n  \"value\": 1001\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/transactions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

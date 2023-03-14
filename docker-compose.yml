@@ -7,10 +7,20 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - elk
+      - app
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,3 +33,272 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - elk
+      - app
+
+  redis:
+    image: bitnami/redis:6.2.11
+    environment:
+      - REDIS_PASSWORD=password123
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - elk
+      - app
+
+  prometheus:
+    build:
+      context: docker/prometheus/
+    volumes:
+      - ./docker/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+
+  grafana:
+    build:
+      context: docker/grafana/
+    container_name: monitoring_grafana
+    restart: unless-stopped
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+      - ./docker/grafana/config/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yml
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-}
+      - GF_SERVER_HTTP_PORT=2525
+    ports:
+      - "2525:2525"
+
+  # The 'setup' service runs a one-off script which initializes the
+  # 'logstash_internal' and 'kibana_system' users inside Elasticsearch with the
+  # values of the passwords defined in the '.env' file.
+  #
+  # This task is only performed during the *initial* startup of the stack. On all
+  # subsequent runs, the service simply returns immediately, without performing
+  # any modification to existing users.
+  setup:
+    build:
+      context: docker/setup/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    init: true
+    volumes:
+      - setup:/state:Z
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    networks:
+      - elk
+      - app
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    build:
+      context: docker/elasticsearch/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
+      - elasticsearch:/usr/share/elasticsearch/data:z
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      # Bootstrap password.
+      # Used to initialize the keystore during the initial startup of
+      # Elasticsearch. Ignored on subsequent runs.
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+    networks:
+      - elk
+      - app
+
+  logstash:
+    build:
+      context: docker/logstash/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./docker/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+      - ./docker/logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+    ports:
+      - "5044:5044"
+      - "50000:50000/tcp"
+      - "50000:50000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+    networks:
+      - elk
+      - app
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: docker/kibana/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./docker/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+    ports:
+      - "5601:5601"
+    environment:
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    networks:
+      - elk
+      - app
+    depends_on:
+      - elasticsearch
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://host.docker.internal:9200 -u elastic:changeme"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  yape-transaction:
+    restart: always
+    build:
+      context: .
+      dockerfile: yape-transaction/Dockerfile
+    environment:
+      # LOGGER PROPERTIES
+      APP_NAME: YAPE-TRANSACTION
+      LOG_FOLDER: LOG
+      DATE_PATTERN: YYYY-MM-DD
+      TIMESTAMP_FORMAT: YYYY-MM-DD hh:mm:ss.SSS A
+      MAX_SIZE: 20m
+      MAX_DAYS: 14d
+      # KAFKA PROPERTIES
+      KAFKA_HOST: kafka
+      KAFKA_PORT: 29092
+      KAFKA_GROUPID: transaction-consumer
+      ANTIFRAUD_KAFKA_HOST: kafka
+      ANTIFRAUD_KAFKA_PORT: 29092
+      ANTIFRAUD_KAFKA_NAME: ANTIFRAUD_SERVICE
+      ANTIFRAUD_KAFKA_CLIENTID: antifraud
+      ANTIFRAUD_KAFKA_GROUPID: antifraud-consumer
+      # DATABASE PROPERTIES
+      DATABASE_HOST: host.docker.internal
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: postgres
+      # CACHE REDIS PROPERTIES
+      REDIS_HOST: host.docker.internal
+      REDIS_PORT: 6379
+      REDIS_TTL: 60000
+      REDIS_MAX: 1000
+      REDIS_NAME: default
+      REDIS_USERNAME: default
+      REDIS_PASSWORD: password123
+      # SEED ONLY USE FOR DEVELOPMENT
+      SEED_INIT: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - elk
+      - app
+
+  yape-anti-fraud:
+    restart: always
+    build:
+      context: .
+      dockerfile: yape-anti-fraud/Dockerfile
+    environment:
+      # LOGGER PROPERTIES
+      APP_NAME: YAPE-ANTI-FRAUD
+      LOG_FOLDER: LOG
+      DATE_PATTERN: YYYY-MM-DD
+      TIMESTAMP_FORMAT: YYYY-MM-DD hh:mm:ss.SSS A
+      MAX_SIZE: 20m
+      MAX_DAYS: 14d
+      # KAFKA PROPERTIES
+      KAFKA_HOST: kafka
+      KAFKA_PORT: 29092
+      KAFKA_GROUPID: antifraud-consumer
+      # KAKFA TRANSACTION SERVICE
+      TRANSACTION_KAFKA_HOST: kafka
+      TRANSACTION_KAFKA_PORT: 29092
+      TRANSACTION_KAFKA_NAME: TRANSACTION_SERVICE
+      TRANSACTION_KAFKA_CLIENTID: transaction
+      TRANSACTION_KAFKA_GROUPID: transaction-consumer
+      # TRANSACTION ANTIFRAUD PROPERTIES
+      TRANSACTION_LIMIT: 1000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    networks:
+      - elk
+      - app
+
+  yape-gateway:
+    restart: always
+    build:
+      context: .
+      dockerfile: yape-gateway/Dockerfile
+    ports:
+      - 3002:3002
+    environment:
+      PORT: 3002
+      # LOGGER PROPERTIES
+      APP_NAME: YAPE-GATEWAY
+      LOG_FOLDER: LOG
+      DATE_PATTERN: YYYY-MM-DD
+      TIMESTAMP_FORMAT: YYYY-MM-DD hh:mm:ss.SSS A
+      MAX_SIZE: 20m
+      MAX_DAYS: 14d
+      # KAFKA PROPERTIES
+      KAFKA_HOST: kafka
+      KAFKA_PORT: 29092
+      KAFKA_NAME: TRANSACTION_SERVICE
+      KAFKA_CLIENTID: transaction
+      KAFKA_GROUPID: transaction-consumer
+      LOGSTASH_ENABLED: true
+      LOGSTASH_PORT: 50000
+      LOGSTASH_NODE_NAME: YAPE-GATEWAY_LOG
+      LOGSTASH_HOST: host.docker.internal
+    depends_on:
+      kibana:
+        condition: service_healthy
+    networks:
+      - elk
+      - app
+
+networks:
+  elk:
+    driver: bridge
+  app:
+    external: true
+
+volumes:
+  setup:
+  elasticsearch:

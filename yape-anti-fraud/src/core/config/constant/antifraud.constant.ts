@@ -1,0 +1,12 @@
+export enum AntifraudPattern {
+  VALIDATE_ANTIFRAUD = 'VALIDATE_ANTIFRAUD',
+}
+
+export enum TransactionPattern {
+  VALIDATE_TRANSACTION = 'VALIDATE_TRANSACTION',
+}
+
+export enum TransactionValidateStatus {
+  APPROVED_TRANSACTION = 'APPROVED_TRANSACTION',
+  REJECTED_TRANSACTION = 'REJECTED_TRANSACTION',
+}

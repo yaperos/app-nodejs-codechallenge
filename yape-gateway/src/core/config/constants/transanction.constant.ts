@@ -1,0 +1,10 @@
+export enum StatusResponse {
+  OK = 'OK',
+  ERROR = 'ERROR',
+}
+
+export enum TransactionPattern {
+  CREATE_TRANSACTION = 'CREATE_TRANSACTION',
+  LIST_TRANSACTION = 'LIST_TRANSACTION',
+  FIND_ONE_TRANSACTION = 'FIND_ONE_TRANSACTION',
+}
