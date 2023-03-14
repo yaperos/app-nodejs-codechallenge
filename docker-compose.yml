@@ -18,8 +18,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     networks:
-      - elk
-      - app
+      - elk554
 
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
@@ -40,8 +39,7 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      - elk
-      - app
+      - elk554
 
   redis:
     image: bitnami/redis:6.2.11
@@ -55,8 +53,7 @@ services:
       timeout: 10s
       retries: 10
     networks:
-      - elk
-      - app
+      - elk554
 
   prometheus:
     build:
@@ -104,8 +101,7 @@ services:
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
     networks:
-      - elk
-      - app
+      - elk554
     depends_on:
       - elasticsearch
 
@@ -130,8 +126,7 @@ services:
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
     networks:
-      - elk
-      - app
+      - elk554
 
   logstash:
     build:
@@ -150,8 +145,7 @@ services:
       LS_JAVA_OPTS: -Xms256m -Xmx256m
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
     networks:
-      - elk
-      - app
+      - elk554
     depends_on:
       - elasticsearch
 
@@ -167,12 +161,15 @@ services:
     environment:
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
     networks:
-      - elk
-      - app
+      - elk554
     depends_on:
       - elasticsearch
     healthcheck:
-      test: ["CMD-SHELL", "curl -s http://host.docker.internal:9200 -u elastic:changeme"]
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s http://host.docker.internal:9200 -u elastic:changeme",
+        ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -223,8 +220,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - elk
-      - app
+      - elk554
 
   yape-anti-fraud:
     restart: always
@@ -257,8 +253,7 @@ services:
       kafka:
         condition: service_healthy
     networks:
-      - elk
-      - app
+      - elk554
 
   yape-gateway:
     restart: always
@@ -290,14 +285,11 @@ services:
       kibana:
         condition: service_healthy
     networks:
-      - elk
-      - app
+      - elk554
 
 networks:
-  elk:
+  elk554:
     driver: bridge
-  app:
-    external: true
 
 volumes:
   setup:
