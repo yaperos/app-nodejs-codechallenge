@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 services:
   postgres:
     image: postgres:14
@@ -8,18 +8,64 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:latest
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+       ZOOKEEPER_CLIENT_PORT: 2181
+       ZOOKEEPER_SERVER_ID: 1
+       ZOOKEEPER_SERVERS: zookeeper:2888:3888
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+    image: confluentinc/cp-kafka:7.3.2
+    depends_on:
+      - zookeeper
     ports:
       - 9092:9092
+    environment:
+       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+       KAFKA_BROKER_ID: 1
+       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      # KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      # KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+       #KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:29092,EXTERNAL://localhost:9092"
+       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+
+       KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+       KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
+       KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+      
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:6.0.1
+    hostname: control-center
+    depends_on:
+      - kafka
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      PORT: 9021
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_DATABASE: test
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+  mongoclient:
+    image: mongoclient/mongoclient
+    container_name: mongoclient
+    depends_on:
+      - mongodb
+    ports:
+      - 3080:3000
+  storage:
+    image: redis
+    container_name: redis-storage
+    ports:
+      - 6379:6379          

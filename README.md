@@ -1,6 +1,6 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
@@ -75,8 +75,19 @@ You can use any approach to store transaction data but you should consider that 
 
 You can use Graphql;
 
+una posible solucion es dividir los servicios de escritura y lectura, cada ves que se crea una transaccion se le agrega(actualiza) a la que tiene redis luego este sera consumido por el bff en caso de no encontrar dato va a pedirlos al servicio de lectura que lo trae de la db y al mismo tiempo lo guarda en redis para evitar solicitudes repetidas, tambien se podria usar sockets para tener los datos en tiempo real
+[example](/kafkaservice.png)
+
 # Send us your challenge
 
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
 If you have any questions, please let us know.
+
+## start Project
+
+- npm install all apps
+- docker-compose up
+- cd api-gateway && npm run start:dev
+- cd trasaction && npm run start:dev
+- cd transaction-query && npm run start:dev
+- cd anti-fraud && npm run start:dev
