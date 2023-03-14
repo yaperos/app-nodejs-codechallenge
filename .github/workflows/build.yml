@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - yape-challenge-jaime-burgos
   pull_request:
     types: [opened, synchronize, reopened]
 
