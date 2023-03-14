@@ -1,0 +1,8 @@
+antifraud/node_modules
+antifraud/dist
+antifraud/package-lock.json
+
+transaction/node_modules
+transaction/dist
+transaction/package-lock.json
+

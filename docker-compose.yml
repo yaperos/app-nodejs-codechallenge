@@ -3,10 +3,10 @@ services:
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -16,10 +16,46 @@ services:
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:${KAFKA_BROKER_PORT},PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+      - ${KAFKA_BROKER_PORT}:${KAFKA_BROKER_PORT}
+  
+  antifraud-service:
+    build:
+      dockerfile: antifraud/Dockerfile
+      context: .
+    depends_on:
+      - kafka
+    ports:
+      - 3001:3000
+    environment:
+      - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
+      - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
+      - KAFKA_NAME_MODULE=${KAFKA_NAME_MODULE}
+    command: npm run start:dev
+
+  transaction-service:
+    build:
+      dockerfile: transaction/Dockerfile
+      context: .
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - 3002:3000
+    environment:
+      - MODE=${MODE}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
+      - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
+      - KAFKA_NAME_MODULE=${KAFKA_NAME_MODULE}
+    command: npm run start:dev

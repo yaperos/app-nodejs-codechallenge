@@ -1,0 +1,5 @@
+export const enum STATUS_TRANSACTION {
+  PENDING,
+  APPROVED,
+  REJECTED,
+};
