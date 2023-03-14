@@ -86,8 +86,13 @@ If you have any questions, please let us know.
 Description of the solution
 
 - An `API Yape Gateway` for connecting clients with create transaction & retrieve transactions functionality via HTTP (REST API).
-- A `YapeTransaction MicroService`, which records transaction information in the POSTGRESQL DB and storage in cache Redis.
-- An `Yape Anti-Fraud MicroService`, which extracts from the queue the transactions that have been registered to be validated and consider them approved or rejected according to the criteria (>1000 = Rejected; <=1000=Approved).
+- A `Yape Transaction MicroService`, which records transaction information in the POSTGRESQL DB and storage in cache Redis.
+- An `Yape Anti-Fraud MicroService`, which extracts from the queue the transactions that have been registered to be validated and consider them approved or rejected according to the criteria
+
+  | Criteria | Status   |
+  | -------- | -------- |
+  | >1000    | Rejected |
+  | <=1000   | Approved |
 
 Note :
 Additionally, it could be clustered to improve performance or use a container orchestrator such as Kubernetes.
@@ -102,14 +107,14 @@ Additionally, it could be clustered to improve performance or use a container or
 
 Aditional features of the solution
 
-- Prometheus and Grafana for monitoring
 - Dockerization of the project
-- Wiston Logger for conservation and rotating logs if required
-- GitHub Action CI for run unit test for each module and use SonarCloud for Clean Code
 - Swagger for API documentation
-- Stress tests with JMeter
+- Wiston Logger for conservation and rotating logs if required
 - Unit Test validate correct operation of the logic
+- GitHub Action CI for run unit test for each module and use SonarCloud for Clean Code
+- Prometheus and Grafana for monitoring
 - ELK Stack for monitoring logs
+- Stress tests with JMeter
 
 # Deployment
 
@@ -129,7 +134,7 @@ Test endpoint in route `http://localhost:3002/transactions` with the method POST
 {
   "accountExternalIdDebit": "e7991681-16bd-4a57-b112-a96796ba4a21",
   "accountExternalIdCredit": "e7991681-16bd-4557-b112-a96796ba4a21",
-  "tranferTypeId": 1, 
+  "tranferTypeId": 1,
   "value": 555
 }
 ```
@@ -222,6 +227,8 @@ After the execution of the workflow, the artifacts-reports-unit-test are generat
 Finally, the sonar is executed, taking the coverage of the generated artifacts and analyzing the code.
 
 ![SonarCloud Actions 1](/docs/sonar/sonarcloud.jpg)
+
+![SonarCloud Actions 1](/docs/sonar/sonarcloud2.jpg)
 
 # Wiston Logger
 
