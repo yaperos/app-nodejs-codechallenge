@@ -91,8 +91,8 @@ Description of the solution
 
   | Criteria | Status   |
   | -------- | -------- |
-  | >1000    | Rejected |
-  | <=1000   | Approved |
+  | > 1000   | Rejected |
+  | <= 1000  | Approved |
 
 Note :
 Additionally, it could be clustered to improve performance or use a container orchestrator such as Kubernetes.
@@ -102,7 +102,6 @@ Additionally, it could be clustered to improve performance or use a container or
 - NodeJS : NestJS , TypeORM , NPM
 - PostgreSQL
 - Kafka
-- PostgreSQL
 - Redis ( for caching transactions )
 
 Aditional features of the solution
