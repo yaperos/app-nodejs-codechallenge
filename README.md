@@ -84,6 +84,9 @@ When you finish your challenge, after forking a repository, you **must** open a 
 If you have any questions, please let us know.
 
 # Solution
+To build the solution i used: NestJS, TypeORM, Kafka and Docker. To handle lots of
+concurrent requests i choosed a load balancer using Nginx in combination with the
+scaling feature of docker compose.
 
 To start the solution first go to the root folder of the project and use the command:
 
