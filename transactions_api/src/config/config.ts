@@ -18,8 +18,7 @@ interface TypeOrmConfig {
 }
 
 interface KafkaConfig {
-    host: string;
-    port: number;
+    broker: string;
     groupId: string;
 }
 
@@ -40,8 +39,7 @@ const getConfig = () => ({
         },
     },
     kafka: {
-        host: process.env.KAFKA_HOST,
-        port: parseInt(process.env.KAFKA_PORT, 10) || 9092,
+        broker: process.env.KAFKA_BROKER,
         groupId: process.env.KAFKA_TRANSACTIONS_GROUP_ID,
     },
 });

@@ -46,6 +46,15 @@ export class TransactionsService {
         })();
     }
 
+    async getTransaction(transactionExternalId: string): Promise<Transaction> {
+        return this.transactionRepository.findOneOrFail({
+            where: {
+                transactionExternalId: transactionExternalId,
+            },
+            relations: ["transactionType", "transactionStatus"],
+        });
+    }
+
     async createTransaction(newTransaction: NewTransactionDto): Promise<Transaction> {
         const transaction = this.transactionRepository.create({
             accountExternalIdDebit: newTransaction.accountExternalIdDebit,
@@ -78,15 +87,6 @@ export class TransactionsService {
         });
         updated_transaction.transactionStatus.name = updated_status.name;
         return updated_transaction;
-    }
-
-    async getTransaction(transactionExternalId: string): Promise<Transaction> {
-        return this.transactionRepository.findOneOrFail({
-            where: {
-                transactionExternalId: transactionExternalId,
-            },
-            relations: ["transactionType", "transactionStatus"],
-        });
     }
 
     async sendTransactionForValidation(transaction: Transaction) {

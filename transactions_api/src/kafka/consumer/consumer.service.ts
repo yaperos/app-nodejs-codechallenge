@@ -17,7 +17,7 @@ export class ConsumerService implements OnApplicationShutdown {
     }
 
     private readonly kafka = new Kafka({
-        brokers: [`${this.kafkaConfig.host}:${this.kafkaConfig.port}`],
+        brokers: [this.kafkaConfig.broker],
     });
 
     private readonly consumers: Consumer[] = [];
