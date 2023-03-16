@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "866e61d1-2366-42c3-9867-0ef8daaaa97d",
+		"name": "Yape Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6712231"
+	},
+	"item": [
+		{
+			"name": "create transactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": 500,\n    \"is_credit\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/v1/transaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"v1",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get transaction by debit",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/v1/transaction/3ccf3ac1-9f40-4a70-aa97-898077d04ab6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"v1",
+						"transaction",
+						"3ccf3ac1-9f40-4a70-aa97-898077d04ab6"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
