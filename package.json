@@ -1,0 +1,11 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/yaperos/app-nodejs-codechallenge.git",
+  "author": "Piero Cusi <piero.cusi@kushkipagos.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.8.4"
+  }
+}

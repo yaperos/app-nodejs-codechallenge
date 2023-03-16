@@ -80,3 +80,62 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Note
+
+Before tests in postman, create the table at the database
+
+```shell
+CREATE TABLE IF NOT EXISTS transactions (
+	"id" SERIAL,
+	"accountExternalIdDebit" VARCHAR(100) NULL,
+	"accountExternalIdCredit" VARCHAR(100) NULL,
+	"tranferTypeId" int,
+	"transactionExternalId" VARCHAR(100) NOT NULL,
+	"createdAt" VARCHAR(100) NOT NULL,
+	"value" int
+);
+```
+
+Once the tests in postman have finished, they can stop the server, and pass the following command to see the coverage of the microservice at the specific folders
+
+```shell
+cd {microservice folder}
+npm run test:coverage
+```
+
+# Base project
+
+```shell
+npm install
+```
+
+# Microservice Transactions
+
+Ensure that these steps is executed correctly, types definitions are created by the third command
+
+This microservice was created with Nodejs v18.
+
+```shell
+cd micro-transactions/
+npm install
+npm run tsc:interface
+npm run dev
+```
+
+# Microservice Antifraud Transaction
+
+Ensure that these steps is executed correctly, types definitions are created by the third command.
+
+This microservice was created with Nodejs v18.
+
+```shell
+cd micro-antifraud-transactions/
+npm install
+npm run tsc:interface
+npm run dev
+```
+
+# Thanks for the challenge
+Sended by Piero Cusi Ruiz - @pcusir
+

@@ -1,0 +1,10 @@
+require:
+  - "ts-node/register/transpile-only"
+  - "source-map-support/register"
+  - "tsconfig-paths/register"
+recursive: true
+color: true
+sort: true
+timeout: 75000
+reporter: "spec"
+exit: true

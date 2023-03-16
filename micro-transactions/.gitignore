@@ -1,0 +1,13 @@
+# node_modules
+node_modules/
+
+# coverage
+coverage/
+.nyc_output/
+
+# types
+types/
+
+# lock yarn or npm
+yarn.lock
+package-lock.json

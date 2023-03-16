@@ -1,0 +1,33 @@
+{
+  "additionalProperties": false,
+  "title": "TransactionResponse",
+  "type": "object",
+  "properties": {
+    "accountExternalIdDebit": {
+      "type": "string"
+    },
+    "accountExternalIdCredit": {
+      "type": "string"
+    },
+    "tranferTypeId": {
+      "type": "number"
+    },
+    "transactionExternalId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "value": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "accountExternalIdDebit",
+    "accountExternalIdCredit",
+    "tranferTypeId",
+    "transactionExternalId",
+    "createdAt",
+    "value"
+  ]
+}

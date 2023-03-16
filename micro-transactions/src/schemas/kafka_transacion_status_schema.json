@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "title": "KafkaTransactionStatusResponse",
+  "type": "object",
+  "properties": {
+    "transactionStatus": {
+      "type": "string"
+    },
+    "transactionExternalId": {
+      "type": "string"
+    }
+  },
+  "required": ["transactionStatus", "transactionExternalId"]
+}
