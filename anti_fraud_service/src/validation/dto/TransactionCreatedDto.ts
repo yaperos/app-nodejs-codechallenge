@@ -1,4 +1,4 @@
-export interface ValidationRequestDto {
+export interface TransactionCreatedDto {
 	transactionExternalId: string;
 	value: number;
 }

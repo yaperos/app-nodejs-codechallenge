@@ -6,8 +6,8 @@ import { TransactionStatuses } from "../helper/TransactionStatuses";
 import { TransactionsService } from "../transactions.service";
 
 @Injectable()
-export class ValidationResultConsumer implements OnModuleInit {
-    private logger = new Logger(ValidationResultConsumer.name);
+export class TransactionRejectedConsumer implements OnModuleInit {
+    private logger = new Logger(TransactionRejectedConsumer.name);
 
     constructor(
         private readonly consumer: ConsumerService,
@@ -16,19 +16,18 @@ export class ValidationResultConsumer implements OnModuleInit {
 
     async onModuleInit() {
         this.consumer.consume(
-            { topics: ["transaction.validation_result"] },
+            "transaction.rejected.consumer",
+            { topics: ["transaction.rejected"] },
             {
                 eachMessage: async ({ topic, partition, message }) => {
                     const result = JSON.parse(message.value.toString()) as ValidationResultDto;
                     this.logger.log(
-                        `Transaction with ID ${result.transactionExternalId} ${
-                            result.valid ? "Approved" : "Rejected"
-                        }`,
+                        `Transaction with ID ${result.transactionExternalId} was rejected`,
                     );
                     this.transactionsService
                         .updateTransactionStatus(
                             result.transactionExternalId,
-                            result.valid ? TransactionStatuses.APPROVED : TransactionStatuses.REJECTED,
+                            TransactionStatuses.REJECTED,
                         )
                         .then((result) => {
                             this.logger.log(

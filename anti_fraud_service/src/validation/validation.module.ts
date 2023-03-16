@@ -3,7 +3,7 @@ import { ValidationService } from "./validation.service";
 import { Config } from "src/config/config.module";
 import { ConfigService } from "@nestjs/config";
 import { KafkaModule } from "src/kafka/kafka.module";
-import { ValidationRequestConsumer } from "./events/ValidationRequestConsumer";
+import { TransactionCreatedConsumer } from "./events/TransactionCreatedConsumer";
 
 @Module({
     imports: [
@@ -13,7 +13,7 @@ import { ValidationRequestConsumer } from "./events/ValidationRequestConsumer";
     providers: [
         ConfigService,
         ValidationService,
-        ValidationRequestConsumer,
+        TransactionCreatedConsumer,
     ],
 })
 export class ValidationModule {}

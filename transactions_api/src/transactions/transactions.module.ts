@@ -6,7 +6,8 @@ import { KafkaModule } from "src/kafka/kafka.module";
 import { Transaction } from "./entities/Transaction.entity";
 import { TransactionStatus } from "./entities/TransactionStatus.entity";
 import { TransactionType } from "./entities/TransactionType.entity";
-import { ValidationResultConsumer } from "./events/ValidationResultConsumer";
+import { TransactionApprovedConsumer } from "./events/TransactionApprovedConsumer";
+import { TransactionRejectedConsumer } from "./events/TransactionRejectedConsumer";
 import { TransactionsController } from "./transactions.controller";
 import { TransactionsService } from "./transactions.service";
 
@@ -22,7 +23,8 @@ import { TransactionsService } from "./transactions.service";
     controllers: [TransactionsController],
     providers: [
         TransactionsService, 
-        ValidationResultConsumer
+        TransactionApprovedConsumer,
+        TransactionRejectedConsumer
     ],
 })
 export class TransactionsModule {}

@@ -97,7 +97,7 @@ export class TransactionsService {
         } as ValidationRequestDto;
 
         this.kafka.produce({
-            topic: "transaction.validation_request",
+            topic: "transaction.created",
             messages: [{ value: JSON.stringify(validation_request) }],
         });
     }

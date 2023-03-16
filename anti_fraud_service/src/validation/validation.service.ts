@@ -1,7 +1,4 @@
-import {
-    Injectable,
-    Logger,
-} from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ProducerService } from "src/kafka/producer/producer.service";
 import { ValidationResultDto } from "./dto/ValidationResultDto";
 import { ValidationParams } from "./helper/ValidationParams";
@@ -19,13 +16,19 @@ export class ValidationService {
         this.logger.log("Validating transaction: " + transactionExternalId);
         const result: ValidationResultDto = {
             transactionExternalId,
-            valid:
-                value <= ValidationParams.MAX_TRANSACTION_VALUE ? true : false,
+            valid: value <= ValidationParams.MAX_TRANSACTION_VALUE ? true : false,
         };
 
-        this.kafka.produce({
-            topic: "transaction.validation_result",
-            messages: [{ value: JSON.stringify(result) }],
-        });
+        if (result.valid) {
+            this.kafka.produce({
+                topic: "transaction.approved",
+                messages: [{ value: JSON.stringify(result) }],
+            });
+        } else {
+            this.kafka.produce({
+                topic: "transaction.rejected",
+                messages: [{ value: JSON.stringify(result) }],
+            });
+        }
     }
 }

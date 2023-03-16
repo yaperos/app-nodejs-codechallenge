@@ -19,7 +19,6 @@ interface TypeOrmConfig {
 
 interface KafkaConfig {
     broker: string;
-    groupId: string;
 }
 
 const getConfig = () => ({
@@ -40,7 +39,6 @@ const getConfig = () => ({
     },
     kafka: {
         broker: process.env.KAFKA_BROKER,
-        groupId: process.env.KAFKA_TRANSACTIONS_GROUP_ID,
     },
 });
 
