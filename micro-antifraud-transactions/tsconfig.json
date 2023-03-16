@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "pretty": true,
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "target": "es2017",
+    "lib": ["es2017", "dom"],
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "types": ["mocha", "node"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noStrictGenericChecks": true,
+    "diagnostics": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": true,
+    "noErrorTruncation": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@controller/*": ["./src/controller/"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@middleware/*": ["./src/middleware/*"],
+      "@models/*": ["./src/models/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@server/*": ["./src/server/*"],
+      "types/*": ["types/*"],
+      "@micro/*": ["./*.ts"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.d.ts", "**/*.spec.ts"],
+  "exclude": ["node_modules/**/*", "*.config.js", "**/*.js"]
+}

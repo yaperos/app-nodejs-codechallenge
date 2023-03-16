@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AntifraudTransactionResponse",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "transactionExternalId": {
+      "type": "string"
+    },
+    "transactionType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "transactionStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "value": {
+      "type": "number"
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "transactionExternalId",
+    "transactionType",
+    "transactionStatus",
+    "value",
+    "createdAt"
+  ]
+}

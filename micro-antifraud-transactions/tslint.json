@@ -1,0 +1,16 @@
+{
+    "extends": ["tslint-config-prettier"],
+    "exclude": ["**/dist/**", "**/node_modules/**"],
+    "rules": {
+      "no-trailing-whitespace": true,
+      "whitespace": [
+        false,
+        "check-branch",
+        "check-decl",
+        "check-operator",
+        "check-separator",
+        "check-type"
+      ]
+    }
+  }
+  
