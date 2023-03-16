@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  create-transaction-service:
+    build: ./CreateTransaction/.
+    container_name: create-transaction-service
+    image: yape/create-transaction-service
+    restart: unless-stopped
+    ports:
+      - 9001:9001
+    volumes:
+      - ./CreateTransaction:/usr/src/app
+      - //usr/src/app/node_modules
+      - //usr/src/app/.git
+    networks:
+      - net-services
+  retrieve-transaction-service:
+    build: ./RetrieveTransaction/.
+    container_name: retrieve-transaction-service
+    image: yape/retrieve-transaction-service
+    restart: unless-stopped
+    ports:
+      - 9002:9002
+    volumes:
+      - ./RetrieveTransaction:/usr/src/app
+      - //usr/src/app/node_modules
+      - //usr/src/app/.git
+    networks:
+      - net-services
+
+# Docker Networks
+networks:
+  net-services:
+    driver: bridge

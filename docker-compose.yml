@@ -1,25 +1,61 @@
 version: "3.7"
 services:
+  redis:
+    image: bitnami/redis:latest
+    platform: linux/arm64
+    container_name: redis
+    restart: unless-stopped
+    ports:
+     - "6379:6379"
+    command: redis-server --requirepass mysecretpassword
+    environment:
+      REDIS_PASSWORD: mysecretpassword
+    volumes:
+      - ./data/redis:/bitnami/redis/data
+    networks:
+      - net-services
   postgres:
     image: postgres:14
+    platform: linux/arm64
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    networks:
+      - net-services
+  zookeeper-1:
+    image: confluentinc/cp-zookeeper:latest
+    platform: linux/arm64/v8
+    container_name: zookeeper-1
+    restart: always
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-  kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - 9092:9092
+      - 22181:2181
+    networks:
+      - net-services
+  kafka-1:
+    image: confluentinc/cp-kafka:latest
+    platform: linux/arm64/v8
+    container_name: kafka-1
+    restart: always
+    depends_on:
+      - zookeeper-1
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:2181
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_INTERNAL://kafka-1:9092,LISTENER_EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_INTERNAL:PLAINTEXT,LISTENER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - net-services
+
+# Docker Networks
+networks:
+  net-services:
+    driver: bridge
