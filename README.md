@@ -83,6 +83,8 @@ If you have any questions, please let us know.
 
 # Note
 
+Create .env file based with the .env.testing file in the two microservices
+
 Before tests in postman, create the table at the database
 
 ```shell
