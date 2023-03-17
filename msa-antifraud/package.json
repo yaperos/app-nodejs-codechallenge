@@ -22,8 +22,9 @@
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/microservices": "^9.3.10",
     "@nestjs/platform-express": "^9.0.0",
-    "kafkajs": "^1.15.0",
+    "kafkajs": "^1.16.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
