@@ -1,3 +1,4 @@
+const uuid = require(`uuid`)
 const kafka = require(`@api/helpers/Kafka`)
 const responseHelper = require(`@api/helpers/Response`)
 
@@ -12,19 +13,32 @@ const topicInputRetrieveTransaction = services.kafka.topicInputRetrieveTransacti
 
 class ExpressController {
 
-    receive (req, res) {
+    receive(req, res) {
 
-        logger.info({ functionExec: `receive`, message: `Message received from internet` })
-        const dataToKafka = {
-            "accountExternalIdDebit": "Guid",
-            "accountExternalIdCredit": "Guid",
-            "tranferTypeId": 1,
-            "value": 120
-          }
+        logger.info({ functionExec: `receive`, message: `Transaction received from internet` })
 
-        kafka.producer(dataToKafka,topicInputRetrieveTransaction)
+        const quantityOfTransactionsToCreate = req.params.transactions
 
-        const data = 'Message received from internet'
+        const createTransaction = () => {
+
+            const guid = uuid.v4()
+            const randomAmount = Math.floor(Math.random() * 1000) + 1
+
+            const transaction = {
+                "accountExternalIdDebit": guid,
+                "accountExternalIdCredit": guid,
+                "tranferTypeId": 1,
+                "value": randomAmount
+            }
+
+            return transaction
+        }
+
+        for (let i = 0; i < quantityOfTransactionsToCreate; i++) {
+            kafka.producer(createTransaction(), topicInputRetrieveTransaction)
+        }
+
+        const data = `${quantityOfTransactionsToCreate} transactions have been created for processing`
         const response = responseHelper.templateSuccess(data)
 
         res.send(response)

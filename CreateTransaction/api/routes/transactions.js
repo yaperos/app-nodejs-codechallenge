@@ -13,5 +13,5 @@ const validate = require(`@api/middlewares/Validate`)
 module.exports = ({ app }) => {
   app.use('/transactions', route)
   // Rutas demo
-  route.get(api.routeService, createTransactionsRoute.receive)
+  route.get('/create/:transactions', createTransactionsRoute.receive)
 }
