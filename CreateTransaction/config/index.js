@@ -36,10 +36,12 @@ module.exports = {
    * Environment External Services
    */
   services: {
-    redisInterface: {
-      host: process.env.REDIS_INTERFACE_HOST,
-      routeCredentials: process.env.REDIS_INTERFACE_ROUTE_CREDENTIALS,
-      routeProjects: process.env.REDIS_INTERFACE_ROUTE_PROJECTS
+    redis: {
+      type: process.env.REDIS_CONNECTION,
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      username: process.env.REDIS_USERNAME,
+      password: process.env.REDIS_PASSWORD
     },
     kafka: {
       brokers: process.env.KAFKA_BROKERS.split(`,`),

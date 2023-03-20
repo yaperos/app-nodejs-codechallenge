@@ -1,6 +1,8 @@
-const uuid = require(`uuid`)
 const kafka = require(`@api/helpers/Kafka`)
 const responseHelper = require(`@api/helpers/Response`)
+const { createTransaction } = require(`@api/helpers/Transactions`)
+const TransactionsRedisController = require(`@api/controllers/Redis/TransactionsModel`)
+const transactionRedis = new TransactionsRedisController()
 
 // Init logger
 const path = require(`path`)
@@ -13,29 +15,18 @@ const topicInputRetrieveTransaction = services.kafka.topicInputRetrieveTransacti
 
 class ExpressController {
 
-    receive(req, res) {
+    async receive(req, res) {
 
         logger.info({ functionExec: `receive`, message: `Transaction received from internet` })
 
         const quantityOfTransactionsToCreate = req.params.transactions
 
-        const createTransaction = () => {
-
-            const guid = uuid.v4()
-            const randomAmount = Math.floor(Math.random() * 1000) + 1
-
-            const transaction = {
-                "accountExternalIdDebit": guid,
-                "accountExternalIdCredit": guid,
-                "tranferTypeId": 1,
-                "value": randomAmount
-            }
-
-            return transaction
-        }
-
         for (let i = 0; i < quantityOfTransactionsToCreate; i++) {
-            kafka.producer(createTransaction(), topicInputRetrieveTransaction)
+            console.info(` `)
+            const transactionData = createTransaction()
+            const transactionId = await transactionRedis.store(transactionData)
+            
+            kafka.producer(transactionId, topicInputRetrieveTransaction)
         }
 
         const data = `${quantityOfTransactionsToCreate} transactions have been created for processing`

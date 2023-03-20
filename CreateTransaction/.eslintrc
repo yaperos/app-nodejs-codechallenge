@@ -1,0 +1,155 @@
+{
+
+    "env": {
+        "node": true,
+        "jest/globals": true
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 9,
+        "ecmaFeatures": {
+            "arrowFunctions": true,
+            "defaultParams": true,
+            "impliedStrict": true,
+            "modules": true
+        }
+    },
+    "globals": {
+      "use": true,
+      "Promise": true
+    },
+
+    "rules": {
+
+        "no-alert": "off",
+        "no-var": "error",
+        "no-eval": "error",
+        "eol-last": "error",
+        "no-caller": "error",
+        "comma-style": "error",
+        "unicode-bom": "error",
+        "prefer-const": "error",
+        "global-require": "off",
+        "dot-notation": "error",
+        "require-await": "error",
+        "comma-spacing": "error",
+        "block-spacing": "error",
+        "no-extra-bind": "error",
+        "no-unused-vars": "error",
+        "space-in-parens": "error",
+        "no-implied-eval": "error",
+        "no-useless-call": "error",
+        "no-useless-return": "error",
+        "func-call-spacing": "error",
+        "no-duplicate-imports": "error",
+        "array-bracket-spacing": "error",
+        "computed-property-spacing": "error",
+        "no-whitespace-before-property": "error",
+
+        "no-mixed-spaces-and-tabs": ["error"],
+        "semi": ["error", "never"],
+        "eqeqeq": ["error", "smart"],
+        "quotes": ["error", "backtick"],
+        "brace-style": ["error", "1tbs"],
+        "comma-dangle": ["error", "never"],
+        // "linebreak-style": ["error","unix"],
+        "arrow-parens": ["error", "as-needed"],
+        "operator-linebreak": ["error", "after"],
+
+
+        "space-before-function-paren": ["error", {
+            "anonymous": "never", "named": "always"
+        }],
+        "object-curly-newline": ["error", {
+            "multiline": true
+        }],
+        "no-param-reassign": ["error", {
+            "props": false
+        }],
+        "no-console": ["error", {
+            "allow": ["warn", "error", "info"]
+        }],
+        "arrow-spacing": ["error",{
+            "after": true,
+            "before": true
+        }],
+        "no-trailing-spaces": ["error",{
+            "ignoreComments": false,
+            "skipBlankLines": true
+        }],
+        "space-before-blocks": ["error","always"],
+        "indent": ["error", 2,
+            {
+                "ignoreComments": false,
+                "outerIIFEBody": 0,
+                "SwitchCase": 1,
+                "MemberExpression": 1,
+                "ObjectExpression": 1
+            }
+        ],
+        "key-spacing": ["error",{
+            "multiLine": {
+                "afterColon": true,
+                "beforeColon": false,
+                "mode": "strict"
+            },
+            "singleLine": {
+                "afterColon": true,
+                "beforeColon": false
+            }
+        }],
+        "no-irregular-whitespace": ["error",{
+            "skipComments": true,
+            "skipRegExps": true,
+            "skipStrings": true,
+            "skipTemplates": true
+        }],
+        "no-multi-spaces": ["error",{
+            "ignoreEOLComments": false,
+            "exceptions": {
+                "Property": true,
+                "BinaryExpression": false,
+                "ImportDeclaration": false,
+                "VariableDeclarator": false
+            }
+        }],
+        "keyword-spacing": ["error",{
+            "overrides": {
+                "case": {
+                    "after": true,
+                    "before": false
+                },
+                "catch": {
+                    "after": true,
+                    "before": true
+                },
+                "else": {
+                    "after": true,
+                    "before": true
+                },
+                "if": {
+                    "after": true,
+                    "before": true
+                },
+                "for": {
+                    "after": true,
+                    "before": true
+                },
+                "switch": {
+                    "after": true,
+                    "before": true
+                },
+                "try": {
+                    "after": true,
+                    "before": true
+                },
+                "while": {
+                    "after": true,
+                    "before": true
+                }
+            }
+        }]
+    }
+}
