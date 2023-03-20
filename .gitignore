@@ -1,3 +1,13 @@
+#Anti fraud
+anti-fraud/dist
+anti-fraud/node_modules
+anti-fraud/.env
+
+#Transaction
+transaction/dist
+transaction/node_modules
+transaction/.env
+
 # Logs
 logs
 *.log
