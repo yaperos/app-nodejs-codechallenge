@@ -9,16 +9,17 @@ const logger = require(`@loaders/logger`)(scriptName)
 
 module.exports = () => {
 
-    kafka.consumer(async ({ data }) => {
+    kafka.consumer(async (data) => {
       logger.info(
         `✌️ Consumiendo el tópico de entrada ${kafkaEnv.topicInputCreateTransaction}`
       )
   
       // Obteniendo parámetros
       try {
-        const { accountExternalIdDebit, accountExternalIdCredit, tranferTypeId, value } = data
+        logger.info(data)
         
       } catch (error) {
+        console.info(' ')
         logger.error(error)
         // TODO: Realizar algo cuando haya un error
       }

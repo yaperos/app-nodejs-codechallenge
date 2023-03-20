@@ -1,4 +1,5 @@
 // Loaders
+const redisLoader = require(`./redis`)
 const kafkaLoader = require(`./kafka`)
 const expressLoader = require('./express')
 const loadEventsKafka = require(`@/api/controllers/Kafka`)
@@ -9,6 +10,10 @@ const scriptName = path.basename(__filename)
 const logger = require('./logger')(scriptName)
 
 module.exports = async ({ expressApp }) => {
+
+  // Load redis settings
+  redisLoader.startConnection()
+  logger.info(`✌️ Redis loaded`)
 
   // Load kafka settings
   kafkaLoader.startConnection()

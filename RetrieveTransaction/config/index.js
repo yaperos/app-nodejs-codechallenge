@@ -36,10 +36,18 @@ module.exports = {
    * Environment External Services
    */
   services: {
+    redis: {
+      type: process.env.REDIS_CONNECTION,
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      username: process.env.REDIS_USERNAME,
+      password: process.env.REDIS_PASSWORD
+    },
     kafka: {
       brokers: process.env.KAFKA_BROKERS.split(`,`),
       username: process.env.KAFKA_USERNAME,
       password: process.env.KAFKA_PASSWORD,
+      topicInputCreateTransaction: process.env.TOPIC_INPUT_CREATE_TRANSACTION,
       topicInputRetrieveTransaction: process.env.TOPIC_INPUT_RETRIEVE_TRANSACTION
     }
 
