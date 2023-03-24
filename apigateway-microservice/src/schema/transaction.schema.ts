@@ -4,7 +4,7 @@ export class Transaction {
    @Prop()
    externalId: string;
    @Prop()
-   tranferTypeId: number;
+   transferTypeId: number;
    @Prop()
    accountExternalIdDebit: string;
    @Prop()

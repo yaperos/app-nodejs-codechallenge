@@ -4,7 +4,7 @@ export interface ITransaction extends Document{
     
     readonly externalId: string;
   
-    readonly tranferTypeId: number;
+    readonly transferTypeId: number;
     
     readonly accountExternalIdDebit: number;
     
