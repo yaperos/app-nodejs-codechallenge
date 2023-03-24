@@ -29,7 +29,7 @@ export class AppService {
       new TransactionCreatedEvent(newTransaction._id, newTransaction.value),
     );
 
-    const data =  new CreateTransactionResponse(newTransaction._id,{name:newTransaction.typeId},{name:newTransaction.status},newTransaction.value, newTransaction.createdAt);
+    const data =  new CreateTransactionResponse(newTransaction._id,{name:newTransaction.transferTypeId},{name:newTransaction.status},newTransaction.value, newTransaction.createdAt);
     return new GeneralResponse(MessagesResponses.TRANSACTION_CREATED_SUCCESS,CodeResponses.OK,data);
   }
 }
