@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ITransaction } from './interface/transaction.interface';
 import { CreateTransactionRequest } from './dto/create-transaction.dto';
 import { Model } from "mongoose";
+import {  Status } from './util/const.util';
 
 @Injectable()
 export class AppRepository {
@@ -11,7 +12,7 @@ export class AppRepository {
 
     async createTransaction(createTransactionDto: CreateTransactionRequest): Promise<ITransaction> {
        
-        const newTransaction = await new this.transactionModel({...createTransactionDto,createdAt:new Date()});
+        const newTransaction = await new this.transactionModel({...createTransactionDto,createdAt:new Date(),status:Status.PENDING});
         return newTransaction.save();
     }
 

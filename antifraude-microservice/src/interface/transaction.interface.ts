@@ -12,7 +12,7 @@ export interface ITransaction extends Document{
     
     readonly value: number;
     
-    readonly status: number;
+    readonly status: string;
     
     readonly createdAt: number;
 }

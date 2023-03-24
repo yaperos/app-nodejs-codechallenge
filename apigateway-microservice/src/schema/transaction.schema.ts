@@ -12,7 +12,7 @@ export class Transaction {
    @Prop()
    value: number;
    @Prop()
-   status: number;
+   status: string;
    @Prop()
    createdAt: Date;
 }
