@@ -1,3 +1,4 @@
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum TransactionStatus {
@@ -7,19 +8,25 @@ export enum TransactionStatus {
 }
 
 @Entity()
+@ObjectType()
 export class Transaction {
   @PrimaryGeneratedColumn()
+  @Field((type) => Int)
   id: number;
 
   @Column()
+  @Field()
   accountExternalIdDebit: string;
 
   @Column()
+  @Field()
   accountExternalIdCredit: string;
 
+  @Field((type) => Int)
   @Column()
   tranferTypeId: number;
 
+  @Field((type) => Int)
   @Column()
   value: number;
 
@@ -28,11 +35,13 @@ export class Transaction {
     enum: TransactionStatus,
     default: TransactionStatus.PENDING,
   })
+  @Field((type) => Int)
   transactionStatus: number;
 
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
+  @Field()
   createdAt: string;
 }

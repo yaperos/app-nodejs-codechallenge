@@ -6,6 +6,10 @@ import configuration from './config/configuration';
 import { TransactionController } from './controllers/transaction.controller';
 import { Transaction } from './entity/transaction.entity';
 import { TransactionService } from './services/transaction.service';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+import { TransactionResolver } from './resolvers/transaction.resolver';
 
 @Module({
   imports: [
@@ -13,6 +17,11 @@ import { TransactionService } from './services/transaction.service';
     ConfigModule.forRoot({
       //envFilePath: '.env',
       load: [configuration],
+    }),
+
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      driver: ApolloDriver,
     }),
 
     ClientsModule.register([
@@ -49,7 +58,7 @@ import { TransactionService } from './services/transaction.service';
     }),
   ],
   controllers: [TransactionController],
-  providers: [TransactionService],
+  providers: [TransactionService, TransactionResolver],
 })
 export class AppModule {
   constructor() {

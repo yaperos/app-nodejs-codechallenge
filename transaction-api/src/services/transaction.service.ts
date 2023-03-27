@@ -34,6 +34,7 @@ export class TransactionService {
       .save(transaction)
       .then((transactionCreated) => {
         Logger.debug(`Transaction created: ${transactionCreated.id}`);
+
         this.transactionClient.emit(
           'transaction.created',
           JSON.stringify({
@@ -41,6 +42,7 @@ export class TransactionService {
             value: transactionCreated.value,
           }),
         );
+
         return transactionCreated;
       });
   }
