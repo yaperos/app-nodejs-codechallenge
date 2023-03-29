@@ -1,19 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import configuration from './config/configuration';
-import { TransactionController } from './controllers/transaction.controller';
-import { Transaction } from './entity/transaction.entity';
-import { TransactionService } from './services/transaction.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { TransactionResolver } from './resolvers/transaction.resolver';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Transaction]),
     ConfigModule.forRoot({
       //envFilePath: '.env',
       load: [configuration],
@@ -23,22 +18,6 @@ import { TransactionResolver } from './resolvers/transaction.resolver';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       driver: ApolloDriver,
     }),
-
-    ClientsModule.register([
-      {
-        name: 'ANTI_FRAUD_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'anti-fraud',
-            brokers: ['localhost:9092'],
-          },
-          consumer: {
-            groupId: 'anti-fraud-consumer',
-          },
-        },
-      },
-    ]),
 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -56,9 +35,11 @@ import { TransactionResolver } from './resolvers/transaction.resolver';
         autoLoadEntities: true,
       }),
     }),
+
+    TransactionModule,
   ],
-  controllers: [TransactionController],
-  providers: [TransactionService, TransactionResolver],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {
   constructor() {

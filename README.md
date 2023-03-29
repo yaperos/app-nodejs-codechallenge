@@ -32,51 +32,95 @@ Every transaction with a value greater than 1000 should be rejected.
 
 # Tech Stack
 
+For develop this challenge was used the following tecnologies:
 <ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
+  <li> NestJS with TypeOrm. </li>
+  <li>Postgres</li>
+  <li>Kafka</li>   
+  <li>GraphQl</li> 
 </ol>
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+# How to run
+Setup dev local enviroment using docker compose executing the comand
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```
+docker compose up -d
 ```
 
-2. Resource to retrieve a transaction
+Install dependencies for two projects `transaction-api` and `anti-fraud-microservice` and ejecute with the following commands:
+```
+# For transaction-api
+cd transaction-api
+npm install
+npm run start:dev
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+# For anti-fraud-microservice
+cd anti-fraud-microservice
+npm install
+npm run start:dev
 ```
 
-## Optional
+# Resources
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+You can consume the transaction-api as a REST API or Graphql API.
 
-You can use Graphql;
+1. In REST API is available the following recources:
 
-# Send us your challenge
+  - `GET` http:localhost:3001/api/transaction returnthe list of transactions.
+  - `POST` http:localhost:3001/api/transaction create a new transaction and return the created transaction , the JSON that should be send must have the following structure:
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+    ```json
+    {
+      "accountExternalIdDebit": "Guid",
+      "accountExternalIdCredit": "Guid",
+      "tranferTypeId": 1,
+      "value": 120
+    }
+    ```
+  - `GET` http:localhost:3001/api/transaction/:id returns data of the transaction that has an id equal to `:id` param. The response JSON is:
+    ```json
+    {
+      "transactionExternalId": "1",
+      "transactionType": {
+        "name": ""
+      },
+      "transactionStatus": {
+        "name": "APPROVED"
+      },
+      "value": 120,
+      "createdAt": "Date"
+    }
+    ```
 
-If you have any questions, please let us know.
+
+2. For Graphql API you can access to playground by `http:localhost:3001/graphql`
+
+    The querys and mutations availables are in the next squema:
+
+    ```gql
+    type Transaction {
+      id: Int!
+      accountExternalIdDebit: String!
+      accountExternalIdCredit: String!
+      tranferTypeId: Int!
+      value: Int!
+      transactionStatus: Int!
+      createdAt: String!
+    }
+
+    type Query {
+      getTransaction(id: Int!): Transaction!
+      transactions: [Transaction!]!
+    }
+
+    type Mutation {
+      createTransaction(data: CreateTransactionDto!): Transaction!
+    }
+
+    input CreateTransactionDto {
+      accountExternalIdDebit: String!
+      accountExternalIdCredit: String!
+      tranferTypeId: Int!
+      value: Int!
+    }
+    ```

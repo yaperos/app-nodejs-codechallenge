@@ -1,4 +1,4 @@
-export class TransactionResponseDto {
+export class ResponseTransactionDto {
   transactionExternalId: number;
   transactionType: { name: string };
   transactionStatus: { name: string };
