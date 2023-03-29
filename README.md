@@ -41,14 +41,15 @@ For develop this challenge was used the following tecnologies:
 </ol>
 
 # How to run
-1. To run the whole project using docker run the following command
+1. Rename file `.env.example` to `.env`, its important for load environments variables.
+2. To run the whole project using docker run the following command:
 
     ```
     docker compose up -d
     ```
     Once finished up the containers you can enter to <a href="http://localhost:3001/api/transaction" target="_blank">http://localhost:3001/api/transaction</a> or you can enter the Graphql playground <a href="http://localhost:3001/graphql" target="_blank">http://localhost:3001/graphql</a>
 
-2. If you want to run locally run the following commands (the kafka, postgres and zookeeper services must also be running either by docker or locally)
+3. If you want to run locally run the following commands (the kafka, postgres and zookeeper services must also be running either by docker or locally)
     ```
     # For transaction-api
     cd transaction-api
