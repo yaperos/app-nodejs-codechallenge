@@ -12,12 +12,14 @@ async function bootstrap() {
     cors: true,
   });
 
+  const configService = app.get<ConfigService>(ConfigService);
+  const port = configService.get('portApi');
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {
       client: {
         clientId: 'transaction',
-        brokers: ['localhost:9092'],
+        brokers: [`${configService.get('kafka.host')}:9092`],
       },
       consumer: {
         groupId: 'transaction-consumer',
@@ -25,16 +27,15 @@ async function bootstrap() {
     },
   });
 
-  const configService = app.get<ConfigService>(ConfigService);
-  const port = configService.get('port');
-
   app.use(compression());
   // app.use(morgan());
 
   await app.startAllMicroservices();
   await app.listen(port);
 
-  Logger.log(`Server running in http://localhost:${configService.get('port')}`);
+  Logger.log(
+    `Server running in http://localhost:${configService.get('portApi')}`,
+  );
 }
 
 bootstrap();

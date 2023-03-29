@@ -41,24 +41,25 @@ For develop this challenge was used the following tecnologies:
 </ol>
 
 # How to run
-Setup dev local enviroment using docker compose executing the comand
+1. To run the whole project using docker run the following command
 
-```
-docker compose up -d
-```
+    ```
+    docker compose up -d
+    ```
+    Once finished up the containers you can enter to <a href="http://localhost:3001/api/transaction" target="_blank">http://localhost:3001/api/transaction</a> or you can enter the Graphql playground <a href="http://localhost:3001/graphql" target="_blank">http://localhost:3001/graphql</a>
 
-Install dependencies for two projects `transaction-api` and `anti-fraud-microservice` and ejecute with the following commands:
-```
-# For transaction-api
-cd transaction-api
-npm install
-npm run start:dev
+2. If you want to run locally run the following commands (the kafka, postgres and zookeeper services must also be running either by docker or locally)
+    ```
+    # For transaction-api
+    cd transaction-api
+    npm install
+    npm run start:dev
 
-# For anti-fraud-microservice
-cd anti-fraud-microservice
-npm install
-npm run start:dev
-```
+    # For anti-fraud-microservice
+    cd anti-fraud-microservice
+    npm install
+    npm run start:dev
+    ```
 
 # Resources
 
@@ -66,8 +67,8 @@ You can consume the transaction-api as a REST API or Graphql API.
 
 1. In REST API is available the following recources:
 
-  - `GET` http:localhost:3001/api/transaction returnthe list of transactions.
-  - `POST` http:localhost:3001/api/transaction create a new transaction and return the created transaction , the JSON that should be send must have the following structure:
+  - `GET` <a href="http://localhost:3001/api/transaction" target="_blank">http://localhost:3001/api/transaction</a> returnthe list of transactions.
+  - `POST` <a target="_blank">http://localhost:3001/api/transaction</a> create a new transaction and return the created transaction , the JSON that should be send must have the following structure:
 
     ```json
     {
@@ -77,7 +78,7 @@ You can consume the transaction-api as a REST API or Graphql API.
       "value": 120
     }
     ```
-  - `GET` http:localhost:3001/api/transaction/:id returns data of the transaction that has an id equal to `:id` param. The response JSON is:
+  - `GET` <a target="_blank">http://localhost:3001/api/transaction/:id</a> returns data of the transaction that has an id equal to `:id` param. The response JSON is:
     ```json
     {
       "transactionExternalId": "1",

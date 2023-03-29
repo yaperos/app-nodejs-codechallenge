@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionController } from './controllers/transaction.controller';
@@ -10,19 +11,23 @@ import { TransactionService } from './services/transaction.service';
   imports: [
     TypeOrmModule.forFeature([Transaction]),
 
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'ANTI_FRAUD_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'anti-fraud',
-            brokers: ['localhost:9092'],
+        imports: [ConfigModule],
+        useFactory: async (configService: ConfigService) => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              clientId: 'anti-fraud',
+              brokers: [`${configService.get('kafka.host')}:9092`],
+            },
+            consumer: {
+              groupId: 'anti-fraud-consumer',
+            },
           },
-          consumer: {
-            groupId: 'anti-fraud-consumer',
-          },
-        },
+        }),
+        inject: [ConfigService],
       },
     ]),
   ],

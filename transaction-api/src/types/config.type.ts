@@ -1,7 +1,10 @@
 export interface ConfigType {
-  port: number;
+  portApi: number;
   environment: string;
   database: DataBaseConfig;
+  kafka: {
+    host: string;
+  };
 }
 
 interface DataBaseConfig {
