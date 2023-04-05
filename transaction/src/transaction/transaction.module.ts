@@ -12,12 +12,12 @@ import { TransactionService } from './transaction.service';
     ClientsModule.registerAsync([
       {
         imports: [ConfigModule],
-        name: 'KAFKA',
+        name: 'ANTI_FRAUD_SERVICE',
         useFactory: (configService: ConfigService) => ({
           transport: Transport.KAFKA,
           options: {
             client: {
-              clientId: configService.get<string>('KAFKA_CLIENT_ID'),
+              clientId: configService.get<string>('ANTI_FRAUD_CLIENT_ID'),
               brokers: [configService.get<string>('KAFKA_BROKER')],
             },
             producer: {
@@ -25,7 +25,7 @@ import { TransactionService } from './transaction.service';
               allowAutoTopicCreation: true,
             },
             consumer: {
-              groupId: configService.get<string>('KAFKA_GROUP_ID'),
+              groupId: configService.get<string>('ANTI_FRAUD_GROUP_ID'),
               allowAutoTopicCreation: true,
             },
           },

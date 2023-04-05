@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -13,7 +13,7 @@ export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
-    @Inject('KAFKA') private readonly kafkaClient: ClientProxy,
+    @Inject('ANTI_FRAUD_SERVICE') private readonly antiFraudClient: ClientKafka,
   ) {}
 
   async listTransactions(): Promise<ITransaction[]> {
@@ -44,11 +44,27 @@ export class TransactionService {
 
     await this.transactionRepository.save(transaction);
 
-    console.log('Enviando mensaje al servidor Kafka...');
-    this.kafkaClient.emit('transaction_created', { a: 1, b: 2 }).subscribe({
-      next: (data) => console.log('Mensaje enviado al servidor Kafka:', data),
-      error: (err) => console.log('Error al enviar al servidor Kafka:', err),
-      complete: () => console.log('Conexión al servidor Kafka cerrada.'),
-    });
+    this.antiFraudClient
+      .send('validate_transaction', JSON.stringify(transaction))
+      .subscribe({
+        next: (transactionStatus: number) => {
+          this.updateTransactionStatus(transaction.id, transactionStatus);
+        },
+        error: (err) => Logger.error(`An error has ocurred: ${err}`),
+      });
+  }
+
+  async updateTransactionStatus(
+    transactionId: string,
+    transactionStatus: number,
+  ): Promise<void> {
+    await this.transactionRepository.update(
+      {
+        id: transactionId,
+      },
+      {
+        status: transactionStatus,
+      },
+    );
   }
 }
