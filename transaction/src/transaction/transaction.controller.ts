@@ -6,6 +6,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { EventPattern } from '@nestjs/microservices';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionService } from './transaction.service';
 
@@ -22,5 +23,10 @@ export class TransactionController {
   @UsePipes(ValidationPipe)
   async createTransation(@Body() body: CreateTransactionDto) {
     return await this.transactionService.createTransaction(body);
+  }
+
+  @EventPattern('transaction_created')
+  async handleTransactionCreated(data: any) {
+    console.log('Evento transaction_created recibido:', data.value);
   }
 }
