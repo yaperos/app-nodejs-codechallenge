@@ -1,4 +1,5 @@
 # Yape Code Challenge :rocket:
+## Hint (Read me 2 for more information of the challenge solution)
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
