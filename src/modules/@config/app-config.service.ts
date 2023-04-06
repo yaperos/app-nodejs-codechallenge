@@ -15,7 +15,6 @@ export class AppConfigService {
 			CONNECTION_STRING: this.getString('CONNECTION_STRING'),
 			KAFKA_CLIENT_ID: this.getString('KAFKA_CLIENT_ID'),
 			KAFKA_HOST: this.getString('KAFKA_HOST'),
-			KAFKA_GROUP_ID: this.getString('KAFKA_GROUP_ID')
 		};
 	}
 }

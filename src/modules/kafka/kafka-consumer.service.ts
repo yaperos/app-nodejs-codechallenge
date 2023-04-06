@@ -1,5 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Consumer, Kafka } from 'kafkajs';
+import { AppConfigService } from '../@config/app-config.service';
 
 type MessageHandler = (message: any) => void;
 
@@ -8,10 +9,10 @@ export class KafkaConsumerService {
     private kafka: Kafka;
     private consumer: Consumer;
 
-    constructor() {
+    constructor(private readonly appConfigService: AppConfigService) {
         this.kafka = new Kafka({
-            clientId: 'yape-kafka',
-            brokers: ['localhost:9092'],
+            clientId: this.appConfigService.getConfig.KAFKA_CLIENT_ID,
+            brokers: [this.appConfigService.getConfig.KAFKA_HOST],
         });
     }
 

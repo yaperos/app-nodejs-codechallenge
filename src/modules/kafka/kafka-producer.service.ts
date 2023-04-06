@@ -1,15 +1,16 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Kafka, Producer } from 'kafkajs';
+import { AppConfigService } from '../@config/app-config.service';
 
 @Injectable()
 export class KafkaProducerService {
     private kafka: Kafka;
     private producer: Producer;
 
-    constructor() {
+    constructor(private readonly appConfigService: AppConfigService) {
         this.kafka = new Kafka({
-            clientId: 'yape-kafka',
-            brokers: ['localhost:9092'],
+            clientId: this.appConfigService.getConfig.KAFKA_CLIENT_ID,
+            brokers: [this.appConfigService.getConfig.KAFKA_HOST],
         });
     }
 

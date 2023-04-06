@@ -19,9 +19,8 @@ $ npm run start:dev
 NODE_ENV = development
 PORT = 3002
 CONNECTION_STRING = mongodb+srv://hpalacios:gI4WDVOHn4JLH0oa@development.6jvqw.mongodb.net/yape-test?retryWrites=true&w=majority
-KAFKA_CLIENT_ID = yape-kafka-microservice
+KAFKA_CLIENT_ID = yape-kafka
 KAFKA_HOST = localhost:9092
-KAFKA_GROUP_ID = yape-kafka-group
 ```
 
 ## CURL EXAMPLE REQUESTS
