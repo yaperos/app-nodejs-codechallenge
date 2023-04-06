@@ -92,3 +92,7 @@ Externamente se está trabajando con MongoDB atlas, en un cluster personal, se p
 ```bash
 El sistema tiene logs para monitorear los procesos, y se hizo la conexion a kafka interna (inicialmente se pensó en un microservicio), el sistema de "anti-fraude", simplemente retorna un valor random, un estado random, puede ser complete|failed, y se ejecuta la transaccion.
 ```
+## Datos adicionales
+```bash
+El sistema ideal debe conectarse con un microservicio, Kafka, Redis pubsub, Rabbit, de forma isolada, el ejemplo se enfoca en un mismo modulo escuchando los eventos de Kafka.
+```
