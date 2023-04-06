@@ -14,6 +14,7 @@ export class TransactionController {
   @EventPattern('transaction_moderated')
   public async transactionModerated(data: TransactionModeratedEvent) {
     const { id, status } = data;
+
     let statusId = 1;
 
     if (status === 'approved') statusId = 2;

@@ -5,31 +5,48 @@ services:
     ports:
       - 4000:4000
     depends_on:
-      - postgres
-      - kafka
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: always
   anti-fraud:
     build: ./anti-fraud 
     ports:
       - 4001:4001
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
+    restart: always
   postgres:
     image: postgres:14
+    restart: always
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d postgres'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    restart: always 
+    healthcheck:
+      test: nc -z zookeeper 2181 || exit -1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: 
-      - zookeeper
+    restart: always
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
@@ -37,3 +54,12 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    healthcheck:
+      test: nc -z kafka 29092 || exit -1
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    depends_on: 
+      zookeeper:
+        condition: service_healthy

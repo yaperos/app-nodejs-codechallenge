@@ -20,8 +20,12 @@ async function bootstrap() {
     },
   } as MicroserviceOptions);
 
-  app.startAllMicroservices();
-
-  await app.listen(4000);
+  try {
+    app.startAllMicroservices();
+    await app.listen(4000);
+  } catch (error) {
+    console.error(error);
+  }
 }
+
 bootstrap();
