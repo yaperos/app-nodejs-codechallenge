@@ -10,6 +10,7 @@ export class AntiFraudBroker {
 
     @MessagePattern(Events.ON_TRANSACTION_CREATE)
     onTransactionCreate(transaction: TransactionDto): void {
+        console.log('2:: NEW TRANSACTION ARRIVED, VALIDATING AND SENDING RESPONSE')
         this.antiFraudService.validateTransaction(transaction);
     }
 }

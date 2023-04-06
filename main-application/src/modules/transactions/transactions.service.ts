@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException, OnModuleInit, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model, Query, QueryOptions } from 'mongoose';
+import { FilterQuery, Model, Query, QueryOptions, Schema } from 'mongoose';
 import { Transaction, TransactionDocument } from './transaction.schema';
 import { CreateTransactionDto } from './dtos/create-transaction.dto';
 import { UpdateTransactionDto } from './dtos/update-transaction.dto';
@@ -11,23 +11,12 @@ import { ANTI_FRAUD_SERVICE_NAME } from 'src/app.constants';
 import { Events } from './types/transaction-types-enums';
 
 @Injectable()
-export class TransactionsService implements OnModuleInit {
+export class TransactionsService {
     constructor(
         @InjectModel(Transaction.name) private readonly transactionModel: Model<TransactionDocument>,
         @Inject(ANTI_FRAUD_SERVICE_NAME) private readonly antifraudClient: ClientKafka) {
     }
 
-    async onModuleInit() {
-
-        /*         this.consumer.subscribe(EVENTS.ON_TRANSACTION_VALIDATED, async partialTransaction => {
-                    const { _id, ...partialData } = JSON.parse(partialTransaction);
-                    const newTransaction = await this.update(_id, partialData);
-        
-                    console.log('Transaccion');
-                    console.log(`Estado resultante: ${newTransaction.transactionStatus}`)
-                    console.log(newTransaction);
-                }); */
-    }
 
     /**
      * 
@@ -46,6 +35,7 @@ export class TransactionsService implements OnModuleInit {
 
             const parsedTransaction = plainToClass(TransactionDto, transaction.toJSON());
 
+            console.log('1:: MESSAGE SENT TO ANTIFRAUD CLIENT MICROSERVICE');
             this.antifraudClient.emit(Events.ON_TRANSACTION_CREATE, JSON.stringify(parsedTransaction));
 
             return parsedTransaction;
@@ -73,7 +63,8 @@ export class TransactionsService implements OnModuleInit {
         if (!transaction) {
             throw new NotFoundException(`Entity with id ${id} not found`);
         }
-        console.log('Finished')
+        console.log('5:: NEW STATUS UPDATED');
+        console.log(':::DONE:::');
         return transaction;
     }
 

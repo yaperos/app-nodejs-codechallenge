@@ -17,6 +17,7 @@ export class AntiFraudService {
 
         const event = status === TransactionStatuses.REJECTED ? Events.ON_TRANSACTION_REJECT : Events.ON_TRANSACTION_COMPLETE;
 
+        console.log(`3:: VALIDATED, THE STATUS IS ${status.toUpperCase()}, SENDING VALUES TO MAIN APPLICATION`);
         this.mainClient.emit(event, JSON.stringify({ _id: transaction._id, transactionStatus: status }));
     }
 }

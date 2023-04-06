@@ -24,9 +24,7 @@ export class AppConfigService {
 		return {
 			NODE_ENV: this.getString('NODE_ENV'),
 			CONNECTION_STRING: this.getString('CONNECTION_STRING'),
-			KAFKA_CLIENT_ID: this.getString('KAFKA_CLIENT_ID'),
 			KAFKA_BROKER: this.getString('KAFKA_BROKER'),
-			ANTI_FRAUD_THRESHOLD: this.getNumber('ANTI_FRAUD_THRESHOLD')
 		};
 	}
 
