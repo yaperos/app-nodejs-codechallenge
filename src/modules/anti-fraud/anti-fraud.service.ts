@@ -29,17 +29,11 @@ export class AntifraudService implements OnModuleInit {
     async verifyTransaction(transaction: TransactionDto) {
         return new Promise((resolve: Function, reject: Function) => {
             console.log('Step 3');
-            const statusesArray = 
-                        Object.keys(TransactionStatuses)
-                                .map(item => TransactionStatuses[item])
-                                .filter(item => item !== TransactionStatuses.PENDING);
             
-            //Statuses array es un array de los estados quitandole PENDING
-            const randomStatusIndex = Math.floor(Math.random() * statusesArray.length);
-            const randomStatus = statusesArray[randomStatusIndex];
+            const status = transaction.value > 1000 ? TransactionStatuses.REJECTED: TransactionStatuses.COMPLETED;
 
             setTimeout(() => {
-                this.producer.send(EVENTS.ON_TRANSACTION_VALIDATED, JSON.stringify({ _id: transaction._id, transactionStatus: randomStatus }))
+                this.producer.send(EVENTS.ON_TRANSACTION_VALIDATED, JSON.stringify({ _id: transaction._id, transactionStatus: status }))
                 resolve();
             }, 3000);
         })

@@ -21,6 +21,7 @@ PORT = 3002
 CONNECTION_STRING = mongodb+srv://hpalacios:gI4WDVOHn4JLH0oa@development.6jvqw.mongodb.net/yape-test?retryWrites=true&w=majority
 KAFKA_CLIENT_ID = yape-kafka
 KAFKA_HOST = localhost:9092
+ANTI_FRAUD_THRESHOLD = 1000
 ```
 
 ## CURL EXAMPLE REQUESTS
@@ -90,9 +91,9 @@ Externamente se está trabajando con MongoDB atlas, en un cluster personal, se p
 ```
 
 ```bash
-El sistema tiene logs para monitorear los procesos, y se hizo la conexion a kafka interna (inicialmente se pensó en un microservicio), el sistema de "anti-fraude", simplemente retorna un valor random, un estado random, puede ser complete|failed, y se ejecuta la transaccion.
+El sistema tiene logs para monitorear los procesos, y se hizo la conexion a kafka interna (inicialmente se pensó en un microservicio), el sistema de "anti-fraude"
 ```
 ## Datos adicionales
 ```bash
-El sistema ideal debe conectarse con un microservicio, Kafka, Redis pubsub, Rabbit, de forma isolada, el ejemplo se enfoca en un mismo modulo escuchando los eventos de Kafka.
+El sistema ideal debe conectarse con un microservicio, Kafka, Redis pubsub, Rabbit, SQS, de forma isolada, el ejemplo se enfoca en un mismo modulo escuchando los eventos de Kafka.
 ```
