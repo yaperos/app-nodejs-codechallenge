@@ -1,14 +1,22 @@
 import * as dotenv from "dotenv";
-import express, { Express, NextFunction, Request, Response } from "express";
+import express, { Express } from "express";
+import { IMainRouter } from "../../router/router.interface";
+
+type dependencies = {
+  mainRouter: IMainRouter;
+};
 
 class Server {
-  private serverApp: Express;
+  readonly serverApp: Express;
+  private _mainRouter: IMainRouter;
 
   public get server(): Express {
     return this.serverApp;
   }
 
-  constructor() {
+  constructor({ mainRouter }: dependencies) {
+    this._mainRouter = mainRouter;
+
     this.serverApp = express();
   }
 
@@ -26,14 +34,9 @@ class Server {
 
     const serverPort = process.env.SERVER_PORT ?? 8080;
 
-    // TODO: Remove the mock endpoint
-    this.server.get("/", (_: Request, res: Response, __: NextFunction) => {
-      return res.json({
-        message: "Hello world",
-      });
-    });
+    this._mainRouter.setupRouters(this.serverApp);
 
-    this.server.listen(serverPort, () => {
+    this.serverApp.listen(serverPort, () => {
       console.log(`Server running on port ${serverPort}`);
     });
   }
