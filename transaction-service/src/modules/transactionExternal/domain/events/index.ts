@@ -1,1 +1,1 @@
-export * from './transactionExteternalCreated';
+export * from './transactionExternalCreatedEvent';

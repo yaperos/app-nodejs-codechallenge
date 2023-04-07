@@ -7,11 +7,17 @@ import {
 } from 'clean-common-lib';
 import { Guid } from './Guid';
 import { TransactionValue } from './TransactionValue';
-import { TransactionExteternalCreated } from './events';
+import { TransactionExternalCreatedEvent } from './events';
 
-interface TransactionType {
-  id: number;
-  name: string;
+export enum TransactionStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+}
+
+export enum TransactionType {
+  NONE,
+  YAPE,
 }
 
 export interface TransactionExternalProps {
@@ -19,14 +25,11 @@ export interface TransactionExternalProps {
   accountExternalIdCredit: Guid;
   type: TransactionType;
   value: TransactionValue;
-  createAt: Date;
+  status?: TransactionStatus;
+  createAt?: Date;
 }
 
 export class TransactionExternal extends AggregateRoot<TransactionExternalProps> {
-  get transactionExternalId(): Guid {
-    return Guid.create(this._id).getValue();
-  }
-
   get accountExternalIdDebit(): Guid {
     return this.props.accountExternalIdDebit;
   }
@@ -43,8 +46,16 @@ export class TransactionExternal extends AggregateRoot<TransactionExternalProps>
     return this.props.value;
   }
 
-  get createAt(): Date {
+  get createAt(): Date | undefined {
     return this.props.createAt;
+  }
+
+  get status(): TransactionStatus | undefined {
+    return this.props.status;
+  }
+
+  updateStatus(status: TransactionStatus) {
+    this.props.status = status;
   }
 
   public static create(
@@ -73,6 +84,7 @@ export class TransactionExternal extends AggregateRoot<TransactionExternalProps>
     const defaultValues: TransactionExternalProps = {
       ...props,
       createAt: props.createAt ? props.createAt : new Date(),
+      status: props.status ? props.status : TransactionStatus.PENDING,
     };
 
     const isNewTransactionExternal = !!id === false;
@@ -80,7 +92,7 @@ export class TransactionExternal extends AggregateRoot<TransactionExternalProps>
 
     if (isNewTransactionExternal) {
       transactionExternal.addDomainEvent(
-        new TransactionExteternalCreated(transactionExternal)
+        new TransactionExternalCreatedEvent(transactionExternal)
       );
     }
 

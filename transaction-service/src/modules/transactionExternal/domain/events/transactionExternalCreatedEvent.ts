@@ -1,7 +1,7 @@
 import { IDomainEvent, UniqueEntityID } from 'clean-common-lib';
 import { TransactionExternal } from '../TransactionExternal';
 
-export class TransactionExteternalCreated implements IDomainEvent {
+export class TransactionExternalCreatedEvent implements IDomainEvent {
   public dateTimeOcurred: Date;
   public transactionExternal: TransactionExternal;
 
