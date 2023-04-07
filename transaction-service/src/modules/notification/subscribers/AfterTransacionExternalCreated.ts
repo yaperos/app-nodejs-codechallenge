@@ -1,6 +1,7 @@
 import { DomainEvents, IHandle, IDomainEvent } from 'clean-common-lib';
 import { TransactionExternalCreatedEvent } from '../../transactionExternal/domain';
 import { NotifyKafka } from '../useCases/notifyKafka/NotifyKafka';
+import { TransactionMap } from '../../transactionExternal/mappers';
 
 export class AfterTransactionExternalCreated
   implements IHandle<TransactionExternalCreatedEvent>
@@ -27,7 +28,7 @@ export class AfterTransactionExternalCreated
     try {
       await this.notifyKafka.execute({
         topic: 'transaction-external',
-        value: transactionExternal,
+        value: TransactionMap.toDTO(transactionExternal),
       });
     } catch (error) {
       console.log(error);

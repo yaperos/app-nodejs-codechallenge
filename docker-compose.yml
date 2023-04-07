@@ -8,18 +8,42 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-  kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - '50000:2181'
+    image: zookeeper:3.5.9
+  kafka:
+    ports:
+      - '50001:9092'
+      - '50002:9093'
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENERS: 'INTERNAL://:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'INTERNAL:PLAINTEXT'
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
+      KAFKA_CREATE_TOPICS: 'transaction-external'
+      KAFKA_ADVERTISED_HOST_NAME: host.docker.internal # change to 172.17.0.1 if running on Ubuntu
+    image: 'wurstmeister/kafka:2.13-2.8.1'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+  antifraud-service:
+    depends_on: [ postgres, kafka ]
+    build:
+      context: ./anti-fraud-service
+    ports:
+      - 8000:8000
+    environment:
+      PORT: 8000
+
+  transaction-service:
+    depends_on: [ postgres, kafka ]
+    build:
+      context: ./transaction-service
+    ports:
+      - 8080:8080
+    environment:
+      PORT: 8080
