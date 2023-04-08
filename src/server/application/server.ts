@@ -1,21 +1,26 @@
 import * as dotenv from "dotenv";
 import express, { Express } from "express";
+import { IDatabaseService } from "../../infrastructure";
+import { errorHandler } from "../../middleware";
 import { IMainRouter } from "../../router/router.interface";
 
 type dependencies = {
   mainRouter: IMainRouter;
+  dbService: IDatabaseService;
 };
 
 class Server {
   readonly serverApp: Express;
   private _mainRouter: IMainRouter;
+  private _dbService: IDatabaseService;
 
   public get server(): Express {
     return this.serverApp;
   }
 
-  constructor({ mainRouter }: dependencies) {
+  constructor({ mainRouter, dbService }: dependencies) {
     this._mainRouter = mainRouter;
+    this._dbService = dbService;
 
     this.serverApp = express();
   }
@@ -28,7 +33,7 @@ class Server {
     this.server.use(express.json());
   }
 
-  starUp() {
+  async starUp() {
     this.setupEnvVariables();
     this.configureMiddlewares();
 
@@ -36,8 +41,13 @@ class Server {
 
     this._mainRouter.setupRouters(this.serverApp);
 
+    this.serverApp.use(errorHandler);
+
+    // TODO: Uncomment this code when db setup is ready
+    // await this._dbService.connect()
+
     this.serverApp.listen(serverPort, () => {
-      console.log(`Server running on port ${serverPort}`);
+      console.info(`Server running on port ${serverPort}`);
     });
   }
 }
