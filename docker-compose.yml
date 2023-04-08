@@ -39,10 +39,10 @@ services:
     ports:
       - "9092:9092"
   kafka-ui:
-    container_name: kafka-ui
+    container_name: kafka-ui-test
     image: provectuslabs/kafka-ui:latest
     ports:
-      - 8080:8080
+      - "8080:8080"
     restart: always
     environment:
       - KAFKA_CLUSTERS_0_NAME=local

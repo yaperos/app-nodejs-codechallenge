@@ -14,7 +14,6 @@ export class AppService {
   }
 
   async createUser(data: any) {
-    const payload = data;
-    return this.client.send('user.create', payload);
+    return data;
   }
 }

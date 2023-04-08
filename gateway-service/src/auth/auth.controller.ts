@@ -1,29 +1,32 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { createUserDto } from './dto';
-import { ClientKafka, MessagePattern } from '@nestjs/microservices';
+import {Body, Controller, Headers, Inject, OnModuleDestroy, OnModuleInit, Post, Res} from '@nestjs/common';
+import {AuthService} from './auth.service';
+import {createUserDto} from './dto';
+import {ClientKafka, MessagePattern, Payload} from '@nestjs/microservices';
 
 @Controller('auth')
-export class AuthController {
+export class AuthController implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly authService: AuthService,
     @Inject('AUTH_SERVICE') private readonly client: ClientKafka,
-  ) {}
+  ) {
+  }
 
   async onModuleInit() {
     this.client.subscribeToResponseOf('user.create');
     await this.client.connect();
   }
 
-  @Post('register')
-  async registerUser(@Body() data: createUserDto) {
-    console.log(data);
-    return this.authService.createUser(data);
+  async onModuleDestroy() {
+    await this.client.close();
   }
 
-  @MessagePattern('user.create')
-  async handleUserCreated(data: any) {
-    console.log('User created event received', data);
-    return data;
+  @Post('register')
+  async registerUser(@Body() data: createUserDto): Promise<any> {
+    console.log('Sending user.create event', data);
+    const res = await this.authService.createUser(data);
+    console.log('User created event received', res)
+    const a = await this.client.send('user.create', res);
+    return a;
   }
+
 }

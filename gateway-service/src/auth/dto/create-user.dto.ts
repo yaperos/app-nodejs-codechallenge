@@ -16,4 +16,7 @@ export class createUserDto {
   @IsString()
   @IsNotEmpty()
   surname: string;
+
+  @IsString()
+  requestId: string;
 }
