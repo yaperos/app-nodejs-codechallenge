@@ -5,11 +5,11 @@ import {
   UseCase,
   left,
   right,
-} from 'clean-common-lib';
-import { UpdateTransactionExternalErrors } from './UpdateTransactionExternalStatusErrors';
-import { UpdateTransactionExternalStatusDTO } from './UpdateTransactionExternalStatusDTO';
-import { ITransactionRepo } from '../../repositories/transactionRepo';
-import { TransactionStatus } from '../../domain';
+} from "clean-common-lib";
+import { UpdateTransactionExternalErrors } from "./UpdateTransactionExternalStatusErrors";
+import { UpdateTransactionExternalStatusDTO } from "./UpdateTransactionExternalStatusDTO";
+import { ITransactionRepo } from "../../repositories/transactionRepo";
+import { TransactionStatus } from "../../domain";
 
 type Response = Either<
   | UpdateTransactionExternalErrors.AccountExternalDoNotExists

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   AppError,
+  DomainEvents,
   Either,
   Result,
   UniqueEntityID,
@@ -61,7 +62,11 @@ export class CreateTransactionExternal
     }
 
     try {
-      await this.transactionRepo.save(transactionExternalOrError.getValue());
+      const transaction = transactionExternalOrError.getValue();
+      await this.transactionRepo.save(transaction);
+
+      DomainEvents.dispatchEventsForAggregate(transaction.id);
+
       return right(Result.ok<void>());
     } catch (error) {
       return left(new AppError.UnexpectedError(error)) as Response;

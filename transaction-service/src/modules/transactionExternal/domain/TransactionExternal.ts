@@ -4,15 +4,15 @@ import {
   IGuardArgument,
   Result,
   UniqueEntityID,
-} from 'clean-common-lib';
-import { Guid } from './Guid';
-import { TransactionValue } from './TransactionValue';
-import { TransactionExternalCreatedEvent } from './events';
+} from "clean-common-lib";
+import { Guid } from "./Guid";
+import { TransactionValue } from "./TransactionValue";
+import { TransactionExternalCreatedEvent } from "./events";
 
 export enum TransactionStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
+  PENDING = "pending",
+  APPROVED = "approved",
+  REJECTED = "rejected",
 }
 
 export enum TransactionType {
@@ -65,14 +65,14 @@ export class TransactionExternal extends AggregateRoot<TransactionExternalProps>
     const guardArgs: IGuardArgument[] = [
       {
         argument: props.accountExternalIdDebit,
-        argumentName: 'accountExternalIdDebit',
+        argumentName: "accountExternalIdDebit",
       },
       {
         argument: props.accountExternalIdCredit,
-        argumentName: 'accountExternalIdCredit',
+        argumentName: "accountExternalIdCredit",
       },
-      { argument: props.type, argumentName: 'type' },
-      { argument: props.value, argumentName: 'value' },
+      { argument: props.type, argumentName: "type" },
+      { argument: props.value, argumentName: "value" },
     ];
 
     const guardResult = Guard.againstNullOrUndefinedBulk(guardArgs);

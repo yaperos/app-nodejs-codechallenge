@@ -1,4 +1,4 @@
-import { Guard, Result, ValueObject } from 'clean-common-lib';
+import { Guard, Result, ValueObject } from "clean-common-lib";
 
 interface TransactionValueProps {
   value: number;
@@ -16,7 +16,7 @@ export class TransactionValue extends ValueObject<TransactionValueProps> {
   }
 
   public static create(props: TransactionValueProps): Result<TransactionValue> {
-    const nullGuardResult = Guard.againstNullOrUndefined(props.value, 'value');
+    const nullGuardResult = Guard.againstNullOrUndefined(props.value, "value");
 
     if (nullGuardResult.isFailure) {
       return Result.fail<TransactionValue>(nullGuardResult.getErrorValue());

@@ -1,4 +1,4 @@
-import { TransactionExternal } from '../domain';
+import { TransactionExternal } from "../domain";
 
 export interface ITransactionRepo {
   exists(transactionId: string): Promise<boolean> | boolean;

@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UniqueEntityID } from 'clean-common-lib';
+import { UniqueEntityID } from "clean-common-lib";
 import {
   Guid,
   TransactionExternal,
-  TransactionStatus,
   TransactionType,
   TransactionValue,
-} from '../domain';
+} from "../domain";
 
 export class TransactionMap {
   public static toDTO(transaction: TransactionExternal) {
+    console.log(transaction);
     return {
       transactionExternalId: transaction.id.toString(),
       transactionType: {
         name: TransactionType[transaction.type],
       },
       transactionStatus: {
-        name: TransactionStatus.toString(),
+        name: transaction.status,
       },
       value: transaction.value.value,
       createAt: transaction.createAt,
@@ -27,10 +27,10 @@ export class TransactionMap {
     const transaction = TransactionExternal.create(
       {
         accountExternalIdDebit: Guid.create(
-          new UniqueEntityID(raw.accountExternalIdDebit())
+          new UniqueEntityID(raw.accountExternalIdDebit)
         ).getValue(),
         accountExternalIdCredit: Guid.create(
-          new UniqueEntityID(raw.accountExternalIdCredit())
+          new UniqueEntityID(raw.accountExternalIdCredit)
         ).getValue(),
         type: raw.type,
         value: TransactionValue.create({ value: raw.value }).getValue(),
@@ -46,8 +46,9 @@ export class TransactionMap {
   public static toPersistance(transaction: TransactionExternal): any {
     return {
       id: transaction.id.toValue(),
-      accountExternalIdDebit: transaction.accountExternalIdDebit.id,
-      accountExternalIdCredit: transaction.accountExternalIdCredit.id,
+      accountExternalIdDebit: transaction.accountExternalIdDebit.id.toString(),
+      accountExternalIdCredit:
+        transaction.accountExternalIdCredit.id.toString(),
       type: transaction.type,
       value: transaction.value.value,
       status: transaction.status,

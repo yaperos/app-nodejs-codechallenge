@@ -1,15 +1,11 @@
 import { IDomainEvent, UniqueEntityID } from 'clean-common-lib';
-
-interface Response {
-  id: string;
-  isValid: boolean;
-}
+import { KafkaNotification } from '../kafkaNotification';
 
 export class TransactionExternalResponseEvent implements IDomainEvent {
   public dateTimeOcurred: Date;
-  public data: Response;
+  public data: KafkaNotification;
 
-  constructor(data: Response) {
+  constructor(data: KafkaNotification) {
     this.dateTimeOcurred = new Date();
     this.data = data;
   }

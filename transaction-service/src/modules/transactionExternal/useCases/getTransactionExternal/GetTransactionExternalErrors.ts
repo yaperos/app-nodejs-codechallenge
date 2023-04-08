@@ -1,4 +1,4 @@
-import { Result, UseCaseError } from 'clean-common-lib';
+import { Result, UseCaseError } from "clean-common-lib";
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GetTransactionExternalErrors {

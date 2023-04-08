@@ -1,6 +1,6 @@
-import { DomainEvents, IDomainEvent, IHandle } from 'clean-common-lib';
-import { TransactionExternalResponseEvent } from '../../notification/domain';
-import { UpdateTransactionExternalStatus } from '../useCases/updateTransactionExternalStatus/UpdateTransactionExternalStatus';
+import { DomainEvents, IDomainEvent, IHandle } from "clean-common-lib";
+import { TransactionExternalResponseEvent } from "../../notification/domain";
+import { UpdateTransactionExternalStatus } from "../useCases/updateTransactionExternalStatus/UpdateTransactionExternalStatus";
 
 export class AfterTransactionExternalResponse
   implements IHandle<TransactionExternalResponseEvent>

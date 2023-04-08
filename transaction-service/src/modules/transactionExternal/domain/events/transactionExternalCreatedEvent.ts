@@ -1,5 +1,5 @@
-import { IDomainEvent, UniqueEntityID } from 'clean-common-lib';
-import { TransactionExternal } from '../TransactionExternal';
+import { IDomainEvent, UniqueEntityID } from "clean-common-lib";
+import { TransactionExternal } from "../TransactionExternal";
 
 export class TransactionExternalCreatedEvent implements IDomainEvent {
   public dateTimeOcurred: Date;

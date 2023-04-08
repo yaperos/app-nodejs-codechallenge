@@ -1,6 +1,6 @@
-import { UseCase } from 'clean-common-lib';
+import { DomainEvents, UseCase } from 'clean-common-lib';
 import { IKafkaService } from 'common-microservice-lib';
-import { TransactionExternalResponseEvent } from '../../domain';
+import { KafkaNotification } from '../../domain/kafkaNotification';
 
 interface Request {
   topic: string;
@@ -13,9 +13,20 @@ export class ListenKafka implements UseCase<Request, Promise<void>> {
     this.kafkaService = kafkaService;
   }
 
-  async execute(request: Request): Promise<void> {
-    await this.kafkaService.subcribeMessageFromTopic(request.topic, (value) => {
-      new TransactionExternalResponseEvent(value);
-    });
+  async execute(): Promise<void> {
+    await this.kafkaService.subcribeMessageFromTopic(
+      'transaction-external',
+      (value) => {
+        const kafkaNotificationOrError = KafkaNotification.create(value);
+
+        if (kafkaNotificationOrError.isSuccess) {
+          DomainEvents.dispatchEventsForAggregate(
+            kafkaNotificationOrError.getValue().id
+          );
+        } else {
+          console.log(kafkaNotificationOrError.getErrorValue());
+        }
+      }
+    );
   }
 }

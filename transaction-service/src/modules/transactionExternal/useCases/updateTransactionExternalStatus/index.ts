@@ -1,5 +1,5 @@
-import { transactionRepo } from '../../repositories';
-import { UpdateTransactionExternalStatus } from './UpdateTransactionExternalStatus';
+import { transactionRepo } from "../../repositories";
+import { UpdateTransactionExternalStatus } from "./UpdateTransactionExternalStatus";
 
 const updateTransactionExternalStatus = new UpdateTransactionExternalStatus(
   transactionRepo

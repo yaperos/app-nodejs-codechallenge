@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TransactionExternal } from '../../domain';
-import { TransactionMap } from '../../mappers';
-import { ITransactionRepo } from '../transactionRepo';
+import { TransactionExternal } from "../../domain";
+import { TransactionMap } from "../../mappers";
+import { ITransactionRepo } from "../transactionRepo";
 
 let transactions: { [k: string]: any } = [];
 
@@ -15,6 +15,7 @@ export class InMemoryTransactionRepo implements ITransactionRepo {
       transaction
     );
     transactions.push(transactionToPersitence);
+    console.log(transactions);
   }
 
   getTransactionById(transactionId: string): TransactionExternal {
@@ -30,5 +31,6 @@ export class InMemoryTransactionRepo implements ITransactionRepo {
       (t: any) => t.id !== transactionToPersitence.id
     );
     transactions = [...transactionsFiltered, transactionToPersitence];
+    console.log(transactions);
   }
 }

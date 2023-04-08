@@ -1,4 +1,4 @@
-import { Entity, Result, UniqueEntityID } from 'clean-common-lib';
+import { Entity, Result, UniqueEntityID } from "clean-common-lib";
 
 export class Guid extends Entity<unknown> {
   get id(): UniqueEntityID {

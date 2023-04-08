@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as express from 'express';
+import * as express from "express";
 
 export abstract class BaseController {
   protected abstract executeImpl(
@@ -16,7 +16,7 @@ export abstract class BaseController {
     } catch (err) {
       console.log(`[BaseController]: Uncaught controller error`);
       console.log(err);
-      this.fail(res, 'An unexpected error occurred');
+      this.fail(res, "An unexpected error occurred");
     }
   }
 
@@ -30,7 +30,7 @@ export abstract class BaseController {
 
   public ok<T>(res: express.Response, dto?: T) {
     if (dto) {
-      res.type('application/json');
+      res.type("application/json");
       return res.status(200).json(dto);
     } else {
       return res.sendStatus(200);
@@ -45,7 +45,7 @@ export abstract class BaseController {
     return BaseController.jsonResponse(
       res,
       400,
-      message ? message : 'Bad request'
+      message ? message : "Bad request"
     );
   }
 
@@ -53,7 +53,7 @@ export abstract class BaseController {
     return BaseController.jsonResponse(
       res,
       401,
-      message ? message : 'Unauthorized'
+      message ? message : "Unauthorized"
     );
   }
 
@@ -61,7 +61,7 @@ export abstract class BaseController {
     return BaseController.jsonResponse(
       res,
       403,
-      message ? message : 'Forbidden'
+      message ? message : "Forbidden"
     );
   }
 
@@ -69,7 +69,7 @@ export abstract class BaseController {
     return BaseController.jsonResponse(
       res,
       404,
-      message ? message : 'Not found'
+      message ? message : "Not found"
     );
   }
 
@@ -77,7 +77,7 @@ export abstract class BaseController {
     return BaseController.jsonResponse(
       res,
       409,
-      message ? message : 'Conflict'
+      message ? message : "Conflict"
     );
   }
 
@@ -85,12 +85,12 @@ export abstract class BaseController {
     return BaseController.jsonResponse(
       res,
       429,
-      message ? message : 'Too many requests'
+      message ? message : "Too many requests"
     );
   }
 
   public todo(res: express.Response) {
-    return BaseController.jsonResponse(res, 400, 'TODO');
+    return BaseController.jsonResponse(res, 400, "TODO");
   }
 
   public fail(res: express.Response, error: Error | string) {

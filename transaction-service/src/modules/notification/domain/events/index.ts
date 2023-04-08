@@ -1,1 +1,1 @@
-export * from './kafkaResponseEvent';
+export * from "./kafkaResponseEvent";

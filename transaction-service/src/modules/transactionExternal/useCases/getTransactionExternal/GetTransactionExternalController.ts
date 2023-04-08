@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { GetTransactionExternal } from './GetTransactionExternal';
-import * as express from 'express';
-import { GetTransactionExternalDTO } from './GetTransactionExternalDTO';
-import { TransactionMap } from '../../mappers';
-import { UseCaseError } from 'clean-common-lib';
-import { BaseController } from '../../infra/http/models/BaseController';
+import { GetTransactionExternal } from "./GetTransactionExternal";
+import * as express from "express";
+import { GetTransactionExternalDTO } from "./GetTransactionExternalDTO";
+import { TransactionMap } from "../../mappers";
+import { UseCaseError } from "clean-common-lib";
+import { BaseController } from "../../infra/http/models/BaseController";
 
 export class GetTransactionExternalController extends BaseController {
   private useCase: GetTransactionExternal;

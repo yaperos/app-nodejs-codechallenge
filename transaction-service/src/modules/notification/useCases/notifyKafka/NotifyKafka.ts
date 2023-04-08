@@ -1,5 +1,5 @@
-import { UseCase } from 'clean-common-lib';
-import { IKafkaService } from 'common-microservice-lib';
+import { UseCase } from "clean-common-lib";
+import { IKafkaService } from "common-microservice-lib";
 
 interface Request {
   topic: string;

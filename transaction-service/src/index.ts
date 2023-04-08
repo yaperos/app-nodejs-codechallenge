@@ -1,16 +1,16 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import morgan from 'morgan';
-import cors from 'cors';
-import helmet from 'helmet';
-import compression from 'compression';
-import { v1Router } from './modules/transactionExternal/infra/http/api';
+import express from "express";
+import bodyParser from "body-parser";
+import morgan from "morgan";
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
+import { v1Router } from "./modules/transactionExternal/infra/http/api";
 
-export * from './modules/notification';
-export * from './modules/transactionExternal';
+export * from "./modules/notification";
+export * from "./modules/transactionExternal";
 
 const origin = {
-  origin: '*', // only to dev
+  origin: "*", // only to dev
 };
 
 const app = express();
@@ -19,9 +19,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(origin));
 app.use(compression());
 app.use(helmet());
-app.use(morgan('combined'));
+app.use(morgan("combined"));
 
-app.use('/api/v1', v1Router);
+app.use("/api/v1", v1Router);
 
 startServer();
 
