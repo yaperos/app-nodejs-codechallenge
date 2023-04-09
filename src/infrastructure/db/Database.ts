@@ -1,11 +1,15 @@
 import { DataSource } from "typeorm";
+import {
+  TransactionAntiFraudResponseModel,
+  TransactionModel,
+} from "../../transaction";
 import { IDatabaseService } from "./Database.interface";
 
 export class PostgreSQLDatabaseService implements IDatabaseService {
   private static _instance: PostgreSQLDatabaseService;
   private readonly _dataSource: DataSource;
 
-  public get dataSource(): DataSource {
+  public dataSource(): DataSource {
     return this._dataSource;
   }
 
@@ -17,8 +21,9 @@ export class PostgreSQLDatabaseService implements IDatabaseService {
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      // TODO: Add entities
-      entities: [],
+      entities: [TransactionModel, TransactionAntiFraudResponseModel],
+      synchronize: true,
+      logging: false,
     });
   }
 

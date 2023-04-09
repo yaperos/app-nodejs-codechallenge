@@ -1,4 +1,3 @@
-import * as dotenv from "dotenv";
 import express, { Express } from "express";
 import { IDatabaseService } from "../../infrastructure";
 import { errorHandler } from "../../middleware";
@@ -25,16 +24,11 @@ class Server {
     this.serverApp = express();
   }
 
-  private setupEnvVariables() {
-    dotenv.config();
-  }
-
   private configureMiddlewares() {
     this.server.use(express.json());
   }
 
   async starUp() {
-    this.setupEnvVariables();
     this.configureMiddlewares();
 
     const serverPort = process.env.SERVER_PORT ?? 8080;
@@ -43,8 +37,7 @@ class Server {
 
     this.serverApp.use(errorHandler);
 
-    // TODO: Uncomment this code when db setup is ready
-    // await this._dbService.connect()
+    await this._dbService.connect();
 
     this.serverApp.listen(serverPort, () => {
       console.info(`Server running on port ${serverPort}`);

@@ -3,7 +3,7 @@ import { z } from "zod";
 export const CreateTransactionBodySchema = z.object({
   accountExternalIdDebit: z.string().uuid(),
   accountExternalIdCredit: z.string().uuid(),
-  tranferTypeId: z.number().int().gte(0).lte(2),
+  transferTypeId: z.number().int().gte(1).lte(2),
   value: z
     .number()
     .positive()
