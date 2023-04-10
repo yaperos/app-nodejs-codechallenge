@@ -23,6 +23,17 @@ export class TransactionsResolver {
     });
   }
 
+  @Query(() => Transaction)
+  async transactionById(@Args('id', { type: () => String }) id: string) {
+    return this.prisma.transaction.findFirst({
+      where: { id },
+      include: {
+        transactionStatus: true,
+        transactionType: true,
+      },
+    });
+  }
+
   @Mutation(() => Transaction)
   async createTransaction(@Args('data') data: CreateTransactionInput) {
     const {

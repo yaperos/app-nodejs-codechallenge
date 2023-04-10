@@ -1,5 +1,12 @@
 version: "3.7"
 services:
+  client:
+    build: ./client 
+    ports:
+      - 3000:3000
+    depends_on:
+      transactions:
+        condition: service_healthy
   transactions:
     build: ./transactions 
     ports:
@@ -9,6 +16,12 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: nc -z localhost 4000 || exit -1
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
   anti-fraud:
     build: ./anti-fraud 
     ports:
