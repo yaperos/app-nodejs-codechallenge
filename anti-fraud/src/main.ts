@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { sleep } from 'utils';
 
 async function bootstrap() {
   try {
@@ -25,6 +26,8 @@ async function bootstrap() {
     app.listen();
   } catch (error) {
     console.error(error);
+    await sleep(5000);
+    this.bootstrap();
   }
 }
 
