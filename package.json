@@ -1,0 +1,46 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "start:consumer": "nodemon --exec ts-node src/consumer.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaperos/app-nodejs-codechallenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yaperos/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/yaperos/app-nodejs-codechallenge#readme",
+  "dependencies": {
+    "@apollo/server": "^4.6.0",
+    "@types/cors": "^2.8.13",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "graphql": "^16.6.0",
+    "kafkajs": "^2.2.4",
+    "mysql2": "^3.2.0",
+    "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.30.0",
+    "sequelize-typescript": "^2.1.5",
+    "ts-node": "^10.9.1",
+    "type-graphql": "^2.0.0-beta.1",
+    "typedi": "^0.10.0",
+    "typescript": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "nodemon": "^2.0.22"
+  }
+}
