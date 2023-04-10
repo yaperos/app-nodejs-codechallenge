@@ -1,10 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { createUserDto } from './dto';
+import {Injectable} from '@nestjs/common';
+import {createUserDto} from './dto';
 
 @Injectable()
 export class AuthService {
-  constructor() {}
+  constructor() {
+  }
+
   async createUser(data: createUserDto) {
     return data;
   }

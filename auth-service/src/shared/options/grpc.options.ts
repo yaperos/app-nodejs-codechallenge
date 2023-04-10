@@ -1,5 +1,5 @@
-import { ServerCredentials } from '@grpc/grpc-js';
-import { ClientOptions, Transport } from '@nestjs/microservices';
+import {ServerCredentials} from '@grpc/grpc-js';
+import {ClientOptions, Transport} from '@nestjs/microservices';
 
 export const grpcClient: ClientOptions = {
   transport: Transport.GRPC,

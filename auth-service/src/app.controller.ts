@@ -1,13 +1,13 @@
-import {Controller, Get, Inject, OnModuleInit} from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import {MessagePattern, Payload} from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
-export class AppController{
+export class AppController {
   constructor(
-    private readonly appService: AppService,
-    // @Inject('AUTH_SERVICE') private readonly client: ClientKafka,
+    private readonly appService: AppService, // @Inject('AUTH_SERVICE') private readonly client: ClientKafka,
   ) {}
+
   @Get()
   getHello(): string {
     return this.appService.getHello();
@@ -19,7 +19,7 @@ export class AppController{
     const res = {
       requestId: data.requestId,
       completed: true,
-    }
+    };
     return res;
   }
 }
