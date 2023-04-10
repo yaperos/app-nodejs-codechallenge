@@ -1,17 +1,28 @@
 import * as dotenv from "dotenv";
-import { TransactionHandler } from "./handler";
-import { PostgreSQLDatabaseService } from "./infrastructure";
+import {
+  TransactionAntiFraudResponseHandler,
+  TransactionHandler,
+} from "./handler";
+import { IDatabaseService, PostgreSQLDatabaseService } from "./infrastructure";
+import { KafkaEventService } from "./infrastructure/event";
 import { MainRouter, TransactionRouter } from "./router";
 import Server from "./server/application/server";
 
 dotenv.config();
 
-function initializeApp() {
-  const dbService = PostgreSQLDatabaseService.getInstance();
+export const dbService: IDatabaseService =
+  PostgreSQLDatabaseService.getInstance();
+
+async function initializeApp() {
+  const eventService = new KafkaEventService();
+  await eventService.setupEvents({
+    transactionAntiFraudResponseHandler:
+      new TransactionAntiFraudResponseHandler(),
+  });
 
   const transactionRouter = new TransactionRouter({
     transactionHandler: new TransactionHandler({
-      dbService,
+      eventService,
     }),
   });
 

@@ -1,29 +1,34 @@
+import dayjs from "dayjs";
 import { NextFunction, Request, Response } from "express";
-import { v4 as uuidV4 } from "uuid";
 import { ZodError } from "zod";
 import { BadRequestError } from "../../error";
-import { IDatabaseService } from "../../infrastructure";
+import { IEventService } from "../../infrastructure/event";
 import {
   ETransactionAntiFraudResponse,
   GetTransactionDTOFromTransactionModel,
-  TransactionAntiFraudResponseModel,
   TransactionModel,
   transactionType,
 } from "../../transaction";
+import { CreateTransactionBody, IDeadlineTime } from "./interfaces";
 import { CreateTransactionBodySchema } from "./schemas";
 import { ITransactionHandler } from "./transaction.interfaces";
 
 export * from "./transaction.interfaces";
 
 type dependencies = {
-  dbService: IDatabaseService;
+  eventService: IEventService;
+};
+
+const DEADLINE_TIME: IDeadlineTime = {
+  value: 30,
+  unit: "second",
 };
 
 export class TransactionHandler implements ITransactionHandler {
-  private readonly _dbService: IDatabaseService;
+  private readonly _eventService: IEventService;
 
-  constructor({ dbService }: dependencies) {
-    this._dbService = dbService;
+  constructor({ eventService }: dependencies) {
+    this._eventService = eventService;
 
     this.createTransaction = this.createTransaction.bind(this);
     this.getTransactionById = this.getTransactionById.bind(this);
@@ -35,47 +40,88 @@ export class TransactionHandler implements ITransactionHandler {
     next: NextFunction
   ): Promise<void> {
     try {
-      const createTransactionBodyData = CreateTransactionBodySchema.parse(
-        req.body
-      );
+      const createTransactionBodyData: CreateTransactionBody =
+        CreateTransactionBodySchema.parse(req.body);
+
+      const transactionExisting = await TransactionModel.findOne({
+        where: {
+          accountExternalIdCredit:
+            createTransactionBodyData.accountExternalIdCredit,
+          accountExternalIdDebit:
+            createTransactionBodyData.accountExternalIdDebit,
+          value: createTransactionBodyData.value,
+          transferType: transactionType(
+            createTransactionBodyData.transferTypeId
+          ),
+        },
+        relations: {
+          antiFraudResponse: true,
+        },
+        order: {
+          createAt: "DESC",
+        },
+      });
+
+      if (transactionExisting) {
+        if (
+          transactionExisting.antiFraudResponse.transactionStatus ===
+          ETransactionAntiFraudResponse.PENDING
+        ) {
+          res
+            .status(400)
+            .send(
+              "Duplicated transaction: you cannot create a new transaction with the same data until the previous one is completed"
+            );
+          return;
+        }
+
+        const transactionDeadlineTime = dayjs(transactionExisting.createAt).add(
+          DEADLINE_TIME.value,
+          DEADLINE_TIME.unit
+        );
+        const timeDifference = transactionDeadlineTime.diff();
+        if (timeDifference >= 0) {
+          res
+            .status(400)
+            .send(
+              `Duplicated transaction: you will be available to execute this request in ${
+                timeDifference / 1000
+              }seconds`
+            );
+          return;
+        }
+      }
 
       const {
+        id,
         accountExternalIdCredit,
         accountExternalIdDebit,
-        transferTypeId,
+        transferType,
         value,
-      } = createTransactionBodyData;
+      } = await TransactionModel.saveOne({
+        ...createTransactionBodyData,
+      });
 
-      // TODO: Emit event to validate incoming transaction request
-
-      const transactionAntiFraudRecord =
-        new TransactionAntiFraudResponseModel();
-      transactionAntiFraudRecord.id = uuidV4();
-      transactionAntiFraudRecord.transactionStatus =
-        ETransactionAntiFraudResponse.PENDING;
-
-      const transactionRecord = new TransactionModel();
-      transactionRecord.id = uuidV4();
-      transactionRecord.value = value;
-      transactionRecord.accountExternalIdDebit = accountExternalIdDebit;
-      transactionRecord.accountExternalIdCredit = accountExternalIdCredit;
-      transactionRecord.transferType = transactionType(transferTypeId);
-      transactionRecord.antiFraudResponse = transactionAntiFraudRecord;
-
-      transactionAntiFraudRecord.transaction = transactionRecord;
-
-      await this._dbService
-        .dataSource()
-        .manager.save(transactionAntiFraudRecord);
-
-      await this._dbService.dataSource().manager.save(transactionRecord);
+      await this._eventService.sendEvent({
+        topic: "anti_fraud_eval_transaction",
+        messages: [
+          {
+            key: id,
+            value: JSON.stringify({
+              accountExternalIdCredit,
+              accountExternalIdDebit,
+              transferType,
+              value,
+            }),
+          },
+        ],
+      });
 
       res.status(201).json({
-        transactionId: transactionRecord.id,
+        transactionId: id,
       });
       return;
     } catch (error) {
-      console.log("error", error);
       if (error instanceof ZodError) {
         next(
           new BadRequestError(
@@ -99,11 +145,7 @@ export class TransactionHandler implements ITransactionHandler {
     try {
       const { transactionId: id } = req.params;
 
-      const transactionRepository = this._dbService
-        .dataSource()
-        .getRepository(TransactionModel);
-
-      const transactionRecord = await transactionRepository.findOne({
+      const transactionRecord = await TransactionModel.findOne({
         where: {
           id,
         },

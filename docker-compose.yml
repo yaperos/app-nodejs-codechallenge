@@ -7,6 +7,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=yape_challenge
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
