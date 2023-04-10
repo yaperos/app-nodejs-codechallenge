@@ -14,4 +14,7 @@ COPY . .
 
 EXPOSE 4000
 
-CMD ["npm", "run", "start:dev"]
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+
+CMD [ "/init.sh" ]

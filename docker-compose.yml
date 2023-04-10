@@ -9,7 +9,6 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
-    restart: always
   anti-fraud:
     build: ./anti-fraud 
     ports:

@@ -3,25 +3,30 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.transactionType.create({
-    data: {
-      name: 'Cuenta Corriente',
-    },
-  });
+  const types = await prisma.transactionType.count();
+  const statuses = await prisma.transactionStatus.count();
 
-  await prisma.transactionStatus.createMany({
-    data: [
-      {
-        name: 'pending',
+  if (types === 0)
+    await prisma.transactionType.create({
+      data: {
+        name: 'Cuenta Corriente',
       },
-      {
-        name: 'approved',
-      },
-      {
-        name: 'rejected',
-      },
-    ],
-  });
+    });
+
+  if (statuses === 0)
+    await prisma.transactionStatus.createMany({
+      data: [
+        {
+          name: 'pending',
+        },
+        {
+          name: 'approved',
+        },
+        {
+          name: 'rejected',
+        },
+      ],
+    });
 }
 
 main()

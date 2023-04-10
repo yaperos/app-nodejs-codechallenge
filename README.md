@@ -4,9 +4,11 @@ Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
+- [Yape Code Challenge :rocket:](#yape-code-challenge-rocket)
 - [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+- [Tech Stack](#tech-stack)
+  - [Optional](#optional)
+- [Send us your challenge](#send-us-your-challenge)
 
 # Problem
 
@@ -80,25 +82,3 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
-
-# Solution
-
-## Getting started
-
-Run the following command to start the services. Make sure you have Docker and Docker Compose installed.
-
-`docker-compose up`
-
-## Transactions service
-
-Open a terminal on your transactions container and execute the following commands:
-
-**Synchronise database:**
-
-`npx prisma db push`
-
-**Seed database:**
-
-`npx prisma db seed`
-
-And that's it. Now go to http://localhost:4000/graphql and start creating transactions, the anti-fraud service will take care of moderation, just make sure it's running, otherwise, you can restart it.
