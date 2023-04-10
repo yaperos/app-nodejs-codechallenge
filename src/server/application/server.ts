@@ -25,7 +25,9 @@ class Server {
   }
 
   private configureMiddlewares() {
+    this.server.use(cors());
     this.server.use(express.json());
+    this.server.use(express.urlencoded({ extended: true }));
   }
 
   async starUp() {
@@ -46,3 +48,6 @@ class Server {
 }
 
 export default Server;
+function cors(): any {
+  throw new Error("Function not implemented.");
+}
