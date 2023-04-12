@@ -1,0 +1,33 @@
+### SEND TRANSACTION REJECTED
+POST http://localhost:3000/transaction
+Content-Type: application/json
+
+{
+  "value": 1001,
+  "accountExternalIdDebit": "guid",
+  "accountExternalIdCredit": "guid1",
+  "transferTypeId": 2
+}
+
+### SEND TRANSACTION APPROVED
+POST http://localhost:3000/transaction
+Content-Type: application/json
+
+{
+  "value": 1000,
+  "accountExternalIdDebit": "guid",
+  "accountExternalIdCredit": "guid1",
+  "transferTypeId": 1
+}
+
+### GET ALL TRANSACTIONS
+GET http://localhost:3000/transaction
+
+### GET REJECTED
+GET http://localhost:3000/transaction/1
+
+### GET APROVVED
+GET http://localhost:3000/transaction/2
+
+
+

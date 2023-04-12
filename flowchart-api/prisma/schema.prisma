@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://postgres:postgres@localhost:5432/anti-fraud-db"
+}
+
+// prisma/schema.prisma
+model TransactionStatus {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Transaction Transaction[]
+}
+
+model TransactionType {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Transaction Transaction[]
+}
+
+model TypeAccount {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Transaction {
+  id                      Int               @id @default(autoincrement())
+  value                   Int
+  accountExternalIdDebit  String
+  accountExternalIdCredit String
+  status                  TransactionStatus @relation(fields: [statusId], references: [id])
+  statusId                Int               @default(1)
+  type                    TransactionType   @relation(fields: [transferTypeId], references: [id])
+  transferTypeId          Int
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
