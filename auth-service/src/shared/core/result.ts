@@ -42,6 +42,18 @@ export class Result<T> {
     return this.error as T;
   }
 
+  public static combine<T>(results: T): Result<T> {
+    const errors = Object.values(results)?.reduce((acc, val) => {
+      const error = val.errorValue();
+      if (error) acc.push(error);
+      return acc;
+    },[]);
+    if(errors.length > 0) {
+      return Result.fail(errors);
+    }
+    return Result.ok(results);
+  }
+
   public static ok<U>(value?: U): Result<U> {
     return new Result<U>(true, null, value);
   }

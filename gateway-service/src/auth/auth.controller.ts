@@ -28,10 +28,13 @@ export class AuthController implements OnModuleInit, OnModuleDestroy {
 
   @Post('register')
   async registerUser(@Body() data: createUserDto): Promise<any> {
-    console.log('Sending user.create event', data);
-    const res = await this.authService.createUser(data);
-    console.log('User created event received', res);
-    const a = await this.client.send('user.create', res);
-    return a;
+    const payload = await this.authService.createUser(data);
+    return this.client.send('user.create', payload);
+  }
+
+  @Post('login')
+  async loginUser(@Body() data: createUserDto): Promise<any> {
+    const payload = await this.authService.login(data);
+    return this.client.send('user.login', payload);
   }
 }

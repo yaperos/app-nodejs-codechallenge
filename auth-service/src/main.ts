@@ -6,7 +6,7 @@ import { kafkaConfig } from './shared/options';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.connectMicroservice<MicroserviceOptions>(kafkaConfig);
-  //app.connectMicroservice<MicroserviceOptions>(grpcClient);
+
   await app.listen(3030);
   await app.startAllMicroservices();
 }

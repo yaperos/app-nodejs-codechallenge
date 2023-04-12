@@ -8,4 +8,8 @@ export class loginUserDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @IsString()
+  requestId: string;
+
 }

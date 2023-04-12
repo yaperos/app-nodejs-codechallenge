@@ -1,13 +1,13 @@
 import { ValueObject } from '../../shared/domain/value-object';
-import { UniqueEntityID } from '../../shared/domain/unique-entity-id';
 import { Result } from '../../shared/core/result';
+import { v4 as uuid } from 'uuid';
 
 export interface UserIdProp {
-  _id: UniqueEntityID;
+  _id: string;
 }
 
-export class userId extends ValueObject<UserIdProp> {
-  get id(): UniqueEntityID {
+export class UserID extends ValueObject<UserIdProp> {
+  get id(): string {
     return this.props._id;
   }
 
@@ -15,7 +15,7 @@ export class userId extends ValueObject<UserIdProp> {
     super(props);
   }
 
-  public static create(id: UniqueEntityID): Result<userId> {
-    return Result.ok<userId>(new userId({ _id: id }));
+  public static create(id?: string): Result<UserID> {
+    return Result.ok<UserID>(new UserID({ _id: id || uuid() }));
   }
 }

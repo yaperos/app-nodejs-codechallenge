@@ -1,10 +1,9 @@
-import {Inject, Injectable} from '@nestjs/common';
-import {ClientKafka} from '@nestjs/microservices';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject('AUTH_SERVICE') private readonly client: ClientKafka) {
-  }
+  constructor(@Inject('AUTH_SERVICE') private readonly client: ClientKafka) {}
 
   async onModuleInit() {
     this.client.subscribeToResponseOf('user.create');
