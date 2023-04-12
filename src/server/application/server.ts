@@ -1,25 +1,25 @@
+import cors from "cors";
 import express, { Express } from "express";
+import { GraphQLServer } from "../../graphql";
 import { IDatabaseService } from "../../infrastructure";
-import { errorHandler } from "../../middleware";
-import { IMainRouter } from "../../router/router.interface";
 
 type dependencies = {
-  mainRouter: IMainRouter;
   dbService: IDatabaseService;
+  graphqlServer: GraphQLServer;
 };
 
 class Server {
   readonly serverApp: Express;
-  private _mainRouter: IMainRouter;
   private _dbService: IDatabaseService;
+  private _graphqlServer: GraphQLServer;
 
   public get server(): Express {
     return this.serverApp;
   }
 
-  constructor({ mainRouter, dbService }: dependencies) {
-    this._mainRouter = mainRouter;
+  constructor({ dbService, graphqlServer }: dependencies) {
     this._dbService = dbService;
+    this._graphqlServer = graphqlServer;
 
     this.serverApp = express();
   }
@@ -28,16 +28,14 @@ class Server {
     this.server.use(cors());
     this.server.use(express.json());
     this.server.use(express.urlencoded({ extended: true }));
+
+    this._graphqlServer.setup(this.server);
   }
 
   async starUp() {
     this.configureMiddlewares();
 
     const serverPort = process.env.SERVER_PORT ?? 8080;
-
-    this._mainRouter.setupRouters(this.serverApp);
-
-    this.serverApp.use(errorHandler);
 
     await this._dbService.connect();
 
@@ -48,6 +46,3 @@ class Server {
 }
 
 export default Server;
-function cors(): any {
-  throw new Error("Function not implemented.");
-}

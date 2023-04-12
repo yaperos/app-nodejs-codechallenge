@@ -6,6 +6,7 @@ import {
   Producer,
   ProducerRecord,
 } from "kafkajs";
+import { EventTopic } from "../../utils";
 import { IEventService, dependencies } from "./EventService.interface";
 
 type consumerDependencies = Pick<
@@ -52,7 +53,7 @@ export class KafkaEventService implements IEventService {
 
     await this._consumer.connect();
     await this._consumer.subscribe({
-      topics: ["transaction_anti_fraud_topic"],
+      topics: [EventTopic.antiFraudResponseTransaction],
       fromBeginning: true,
     });
 
@@ -66,7 +67,7 @@ export class KafkaEventService implements IEventService {
   }: consumerDependencies): EachMessageHandler {
     return async ({ topic, message }: EachMessagePayload): Promise<void> => {
       switch (topic) {
-        case "transaction_anti_fraud_topic":
+        case EventTopic.antiFraudResponseTransaction:
           return await transactionAntiFraudResponseHandler.processAntiFraudResponse(
             message
           );

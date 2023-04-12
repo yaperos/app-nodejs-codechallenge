@@ -1,7 +1,5 @@
 import dayjs from "dayjs";
-import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
-import { BadRequestError } from "../../error";
 import { IEventService } from "../../infrastructure/event";
 import {
   ETransactionAntiFraudResponse,
@@ -9,7 +7,13 @@ import {
   TransactionModel,
   transactionType,
 } from "../../transaction";
-import { CreateTransactionBody, IDeadlineTime } from "./interfaces";
+import { IGetTransactionResponse } from "../../transaction/app/GetTransactionResponse.interface";
+import { EventTopic } from "../../utils";
+import {
+  CreateTransactionBody,
+  IDeadlineTime,
+  ITransactionResponse,
+} from "./interfaces";
 import { CreateTransactionBodySchema } from "./schemas";
 import { ITransactionHandler } from "./transaction.interfaces";
 
@@ -35,13 +39,11 @@ export class TransactionHandler implements ITransactionHandler {
   }
 
   async createTransaction(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+    transactionData: CreateTransactionBody
+  ): Promise<ITransactionResponse> {
     try {
       const createTransactionBodyData: CreateTransactionBody =
-        CreateTransactionBodySchema.parse(req.body);
+        CreateTransactionBodySchema.parse(transactionData);
 
       const transactionExisting = await TransactionModel.findOne({
         where: {
@@ -67,12 +69,9 @@ export class TransactionHandler implements ITransactionHandler {
           transactionExisting.antiFraudResponse.transactionStatus ===
           ETransactionAntiFraudResponse.PENDING
         ) {
-          res
-            .status(400)
-            .send(
-              "Duplicated transaction: you cannot create a new transaction with the same data until the previous one is completed"
-            );
-          return;
+          throw Error(
+            "Duplicated transaction: you cannot create a new transaction with the same data until the previous one is completed"
+          );
         }
 
         const transactionDeadlineTime = dayjs(transactionExisting.createAt).add(
@@ -81,14 +80,11 @@ export class TransactionHandler implements ITransactionHandler {
         );
         const timeDifference = transactionDeadlineTime.diff();
         if (timeDifference >= 0) {
-          res
-            .status(400)
-            .send(
-              `Duplicated transaction: you will be available to execute this request in ${
-                timeDifference / 1000
-              }seconds`
-            );
-          return;
+          throw Error(
+            `Duplicated transaction: you will be available to execute this request in ${
+              timeDifference / 1000
+            }seconds`
+          );
         }
       }
 
@@ -103,7 +99,7 @@ export class TransactionHandler implements ITransactionHandler {
       });
 
       await this._eventService.sendEvent({
-        topic: "anti_fraud_eval_transaction",
+        topic: EventTopic.antiFraudEvalTransaction,
         messages: [
           {
             key: id,
@@ -117,34 +113,24 @@ export class TransactionHandler implements ITransactionHandler {
         ],
       });
 
-      res.status(201).json({
-        transactionId: id,
-      });
-      return;
+      return {
+        id,
+      };
     } catch (error) {
       if (error instanceof ZodError) {
-        next(
-          new BadRequestError(
-            400,
+        throw Error(
+          `Validation error: ${JSON.stringify(
             error.issues.map((issue) => issue.message)
-          )
+          )}
+          `
         );
-        return;
       }
-
-      next(error);
-      return;
+      throw error;
     }
   }
 
-  async getTransactionById(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  async getTransactionById(id: string): Promise<IGetTransactionResponse> {
     try {
-      const { transactionId: id } = req.params;
-
       const transactionRecord = await TransactionModel.findOne({
         where: {
           id,
@@ -155,19 +141,15 @@ export class TransactionHandler implements ITransactionHandler {
       });
 
       if (!transactionRecord) {
-        res.status(500).send(`No transaction found with id: ${id}`);
-        return;
+        const errorMessage = `No transaction found with id: ${id}`;
+        console.error(errorMessage);
+        throw Error(errorMessage);
       }
 
-      res
-        .status(200)
-        .json(
-          GetTransactionDTOFromTransactionModel.transform(transactionRecord)
-        );
-      return;
+      return GetTransactionDTOFromTransactionModel.transform(transactionRecord);
     } catch (error) {
-      next(error);
-      return;
+      console.error("TransactionHandler.getTransactionById", error);
+      throw error;
     }
   }
 }

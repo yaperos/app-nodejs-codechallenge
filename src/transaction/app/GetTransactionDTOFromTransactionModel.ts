@@ -1,7 +1,10 @@
 import { TransactionModel } from "../infra";
+import { IGetTransactionResponse } from "./GetTransactionResponse.interface";
 
 export class GetTransactionDTOFromTransactionModel {
-  public static transform(transactionRecord: TransactionModel) {
+  public static transform(
+    transactionRecord: TransactionModel
+  ): IGetTransactionResponse {
     return {
       transactionExternalId: transactionRecord.id,
       transactionType: {
@@ -11,7 +14,7 @@ export class GetTransactionDTOFromTransactionModel {
         name: transactionRecord.antiFraudResponse?.transactionStatus,
       },
       value: transactionRecord.value,
-      createdAt: transactionRecord.createAt,
+      createdAt: transactionRecord.createAt.getTime(),
     };
   }
 }

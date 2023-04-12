@@ -11,3 +11,7 @@ export interface IDeadlineTime {
   value: number;
   unit: dayjs.ManipulateType;
 }
+
+export interface ITransactionResponse {
+  id: string;
+}

@@ -1,14 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { IGetTransactionResponse } from "../../transaction/app/GetTransactionResponse.interface";
+import { CreateTransactionBody, ITransactionResponse } from "./interfaces";
 
 export interface ITransactionHandler {
   createTransaction(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void>;
-  getTransactionById(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void>;
+    transactionData: CreateTransactionBody
+  ): Promise<ITransactionResponse>;
+  getTransactionById(transactionId: string): Promise<IGetTransactionResponse>;
 }
