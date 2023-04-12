@@ -1,6 +1,6 @@
 import { ValueObject } from '../../shared/domain/value-object';
 import { Result } from '../../shared/core/result';
-import bcrypt from 'bcrypt';
+import { compare, hash, hashSync, genSalt } from 'bcrypt';
 
 export interface userPasswordProps {
   value: string;
@@ -32,19 +32,14 @@ export class UserPassword extends ValueObject<userPasswordProps> {
     );
   }
 
-  public async hashPassword(password: string): Promise<string> {
-    const salt = await bcrypt.genSalt(10);
-    return await bcrypt.hash(password, salt);
+  private async hashPassword(password: string): Promise<string> {
+    const salt = await genSalt(10);
+    return await hash(password, salt);
   }
 
-  public async getHashedPassword(): Promise<string> {
+  public getHashedPassword(): Promise<string> {
     return new Promise((resolve, reject) => {
-      bcrypt.hash(this.props.value, 10, (err, hash) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(hash);
-      });
+      return resolve(this.hashPassword(this.value));
     });
   }
 
@@ -52,6 +47,6 @@ export class UserPassword extends ValueObject<userPasswordProps> {
     password: string,
     hashedPassword: string,
   ): Promise<boolean> {
-    return bcrypt.compare(password, hashedPassword);
+    return compare(password, hashedPassword);
   }
 }

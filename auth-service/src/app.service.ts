@@ -13,8 +13,4 @@ export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
-
-  async createUser(data: any) {
-    return data;
-  }
 }

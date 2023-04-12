@@ -3,6 +3,7 @@ import { UseCaseError } from './use-case-error';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace AppError {
+  // @ts-ignore
   export class UnexpectedError extends Result<UseCaseError> {
     constructor(err: any) {
       super(false, {

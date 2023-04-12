@@ -1,9 +1,9 @@
-import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
-import {AuthModule} from './auth/auth.module';
-import {TransactionModule} from './transaction/transaction.module';
-import {requestMiddleware} from './middlewares/request.middleware';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { TransactionModule } from './transaction/transaction.module';
+import { requestMiddleware } from './middlewares/request.middleware';
 
 @Module({
   imports: [AuthModule, TransactionModule],

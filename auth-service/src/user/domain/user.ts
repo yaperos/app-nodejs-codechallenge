@@ -8,7 +8,7 @@ import { Result } from '../../shared/core/result';
 import {UserID} from "./user-id";
 
 export interface UserProps {
-  id: UserID;
+  id?: UserID;
   email?: UserEmail;
   password?: UserPassword;
   name?: UserName;
@@ -17,7 +17,7 @@ export interface UserProps {
 }
 
 export class User implements UserProps {
-  id: UserID;
+  id?: UserID;
   email?: UserEmail;
   password?: UserPassword;
   name?: UserName;

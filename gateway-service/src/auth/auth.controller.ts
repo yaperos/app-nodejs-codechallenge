@@ -14,7 +14,7 @@ import { ClientKafka } from '@nestjs/microservices';
 export class AuthController implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly authService: AuthService,
-    @Inject('AUTH_SERVICE') private readonly client: ClientKafka,
+    @Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
   ) {}
 
   async onModuleInit() {
@@ -29,12 +29,17 @@ export class AuthController implements OnModuleInit, OnModuleDestroy {
   @Post('register')
   async registerUser(@Body() data: createUserDto): Promise<any> {
     const payload = await this.authService.createUser(data);
-    return this.client.send('user.create', payload);
+    return this.client.send('user.create', {
+      requestId: data.requestId,
+      payload
+    });
   }
 
   @Post('login')
   async loginUser(@Body() data: createUserDto): Promise<any> {
     const payload = await this.authService.login(data);
-    return this.client.send('user.login', payload);
+    const res = await this.client.send('user.login', payload);
+    console.log('RES: ', res)
+    return res;
   }
 }

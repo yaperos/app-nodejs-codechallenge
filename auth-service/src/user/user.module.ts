@@ -1,4 +1,4 @@
-import {Module, OnModuleInit} from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {ConfigModule} from "@nestjs/config";
 import {PrismaModule} from "../prisma/prisma.module";
 import {PrismaUserRepo} from "./infraestructure/repos/PrismaUserRepo";
@@ -6,6 +6,7 @@ import {USER_REPO} from "./domain/user.repo";
 import {UserUseCases} from "./application/user.usecases";
 import {UserController} from "./infraestructure/controller/user.controller";
 import {PrismaService} from "../prisma/prisma.service";
+import {ClientsModule, Transport} from "@nestjs/microservices";
 
 export const useCases = [
   UserUseCases,
@@ -13,7 +14,22 @@ export const useCases = [
 
 @Module({
   imports: [
-    PrismaModule
+    ClientsModule.register([
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'auth-gateway',
+            brokers: ['localhost:9092'],
+          },
+          consumer: {
+            groupId: 'auth-service-consumer',
+          }
+        }
+      }
+    ]),
+    PrismaModule,
   ],
   providers: [
     ...useCases,

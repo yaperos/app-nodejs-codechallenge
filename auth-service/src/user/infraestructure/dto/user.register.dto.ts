@@ -7,6 +7,6 @@ export interface CreateUserPayload {
 }
 
 export class CreateUserDTO {
-  requestID: string;
+  requestId: string;
   payload: CreateUserPayload;
 }

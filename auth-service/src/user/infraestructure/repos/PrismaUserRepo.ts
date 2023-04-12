@@ -22,8 +22,10 @@ export class PrismaUserRepo implements IUserRepo {
           email
         },
       });
+      console.log(!!user === true);
       return !!user === true;
     } catch (e) {
+      console.log('return false');
       return false;
     }
   }

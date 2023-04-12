@@ -1,10 +1,9 @@
-import {Injectable} from '@nestjs/common';
-import {createUserDto, loginUserDto} from './dto';
+import { Injectable } from '@nestjs/common';
+import { createUserDto, loginUserDto } from './dto';
 
 @Injectable()
 export class AuthService {
-  constructor() {
-  }
+  constructor() {}
 
   async createUser(data: createUserDto) {
     const request = data.requestId;
@@ -12,9 +11,9 @@ export class AuthService {
     return {
       requestID: request,
       payload: {
-        ...data
-      }
-    }
+        ...data,
+      },
+    };
   }
 
   async login(data: loginUserDto) {
@@ -23,8 +22,8 @@ export class AuthService {
     return {
       requestID: request,
       payload: {
-        ...data
-      }
-    }
+        ...data,
+      },
+    };
   }
 }
