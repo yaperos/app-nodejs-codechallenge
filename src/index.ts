@@ -5,6 +5,7 @@ import {
   TransactionHandler,
 } from "./handler";
 import { IDatabaseService, PostgreSQLDatabaseService } from "./infrastructure";
+import { CacheService, ICacheService } from "./infrastructure/cache";
 import { KafkaEventService } from "./infrastructure/event";
 import Server from "./server/application/server";
 
@@ -12,6 +13,7 @@ dotenv.config();
 
 export const dbService: IDatabaseService =
   PostgreSQLDatabaseService.getInstance();
+export const cacheService: ICacheService = CacheService.getInstance();
 
 async function initializeApp() {
   const eventService = new KafkaEventService();

@@ -9,7 +9,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
-import { dbService } from "../..";
+import { cacheService, dbService } from "../..";
+import { ECacheCollection } from "../../infrastructure/cache";
 import { ETransactionAntiFraudResponse } from "../app";
 import { TransactionModel } from "./TransactionModel";
 import { ITransactionAntiFraudResponseSaveOne } from "./interfaces";
@@ -90,9 +91,30 @@ export class TransactionAntiFraudResponseModel {
   }
 
   async updateTransactionStatus(
-    transactionStatus: ETransactionAntiFraudResponse
+    transactionStatus: ETransactionAntiFraudResponse,
+    transactionId?: string
   ) {
     try {
+      if (
+        transactionId &&
+        cacheService.has(ECacheCollection.transactions, transactionId)
+      ) {
+        const deletedItems = cacheService.delete(
+          ECacheCollection.transactions,
+          transactionId
+        );
+
+        if (deletedItems) {
+          console.info(
+            `No in-memory item found with id ${transactionId} in the collection ${ECacheCollection.transactions}`
+          );
+        }
+
+        console.info(
+          `${deletedItems} in-memory items deleted in the collection ${ECacheCollection.transactions}`
+        );
+      }
+
       await dbService
         .dataSource()
         .getRepository(TransactionAntiFraudResponseModel)

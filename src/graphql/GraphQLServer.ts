@@ -1,6 +1,6 @@
 import { Express } from "express";
-import { graphqlHTTP } from "express-graphql";
 import { GraphQLSchema, buildSchema } from "graphql";
+import { createHandler } from "graphql-http/lib/use/express";
 import { ITransactionHandler } from "../handler";
 import {
   ICreateTransactionArguments,
@@ -92,13 +92,9 @@ export class GraphQLServer {
   }
 
   setup(server: Express) {
-    server.use(
+    server.all(
       "/graphql",
-      graphqlHTTP({
-        schema: this._schema,
-        rootValue: this._rootValue,
-        graphiql: process.env.ENV === "DEV",
-      })
+      createHandler({ schema: this._schema, rootValue: this._rootValue })
     );
   }
 }

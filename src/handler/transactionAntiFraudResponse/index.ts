@@ -41,7 +41,8 @@ export class TransactionAntiFraudResponseHandler
       }
 
       await transactionAntiFraudExisting?.updateTransactionStatus(
-        message.value.transactionStatus
+        message.value.transactionStatus,
+        message.key
       );
 
       console.info("processAntiFraudResponse executed successfully", message);

@@ -131,10 +131,7 @@ export class TransactionHandler implements ITransactionHandler {
 
   async getTransactionById(id: string): Promise<IGetTransactionResponse> {
     try {
-      const transactionRecord = await TransactionModel.findOne({
-        where: {
-          id,
-        },
+      const transactionRecord = await TransactionModel.findById(id, {
         relations: {
           antiFraudResponse: true,
         },

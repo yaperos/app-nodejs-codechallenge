@@ -9,13 +9,16 @@ import {
   PrimaryColumn,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
-import { dbService } from "../..";
+import { cacheService, dbService } from "../..";
 import { CreateTransactionBody } from "../../handler/transaction/interfaces";
+import { ECacheCollection } from "../../infrastructure/cache";
 import { ETransactionAntiFraudResponse, transactionType } from "../app";
 import { TransactionAntiFraudResponseModel } from "./TransactionAntiFraudResponseModel";
 
 @Entity()
 export class TransactionModel {
+  private static readonly _cacheCollection = ECacheCollection.transactions;
+
   @PrimaryColumn()
   id: string;
 
@@ -85,6 +88,47 @@ export class TransactionModel {
         .findOne(options);
     } catch (error) {
       console.error("TransactionModel.findOne", error);
+      throw error;
+    }
+  }
+
+  public static async findById(
+    id: string,
+    options: Omit<FindOneOptions<TransactionModel>, "where">
+  ) {
+    try {
+      const cacheTransactionModel = cacheService.get<TransactionModel>(
+        TransactionModel._cacheCollection,
+        id
+      );
+
+      if (cacheTransactionModel) {
+        return cacheTransactionModel;
+      }
+
+      const transactionModelInstance = await dbService
+        .dataSource()
+        .getRepository(TransactionModel)
+        .findOne({
+          ...options,
+          where: {
+            id,
+          },
+        });
+
+      if (!transactionModelInstance) {
+        return null;
+      }
+
+      cacheService.set<TransactionModel>(
+        TransactionModel._cacheCollection,
+        id,
+        transactionModelInstance
+      );
+
+      return transactionModelInstance;
+    } catch (error) {
+      console.error("TransactionModel.findById", error);
       throw error;
     }
   }
