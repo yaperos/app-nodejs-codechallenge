@@ -1,12 +1,39 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
 - [Send us your challenge](#send_us_your_challenge)
+
+# Solution
+for this challenge I created two applications one for data entry as api manager and another to deal with the anti-fraud both talking to the postgres database and communicating with kafka.
+
+To start the application you first need to start the development environment with docker-compose:
+
+```bash
+$ docker-compose up -d
+```
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+this application uses the nestJS framework so you will need to install the cli:
+
+```bash
+$ npm install -g @nestjs/cli
+```
+
+To start the applications just follow the command:
+
+```bash
+$ cd core
+$ npm i
+$ nest start core
+```
+
+```bash
+$ cd core
+$ nest start anti-fraud
+```
+
+with the applications started, you will be able to access the address http://localhost:3000/api through the browser and through the swagger itself you will be able to create a transaction and list changed transactions
 
 # Problem
 
@@ -77,6 +104,6 @@ You can use Graphql;
 
 # Send us your challenge
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+When you finish your challenge, after forking a repository, you can open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
