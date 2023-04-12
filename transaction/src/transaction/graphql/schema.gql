@@ -1,0 +1,44 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionType {
+  id: Float!
+  name: String!
+}
+
+type TransactionStatus {
+  id: Float!
+  name: String!
+}
+
+type Transaction {
+  id: Float!
+  transactionExternalId: String!
+  value: Float!
+  createdAt: DateTime!
+  accountExternalIdDebit: String
+  accountExternalIdCredit: String
+  transferType: TransactionType!
+  transactionStatus: TransactionStatus!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  findTransactionByExternalId(transactionExternalId: String!): Transaction
+}
+
+type Mutation {
+  createTransaction(CreateTransactionWithGraphql: CreateTransactionWithGraphql!): Transaction!
+}
+
+input CreateTransactionWithGraphql {
+  accountExternalIdDebit: String
+  accountExternalIdCredit: String
+  transferTypeId: Float!
+  value: Float!
+}

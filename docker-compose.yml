@@ -1,4 +1,5 @@
 version: "3.7"
+
 services:
   postgres:
     image: postgres:14
@@ -7,10 +8,16 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db_retoyape
+    networks:
+      - my-network
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - my-network
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,3 +30,36 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - my-network
+  transaction:
+    build: ./transaction
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      KAFKA_BROKER_URL: kafka:29092
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: db_retoyape
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    command: ["sh", "-c", "npm run seed && npm run start:prod"]
+    ports:
+      - "3000:3000"
+    networks:
+      - my-network
+  antifraud:
+    build: ./antifraud
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKER_URL: kafka:29092
+    ports:
+      - "3001:3001"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+
