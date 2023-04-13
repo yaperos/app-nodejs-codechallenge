@@ -1,15 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TransactionController } from './controller/transaction.controller';
-import {TransactionRepo} from "./transaction.repo";
-import {MongooseModule} from "@nestjs/mongoose";
-import {transactionModel, transactionSchema} from "./schema/transaction.schema";
-import {TransactionService} from "./service/transaction.service";
+import { TransactionRepo } from './transaction.repo';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  transactionModel,
+  transactionSchema,
+} from './schema/transaction.schema';
+import { TransactionService } from './service/transaction.service';
+import { BalanceService } from '../balances/service/balance.service';
+import { BalancesModule } from '../balances/balances.module';
 
 @Module({
   imports: [
+    BalancesModule,
     MongooseModule.forFeature([
-      { name: transactionModel.name, schema: transactionSchema}
+      { name: transactionModel.name, schema: transactionSchema },
     ]),
     ClientsModule.register([
       {
@@ -33,10 +39,8 @@ import {TransactionService} from "./service/transaction.service";
     {
       useClass: TransactionRepo,
       provide: 'TRANSACTION_REPO',
-    }
+    },
   ],
-  exports: [
-    TransactionService
-  ],
+  exports: [TransactionService],
 })
 export class TransactionsModule {}

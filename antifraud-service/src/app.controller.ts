@@ -1,10 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    @Inject('ANTIFRAUD_SERVICE') private readonly client: ClientKafka,
+  ) {}
 
   @Get()
   getHello(): string {
@@ -13,7 +16,6 @@ export class AppController {
 
   @MessagePattern('transaction.verify')
   async validateTransaction(@Payload() transactionPayload: transactionDTO) {
-    console.log('VALIDATE TRANSACTION: ', transactionPayload);
     return {
       requestID: transactionPayload.transactionExternalId,
       isValid: await this.appService.validateAmount(

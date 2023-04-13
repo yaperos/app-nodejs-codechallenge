@@ -1,6 +1,5 @@
-
 export interface CreateUserPayload {
-  email: string
+  email: string;
   password: string;
   name: string;
   lastname: string;

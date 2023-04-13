@@ -1,5 +1,5 @@
 import { User } from './user';
-import {UserEmail} from "./user-email";
+import { UserEmail } from './user-email';
 
 export const USER_REPO = 'USER_REPO';
 

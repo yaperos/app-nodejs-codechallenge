@@ -1,14 +1,14 @@
-import {Module} from '@nestjs/common';
-import {ClientsModule, Transport} from '@nestjs/microservices';
-import {MongooseModule} from "@nestjs/mongoose";
-import {BalanceService} from "./service/balance.service";
-import {BalancesController} from "./controller/balances.controller";
-import {balanceModel, balanceSchema} from "./schema/balance.schema";
+import { Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MongooseModule } from '@nestjs/mongoose';
+import { BalanceService } from './service/balance.service';
+import { BalancesController } from './controller/balances.controller';
+import { balanceModel, balanceSchema } from './schema/balance.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      {name: balanceModel.name, schema: balanceSchema}
+      { name: balanceModel.name, schema: balanceSchema },
     ]),
     ClientsModule.register([
       {
@@ -30,5 +30,4 @@ import {balanceModel, balanceSchema} from "./schema/balance.schema";
   providers: [BalanceService],
   exports: [BalanceService],
 })
-export class BalancesModule {
-}
+export class BalancesModule {}

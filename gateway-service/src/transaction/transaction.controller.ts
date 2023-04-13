@@ -4,25 +4,23 @@ import {
   Get,
   Inject,
   OnModuleDestroy,
-  OnModuleInit, Post,
+  OnModuleInit,
+  Post,
   Query,
-  Req,
 } from '@nestjs/common';
-import {ClientKafka} from '@nestjs/microservices';
-import {Request} from 'express';
+import { ClientKafka } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Controller('transaction')
 export class TransactionController implements OnModuleInit, OnModuleDestroy {
   constructor(
     @Inject('GATEWAY_SERVICE') private readonly client: ClientKafka,
-  ) {
-  }
+  ) {}
 
   async onModuleInit() {
     await this.client.subscribeToResponseOf('user.balance');
     await this.client.subscribeToResponseOf('transaction.create');
     await this.client.connect();
-    console.log('TRANSACTION CONTROLLER INITIALIZED')
   }
 
   async onModuleDestroy() {
@@ -30,13 +28,10 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
   }
 
   @Get('balance')
-  async getUserBalance(
-    @Query('id') req,
-    @Body() body
-  ): Promise<any> {
+  async getUserBalance(@Query('id') req, @Body() body): Promise<any> {
     const payload = {
       requestId: body.requestId,
-      request: {userID: req,}
+      request: { userID: req },
     };
     return this.client.send('user.balance', payload);
   }
@@ -50,9 +45,12 @@ export class TransactionController implements OnModuleInit, OnModuleDestroy {
         accountExternalIdCredit: body.accountExternalIdCredit,
         amount: body.amount,
         transferTypeId: body.transferTypeId,
-      }
-    }
-    return this.client.send('transaction.create', payload);
+      },
+    };
+    const res = await lastValueFrom(
+      this.client.send('transaction.create', payload),
+    );
+    return res;
   }
 }
 
