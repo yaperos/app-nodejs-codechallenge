@@ -96,10 +96,20 @@ mutation {
 
 >API Client (Postman)
 
+<img src="https://github.com/PietroArGal/PietroAramburu-YapeChallenge/blob/main/TestPics/postman1.png?raw=true"></img>
 
+<img src="https://github.com/PietroArGal/PietroAramburu-YapeChallenge/blob/main/TestPics/postman2.png?raw=true"></img>
 
 >GraphQL
 
+<img src="https://github.com/PietroArGal/PietroAramburu-YapeChallenge/blob/main/TestPics/graphql1.png?raw=true"></img>
 
+<img src="https://github.com/PietroArGal/PietroAramburu-YapeChallenge/blob/main/TestPics/graphql2.png?raw=true"></img>
+
+>Kafka
+
+<img src="https://github.com/PietroArGal/PietroAramburu-YapeChallenge/blob/main/TestPics/kafkapic.png?raw=true"></img>
 
 >Contenedores Corriendo
+
+<img src="https://github.com/PietroArGal/PietroAramburu-YapeChallenge/blob/main/TestPics/docker.png?raw=true"></img>
