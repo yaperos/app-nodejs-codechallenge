@@ -1,82 +1,105 @@
-# Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# Yape Challenge - Pietro Aramburú
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Ejecución
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+1. Clonar el repo
+2. Ejecutar: 	`docker-compose up`
 
-# Problem
+---
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## Pruebas
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+> Utilizar algún cliente API o el pg de Graphql.
 
-Every transaction with a value greater than 1000 should be rejected.
+---
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+## Clientes de API:
 
-# Tech Stack
+1. Crear Transacción:
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+- http://localhost:3000/api/transactions
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
+`
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+  "accountExternalIdDebit": "1619-3241-6587-0516",
+  "accountExternalIdCredit": "1619-1271-6587-0516",
+  "transferTypeId": 1,
+  "value": 169
 }
-```
+`
 
-2. Resource to retrieve a transaction
+2. Consultar Transacción:
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+- http://localhost:3000/api/transactions/transactionId
+
+---
+
+## Graphql:
+
+- http://localhost:3000/graphql
+
+1. Crear Transacción:
+
+`
+mutation {
+  createTransaction(CreateTransactionWithGraphql: {
+    accountExternalIdDebit: "1619-3241-6587-0516",
+    accountExternalIdCredit: "1619-3241-6587-0516",
+    transferTypeId: 1,
+    value: 169
+  }) {
+    id
+    transactionExternalId
+    value
+    createdAt
+    accountExternalIdDebit
+    accountExternalIdCredit
+    transferType {
+      id
+      name
+    }
+    transactionStatus {
+      id
+      name
+    }
+  }
 }
-```
+`
 
-## Optional
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+2. Consultar Transacción:
 
-You can use Graphql;
+`query {
+  findTransactionByExternalId(
+    transactionExternalId: "Aqui va el transactionId") {
+    transactionExternalId
+    value
+    createdAt
+    accountExternalIdDebit
+    accountExternalIdCredit
+    transferType {
+      id
+      name
+    }
+    transactionStatus {
+      id
+      name
+    }
+  }
+}
+`
 
-# Send us your challenge
+---
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## Screenshots:
 
-If you have any questions, please let us know.
+>API Client (Postman)
+
+
+
+>GraphQL
+
+
+
+>Contenedores Corriendo
