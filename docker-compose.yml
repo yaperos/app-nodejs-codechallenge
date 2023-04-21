@@ -7,19 +7,51 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - yape-challenge-network
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - yape-challenge-network
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: [ zookeeper ]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - yape-challenge-network
+  ms-anti-fraud:
+    build: ./ms-anti-fraud
+    image: ms-anti-fraud
+    depends_on: [ kafka ]
+    environment:
+      KAFKA_URL: kafka:9092
+    ports:
+      - 3000:3000
+    networks:
+      - yape-challenge-network
+  transaction:
+    build: ./transaction
+    image: transaction
+    depends_on: [ kafka, postgres, ms-anti-fraud ]
+    environment:
+      KAFKA_URL: kafka:9092
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 3010:3010
+    networks:
+      - yape-challenge-network
+networks:
+  yape-challenge-network:
