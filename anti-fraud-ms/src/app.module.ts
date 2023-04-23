@@ -1,10 +1,9 @@
+import { TransactionModule } from './../../transaction-api-ms/src/transaction/transaction.module';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [TransactionModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
