@@ -1,19 +1,33 @@
 version: "3.7"
 services:
+
   postgres:
     image: postgres:14
+    container_name: yape-postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - yape-network
+
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:7.2.1
+    container_name: yape-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - yape-network
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    image: confluentinc/cp-server:7.2.1
+    depends_on: [ zookeeper ]
+    container_name: yape-kafka
+    hostname: kafka
+    restart: always
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -23,3 +37,30 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+      - 9991:9991
+    networks:
+      - yape-network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_METRICS_PORT: 9991
+    networks:
+      - yape-network
+
+volumes:
+  postgres:
+    name: yape-postgres
+
+networks:
+  yape-network:
+    name: yape-network
+    driver: bridge
