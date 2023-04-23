@@ -56,6 +56,25 @@ services:
     networks:
       - yape-network
 
+  redis:
+    image: redis:6.0
+    container_name: yape-redis
+    ports:
+      - 6379:6379
+    networks:
+      - yape-network
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    networks:
+      - yape-network
+
 volumes:
   postgres:
     name: yape-postgres

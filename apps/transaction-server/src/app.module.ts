@@ -5,6 +5,7 @@ import { AntiFraudReceiverModule } from './anti-fraud-receiver/anti-fraud-receiv
 import { ConfigModule } from '@nestjs/config';
 import { TransactionModule } from './transaction/transaction.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { RedisModule } from './redis/redis.module';
 import config from './config/configuration';
 
 @Module({
@@ -19,6 +20,7 @@ import config from './config/configuration';
     AntiFraudReceiverModule,
     TransactionModule,
     PrismaModule,
+    RedisModule,
 
   ],
   controllers: [AppController],

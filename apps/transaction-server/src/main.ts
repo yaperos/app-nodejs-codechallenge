@@ -17,6 +17,8 @@ async function bootstrap() {
     },
   });
 
+  app.enableCors({ origin: process.env.ALLOWED_ORIGIN });
+  app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
     .setTitle('Yape Transaction API')

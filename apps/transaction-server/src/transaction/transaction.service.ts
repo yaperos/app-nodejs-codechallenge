@@ -3,26 +3,25 @@ import { ClientKafka } from '@nestjs/microservices';
 import { CreateTransactionRequest } from './dto/create-transaction-request.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { TransactionResponseEntity } from './entities/transaction.response.entity';
-import { TransactionEntity } from './entities/transaction.entity';
-
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache as CacheManager } from 'cache-manager';
+import { YapeTransaction } from '@prisma/client';
 @Injectable()
 export class TransactionService {
 
     constructor(
         @Inject('ANTI_FRAUD_SERVICE') private readonly client: ClientKafka,
-        private prisma : PrismaService
+        private prisma : PrismaService,
+        @Inject(CACHE_MANAGER) private cacheManager: CacheManager
       ) { }
 
       async create(createTransactionRequest: CreateTransactionRequest) {
 
         /*
-                Crear la transacción con primsa
+                Crear la transacción con prisma
                 Crear la transacción en redis
                 Enviar la transacción a anti-fraud
         */
-        // this.client.emit('anti-fraud',
-        //   JSON.stringify(createTransactionRequest)
-        // );
 
         let opt = await this.prisma.yapeTransaction.create({
             data: {
@@ -32,6 +31,8 @@ export class TransactionService {
                 tranferTypeId : createTransactionRequest.tranferTypeId
             }
         })
+
+        await this.cacheManager.set(opt.transactionExternalId, opt);
         
         this.client.emit('anti-fraud',JSON.stringify(opt));
     
@@ -44,15 +45,16 @@ export class TransactionService {
             Si no existe, buscarla en prisma
             Si no existe, retornar un error
         */
+        const value: YapeTransaction  = await this.cacheManager.get(id);
+        if(value) {
+            console.log("corre cache");
+            return new TransactionResponseEntity(value);
+        }
+
         return new TransactionResponseEntity(await this.prisma.yapeTransaction.findUnique({
             where: {
                 transactionExternalId: id
             }
         }));
-        // return await this.prisma.yapeTransaction.findUnique({
-        //     where: {
-        //         transactionExternalId: id
-        //     }
-        // })
     }
 }

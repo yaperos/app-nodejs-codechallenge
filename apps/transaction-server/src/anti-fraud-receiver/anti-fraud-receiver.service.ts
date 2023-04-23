@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache as CacheManager } from 'cache-manager';
 @Injectable()
 export class AntiFraudReceiverService {
 
     constructor(
         private prisma: PrismaService,
+        @Inject(CACHE_MANAGER) private cacheManager: CacheManager
     ) {}
 
     async handleAntiSuccess(data: any) {
@@ -15,7 +17,8 @@ export class AntiFraudReceiverService {
         let obj = await this.prisma.yapeTransaction.update({
             where: { transactionExternalId: id },
             data: { transactionStatus: 2 },
-        });   
+        });
+        await this.cacheManager.set(obj.transactionExternalId, obj);   
         console.log('obj: ', obj);
         
     }
@@ -27,7 +30,8 @@ export class AntiFraudReceiverService {
         let obj = await  this.prisma.yapeTransaction.update({
             where: { transactionExternalId: id },
             data: { transactionStatus: 3 },
-        });   
+        });
+        await this.cacheManager.set(obj.transactionExternalId, obj);   
         console.log('obj: ', obj);
     }
 
