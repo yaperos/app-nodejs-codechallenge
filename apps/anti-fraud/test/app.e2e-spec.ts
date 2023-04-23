@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AntiFraudModule } from './../src/anti-fraud.module';
+import { AntiFraudModule } from '../src/anti-fraud.module';
 
 describe('AntiFraudController (e2e)', () => {
   let app: INestApplication;
