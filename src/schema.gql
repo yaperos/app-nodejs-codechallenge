@@ -1,0 +1,84 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionStatus {
+  """name transaction type"""
+  name: String
+}
+
+type TransactionType {
+  """name transaction type"""
+  name: String!
+}
+
+"""response"""
+type TransactionResponseData {
+  """Transaction information"""
+  transactionExternalId: String
+
+  """Transaction information"""
+  accountExternalIdDebit: String
+
+  """Transaction information"""
+  accountExternalIdCredit: String
+
+  """Transaction information"""
+  transactionType: TransactionType
+
+  """Transaction information"""
+  transactionStatus: TransactionStatus
+
+  """Transaction information"""
+  valueTransaction: Int
+
+  """Transaction information"""
+  createdAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""response"""
+type TransactionResponse {
+  """Transaction information"""
+  transactionExternalId: String
+
+  """Transaction information"""
+  transactionType: TransactionType
+
+  """Transaction information"""
+  transactionStatus: TransactionStatus
+
+  """Transaction information"""
+  valueTransaction: Int
+
+  """Transaction information"""
+  createdAt: DateTime
+}
+
+type Query {
+  getTransactions: [TransactionResponse!]!
+  getTransactionsById(id: String!): TransactionResponse!
+}
+
+type Mutation {
+  """se enviara los events"""
+  registers(transactionRequest: TransactionRequest!): [TransactionResponseData!]!
+}
+
+"""transaction list to save"""
+input TransactionRequest {
+  """Transaction information"""
+  transactionRequest: [TransactionData!]!
+}
+
+"""Object Transaction"""
+input TransactionData {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  transactionType: Int!
+  value: Int!
+}

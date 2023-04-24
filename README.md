@@ -1,82 +1,140 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Steps application install :smile:. 
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+- [Requeriments](#Requeriments)
+- [Step 1](#Step_1)
+- [Step 2](#Step_2)
+- [Step 3](#Step_3)
+- [Operation](#Operation)
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
 
-# Problem
+# Requeriments
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+- docker_cli
+- nodev_v18+
+- docker-compose_cli
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+# Steps: 
+  ## Step 1
 
-Every transaction with a value greater than 1000 should be rejected.
+  ```cmd
+    clazaro ❯ npm install
+  ```
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+  ## Step 2
+
+  ```cmd
+    clazaro ❯ docker-compose --env-file .\env.dev up -d postgres zookeeper kafka
+  ```
+  ## Step 3
+
+  ```cmd
+    clazaro ❯ npm run start:dev
+  ```
+
+# Test
+```cmd
+  clazaro ❯  npm run test:cov
 ```
 
-# Tech Stack
+# Optional
+Create local use project docker-compose: 
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```cmd
+  clazaro ❯ docker-compose --env-file .\env.uat up 
+```
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+# Operation
+1. querys create: 
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
+```graphql
+mutation Transactions($transactionRequest: TransactionRequest!) {
+  registers(transactionRequest: $transactionRequest) {
+    transactionExternalId,
+    accountExternalIdDebit,
+    accountExternalIdCredit,
+    transactionType {
+      name
+    }
+    transactionStatus{
+      name
+    },
+    valueTransaction,
+     createdAt
+  }
+}
+### enviroment
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+  "transactionRequest": {
+    "transactionRequest": [
+      {
+        "accountExternalIdDebit": "CRD-00001-1",
+        "accountExternalIdCredit": "CRD-00001-1",
+        "transactionType": 1,
+        "value": 1500
+        
+      }
+    ]
+  }
+}
+
+### http header
+{
+  "authorization":"12345"
+}
+
+```
+
+2. Resource to retrieve all transactions
+
+```graphql
+query {
+  getTransactions {
+    transactionExternalId,
+    transactionType {
+      name
+    }
+    transactionStatus{
+      name
+    },
+    valueTransaction,
+     createdAt
+  }
+}
+
+### http header
+{
+  "authorization":"12345"
 }
 ```
 
-2. Resource to retrieve a transaction
 
-```json
+3. Resource to retrieve one transaction
+
+```graphql
+query ($id: String!) {
+  getTransactionsById(id: $id){
+    transactionExternalId,
+    transactionType {
+      name
+    }
+    transactionStatus{
+      name
+    },
+    valueTransaction,
+     createdAt
+  }
+}
+
+### enviroment
+
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+  "id": "4c4908c3-840e-447f-9a21-44a1c0176490"
+}
+
+### http header
+{
+  "authorization":"12345"
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
