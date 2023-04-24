@@ -1,13 +1,14 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, ParseUUIDPipe } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionRequest } from './dto/create-transaction-request.dto';
 import { ApiBody, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { TransactionEntity } from './entities/transaction.entity';
 import { TransactionResponseEntity } from './entities/transaction.response.entity';
+import { IsNotEmpty } from 'class-validator';
 
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(private readonly transactionService: TransactionService) { }
 
 
 
@@ -15,15 +16,15 @@ export class TransactionController {
   @Post()
   @ApiBody({ type: TransactionEntity })
   @ApiCreatedResponse({ type: TransactionResponseEntity })
-  create(@Body() createTransactionRequest :CreateTransactionRequest ) {
+  create(@Body() createTransactionRequest: CreateTransactionRequest): Promise<TransactionResponseEntity> {
     return this.transactionService.create(createTransactionRequest);
   }
 
   @Get(':id')
   @ApiOkResponse({ type: TransactionResponseEntity })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<TransactionResponseEntity> {
     return await this.transactionService.findOne(id);
   }
 
-  
+
 }

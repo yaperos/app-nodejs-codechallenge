@@ -96,6 +96,7 @@ services:
     build: 
       context : .
       dockerfile: Dockerfile2
+    container_name: yape-anti-fraud
     depends_on: [ kafka ]
     environment:
       KAFKA_BROKERS: kafka:29092
