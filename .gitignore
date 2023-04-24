@@ -1,6 +1,8 @@
 # compiled output
 /transaction/dist
 /transaction/node_modules
+/anti-fraud/dist
+/anti-fraud/node_modules
 
 # Logs
 logs
