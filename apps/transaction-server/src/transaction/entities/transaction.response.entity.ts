@@ -41,7 +41,7 @@ export class TransactionResponseEntity {
   
     @Field()
     @ApiProperty()
-    createdAt: Date;
+    createdAt: string;
   
   }
   

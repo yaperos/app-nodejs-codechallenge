@@ -93,7 +93,7 @@ If you have any questions, please let us know.
 
   You can use the swagger url to test the apis http://localhost:3000/api
 
-## Swagger URL
+## Swagger
 
 ![Swagger URL](/images/swagger.png)
 ## Post Transaction Correct
@@ -108,6 +108,16 @@ If you have any questions, please let us know.
 ## Get Transaction Incorrect
 
 ![POST Transaction](/images/get_wrong.png)
+
+## GraphQL
+
+## Mutation
+
+![Mutation createTransaction ](/images/mutation-graphql.png)
+
+## Query
+
+![Query Transaction](/images/query-graphql.png)
 
 
 # Extas 

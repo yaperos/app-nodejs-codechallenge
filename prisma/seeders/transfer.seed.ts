@@ -1,12 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
 
-export const ObjectTransactionTypes = {
+const ObjectTransactionTypes = {
   1 : "deposit",
   2 : "withdraw",
   3 : "transfer"
 }
-export const ObjectTransactionStatus = {
+const ObjectTransactionStatus = {
   1 : "pending",
   2 : "approved",
   3 : "rejected"
