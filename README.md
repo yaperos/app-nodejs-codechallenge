@@ -80,3 +80,49 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+
+# Run Project
+
+```
+  docker-compose up -d 
+
+```
+
+# Test Proyect
+
+  You can use the swagger url to test the apis http://localhost:3000/api
+
+## Swagger URL
+
+![Swagger URL](/images/swagger.png)
+## Post Transaction Correct
+![POST Transaction](/images/post.png)
+## Get Transaction Correct
+
+![Get Transaction](/images/get.png)
+
+## Post Tranasction Incorrect
+![POST Transaction](/images/post_wrong.png)
+
+## Get Transaction Incorrect
+
+![POST Transaction](/images/get_wrong.png)
+
+
+# Extas 
+
+## Kafka-ui 
+
+  - URL: http://localhost:8080/
+  - Use to see your broker, topics , consumers
+
+  ![POST Transaction](/images/kafka-ui.png)
+
+## Redis Comander
+
+  - URL: http://localhost:8081/
+  - We are using redis cache
+
+  ![POST Transaction](/images/redis-comander.png)
+  
