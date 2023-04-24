@@ -16,13 +16,13 @@ export class TransactionController {
   @Post()
   @ApiBody({ type: TransactionEntity })
   @ApiCreatedResponse({ type: TransactionResponseEntity })
-  create(@Body() createTransactionRequest: CreateTransactionRequest): Promise<TransactionResponseEntity> {
+  create(@Body() createTransactionRequest: CreateTransactionRequest) {
     return this.transactionService.create(createTransactionRequest);
   }
 
   @Get(':id')
   @ApiOkResponse({ type: TransactionResponseEntity })
-  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<TransactionResponseEntity> {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return await this.transactionService.findOne(id);
   }
 

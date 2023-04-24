@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "migrate": "prisma migrate dev",
+    "migrate": "npx prisma migrate dev",
     "build:transaction": "nest build transaction-server",
     "build:anti-fraud": "nest build anti-fraud",
     "build": "nest build && nest build transaction-server && nest build anti-fraud",
@@ -23,6 +23,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/transaction-server/test/jest-e2e.json"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seeders/transfer.seed.ts"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^1.0.0",

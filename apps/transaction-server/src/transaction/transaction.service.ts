@@ -5,7 +5,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TransactionResponseEntity } from './entities/transaction.response.entity';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache as CacheManager } from 'cache-manager';
-// import { YapeTransaction } from '@prisma/client';
 @Injectable()
 export class TransactionService {
 
@@ -24,19 +23,34 @@ export class TransactionService {
         */
 
         let opt = await this.prisma.yapeTransaction.create({
+            select: {
+                transactionExternalId: true,
+                value: true,
+                createdAt: true,
+                transactionType: {
+                  select: {
+                    name: true
+                  }
+                },
+                transactionStatus: {
+                  select: {
+                    name: true
+                  }
+                }
+            },
             data: {
                 value: createTransactionRequest.value,
                 accountExternalIdDebit: createTransactionRequest.accountExternalIdDebit,
                 accountExternalIdCredit: createTransactionRequest.accountExternalIdCredit,
                 tranferTypeId : createTransactionRequest.tranferTypeId
-            }
+            },
         })
 
         await this.cacheManager.set(opt.transactionExternalId, opt);
         
         this.client.emit('anti-fraud',JSON.stringify(opt));
     
-        return new TransactionResponseEntity(opt);
+        return opt;
     }
 
     async findOne(id: string) {
@@ -46,15 +60,28 @@ export class TransactionService {
             Si no existe, retornar un error
         */
         const value = await this.cacheManager.get(id);
-        if(value) {
-            console.log("corre cache");
-            return new TransactionResponseEntity(value);
-        }
+        
+        if(value) return value;
 
-        return new TransactionResponseEntity(await this.prisma.yapeTransaction.findUnique({
+        return await this.prisma.yapeTransaction.findUnique({
             where: {
                 transactionExternalId: id
-            }
-        }));
+            },
+            select: {
+                transactionExternalId: true,
+                value: true,
+                createdAt: true,
+                transactionType: {
+                  select: {
+                    name: true
+                  }
+                },
+                transactionStatus: {
+                  select: {
+                    name: true
+                  }
+                }
+              }
+        })
     }
 }

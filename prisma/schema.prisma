@@ -11,12 +11,33 @@ datasource db {
 }
 
 
+// Modelo TransactionStatus
+model TransactionStatus {
+  id              Int               @id @default(autoincrement())
+  name            String
+  createdAt       DateTime          @default(now())
+  YapeTransaction YapeTransaction[]
+}
+// Modelo TransactionType
+model TransactionType {
+  id              Int               @id @default(autoincrement())
+  name            String
+  createdAt       DateTime          @default(now())
+  YapeTransaction YapeTransaction[]
+}
+// Modelo YapeTransaction
 model YapeTransaction {
   transactionExternalId   String   @id @default(uuid())
-  tranferTypeId         Int     @default(1) 
-  value       Float
-  transactionStatus Int @default(1)
-  accountExternalIdDebit  String  
+  tranferTypeId          Int      @default(1)
+  value                   Float
+  transactionStatusId     Int      @default(1)
+  accountExternalIdDebit  String
   accountExternalIdCredit String
-  createdAt DateTime @default(now())
+  createdAt               DateTime @default(now())
+
+  // Relación con TransactionType
+  transactionType TransactionType @relation(fields: [tranferTypeId], references: [id])
+
+  // Relación con TransactionStatus
+  transactionStatus TransactionStatus @relation(fields: [transactionStatusId], references: [id])
 }
