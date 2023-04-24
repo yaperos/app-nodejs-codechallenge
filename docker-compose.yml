@@ -78,7 +78,7 @@ services:
     build: 
       context : .
       dockerfile: Dockerfile
-    command: ["sh","-c","npm run migrate && npm run start:prod"]
+    command: ["sh","-c","npm run migrate && npm run seed && npm run start:prod"]
     container_name: yape-transaction
     depends_on: [ kafka, postgres, redis ]
     environment:

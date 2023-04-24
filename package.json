@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "migrate": "npx prisma migrate dev",
+    "seed": "npx prisma db seed",
     "build:transaction": "nest build transaction-server",
     "build:anti-fraud": "nest build anti-fraud",
     "build": "nest build && nest build transaction-server && nest build anti-fraud",
