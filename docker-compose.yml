@@ -74,6 +74,34 @@ services:
       - "8081:8081"
     networks:
       - yape-network
+  transaction:
+    build: 
+      context : .
+      dockerfile: Dockerfile
+    command: ["sh","-c","npm run migrate && npm run start:prod"]
+    container_name: yape-transaction
+    depends_on: [ kafka, postgres, redis ]
+    environment:
+      PORT: 3000
+      KAFKA_BROKERS: kafka:29092
+      DATABASE_URL : "postgres://postgres:postgres@postgres:5432/yape-db"
+      ALLOWED_ORIGIN : "*"
+      REDIS_HOST : "redis"
+      REDIS_PORT : 6379
+    ports:
+      - "3000:3000"
+    networks:
+      - yape-network
+  anti-fraud:
+    build: 
+      context : .
+      dockerfile: Dockerfile2
+    depends_on: [ kafka ]
+    environment:
+      KAFKA_BROKERS: kafka:29092
+    command: ["sh","-c","npm run start:prod:anti-fraud"]
+    networks:
+      - yape-network
 
 volumes:
   postgres:
