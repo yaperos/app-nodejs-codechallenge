@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TransactionResponseEntity } from './entities/transaction.response.entity';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache as CacheManager } from 'cache-manager';
-import { YapeTransaction } from '@prisma/client';
+// import { YapeTransaction } from '@prisma/client';
 @Injectable()
 export class TransactionService {
 
@@ -42,10 +42,10 @@ export class TransactionService {
     async findOne(id: string) {
         /*
             Buscar la transacción en redis
-            Si no existe, buscarla en prisma
+            Si no existe, buscarla con prisma
             Si no existe, retornar un error
         */
-        const value: YapeTransaction  = await this.cacheManager.get(id);
+        const value = await this.cacheManager.get(id);
         if(value) {
             console.log("corre cache");
             return new TransactionResponseEntity(value);

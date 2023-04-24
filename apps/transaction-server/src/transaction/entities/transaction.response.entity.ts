@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { TransactionEntity } from "./transaction.entity";
-import { YapeTransaction } from '@prisma/client';
+// import { YapeTransaction } from '@prisma/client';
 
 const ObjectTransactionTypes = {
     1 : "deposit",
@@ -44,7 +44,7 @@ export class TransactionResponseEntity {
     @ApiProperty()
     createdAt: Date;
   
-    constructor(transaction: YapeTransaction ) {
+    constructor(transaction: any ) {
       this.transactionExternalId = transaction.transactionExternalId;
       this.transactionType = {
         name: ObjectTransactionTypes[transaction.tranferTypeId]
