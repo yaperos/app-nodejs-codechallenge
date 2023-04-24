@@ -24,7 +24,7 @@ async function bootstrap() {
   const grpcClientOptions: MicroserviceOptions = {
     transport: Transport.GRPC,
     options: {
-      url: AppConfiguration().kafka_broker,
+      url: AppConfiguration().host_grpc,
       package: 'transaction',
       protoPath: 'src/transaction/transaction.proto',
     },

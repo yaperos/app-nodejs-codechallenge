@@ -9,4 +9,5 @@ export const AppConfiguration = () => ({
     database: process.env.DB_DATABASE,
   },
   kafka_broker: process.env.KAFKA_BROKER,
+  host_grpc: process.env.GRPC_HOST,
 });
