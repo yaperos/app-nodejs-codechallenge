@@ -1,6 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-import {ObjectTransactionTypes, ObjectTransactionStatus} from "../../apps/transaction-server/src/transaction/entities/transaction.response.entity";
 
+
+export const ObjectTransactionTypes = {
+  1 : "deposit",
+  2 : "withdraw",
+  3 : "transfer"
+}
+export const ObjectTransactionStatus = {
+  1 : "pending",
+  2 : "approved",
+  3 : "rejected"
+}
 
 const prisma = new PrismaClient();
 

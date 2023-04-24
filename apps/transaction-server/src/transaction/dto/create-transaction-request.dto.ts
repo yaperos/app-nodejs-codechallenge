@@ -1,17 +1,26 @@
 import { IsNotEmpty, IsNumber, IsString,IsIn, Min } from 'class-validator';
+import { Field, InputType} from '@nestjs/graphql';
 
 
+@InputType('CreateTransactionRequest')
 export class CreateTransactionRequest {
+
+
+    @Field()
     @IsNotEmpty({
         message: 'AccountExternalIdDebit is required'
     })
     @IsString()
     accountExternalIdDebit: string;
+
+    @Field()
     @IsNotEmpty({
         message: 'accountExternalIdCredit is required'
     })
     @IsString()
     accountExternalIdCredit: string;
+
+    @Field()
     @IsNotEmpty({
         message: 'TranferTypeId is required'
     })
@@ -21,6 +30,7 @@ export class CreateTransactionRequest {
     })
     tranferTypeId: number;
 
+    @Field()
     @IsNotEmpty({
         message: 'value is required'
     })

@@ -21,6 +21,7 @@ import config from './config/configuration';
     TransactionModule,
     PrismaModule,
     RedisModule,
+ 
 
   ],
   controllers: [AppController],

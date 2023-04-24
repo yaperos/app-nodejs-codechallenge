@@ -5,11 +5,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Partitioners } from 'kafkajs';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '../prisma/prisma.module';
-// import { RedisModule } from '../redis/redis.module';
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-redis-store';
 import { RedisModule } from '../redis/redis.module';
-
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+import { TransactionResolver } from './transaction.resolver';
 @Module({
   imports: [
       ConfigModule.forRoot(),
@@ -31,9 +31,16 @@ import { RedisModule } from '../redis/redis.module';
       }
     ]),
     RedisModule,
-    PrismaModule
+    PrismaModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: true,
+      sortSchema: true,
+      autoSchemaFile: join(process.cwd(), 'apps/transaction-server/src/schema.gql'),
+    })
   ],
   controllers: [TransactionController],
-  providers: [TransactionService]
+  providers: [
+    TransactionService,TransactionResolver]
 })
 export class TransactionModule {}

@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 // Modelo TransactionStatus
 model TransactionStatus {
   id              Int               @id @default(autoincrement())
@@ -18,6 +17,7 @@ model TransactionStatus {
   createdAt       DateTime          @default(now())
   YapeTransaction YapeTransaction[]
 }
+
 // Modelo TransactionType
 model TransactionType {
   id              Int               @id @default(autoincrement())
@@ -25,10 +25,11 @@ model TransactionType {
   createdAt       DateTime          @default(now())
   YapeTransaction YapeTransaction[]
 }
+
 // Modelo YapeTransaction
 model YapeTransaction {
   transactionExternalId   String   @id @default(uuid())
-  tranferTypeId          Int      @default(1)
+  tranferTypeId           Int      @default(1)
   value                   Float
   transactionStatusId     Int      @default(1)
   accountExternalIdDebit  String

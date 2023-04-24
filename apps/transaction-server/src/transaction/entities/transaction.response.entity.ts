@@ -1,46 +1,45 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { TransactionEntity } from "./transaction.entity";
-// import { YapeTransaction } from '@prisma/client';
+import { TransactionType } from "./transaction-type.entity";
+import { TransactionStatus } from "./transaction-status.entity";
+import { ObjectType, Field } from '@nestjs/graphql'
 
-export const ObjectTransactionTypes = {
-    1 : "deposit",
-    2 : "withdraw",
-    3 : "transfer"
-}
-export const ObjectTransactionStatus = {
-    1 : "pending",
-    2 : "approved",
-    3 : "rejected"
-}
-export class TransactionType {
-    @ApiProperty()
-    name: string;
-  }
-  
-  export class TransactionStatus {
-    @ApiProperty()
-    name: string;
-  }
-
-
+@ObjectType('Transaction')
 export class TransactionResponseEntity {
 
+    @Field()
     @ApiProperty()
     transactionExternalId: string;
   
+
+    @Field()
+    transactionStatusId: number;
+
+    @Field()
+    accountExternalIdDebit: string;
+
+    @Field()
+    accountExternalIdCredit: string;
+
+    @Field()
+    tranferTypeId: number;
+
+    @Field()
     @ApiProperty({
       type: () => TransactionType
     })
     transactionType: TransactionType;
   
+    @Field()
     @ApiProperty({
       type: () => TransactionStatus
     })
     transactionStatus: TransactionStatus;
   
+    @Field()
     @ApiProperty()
     value: number;
   
+    @Field()
     @ApiProperty()
     createdAt: Date;
   

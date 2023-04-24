@@ -53,6 +53,7 @@ export class TransactionService {
         return opt;
     }
 
+
     async findOne(id: string) {
         /*
             Buscar la transacción en redis

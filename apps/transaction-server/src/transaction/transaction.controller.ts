@@ -4,7 +4,6 @@ import { CreateTransactionRequest } from './dto/create-transaction-request.dto';
 import { ApiBody, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { TransactionEntity } from './entities/transaction.entity';
 import { TransactionResponseEntity } from './entities/transaction.response.entity';
-import { IsNotEmpty } from 'class-validator';
 
 @Controller('transaction')
 export class TransactionController {
