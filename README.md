@@ -80,3 +80,21 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+
+## ADD THE FOLLOWING COMMANDS TO RUN THE CHALLENGE
+
+### RAISE AND UPGRADE CONTAINERS
+
+```
+docker-compose up --build -d
+```
+
+### CREATE INITIAL TABLES AND RECORDS
+```
+docker exec app-nodejs-codechallenge_app_1  npm run migrate
+```
+### CREATE THE TOPIC TO START THE ANTI-FRAUD VALIDATION
+```
+docker exec app-nodejs-codechallenge_kafka_1 kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic transactions
+```
