@@ -1,0 +1,20 @@
+type TransactionRespDto {
+  transactionExternalId: String
+  transactionType: TransactionType
+  transactionStatus: TransactionStatus
+  value: Int
+  createdAt: String
+  updatedAt: String
+}
+
+type TransactionType {
+  name: String
+}
+
+type TransactionStatus {
+  name: String
+}
+
+type Query {
+  getTransaction(id: String!): [TransactionRespDto]
+}
