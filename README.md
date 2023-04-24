@@ -98,3 +98,20 @@ docker exec app-nodejs-codechallenge_app_1  npm run migrate
 ```
 docker exec app-nodejs-codechallenge_kafka_1 kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic transactions
 ```
+
+### TEST FROM POSTMAN - CREATE TRANSACTION
+```
+curl --location 'http://localhost:3000/transaction' \
+--header 'Content-Type: application/json' \
+--data '{
+  "accountExternalIdDebit": "f746c768-487t-1f4a-90ea-7b0085a10dfi",
+  "accountExternalIdCredit": "d2b90d0c-32fe-4f2a-90ea-7b0082a10dfk",
+  "tranferTypeId": 1,
+  "value": 1200
+}'
+```
+
+### TEST FROM POSTMAN - LIST TRANSACTION
+```
+curl --location 'http://localhost:3000/transaction/c465e6c9-4a12-410a-ba3b-a7f84a0c04fe'
+```
