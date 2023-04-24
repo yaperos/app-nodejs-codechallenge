@@ -1,8 +1,8 @@
 # Inicio
 
-Iniciar docker compose
-Entrar a la carpeta transaction e iniciar npm install, luego npm start
-Entrar a la carpeta anti-fraud e iniciar npm install, luego npm start
+* Iniciar docker compose
+* Entrar a la carpeta transaction e iniciar npm install, luego npm start
+* Entrar a la carpeta anti-fraud e iniciar npm install, luego npm start
 
 
 # Yape Code Challenge :rocket:
