@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Logger, Param, Post, Query } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { TransactionQueryDto, TransactionRequestDto } from './dto';
+import { TransactionFindoneDto, TransactionQueryDto, TransactionRequestDto } from './dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { TransactionApprovedEvent, TransactionRejectedEvent } from '@app/common/events';
 
@@ -14,13 +14,13 @@ export class TransactionController {
     }
 
     @Get()
-    getTransactions(@Query() query: TransactionQueryDto ) {
+    getTransactions(@Query() query: TransactionQueryDto) {
         return this.transactionService.getTransactions(query);
     }
 
     @Get(':id')
-    getTransactionById(@Param('id') id: string) {
-        return this.transactionService.getTransactionByExternalId(id);
+    getTransactionById(@Param() params: TransactionFindoneDto) {
+        return this.transactionService.getTransactionByExternalId(params.id);
     }
 
     @MessagePattern('transaction-approved')

@@ -25,13 +25,13 @@ async function main() {
     if (await prisma.transactionType.count() === 0) {
         const transactionTypeList = [
             {
-                name: "Credit"
+                name: "Type 1"
             },
             {
-                name: "Debit"
+                name: "Type 2"
             },
             {
-                name: "Refund"
+                name: "Type 3"
             }
         ]
 
