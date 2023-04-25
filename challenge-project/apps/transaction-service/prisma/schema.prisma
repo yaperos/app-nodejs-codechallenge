@@ -12,8 +12,8 @@ datasource db {
 
 model Transaction {
   externalId              String            @id @default(uuid())
-  accountExternalIdDebit  String            @db.VarChar(255)
-  accountExternalIdCredit String            @db.VarChar(255)
+  accountExternalIdDebit  String            @db.Uuid()
+  accountExternalIdCredit String            @db.Uuid()
   transferTypeId          Int
   value                   Int
   transactionType         TransactionType   @relation(fields: [transferTypeId], references: [id])

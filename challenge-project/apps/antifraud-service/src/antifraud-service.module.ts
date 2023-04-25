@@ -20,7 +20,7 @@ import { AntifraudServiceService } from './antifraud-service.service';
               clientId: config.get('KAFKA_CLIENT_ID'),
               brokers: config.get('KAFKA_BROKERS').split(','),
             }
-          }
+          },
         }),
         inject: [ConfigService]
       }

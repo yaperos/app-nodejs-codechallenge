@@ -1,12 +1,10 @@
-import { IsNumber, IsString, MaxLength } from "class-validator"
+import { IsNumber, IsString, IsUUID, MaxLength } from "class-validator"
 
 export class TransactionRequestDto {
-    @IsString()
-    @MaxLength(255)
+    @IsUUID()
     accountExternalIdDebit: string
 
-    @IsString()
-    @MaxLength(255)
+    @IsUUID()
     accountExternalIdCredit: string
 
     @IsNumber()

@@ -11,23 +11,17 @@ export class AntifraudServiceService {
 
     validateTransaction(transactionCreatedEvent: TransactionCreatedEvent) {
         if (transactionCreatedEvent.value > 1000) {
-            const event: TransactionRejectedEvent = {
-                transactionExternalId: transactionCreatedEvent.transactionExternalId,
-                value: transactionCreatedEvent.value,
-                rejectedAt: new Date()
-            }
+            const event = new TransactionRejectedEvent(transactionCreatedEvent.transactionExternalId, transactionCreatedEvent.value);
+
             this.kafka.emit('transaction-rejected', {
-                value: event
+                value: JSON.stringify(event)
             });
         }
         else {
-            const event: TransactionApprovedEvent = {
-                transactionExternalId: transactionCreatedEvent.transactionExternalId,
-                value: transactionCreatedEvent.value,
-                approvedAt: new Date()
-            }
+            const event = new TransactionApprovedEvent(transactionCreatedEvent.transactionExternalId, transactionCreatedEvent.value);
+
             this.kafka.emit('transaction-approved', {
-                value: event
+                value: JSON.stringify(event)
             });
         }
     }
