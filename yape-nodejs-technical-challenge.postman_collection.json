@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "6065399b-1fa8-4980-b740-58cb2cec3813",
+		"name": "yape-nodejs-technical-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13673233"
+	},
+	"item": [
+		{
+			"name": "Create transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountExternalIdDebit\": \"a59f7116-dae9-474c-b319-4140e1678a7c\",\r\n    \"accountExternalIdCredit\": \"c3a3ac8d-7023-43c8-ab4c-5a6b71f8a7db\",\r\n    \"transferTypeId\": 1,\r\n    \"value\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_base_url}}/transactions",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction by external ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountExternalIdDebit\": \"Guid\",\r\n    \"accountExternalIdCredit\": \"Guid\",\r\n    \"transferTypeId\": 2,\r\n    \"value\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_base_url}}/transactions/364951d1-7ee5-47c1-8c68-c9eecf62efd6",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"transactions",
+						"364951d1-7ee5-47c1-8c68-c9eecf62efd6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_base_url}}/transactions?limit=100&offset=0",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "100"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
