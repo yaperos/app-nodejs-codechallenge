@@ -1,17 +1,20 @@
-FROM node:18-alpine
+FROM node:18-alpine3.16
 
 ARG NODE_ENV=production
 
 WORKDIR /app
 
 COPY package*.json ./
+COPY apps/transaction-service/prisma ./apps/transaction-service/prisma/
+
+COPY apps/transaction-service/.env.production ./apps/transaction-service/.env
 
 RUN npm install
 
-COPY apps/transaction-service/.env.production .env
-
 COPY . .
 
-RUN npm run build
+RUN npx prisma generate --schema=./apps/transaction-service/prisma/schema.prisma
 
-CMD [ "npm", "run", "start:transaction:prod" ]
+RUN npm run build transaction-service
+
+CMD [ "npm", "run", "start:transaction:migrate:prod" ]

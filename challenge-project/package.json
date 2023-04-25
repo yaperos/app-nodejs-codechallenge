@@ -11,6 +11,7 @@
     "transaction:db:up": "docker compose up transaction-db -d",
     "transaction:db:restart": "npm run transaction:db:rm && npm run transaction:db:up && npm run transaction:prisma:deploy",
     "start:transaction:prod": "node dist/apps/transaction-service/main.js",
+    "start:transaction:migrate:prod": "npm run transaction:prisma:deploy && npm run start:transaction:prod",
     "start:antifraud:prod": "node dist/apps/antifraud-service/main.js",
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",

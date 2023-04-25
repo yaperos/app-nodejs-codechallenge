@@ -35,9 +35,7 @@ services:
       context: ./challenge-project
       dockerfile: ./apps/antifraud-service/Dockerfile
     environment:
-      - KAFKA_BROKERS=kafka:9092
-    ports:
-      - "3001:3000"
+      - KAFKA_BROKERS=kafka:29092
     depends_on:
       - kafka
       - zookeeper
@@ -47,11 +45,13 @@ services:
     build:
       context: ./challenge-project
       dockerfile: ./apps/transaction-service/Dockerfile
-      args:
-        - NODE_ENV=production
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@transaction-db:5432/mydb?schema=public
+      - KAFKA_BROKERS=kafka:29092
     ports:
       - "3000:3000"
     depends_on:
       - transaction-db
       - kafka
       - zookeeper
+    restart: always

@@ -6,12 +6,15 @@ async function main() {
     if (await prisma.transactionStatus.count() === 0) {
         const transactionStatusList = [
             {
+                id:1,
                 name: "Pending"
             },
             {
+                id:2,
                 name: "Approved"
             },
             {
+                id:3,
                 name: "Rejected"
             }
         ];

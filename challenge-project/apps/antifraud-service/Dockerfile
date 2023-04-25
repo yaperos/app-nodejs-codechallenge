@@ -8,10 +8,8 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY apps/antifraud-service/.env.production dist/apps/antifraud-service/.env
-
 COPY . .
 
-RUN npm run build
+RUN npm run build antifraud-service
 
 CMD [ "npm", "run", "start:antifraud:prod" ]

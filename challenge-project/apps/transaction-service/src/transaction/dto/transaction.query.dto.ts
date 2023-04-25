@@ -5,10 +5,10 @@ export class TransactionQueryDto {
     @IsNumber()
     @Type(() => Number)
     @Max(500)
-    limit: number;
+    limit: number = 100;
 
     @IsNumber()
     @Type(() => Number)
     @Max(500)
-    offset: number
+    offset: number = 0
 }
