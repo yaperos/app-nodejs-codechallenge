@@ -1,7 +1,5 @@
 FROM node:18-alpine3.16
 
-ARG NODE_ENV=production
-
 WORKDIR /app
 
 COPY package*.json ./

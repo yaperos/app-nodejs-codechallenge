@@ -39,6 +39,7 @@ services:
     depends_on:
       - kafka
       - zookeeper
+    restart: always
 
   transaction-service:
     container_name: transaction-service
