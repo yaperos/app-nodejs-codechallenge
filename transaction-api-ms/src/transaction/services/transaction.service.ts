@@ -10,7 +10,7 @@ export class TransactionService {
 
     create(data: any){
         Logger.log('enviado transaccion')
-        this.clientKafka.emit('transaction.created',{id:1,transaction:'transaction created'})
+        this.clientKafka.emit('transaction.created',JSON.stringify(data))
         return {status: 'ok', data: true}
     }
 }

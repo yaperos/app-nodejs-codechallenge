@@ -1,6 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { AntiFraudService } from './anti-fraud.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AntiFraudController {
@@ -9,8 +9,9 @@ export class AntiFraudController {
         private readonly antiFraudService: AntiFraudService
     ){}
     
-    @MessagePattern('transaction.created')
+    @EventPattern('transaction.created')
     async transactionValidate(@Payload() payload: any){
         Logger.log('validando transaccion', payload);
+        this.antiFraudService.updateTransaction(payload);
     }
 }
