@@ -7,14 +7,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Anti fraud",
+            "name": "Debug Antifraud",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\antifraud-service\\src\\transaction-created.consumer.ts",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
+            "program": "${workspaceFolder}\\challenge-project\\apps\\antifraud-service\\src\\main.ts",
+            "autoAttachChildProcesses": true
         }
     ]
 }
