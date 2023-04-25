@@ -42,7 +42,7 @@ export class TransactionService {
 
             const event: TransactionCreatedEvent = {
                 transactionExternalId: newTransaction.externalId,
-                value: newTransaction.value,
+                value: newTransaction.value.toNumber(),
                 createdAt: newTransaction.createdAt
             };
 

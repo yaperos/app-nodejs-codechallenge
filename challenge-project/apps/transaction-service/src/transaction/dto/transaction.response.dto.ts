@@ -1,4 +1,4 @@
-import { Transaction, TransactionStatus, TransactionType } from "@prisma/client"
+import { Prisma, Transaction, TransactionStatus, TransactionType } from "@prisma/client"
 
 export class TransactionResponseDto {
     transactionExternalId: string
@@ -19,7 +19,7 @@ export class TransactionResponseDto {
         this.transactionStatus = {
             name: transaction.transactionStatus.name
         }
-        this.value = transaction.value
+        this.value = transaction.value.toNumber()
         this.createdAt = transaction.createdAt
     }
 }

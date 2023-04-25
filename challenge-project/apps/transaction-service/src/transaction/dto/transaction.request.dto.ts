@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsUUID, MaxLength } from "class-validator"
+import { IsDecimal, IsNumber, IsString, IsUUID, MaxLength, Min } from "class-validator"
 
 export class TransactionRequestDto {
     @IsUUID()
@@ -8,8 +8,10 @@ export class TransactionRequestDto {
     accountExternalIdCredit: string
 
     @IsNumber()
+    @Min(1)
     transferTypeId: number
 
-    @IsNumber()
+    @IsNumber({ maxDecimalPlaces: 2 })
+    @Min(0)
     value: number
 }
