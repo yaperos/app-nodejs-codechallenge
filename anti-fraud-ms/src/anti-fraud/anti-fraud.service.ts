@@ -8,7 +8,23 @@ export class AntiFraudService {
         @Inject('TRANSACTION_API_MS') private readonly clientKafka: ClientKafka
     ){}
 
-    updateTransaction(data: any){
-        this.clientKafka.emit('transaction.updated',JSON.stringify({...data,value:90}))
+    transactionValidate(data: any){
+
+        const transactionResponse = {
+            id: data.id,
+            transactionStatus: {
+                name: "PENDING"
+            },
+            value: data.value,
+            createdAt: new Date()
+        }
+
+        if(data.value >= 1000){
+            transactionResponse.transactionStatus.name = 'REJECTED'
+            this.clientKafka.emit('transaction-updated',JSON.stringify(transactionResponse))
+        }else{
+            transactionResponse.transactionStatus.name = 'APPROVED'
+            this.clientKafka.emit('transaction-updated',JSON.stringify(transactionResponse))
+        }
     }
 }

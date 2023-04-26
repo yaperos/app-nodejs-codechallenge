@@ -9,9 +9,9 @@ export class AntiFraudController {
         private readonly antiFraudService: AntiFraudService
     ){}
     
-    @EventPattern('transaction.created')
+    @EventPattern('transaction-created')
     async transactionValidate(@Payload() payload: any){
-        Logger.log('validando transaccion', payload);
-        this.antiFraudService.updateTransaction(payload);
+        Logger.log('Validando transaccion...', payload);
+        this.antiFraudService.transactionValidate(payload);
     }
 }
