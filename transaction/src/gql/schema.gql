@@ -1,0 +1,79 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionStatus {
+  id: Int!
+  name: String!
+  transaction: [Transaction!]
+}
+
+type TransactionType {
+  id: Int!
+  name: String!
+  transaction: [Transaction!]
+}
+
+type Transaction {
+  id: Int!
+  transactionExternalId: String!
+  value: Int!
+  transactionTypeId: Int!
+  transactionType: TransactionType!
+  transactionStatusId: Int!
+  transactionStatus: TransactionStatus!
+}
+
+type Query {
+  transactions: [Transaction!]!
+  transaction(id: Int!): Transaction!
+  transactionTypes: [TransactionType!]!
+  transactionType(id: Int!): TransactionType!
+  transactionStates: [TransactionStatus!]!
+  transactionStatus(id: Int!): TransactionStatus!
+}
+
+type Mutation {
+  createTransaction(createTransactionInput: CreateTransactionInput!): Transaction!
+  updateTransaction(updateTransactionInput: UpdateTransactionInput!): Transaction!
+  removeTransaction(id: Int!): Transaction!
+  createTransactionType(createTransactionTypeInput: CreateTransactionTypeInput!): TransactionType!
+  updateTransactionType(updateTransactionTypeInput: UpdateTransactionTypeInput!): TransactionType!
+  removeTransactionType(id: Int!): TransactionType!
+  createTransactionStatus(createTransactionStatusInput: CreateTransactionStatusInput!): TransactionStatus!
+  updateTransactionStatus(updateTransactionStatusInput: UpdateTransactionStatusInput!): TransactionStatus!
+  removeTransactionStatus(id: Int!): TransactionStatus!
+}
+
+input CreateTransactionInput {
+  transactionExternalId: String!
+  value: Int!
+  transactionTypeId: Int!
+  transactionStatusId: Int!
+}
+
+input UpdateTransactionInput {
+  transactionExternalId: String
+  value: Int
+  transactionTypeId: Int
+  transactionStatusId: Int
+  id: Int!
+}
+
+input CreateTransactionTypeInput {
+  name: String!
+}
+
+input UpdateTransactionTypeInput {
+  name: String
+  id: Int!
+}
+
+input CreateTransactionStatusInput {
+  name: String!
+}
+
+input UpdateTransactionStatusInput {
+  name: String
+  id: Int!
+}
