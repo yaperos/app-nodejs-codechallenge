@@ -75,8 +75,59 @@ You can use any approach to store transaction data but you should consider that 
 
 You can use Graphql;
 
-# Send us your challenge
+## Stack
+- Typescript
+- NestJS
+- Kafka
+- Postgres
+- Docker
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## Setup
 
-If you have any questions, please let us know.
+1. Run `docker-compose up` docker containers.
+
+2. Enter to directory `anti-fraud` and run `yarn install` to install dependencies and run `yarn start:dev`.
+3. Enter to directory `transaction` and run `yarn install` to install dependencies and run `yarn start:dev`.
+
+
+# API Documentation
+
+## Transaction
+
+### Show API Swagger Documentation
+
+```
+GET /explorer
+```
+
+### Create transaction
+```
+POST /transactions
+```
+```
+{
+  "accountExternalIdDebit": "56b8f0a3-b221-408b-b496-35800db1b865",
+  "accountExternalIdCredit": "56b8f0a3-b221-408b-b496-35800db1b865",
+  "transferTypeId": 1,
+  "value": 1200
+}
+```
+
+
+### Get transaction
+```
+GET /transactions/b4187273-b2c2-4453-989d-49b286d5c0ff
+```
+```
+{
+  "transactionExternalId": "b4187273-b2c2-4453-989d-49b286d5c0ff",
+  "transactionType": {
+    "name": 1
+  },
+  "transactionStatus": {
+    "name": "REJECTED"
+  },
+  "value": 1200,
+  "createdAt": "2023-04-29T04:44:25.265Z"
+}
+```
