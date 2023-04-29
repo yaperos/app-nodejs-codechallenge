@@ -48,7 +48,7 @@ You must have two resources:
 {
   "accountExternalIdDebit": "Guid",
   "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
+  "transferTypeId": 1,
   "value": 120
 }
 ```
