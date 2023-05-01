@@ -40,7 +40,7 @@ export class TransactionService {
         transaction.value,
       ).ToString(),
     );
-    console.log(transaction);
+
     return transaction;
   }
 
@@ -55,11 +55,17 @@ export class TransactionService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} transaction`;
+    return this.transactionRepository.findOne({ where: { id } });
+  }
+
+  findOneByTransactionId(transactionExternalId: string) {
+    return this.transactionRepository.findOne({
+      where: { transactionExternalId },
+    });
   }
 
   update(id: number, updateTransactionInput: UpdateTransactionInput) {
-    return `This action updates a #${id} transaction`;
+    return this.transactionRepository.update({ id }, updateTransactionInput);
   }
 
   remove(id: number) {

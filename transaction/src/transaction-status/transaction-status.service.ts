@@ -30,6 +30,12 @@ export class TransactionStatusService {
     });
   }
 
+  findOneByName(name: string) {
+    return this.transactionStatusRepository.findOne({
+      where: { name },
+    });
+  }
+
   update(
     id: number,
     updateTransactionStatusInput: UpdateTransactionStatusInput,

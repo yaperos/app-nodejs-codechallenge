@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CreateAntiFraudDto } from './dto/create-anti-fraud.dto';
 import { ClientKafka } from '@nestjs/microservices';
-import { ValidateAntiFraudDto } from './dto/validate-anti-fraued.dto';
+import { ValidateAntiFraudDto } from './dto/validate-anti-fraud.dto';
 
 @Injectable()
 export class AntiFraudService {
