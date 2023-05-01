@@ -1,8 +1,13 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, GraphQLISODateTime } from '@nestjs/graphql';
 import { TransactionStatus } from 'src/transaction-status/entities/transaction-status.entity';
 import { TransactionType } from 'src/transaction-type/entities/transaction-type.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 @Entity()
 @ObjectType()
 export class Transaction {
@@ -13,6 +18,14 @@ export class Transaction {
   @Column()
   @Field()
   transactionExternalId: string;
+
+  @Column()
+  @Field()
+  accountExternalIdDebit: string;
+
+  @Column()
+  @Field()
+  accountExternalIdCredit: string;
 
   @Column({ type: 'integer' })
   @Field(() => Int)
@@ -39,4 +52,8 @@ export class Transaction {
   )
   @Field(() => TransactionStatus)
   transactionStatus: TransactionStatus;
+
+  @CreateDateColumn()
+  @Field(() => GraphQLISODateTime)
+  createdAt: Date;
 }

@@ -6,6 +6,9 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionTypeService } from 'src/transaction-type/transaction-type.service';
 import { TransactionStatusService } from 'src/transaction-status/transaction-status.service';
+import { ClientKafka } from '@nestjs/microservices';
+import { CreateAntiFraudDto } from './dto/create-anti-fraud.dto';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class TransactionService {
@@ -16,14 +19,29 @@ export class TransactionService {
     private readonly transactionTypeService: TransactionTypeService,
     @Inject(forwardRef(() => TransactionStatusService))
     private readonly trasactionStatusService: TransactionStatusService,
+    @Inject('TRANSACTION_SERVICE')
+    private readonly transactionCliente: ClientKafka,
   ) {}
 
-  create(createTransactionInput: CreateTransactionInput) {
+  async create(createTransactionInput: CreateTransactionInput) {
     const transaction = this.transactionRepository.create(
       createTransactionInput,
     );
+    transaction.transactionExternalId = v4();
+    transaction.transactionStatusId = 1;
+    transaction.transactionTypeId = createTransactionInput.tranferTypeId;
 
-    return this.transactionRepository.save(transaction);
+    await this.transactionRepository.save(transaction);
+
+    this.transactionCliente.emit(
+      'createAntiFraud',
+      new CreateAntiFraudDto(
+        transaction.transactionExternalId,
+        transaction.value,
+      ).ToString(),
+    );
+    console.log(transaction);
+    return transaction;
   }
 
   findAll() {

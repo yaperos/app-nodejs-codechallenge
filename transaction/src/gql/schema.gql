@@ -17,12 +17,20 @@ type TransactionType {
 type Transaction {
   id: Int!
   transactionExternalId: String!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
   value: Int!
   transactionTypeId: Int!
   transactionType: TransactionType!
   transactionStatusId: Int!
   transactionStatus: TransactionStatus!
+  createdAt: DateTime!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
   transactions: [Transaction!]!
@@ -46,17 +54,17 @@ type Mutation {
 }
 
 input CreateTransactionInput {
-  transactionExternalId: String!
   value: Int!
-  transactionTypeId: Int!
-  transactionStatusId: Int!
+  tranferTypeId: Int!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
 }
 
 input UpdateTransactionInput {
-  transactionExternalId: String
   value: Int
-  transactionTypeId: Int
-  transactionStatusId: Int
+  tranferTypeId: Int
+  accountExternalIdDebit: String
+  accountExternalIdCredit: String
   id: Int!
 }
 
