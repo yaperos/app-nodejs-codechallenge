@@ -53,7 +53,11 @@ export class Transaction {
   @Field(() => TransactionStatus)
   transactionStatus: TransactionStatus;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field(() => GraphQLISODateTime)
   createdAt: Date;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Field(() => GraphQLISODateTime)
+  updateAt: Date;
 }

@@ -1,4 +1,9 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  forwardRef,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTransactionInput } from './dto/create-transaction.input';
 import { UpdateTransactionInput } from './dto/update-transaction.input';
 import { Transaction } from './entities/transaction.entity';
@@ -9,9 +14,12 @@ import { TransactionStatusService } from 'src/transaction-status/transaction-sta
 import { ClientKafka } from '@nestjs/microservices';
 import { CreateAntiFraudDto } from './dto/create-anti-fraud.dto';
 import { v4 } from 'uuid';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class TransactionService {
+  private readonly logger = new Logger(TransactionService.name);
+
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
@@ -27,11 +35,15 @@ export class TransactionService {
     const transaction = this.transactionRepository.create(
       createTransactionInput,
     );
+
     transaction.transactionExternalId = v4();
     transaction.transactionStatusId = 1;
+
     transaction.transactionTypeId = createTransactionInput.tranferTypeId;
 
     await this.transactionRepository.save(transaction);
+
+    this.logger.log(transaction);
 
     this.transactionCliente.emit(
       'createAntiFraud',
@@ -65,11 +77,26 @@ export class TransactionService {
   }
 
   update(id: number, updateTransactionInput: UpdateTransactionInput) {
-    return this.transactionRepository.update({ id }, updateTransactionInput);
+    this.logger.log(updateTransactionInput);
+    return this.transactionRepository.update(
+      { id },
+      {
+        ...updateTransactionInput,
+        updateAt: new Date(),
+      },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async remove(id: number) {
+    const transaction = await this.findOne(id);
+
+    if (!transaction) {
+      throw new NotFoundException();
+    }
+
+    await this.transactionRepository.delete({ id: transaction.id });
+
+    return transaction;
   }
 
   getTransactionTypeService(id: number) {

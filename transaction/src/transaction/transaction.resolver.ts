@@ -18,14 +18,6 @@ import { TransactionStatus } from 'src/transaction-status/entities/transaction-s
 export class TransactionResolver {
   constructor(private readonly transactionService: TransactionService) {}
 
-  @Mutation(() => Transaction)
-  createTransaction(
-    @Args('createTransactionInput')
-    createTransactionInput: CreateTransactionInput,
-  ) {
-    return this.transactionService.create(createTransactionInput);
-  }
-
   @Query(() => [Transaction], { name: 'transactions' })
   findAll() {
     return this.transactionService.findAll();
@@ -34,6 +26,14 @@ export class TransactionResolver {
   @Query(() => Transaction, { name: 'transaction' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.transactionService.findOne(id);
+  }
+
+  @Mutation(() => Transaction)
+  createTransaction(
+    @Args('createTransactionInput')
+    createTransactionInput: CreateTransactionInput,
+  ) {
+    return this.transactionService.create(createTransactionInput);
   }
 
   @Mutation(() => Transaction)

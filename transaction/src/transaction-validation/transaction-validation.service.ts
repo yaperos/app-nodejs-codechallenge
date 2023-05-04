@@ -14,10 +14,12 @@ export class TransactionValidationService {
     const findStatus = await this.transactionStatusService.findOneByName(
       validateAntiFraudDto.status,
     );
+
     if (findStatus) {
       const transaction = await this.transactionService.findOneByTransactionId(
         validateAntiFraudDto.transactionExternalId,
       );
+
       transaction.transactionStatusId = findStatus.id;
       await this.transactionService.update(transaction.id, transaction);
     }

@@ -25,6 +25,7 @@ type Transaction {
   transactionStatusId: Int!
   transactionStatus: TransactionStatus!
   createdAt: DateTime!
+  updateAt: DateTime!
 }
 
 """
