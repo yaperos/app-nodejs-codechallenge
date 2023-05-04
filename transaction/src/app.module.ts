@@ -9,7 +9,6 @@ import { TransactionModule } from './transaction/transaction.module';
 import { TransactionTypeModule } from './transaction-type/transaction-type.module';
 import { TransactionStatusModule } from './transaction-status/transaction-status.module';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
-import { GearsModule } from './gears/gears.module';
 import { TransactionValidationModule } from './transaction-validation/transaction-validation.module';
 
 @Module({
@@ -38,7 +37,6 @@ import { TransactionValidationModule } from './transaction-validation/transactio
     TransactionModule,
     TransactionTypeModule,
     TransactionStatusModule,
-    GearsModule,
     TransactionValidationModule,
   ],
   controllers: [AppController],
