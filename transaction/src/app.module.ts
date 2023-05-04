@@ -10,6 +10,7 @@ import { TransactionTypeModule } from './transaction-type/transaction-type.modul
 import { TransactionStatusModule } from './transaction-status/transaction-status.module';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { TransactionValidationModule } from './transaction-validation/transaction-validation.module';
+import { dataSoruceOptions } from './db/data-source';
 
 @Module({
   imports: [
@@ -23,17 +24,7 @@ import { TransactionValidationModule } from './transaction-validation/transactio
         return graphQLFormattedError;
       },
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'challenge',
-      synchronize: true,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      schema: 'challenge_schema',
-    }),
+    TypeOrmModule.forRoot(dataSoruceOptions),
     TransactionModule,
     TransactionTypeModule,
     TransactionStatusModule,
