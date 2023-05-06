@@ -37,13 +37,24 @@ export class TransactionService {
     );
 
     transaction.transactionExternalId = v4();
-    transaction.transactionStatusId = 1;
+
+    const status = await this.trasactionStatusService.findOne(1);
+
+    if (!status) throw new NotFoundException('Status Not Found');
+
+    transaction.transactionStatusId = status.id;
+
+    const type = await this.transactionTypeService.findOne(
+      createTransactionInput.tranferTypeId,
+    );
+
+    if (!type) throw new NotFoundException('Type Not Found');
 
     transaction.transactionTypeId = createTransactionInput.tranferTypeId;
 
     await this.transactionRepository.save(transaction);
 
-    this.logger.log(transaction);
+    this.logger.log({ transaction });
 
     this.transactionCliente.emit(
       'createAntiFraud',
@@ -76,15 +87,20 @@ export class TransactionService {
     });
   }
 
-  update(id: number, updateTransactionInput: UpdateTransactionInput) {
+  async update(id: number, updateTransactionInput: UpdateTransactionInput) {
     this.logger.log(updateTransactionInput);
-    return this.transactionRepository.update(
-      { id },
-      {
-        ...updateTransactionInput,
-        updateAt: new Date(),
-      },
-    );
+
+    const transaction = await this.transactionRepository.findOne({
+      where: { id },
+    });
+
+    if (!transaction) throw new NotFoundException('Transaction Not Found');
+
+    const bodyUpdate = Object.assign(transaction, updateTransactionInput);
+
+    await this.transactionRepository.update({ id }, bodyUpdate);
+
+    return bodyUpdate;
   }
 
   async remove(id: number) {

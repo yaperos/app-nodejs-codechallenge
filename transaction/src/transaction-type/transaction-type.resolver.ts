@@ -52,9 +52,4 @@ export class TransactionTypeResolver {
       updateTransactionTypeInput,
     );
   }
-
-  @Mutation(() => TransactionType)
-  removeTransactionType(@Args('id', { type: () => Int }) id: number) {
-    return this.transactionTypeService.remove(id);
-  }
 }

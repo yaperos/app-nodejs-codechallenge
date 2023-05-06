@@ -48,10 +48,8 @@ type Mutation {
   removeTransaction(id: Int!): Transaction!
   createTransactionType(createTransactionTypeInput: CreateTransactionTypeInput!): TransactionType!
   updateTransactionType(updateTransactionTypeInput: UpdateTransactionTypeInput!): TransactionType!
-  removeTransactionType(id: Int!): TransactionType!
   createTransactionStatus(createTransactionStatusInput: CreateTransactionStatusInput!): TransactionStatus!
   updateTransactionStatus(updateTransactionStatusInput: UpdateTransactionStatusInput!): TransactionStatus!
-  removeTransactionStatus(id: Int!): TransactionStatus!
 }
 
 input CreateTransactionInput {

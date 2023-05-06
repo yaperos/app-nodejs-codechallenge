@@ -2,7 +2,7 @@ import { TransactionStatus } from 'src/transaction-status/entities/transaction-s
 import { DataSource } from 'typeorm';
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 
-export class TransactionSeeder implements Seeder {
+export class TransactionStatusSeeder1683318885 implements Seeder {
   async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager,

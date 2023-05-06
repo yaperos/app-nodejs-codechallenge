@@ -20,7 +20,7 @@ export class AntiFraudService {
       new ValidateAntiFraudDto(
         createAntiFraudDto.transactionExternalId,
         createAntiFraudDto.value,
-        createAntiFraudDto.value > 1000 ? 'rejected' : 'approved',
+        createAntiFraudDto.value > 1000 ? 3 : 2,
       ).toString(),
     );
   }

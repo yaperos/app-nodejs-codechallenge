@@ -38,9 +38,4 @@ export class TransactionStatusResolver {
       updateTransactionStatusInput,
     );
   }
-
-  @Mutation(() => TransactionStatus)
-  removeTransactionStatus(@Args('id', { type: () => Int }) id: number) {
-    return this.transactionStatusService.remove(id);
-  }
 }

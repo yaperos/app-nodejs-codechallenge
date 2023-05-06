@@ -11,7 +11,7 @@ export class TransactionValidationService {
   ) {}
 
   async validateTransaction(validateAntiFraudDto: ValidateAntiFraudDto) {
-    const findStatus = await this.transactionStatusService.findOneByName(
+    const findStatus = await this.transactionStatusService.findOne(
       validateAntiFraudDto.status,
     );
 
@@ -20,8 +20,10 @@ export class TransactionValidationService {
         validateAntiFraudDto.transactionExternalId,
       );
 
-      transaction.transactionStatusId = findStatus.id;
-      await this.transactionService.update(transaction.id, transaction);
+      if (transaction) {
+        transaction.transactionStatusId = findStatus.id;
+        await this.transactionService.update(transaction.id, transaction);
+      }
     }
   }
 }
