@@ -33,45 +33,90 @@ Every transaction with a value greater than 1000 should be rejected.
 # Tech Stack
 
 <ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
+  <li>NestJS (Typescript) with TypeORM </li>
+  <li>Postgres</li>
   <li>Kafka</li>    
 </ol>
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+# How to run
+1. To run the whole project using docker run the following command:
 
-You must have two resources:
+    ```
+    docker-compose up
+    ```
 
-1. Resource to create a transaction that must containt:
+2. Run locally with the following commands 
+    ```
+    # For transactions-api
+    cd transactions-api
+    npm install
+    npm run start:dev
 
-```json
+    # For anti-fraud-service
+    cd anti-fraud-service
+    npm install
+    npm run start:dev
+    ```
+
+# Playground
+
+## Show API Swagger Documentation
+
+Entered to http://localhost:3000/explorer to show Swagger or call request to transaction controller
+
+## Api Transaction
+
+### Create transaction
+
+When call resource POST /transactions to register a transaction that must containt:
+
+
+```json 
+Transaction approved
+
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "9f09d5fd-4021-4ed0-83b0-178ad56cdab1",
+  "accountExternalIdCredit": "9f09d5fd-4021-4ed0-83b0-178ad56cdab1",
+  "transferTypeId": 1,
+  "value": 50
+}
+```
+
+```json 
+Transaction rejected
+
+{
+  "accountExternalIdDebit": "9f09d5fd-4021-4ed0-83b0-178ad56cdab1",
+  "accountExternalIdCredit": "9f09d5fd-4021-4ed0-83b0-178ad56cdab1",
   "tranferTypeId": 1,
   "value": 120
 }
 ```
 
-2. Resource to retrieve a transaction
+### Get transaction
+
+
+When call resource GET /transactions/:transactionExternalId to get a transaction detail
 
 ```json
 {
   "transactionExternalId": "Guid",
   "transactionType": {
-    "name": ""
+    "name": 1
   },
   "transactionStatus": {
-    "name": ""
+    "name": "APPROVED"
   },
-  "value": 120,
-  "createdAt": "Date"
+  "value": 50,
+  "createdAt": "2023-05-06T02:08:55.635Z"
 }
 ```
 
 ## Optional
 
 You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+
+R: To face it the high-volume scenarios requirement, may considered implementing a database clustering solution to distribute the load across multiple database instances. We can also use caching techniques such as Redis to reduce the load on the database, aditional to kafka running services to handle the high volume of transactions. 
 
 You can use Graphql;
 
