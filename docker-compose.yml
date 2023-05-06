@@ -1,25 +1,120 @@
 version: "3.7"
-services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+services:  
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - 2181:2181
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+    image: 'bitnami/kafka:latest'
     ports:
       - 9092:9092
+    restart: always
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+
+  mongo1:
+    hostname: mongo1
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - 30001:27017 
+    restart: always
+    command: mongod --replSet my-mongo-set
+
+  mongo2:
+    hostname: mongo2
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - 30002:27017
+    restart: always
+    command: mongod --replSet my-mongo-set
+
+  mongoinit:
+    image: mongo
+    # this container will exit after executing the command
+    restart: "no"
+    depends_on:
+      - mongo1
+      - mongo2
+    command: >
+      mongosh --host host.docker.internal:30001 --eval 
+      '      
+      config = {
+      "_id" : "my-mongo-set",
+      "members" : [
+        {
+          "_id" : 0,
+          "host" : "host.docker.internal:30001"
+        },
+        {
+          "_id" : 1,
+          "host" : "host.docker.internal:30002"
+        }
+      ]
+      };
+      rs.initiate(config);
+      '
+  mongo-express:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo1
+      - mongo2
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo1,mongo2:27017/?replicaSet=my-mongo-set
+
+  redis:
+    image: 'redis:latest'
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: redis-cli ping
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+  redisinsight:
+    image: 'redislabs/redisinsight:latest'
+    ports:
+      - 8001:8001
+
+  ms-retrieve-transactions:
+    build: ./yape-retrieve-transactions
+    ports:
+      - 3001:3000
+    restart: always
+    depends_on:
+      - kafka
+      - mongo1
+      - mongo2
+      - redis
+
+  ms-modify-transactions:
+    build: ./yape-modify-transactions
+    ports:
+      - 3000:3000
+    restart: always
+    depends_on:
+      - kafka
+      - mongo1
+      - mongo2
+
+  ms-validate-transactions:
+    build: ./yape-validate-transactions
+    restart: always
+    depends_on:
+      - kafka  
