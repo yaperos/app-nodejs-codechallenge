@@ -19,7 +19,8 @@ import { dataSoruceOptions } from './db/data-source';
       autoSchemaFile: join(process.cwd(), 'src/gql/schema.gql'),
       formatError: (error: GraphQLError) => {
         const graphQLFormattedError: GraphQLFormattedError = {
-          message: error.message,
+          message:
+            (error?.extensions?.originalError as string) || error.message,
         };
         return graphQLFormattedError;
       },
