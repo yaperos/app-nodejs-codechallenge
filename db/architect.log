@@ -1,0 +1,71 @@
+0    [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ArchitectUtils  - Log4J configured successfully
+1305 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+1425 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+1425 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+1487 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+23713 [Thread-5] ERROR ca.sqlpower.architect.swingui.action.CheckForUpdateAction  - Fail to retrieve current version number!
+53423 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+CREATE SEQUENCE transfer_type_id_seq
+53435 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE transfer_type (
+                id INTEGER NOT NULL DEFAULT nextval('transfer_type_id_seq'),
+                description VARCHAR(300),
+                CONSTRAINT transfer_type_pk PRIMARY KEY (id)
+)
+53437 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+ALTER SEQUENCE transfer_type_id_seq OWNED BY transfer_type.id
+53438 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE SEQUENCE transactions_id_seq
+53440 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE transactions (
+                id INTEGER NOT NULL DEFAULT nextval('transactions_id_seq'),
+                id_type INTEGER,
+                account_external_id_debit VARCHAR(100),
+                account_external_id_credit VARCHAR(100),
+                value REAL,
+                status VARCHAR(30),
+                create_at DATE,
+                CONSTRAINT transactions_pk PRIMARY KEY (id)
+)
+53441 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+ALTER SEQUENCE transactions_id_seq OWNED BY transactions.id
+53443 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE transactions ADD CONSTRAINT transfer_type_transactions_fk
+FOREIGN KEY (id_type)
+REFERENCES transfer_type (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+53453 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - The list size is :7
+175699 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown SQLTypePhysicalProperties property name changed while monitoring pkTable
+149958272 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+CREATE TABLE solicitud_servicio_awb_vuelo (
+                id BIGINT IDENTITY NOT NULL,
+                tipo VARCHAR(50),
+                proveedor VARCHAR(100),
+                servicio VARCHAR(100),
+                comentario VARCHAR(600),
+                estado VARCHAR(3),
+                CONSTRAINT solicitud_servicio_awb_vuelo_pk PRIMARY KEY (id)
+)
+149958279 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - The list size is :1
+150026531 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+CREATE TABLE solicitud_servicio_awb_vuelo (
+                id BIGINT IDENTITY NOT NULL,
+                tipo VARCHAR(50),
+                proveedor VARCHAR(100),
+                servicio VARCHAR(100),
+                comentario VARCHAR(600),
+                estado VARCHAR(3),
+                created_date DATETIME,
+                CONSTRAINT solicitud_servicio_awb_vuelo_pk PRIMARY KEY (id)
+)
+150026531 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - The list size is :1

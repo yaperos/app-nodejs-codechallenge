@@ -1,0 +1,33 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dannyverm/app-nodejs-codechallenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dannyverm/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/dannyverm/app-nodejs-codechallenge#readme",
+  "dependencies": {
+    "@prisma/client": "^4.10.0",
+    "apollo-server-express": "^3.12.0",
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "graphql-tools": "^8.3.20",
+    "kafka-node": "^5.0.0",
+    "kafkajs": "^2.2.4",
+    "nodemon": "^2.0.22",
+    "pg": "^8.10.0",
+    "prisma": "^4.10.0"
+  }
+}
