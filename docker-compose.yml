@@ -43,6 +43,10 @@ services:
     environment:
       POSTGRES_URI: postgres://postgres:postgres@postgres:5432/postgres
       KAFKA_BROKER: kafka:29092
+      PORT: 5000
+      PRODUCER_TOPIC: transaction-save
+      CONSUMER_TOPIC: transaction-validate
+      CONSUMER_GROUP_ID: transaction-validate-consumer-local-v1
     ports:
       - 5000:5000
     volumes:
@@ -61,6 +65,9 @@ services:
     container_name: ms-antifraude
     environment:
       KAFKA_BROKER: kafka:29092
+      PRODUCER_TOPIC: transaction-validate
+      CONSUMER_TOPIC: transaction-save
+      CONSUMER_GROUP_ID: transaction-save-consumer-local-v1
     volumes:
       - ./src/antifraude:/usr/src/app
       - ./src/antifraude/node_modules:/usr/src/app/node_modules
