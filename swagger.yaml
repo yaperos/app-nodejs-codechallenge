@@ -1,0 +1,86 @@
+openapi: 3.0.1
+info:
+  title: app-nodejs-codechallenge
+  description: ""
+  version: "1.0"
+servers:
+  - url: "http://localhost:5000"
+tags:
+  - name: transaction
+    description: Everything about your Pets
+paths:
+  /transaction:
+    post:
+      tags:
+        - transaction
+      summary: Guardar una transaccion
+      description: transaction
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionSaveRequest"
+      responses:
+        "200":
+          description: Orden creada correctamente..
+          content:
+            application/json:
+              example:
+                {
+                  "transactionExternalId": "d3b1937d-7df9-4cff-9717-64a8c3c38929"
+                }
+        "400":
+          description: Solicitud incorrecta.
+        "500":
+          description: Error interno del servidor.
+  
+  /transaction/{transactionExternalId}:
+    get:
+      tags:
+        - transaction
+      summary: Obtener detalle de una transaccion
+      description: transaction
+      parameters:
+        - name: transactionExternalId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Orden creada correctamente..
+          content:
+            application/json:
+              example:
+                {
+                  "transactionExternalId": "26683e03-7db6-47a4-b844-6f4394ef87b1",
+                  "transactionType": 1,
+                  "transactionStatus": "approved",
+                  "value": 10.5,
+                  "createdAt": "2023-05-10T17:16:23.650Z"
+                }
+        "400":
+          description: Solicitud incorrecta.
+        "500":
+          description: Error interno del servidor.
+
+components:
+  schemas:
+    TransactionSaveRequest:
+      title: TransactionSaveRequest
+      type: object
+      properties:
+        accountExternalIdDebit:
+          type: string
+          example: "d4d9c2f1-3c3f-4ba4-8e45-260b7d14e595"
+        accountExternalIdCredit:
+          type: string
+          example: "143e3592-0523-4d85-b937-4283a9f54e6b"
+        tranferTypeId:
+          type: number
+          example: 1
+        value:
+          type: number
+          example: 10.50

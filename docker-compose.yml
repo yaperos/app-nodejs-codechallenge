@@ -7,13 +7,17 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - app-network
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - app-network
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: [ zookeeper ]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -23,3 +27,50 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - app-network
+  ms-transaction:
+    build:
+      context: ./
+      dockerfile: src/transaction/Dockerfile
+    depends_on:
+      - postgres
+      - kafka
+    links:
+      - postgres
+      - kafka
+    container_name: ms-transaction
+    environment:
+      POSTGRES_URI: postgres://postgres:postgres@postgres:5432/postgres
+      KAFKA_BROKER: kafka:29092
+    ports:
+      - 5000:5000
+    volumes:
+      - ./src/transaction:/usr/src/app
+      - ./src/transaction/node_modules:/usr/src/app/node_modules
+    networks:
+      - app-network
+  ms-antifraude:
+    build:
+      context: ./
+      dockerfile: src/antifraude/Dockerfile
+    depends_on:
+      - kafka
+    links:
+      - kafka
+    container_name: ms-antifraude
+    environment:
+      KAFKA_BROKER: kafka:29092
+    volumes:
+      - ./src/antifraude:/usr/src/app
+      - ./src/antifraude/node_modules:/usr/src/app/node_modules
+    networks:
+      - app-network
+volumes:
+  postgres: {}
+  zookeeper: {}
+  kafka: {}
+
+networks:
+  app-network:
+    driver: bridge
