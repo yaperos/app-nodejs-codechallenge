@@ -1,12 +1,12 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TransactionResolver } from './transaction.resolver';
 import { TransactionService } from './transaction.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionType } from './entities/transactionType.entity';
 import { TransactionStatus } from './entities/transactionStatus.entity';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { TransactionController } from './transaction.controller';
+import { TransactionController } from './transaction.events.controller';
 
 @Module({
   imports: [
