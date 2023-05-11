@@ -30,11 +30,11 @@ export class Transaction {
   accountExternalIdCredit: string;
 
   @ManyToOne(() => TransactionType)
-  @Field()
+  @Field(() => TransactionType, { nullable: true })
   transactionType: number;
 
   @ManyToOne(() => TransactionStatus)
-  @Field()
+  @Field(() => TransactionStatus, { nullable: true })
   transactionStatus: number;
 
   @Column('numeric')

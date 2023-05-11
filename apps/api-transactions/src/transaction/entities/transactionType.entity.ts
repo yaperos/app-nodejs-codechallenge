@@ -1,3 +1,4 @@
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -7,11 +8,14 @@ import {
 } from 'typeorm';
 
 @Entity()
+@ObjectType()
 export class TransactionType {
   @PrimaryGeneratedColumn()
+  @Field(() => Int)
   id: number;
 
   @Column()
+  @Field()
   name: string;
 
   @CreateDateColumn()
