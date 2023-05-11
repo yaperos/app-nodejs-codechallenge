@@ -26,12 +26,15 @@ export class Transaction {
   accountExternalIdDebit: string;
 
   @Column({ length: 36 })
+  @Field()
   accountExternalIdCredit: string;
 
   @ManyToOne(() => TransactionType)
+  @Field()
   transactionType: number;
 
   @ManyToOne(() => TransactionStatus)
+  @Field()
   transactionStatus: number;
 
   @Column('numeric')

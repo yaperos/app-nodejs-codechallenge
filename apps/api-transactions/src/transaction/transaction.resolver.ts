@@ -1,6 +1,7 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionService } from './transaction.service';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 
 @Resolver()
 export class TransactionResolver {
@@ -9,6 +10,11 @@ export class TransactionResolver {
   @Query(() => [Transaction])
   async transactions(): Promise<Transaction[]> {
     return this.transactionService.findAll();
+  }
+
+  @Mutation(() => Transaction)
+  createPost(@Args('transactionInput') transactionInput: CreateTransactionDto) {
+    return this.transactionService.createTransactions(transactionInput);
   }
 
   //   @Query(() => String, { description: 'Retorna un saludo' })
