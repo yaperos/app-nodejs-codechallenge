@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { Repository } from 'typeorm';
 import { TransactionType } from './entities/transactionType.entity';
 import { TransactionStatus } from './entities/transactionStatus.entity';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class TransactionService {
@@ -15,6 +16,8 @@ export class TransactionService {
     private transactionTypeRepository: Repository<TransactionType>,
     @InjectRepository(TransactionStatus)
     private transactionStatusRepository: Repository<TransactionStatus>,
+    @Inject('KAFKA_CLIENT')
+    private readonly kafkaClient: ClientKafka,
   ) {}
 
   findAll(): Promise<Transaction[]> {
@@ -31,6 +34,7 @@ export class TransactionService {
 
   createTransactions(transaction: CreateTransactionDto): Promise<Transaction> {
     const newTransaction = this.transactionRepository.create(transaction);
+    this.kafkaClient.emit('transaction.created', 'se ha creado');
     return this.transactionRepository.save(newTransaction);
   }
 

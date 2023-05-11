@@ -9,6 +9,7 @@ import { TransactionStatus } from './transaction/entities/transactionStatus.enti
 import { TransactionType } from './transaction/entities/transactionType.entity';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -36,6 +37,5 @@ import { User } from './user/entities/user.entity';
     UserModule,
   ],
   controllers: [],
-  providers: [],
 })
 export class AppModule {}

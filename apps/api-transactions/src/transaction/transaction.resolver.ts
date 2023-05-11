@@ -11,6 +11,7 @@ import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionType } from './entities/transactionType.entity';
 import { TransactionStatus } from './entities/transactionStatus.entity';
+import { MessagePattern, Payload, Transport } from '@nestjs/microservices';
 
 @Resolver(() => Transaction)
 export class TransactionResolver {
