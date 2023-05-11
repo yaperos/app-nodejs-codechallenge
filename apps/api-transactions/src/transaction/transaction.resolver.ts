@@ -8,24 +8,19 @@ export class TransactionResolver {
   constructor(private transactionService: TransactionService) {}
 
   @Query(() => [Transaction])
-  async transactions(): Promise<Transaction[]> {
+  async transactions() {
     return this.transactionService.findAll();
   }
 
   @Mutation(() => Transaction)
-  createPost(@Args('transactionInput') transactionInput: CreateTransactionDto) {
+  createTransaction(
+    @Args('transactionInput') transactionInput: CreateTransactionDto,
+  ) {
     return this.transactionService.createTransactions(transactionInput);
   }
 
-  //   @Query(() => String, { description: 'Retorna un saludo' })
-  //   helloWorld(): string {
-  //     return 'hola mundo';
-  //   }
-
-  //   @Query(() => String)
-  //   getTransaction(@Args('ext_id') transactionId: string): string {
-  // @Args('ext_id',{type:()=>Int})
-  // @Args('ext_id',{type:()=>Int,nullable:true})
-  // return 'aqui una transaction';
-  //   }
+  @Query(() => Transaction)
+  transaction(@Args('id') id: string) {
+    return this.transactionService.findTransactionByUid(id);
+  }
 }

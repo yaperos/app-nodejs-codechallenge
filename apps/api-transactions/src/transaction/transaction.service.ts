@@ -15,9 +15,15 @@ export class TransactionService {
     return this.transactionRepository.find();
   }
 
-  async createTransactions(
-    transaction: CreateTransactionDto,
-  ): Promise<Transaction> {
+  findTransactionByUid(transactionExternalId: string): Promise<Transaction> {
+    return this.transactionRepository.findOne({
+      where: {
+        transactionExternalId,
+      },
+    });
+  }
+
+  createTransactions(transaction: CreateTransactionDto): Promise<Transaction> {
     const newRepository = this.transactionRepository.create(transaction);
     return this.transactionRepository.save(newRepository);
   }

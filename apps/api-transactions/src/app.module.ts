@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './transaction/entities/transaction.entity';
 import { TransactionStatus } from './transaction/entities/transactionStatus.entity';
 import { TransactionType } from './transaction/entities/transactionType.entity';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { TransactionType } from './transaction/entities/transactionType.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'postgres',
-      entities: [Transaction, TransactionStatus, TransactionType],
+      entities: [Transaction, TransactionStatus, TransactionType, User],
       synchronize: true, //not use in production
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -31,6 +33,7 @@ import { TransactionType } from './transaction/entities/transactionType.entity';
       ),
     }),
     TransactionModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
