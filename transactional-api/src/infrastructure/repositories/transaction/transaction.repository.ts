@@ -12,6 +12,15 @@ export class TransactionRepository implements ITransactionRepository{
         private TransactionCtx: Repository<Transaction>
     ){}
 
+    async findAllAsync(): Promise<Transaction[]>{
+        return this.TransactionCtx.find();
+    }
+
+    async findOneAsync(prmTransactionExternalId: string): Promise<Transaction>{
+        console.log(await this.TransactionCtx.findOne({where: {transactionExternalId: prmTransactionExternalId}}));
+        return await this.TransactionCtx.findOne({where: {transactionExternalId: prmTransactionExternalId}});
+    }
+
     async searchByAsync(prmTransactionExternalId: string): Promise<Transaction>{
         return await this.TransactionCtx.findOne({
             select: {

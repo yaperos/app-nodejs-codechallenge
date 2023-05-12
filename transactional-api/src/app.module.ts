@@ -6,6 +6,7 @@ import { ApiModule } from './api/api.module';
 import { ServicesModule } from './application/services/services.module';
 import { RepositoriesModule } from './infrastructure/repositories/repositories.module'
 import { QueriesModule } from './application/queries/queries.module';
+import { GraphModule } from './application/graph/graph.module';
 import { TransactionService } from './application/services/transaction/transaction.service';
 import { TransactionController } from './api/transaction/transaction.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,6 +15,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TransactionRepository } from './infrastructure/repositories/transaction/transaction.repository';
 import { Transaction } from './domain/entities/transaction.entity';
 import { TransactionQuery } from './application/queries/transaction/transaction.query';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
+import { TransactionResolver } from './application/graph/transaction/transaction.resolver';
 
 @Module({
   imports: [
@@ -37,7 +42,11 @@ import { TransactionQuery } from './application/queries/transaction/transaction.
           groupId: 'antifraud-worker-consumer',
         }
       }
-    }])
+    }]),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
   ],
   controllers: [
     AppController, 
@@ -47,7 +56,8 @@ import { TransactionQuery } from './application/queries/transaction/transaction.
     AppService, 
     TransactionService,
     TransactionQuery,
-    TransactionRepository
+    TransactionRepository,
+    TransactionResolver
   ]
 })
 export class AppModule {}

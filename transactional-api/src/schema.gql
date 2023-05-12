@@ -1,0 +1,18 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Transaction {
+  transactionExternalId: String!
+  accountExternalIdDebit: String
+  accountExternalIdCredit: String
+  transferTypeId: Float!
+  value: Float!
+  transactionStatus: Float!
+  transactionType: Float!
+}
+
+type Query {
+  getTransaction(transactionExternalId: String!): Transaction!
+  transactions: [Transaction!]!
+}
