@@ -6,7 +6,8 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
 
     constructor(
-        @Inject(ConfigService) private readonly configService : ConfigService
+        @Inject(ConfigService) 
+        private readonly configService : ConfigService
     ){}
 
     createTypeOrmOptions(): TypeOrmModuleOptions {

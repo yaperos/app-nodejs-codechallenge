@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { CreateTransactionEventDto } from 'src/application/adapters/transaction/create-transaction.event.dto';
 import { CreateTransactionRequestDto } from 'src/application/adapters/transaction/create-transaction.request.dto';
 import { TransactionStatus } from 'src/domain/constants/transactionstatus.enum';
 import { TransactionType } from 'src/domain/constants/transactiontype.enum';
@@ -26,14 +27,19 @@ export class TransactionService {
         item.transactionStatus = TransactionStatus.PENDING;
         item.transactionType = body.accountExternalIdCredit ? TransactionType.CREDIT : TransactionType.DEBIT 
         /* TO-DO auth get user*/ item.createdBy = 'Admin';
-        await this.transactionRepository.create(item);
+        var entity = await this.transactionRepository.saveAsync(item);
 
         this.transactionalES
-        .send('create-transaction', JSON.stringify(body))
-        .subscribe((res) => {
-            console.log("Respuesta: ");
-            console.log(res);
-        });
-
+            .send('create-transaction', JSON.stringify(
+                new CreateTransactionEventDto(
+                    entity.id, 
+                    entity.transactionExternalId, 
+                    entity.value, 
+                    entity.transactionStatus)
+            ))
+            .subscribe(async (res: CreateTransactionEventDto) => {
+                entity.transactionStatus = res.transactionStatus;
+                await this.transactionRepository.saveAsync(entity);
+            });
     }
 }

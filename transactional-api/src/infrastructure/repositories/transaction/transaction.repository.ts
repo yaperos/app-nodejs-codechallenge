@@ -12,15 +12,24 @@ export class TransactionRepository implements ITransactionRepository{
         private TransactionCtx: Repository<Transaction>
     ){}
 
-    async create(item: Transaction): Promise<Transaction>{
-        console.log('Peticion');
-        console.log(item);
-        var res = await this.TransactionCtx.save(item);
-        console.log('Respuesta');
-        console.log(res);
-        return res;
+    async searchByAsync(prmTransactionExternalId: string): Promise<Transaction>{
+        return await this.TransactionCtx.findOne({
+            select: {
+                transactionExternalId: true,
+                transactionType: true,
+                transactionStatus: true,
+                value: true,
+                createDateTime: true
+            },
+            where: {
+                transactionExternalId: prmTransactionExternalId,
+                isActive: true
+            }
+        });
+    }
 
-        
+    async saveAsync(item: Transaction): Promise<Transaction>{
+        return await this.TransactionCtx.save(item);
     }
 
 }

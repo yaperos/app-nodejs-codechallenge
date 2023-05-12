@@ -1,5 +1,6 @@
 import { Transaction } from "../entities/transaction.entity";
 
 export interface ITransactionRepository{
-    create(item: Transaction): Promise<Transaction>;
+    searchByAsync(prmTransactionExternalId: string): Promise<Transaction>;
+    saveAsync(item: Transaction): Promise<Transaction>;
 }
