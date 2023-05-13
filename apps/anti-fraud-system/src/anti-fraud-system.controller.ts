@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AntiFraudSystemService } from './anti-fraud-system.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { InputTransactionEvent } from './dto/input-transaction-events-dtos';
 
 @Controller()
 export class AntiFraudSystemController {
@@ -9,7 +10,7 @@ export class AntiFraudSystemController {
   ) {}
 
   @MessagePattern('transaction.created')
-  validateTransactionCreated(@Payload() message: any) {
+  validateTransactionCreated(@Payload() message: InputTransactionEvent) {
     this.antiFraudSystemService.validateTransaction(message);
   }
 }

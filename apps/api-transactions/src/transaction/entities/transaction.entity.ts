@@ -8,17 +8,17 @@ import {
 } from 'typeorm';
 import { TransactionType } from './transactionType.entity';
 import { TransactionStatus } from './transactionStatus.entity';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
 @Entity()
 @ObjectType()
 export class Transaction {
   @PrimaryGeneratedColumn()
-  @Field()
+  // @Field()
   transactionInternalId: number;
 
   @PrimaryGeneratedColumn('uuid')
-  @Field()
+  @Field(() => ID)
   transactionExternalId: string;
 
   @Column({ length: 36 })
@@ -38,7 +38,7 @@ export class Transaction {
   transactionStatus: number;
 
   @Column('numeric')
-  @Field()
+  @Field(() => Float)
   value: number;
 
   @CreateDateColumn()

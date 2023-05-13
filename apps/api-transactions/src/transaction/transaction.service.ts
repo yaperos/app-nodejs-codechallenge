@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { TransactionType } from './entities/transactionType.entity';
 import { TransactionStatus } from './entities/transactionStatus.entity';
 import { ClientKafka } from '@nestjs/microservices';
+import { TransactionEvent } from './dto/event-transaction.dto';
 
 @Injectable()
 export class TransactionService {
@@ -32,10 +33,28 @@ export class TransactionService {
     });
   }
 
-  createTransactions(transaction: CreateTransactionDto): Promise<Transaction> {
+  async createTransactions(
+    transaction: CreateTransactionDto,
+  ): Promise<Transaction> {
     const newTransaction = this.transactionRepository.create(transaction);
-    this.kafkaClient.emit('transaction.created', 'se ha creado');
-    return this.transactionRepository.save(newTransaction);
+    const transactionCreated = await this.transactionRepository.save(
+      newTransaction,
+    );
+
+    this.kafkaClient.emit('transaction.created', {
+      meta: {
+        origin: 'api-transactions',
+        date: new Date(),
+      },
+      data: {
+        accountExternalIdCredit: transactionCreated.accountExternalIdCredit,
+        accountExternalIdDebit: transactionCreated.accountExternalIdDebit,
+        value: transactionCreated.value,
+        transactionExternalId: transactionCreated.transactionExternalId,
+      },
+    } as TransactionEvent);
+
+    return transactionCreated;
   }
 
   // NOTE: types
