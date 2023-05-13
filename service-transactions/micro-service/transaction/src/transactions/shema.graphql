@@ -1,0 +1,40 @@
+type Query{
+    findTransaction(externalId: Int): RetrieveTransaction!
+}
+
+type Mutation {
+  saveTransaction(data: CreateTransactionInput): TransactionEntity!
+}
+
+
+
+type Transaction{
+    accountExternalIdDebit: String!
+    accountExternalIdCredit: String!
+    transferTypeId: Int!
+    value:Int!
+}
+
+type TransactionEntity {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  transferTypeId: Int
+  value: Int!
+  transactionExternalId: Int!
+}
+
+type RetrieveTransaction {
+  transactionExternalId: Int!
+  transactionStatus: String!
+  transactionType: Int
+  value: Int!
+  createdAt: DateTime!
+}
+scalar DateTime
+
+input CreateTransactionInput{
+    accountExternalIdDebit: String!
+    accountExternalIdCredit: String!
+    transferTypeId: Int!
+    value:Int!
+}

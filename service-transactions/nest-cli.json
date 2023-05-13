@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "micro-service/transaction/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "micro-service/transaction/tsconfig.app.json"
+  },
+  
+  "monorepo": true,
+  "root": "micro-service/antifraud",
+  "projects": {
+    "anti-fraud": {
+      "type": "application",
+      "root": "micro-service/antifraud",
+      "entryFile": "main",
+      "sourceRoot": "micro-service/antifraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "micro-service/antifraud/tsconfig.app.json"
+      }
+    },
+    "transaction": {
+      "type": "application",
+      "root": "micro-service/transaction",
+      "entryFile": "main",
+      "sourceRoot": "micro-service/transaction/src",
+      "compilerOptions": {
+        "tsConfigPath": "micro-service/transaction/tsconfig.app.json"
+      }
+    }
+  }
+}
+

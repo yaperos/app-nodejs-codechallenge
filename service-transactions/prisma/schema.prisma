@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Transaction {
+  transactionExternalId          Int      @id @default(autoincrement())
+  accountExternalIdDebit         String   
+  accountExternalIdCredit        String
+  transferTypeId                 Int @default(1)
+  value                          Int @default(1)
+  transactionType                TransactionType   @relation(fields: [transferTypeId], references: [id])
+  transactionStatus              TransactionStatus @default(pending)
+  createdAt                      DateTime @default(now())
+  updatedAt                      DateTime @updatedAt
+}
+
+model TransactionType {
+  id                      Int       @id @default(autoincrement())
+  name                    String
+  transactions            Transaction[]
+}
+
+enum TransactionStatus {
+  pending
+  approved
+  rejected
+}
