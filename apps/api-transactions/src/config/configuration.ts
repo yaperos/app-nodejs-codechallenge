@@ -13,5 +13,9 @@ export default () => {
     kafka: {
       brokers: [process.env.KAFKA_BROKER],
     },
+    jwt: {
+      secret: process.env.JWT_SECRET || 'secret',
+      duration: process.env.JWT_DURATION || '60s',
+    },
   };
 };

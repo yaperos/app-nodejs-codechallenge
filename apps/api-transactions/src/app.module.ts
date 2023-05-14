@@ -11,6 +11,7 @@ import { TransactionStatus } from './transaction/entities/transactionStatus.enti
 import { TransactionType } from './transaction/entities/transactionType.entity';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -47,6 +48,7 @@ import configuration from './config/configuration';
     }),
     TransactionModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [],
 })
