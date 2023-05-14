@@ -8,10 +8,9 @@ import {
 } from '@nestjs/graphql';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionService } from './transaction.service';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { CreateTransactionInput } from './dto/create-transaction.input';
 import { TransactionType } from './entities/transactionType.entity';
 import { TransactionStatus } from './entities/transactionStatus.entity';
-import { MessagePattern, Payload, Transport } from '@nestjs/microservices';
 
 @Resolver(() => Transaction)
 export class TransactionResolver {
@@ -34,20 +33,22 @@ export class TransactionResolver {
 
   @Mutation(() => Transaction)
   createTransaction(
-    @Args('transactionInput') transactionInput: CreateTransactionDto,
+    @Args('transactionInput') transactionInput: CreateTransactionInput,
   ) {
+    transactionInput.transactionStatusId = 1;
+    transactionInput.transactionTypeId = transactionInput['transferTypeId'];
     return this.transactionService.createTransactions(transactionInput);
   }
 
   @Query(() => Transaction)
-  transaction(@Args('id') id: string) {
-    return this.transactionService.findTransactionByUid(id);
+  transaction(@Args('externalId') id: string) {
+    return this.transactionService.findTransactionByExternalUid(id);
   }
 
   @ResolveField(() => TransactionStatus)
   transactionStatus(@Parent() transaction: Transaction) {
     return this.transactionService.getTransactionStatusById(
-      transaction.transactionStatus,
+      transaction.transactionStatusId,
     );
   }
 
@@ -56,7 +57,7 @@ export class TransactionResolver {
     @Parent() transaction: Transaction,
   ): Promise<TransactionType> {
     return this.transactionService.getTransactionTypeById(
-      transaction.transactionType,
+      transaction.transactionTypeId,
     );
   }
 }

@@ -29,17 +29,26 @@ export class Transaction {
   @Field()
   accountExternalIdCredit: string;
 
-  @ManyToOne(() => TransactionType)
-  @Field(() => TransactionType, { nullable: true })
-  transactionType: number;
+  @Column()
+  transactionTypeId: number;
 
-  @ManyToOne(() => TransactionStatus)
-  @Field(() => TransactionStatus, { nullable: true })
-  transactionStatus: number;
+  // @Field(() => TransactionType, { nullable: true })
+  @ManyToOne(() => TransactionType, (type) => type.id)
+  transactionType: TransactionType;
+
+  @Column()
+  transactionStatusId: number;
+
+  // @Field(() => TransactionStatus, { nullable: true })
+  @ManyToOne(() => TransactionStatus, (status) => status.id)
+  transactionStatus: TransactionStatus;
 
   @Column('numeric')
   @Field(() => Float)
   value: number;
+
+  @Column({ nullable: true })
+  observation: string;
 
   @CreateDateColumn()
   createdAt: Date;

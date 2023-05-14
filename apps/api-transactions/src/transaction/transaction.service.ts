@@ -1,12 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transaction.entity';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { CreateTransactionInput } from './dto/create-transaction.input';
 import { Repository } from 'typeorm';
 import { TransactionType } from './entities/transactionType.entity';
 import { TransactionStatus } from './entities/transactionStatus.entity';
 import { ClientKafka } from '@nestjs/microservices';
-import { TransactionEvent } from './dto/event-transaction.dto';
+import { OutputTransactionEvent } from './dto/event-transaction.dtos';
+import { UpdateTransactionDto } from './dto/update-transaction.input';
 
 @Injectable()
 export class TransactionService {
@@ -25,7 +26,9 @@ export class TransactionService {
     return this.transactionRepository.find();
   }
 
-  findTransactionByUid(transactionExternalId: string): Promise<Transaction> {
+  findTransactionByExternalUid(
+    transactionExternalId: string,
+  ): Promise<Transaction> {
     return this.transactionRepository.findOne({
       where: {
         transactionExternalId,
@@ -33,8 +36,26 @@ export class TransactionService {
     });
   }
 
+  async updateTransactionByExternalUid(
+    transactionExternalId: string,
+    updateTransactionDto: UpdateTransactionDto,
+  ) {
+    const transaction = await this.transactionRepository.findOne({
+      where: { transactionExternalId },
+    });
+
+    if (!transaction) {
+      throw new NotFoundException(
+        `Transaction with externaUID ${transactionExternalId} not found`,
+      );
+    }
+
+    Object.assign(transaction, updateTransactionDto);
+    return this.transactionRepository.save(transaction);
+  }
+
   async createTransactions(
-    transaction: CreateTransactionDto,
+    transaction: CreateTransactionInput,
   ): Promise<Transaction> {
     const newTransaction = this.transactionRepository.create(transaction);
     const transactionCreated = await this.transactionRepository.save(
@@ -52,7 +73,7 @@ export class TransactionService {
         value: transactionCreated.value,
         transactionExternalId: transactionCreated.transactionExternalId,
       },
-    } as TransactionEvent);
+    } as OutputTransactionEvent);
 
     return transactionCreated;
   }

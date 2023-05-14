@@ -18,8 +18,8 @@ export class AntiFraudSystemService {
     const { data } = transactionEvent;
     const transactionExternalId = data.transactionExternalId;
     const events = {
-      APPROVED: 'transaction.rejected',
-      REJECTED: 'transaction.approved',
+      REJECTED: 'transaction.rejected',
+      APPROVED: 'transaction.approved',
     };
 
     const validations = [
@@ -58,6 +58,7 @@ export class AntiFraudSystemService {
       origin: 'anti-fraud-system',
     };
 
+    // NOTE: appliying validations
     for (const { name, func: validationFunction } of validations) {
       const passed = validationFunction(transactionEvent);
       if (!passed) {
