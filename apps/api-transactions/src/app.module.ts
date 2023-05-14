@@ -1,27 +1,39 @@
+import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
-import { TransactionModule } from './transaction/transaction.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { TransactionModule } from './transaction/transaction.module';
 import { Transaction } from './transaction/entities/transaction.entity';
 import { TransactionStatus } from './transaction/entities/transactionStatus.entity';
 import { TransactionType } from './transaction/entities/transactionType.entity';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
-import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'postgres',
-      entities: [Transaction, TransactionStatus, TransactionType, User],
-      synchronize: true, //not use in production
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const databaseConfig = configService.get('database.postgres');
+        return {
+          type: 'postgres',
+          host: databaseConfig.host,
+          port: databaseConfig.port,
+          username: databaseConfig.user,
+          password: databaseConfig.password,
+          database: databaseConfig.database,
+          entities: [Transaction, TransactionStatus, TransactionType, User],
+          synchronize: true, //not use in production
+        };
+      },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

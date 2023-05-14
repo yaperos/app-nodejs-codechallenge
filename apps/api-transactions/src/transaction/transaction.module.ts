@@ -7,25 +7,32 @@ import { Transaction } from './entities/transaction.entity';
 import { TransactionType } from './entities/transactionType.entity';
 import { TransactionStatus } from './entities/transactionStatus.entity';
 import { TransactionController } from './transaction.events.controller';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Transaction, TransactionType, TransactionStatus]),
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'KAFKA_CLIENT',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'hero',
-            brokers: ['localhost:9092'],
-          },
-          // consumer: {
-          //   groupId: 'hero-consumer',
-          // },
-          producer: {
-            allowAutoTopicCreation: true,
-          },
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => {
+          const kafkaBrokers = configService.get('kafka.brokers');
+          return {
+            transport: Transport.KAFKA,
+            options: {
+              client: {
+                clientId: 'hero',
+                brokers: kafkaBrokers,
+              },
+              // consumer: {
+              //   groupId: 'hero-consumer',
+              // },
+              producer: {
+                allowAutoTopicCreation: true,
+              },
+            },
+          };
         },
       },
     ]),
