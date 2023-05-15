@@ -86,7 +86,7 @@ Para esto hay que registrarse la siguiente query
   }
 }
 ```
-Esto retornará un token el cual podrás usar para hacer uso de las otras Queries y Mutaciones disponibles en el api. Este token debe pasarte en los headers HTTP de la siguiente forma.
+Esto retornará un token el cual podrás usar para hacer uso de las otras Queries y Mutaciones disponibles en el api. Este token debe agregarse en los headers HTTP de la siguiente forma.
 ```
 {
   "Authorization":"Bearer <token>"
@@ -111,7 +111,7 @@ mutation{
   }
 }
 ```
-Para la creación de transacciones se ha considerado los datos `accountExternalIdDebit` y `accountExternalIdCredit` con datos ficticios solamente se valida que sean datos UUID los demas datos si son considerados para la logica del reto, como el `transferTypeId` el cual es 1(Transferencia) en el ejemplo ese si deberá hacer match con los tipos de transacciones de la base de datos y el `value`(monto) que se usará para su validación o para la logica que se necesite luego de la aprovación de la transacción.
+Para la creación de transacciones se ha considerado los datos `accountExternalIdDebit` y `accountExternalIdCredit` con datos ficticios solamente se valida que sean datos UUID . Por otro lado el `transferTypeId` el cual es 1(Transferencia) en el ejemplo, si deberá hacer match con los tipos de transacciones de la base de datos y el `value`(monto) que se usará para su validación o para la logica que se necesite luego de la aprovación de la transacción.
 
 ## NOTA: 
 Hay muchos mas Queries y Mutaciones que se pueden usar y se puede explorar en la documentación del API.
