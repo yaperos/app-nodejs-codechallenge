@@ -51,6 +51,7 @@ export class Transaction {
   observation: string;
 
   @CreateDateColumn()
+  @Field()
   createdAt: Date;
 
   @UpdateDateColumn()
