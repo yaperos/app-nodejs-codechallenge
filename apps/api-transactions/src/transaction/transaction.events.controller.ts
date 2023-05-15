@@ -26,6 +26,9 @@ export class TransactionController {
       transactionExternalId,
       updateData,
     );
+
+    //TODO: apply more logic related to a transaction approved
+
     this.logger.log(`${transactionExternalId} APPROVED`);
   }
 
@@ -43,6 +46,8 @@ export class TransactionController {
       transactionExternalId,
       updateData,
     );
+
+    //TODO: apply more logic related to a rejection
 
     this.logger.warn(`${transactionExternalId} REJECTED`);
   }

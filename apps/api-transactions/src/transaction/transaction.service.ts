@@ -11,6 +11,9 @@ import { UpdateTransactionDto } from './dto/update-transaction.input';
 
 @Injectable()
 export class TransactionService {
+  private transactionStatuses: TransactionStatus[];
+  private transactionTypes: TransactionType[];
+
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
@@ -83,8 +86,11 @@ export class TransactionService {
     return this.transactionTypeRepository.find();
   }
 
-  getTransactionTypeById(id: number): Promise<TransactionType> {
-    return this.transactionTypeRepository.findOne({ where: { id } });
+  async getTransactionTypeById(id: number): Promise<TransactionType> {
+    if (!this.transactionTypes) {
+      this.transactionTypes = await this.getTransactionTypes();
+    }
+    return this.transactionTypes.find((type) => type.id === id);
   }
 
   // NOTE: status
@@ -92,7 +98,10 @@ export class TransactionService {
     return this.transactionStatusRepository.find();
   }
 
-  getTransactionStatusById(id: number): Promise<TransactionStatus> {
-    return this.transactionStatusRepository.findOne({ where: { id } });
+  async getTransactionStatusById(id: number): Promise<TransactionStatus> {
+    if (!this.transactionStatuses) {
+      this.transactionStatuses = await this.getTransactionStatuses();
+    }
+    return this.transactionStatuses.find((status) => status.id === id);
   }
 }

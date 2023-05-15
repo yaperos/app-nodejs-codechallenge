@@ -22,12 +22,9 @@ import { ConfigService } from '@nestjs/config';
             transport: Transport.KAFKA,
             options: {
               client: {
-                clientId: 'hero',
+                clientId: 'api-transactions',
                 brokers: kafkaBrokers,
               },
-              // consumer: {
-              //   groupId: 'hero-consumer',
-              // },
               producer: {
                 allowAutoTopicCreation: true,
               },

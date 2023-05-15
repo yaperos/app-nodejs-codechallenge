@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AntiFraudSystemModule } from './anti-fraud-system.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -9,10 +11,10 @@ async function bootstrap() {
       transport: Transport.KAFKA,
       options: {
         client: {
-          brokers: ['localhost:9092'],
+          brokers: [process.env.KAFKA_BROKER],
         },
         consumer: {
-          groupId: 'group-1',
+          groupId: 'group-consummer-2',
         },
       },
     },

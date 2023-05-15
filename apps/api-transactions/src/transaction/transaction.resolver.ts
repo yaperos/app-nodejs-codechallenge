@@ -24,18 +24,6 @@ export class TransactionResolver {
     return this.transactionService.findAll();
   }
 
-  @Query(() => [TransactionType])
-  @UseGuards(JwtAuthGuard)
-  transactionTypes() {
-    return this.transactionService.getTransactionTypes();
-  }
-
-  @Query(() => [TransactionStatus])
-  @UseGuards(JwtAuthGuard)
-  transactionStatuses() {
-    return this.transactionService.getTransactionStatuses();
-  }
-
   @Mutation(() => Transaction)
   @UseGuards(JwtAuthGuard)
   createTransaction(
@@ -50,6 +38,18 @@ export class TransactionResolver {
   @UseGuards(JwtAuthGuard)
   transaction(@Args('externalId') id: string) {
     return this.transactionService.findTransactionByExternalUid(id);
+  }
+
+  @Query(() => [TransactionType])
+  @UseGuards(JwtAuthGuard)
+  transactionTypes() {
+    return this.transactionService.getTransactionTypes();
+  }
+
+  @Query(() => [TransactionStatus])
+  @UseGuards(JwtAuthGuard)
+  transactionStatuses() {
+    return this.transactionService.getTransactionStatuses();
   }
 
   @ResolveField(() => TransactionStatus)

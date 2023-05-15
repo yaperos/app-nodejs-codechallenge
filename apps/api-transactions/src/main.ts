@@ -17,7 +17,7 @@ async function bootstrap() {
         brokers: kafkaBrokers,
       },
       consumer: {
-        groupId: 'group-2',
+        groupId: 'group-consummer-1',
       },
     },
   });

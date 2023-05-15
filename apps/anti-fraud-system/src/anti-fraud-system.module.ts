@@ -21,15 +21,12 @@ import configuration from './config/configuration';
             transport: Transport.KAFKA,
             options: {
               client: {
-                clientId: 'transactions',
+                clientId: 'anti-fraud-system',
                 brokers: kafkaBrokers,
               },
               producer: {
                 allowAutoTopicCreation: true,
               },
-              // consumer: {
-              //   groupId: 'transactions-group',
-              // },
             },
           };
         },

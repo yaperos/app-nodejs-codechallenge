@@ -8,7 +8,7 @@ export class User {
   @Field(() => Int, { description: 'User id' })
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   @Field()
   username: string;
 
