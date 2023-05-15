@@ -54,3 +54,66 @@ $ nest start anti-fraud-system --watch
 $ npm run start:prod
 $ nest start anti-fraud-system
 ```
+
+## Ejemplos de uso
+Una vez iniciado el proyecto el api habrá iniciado en la siguiente dirección `http://localhost:3000/graphql` en la cual podremos ver el playground para interacturar con GraphQL y tambien podemos ver la documentación y los esquemas del API.
+
+Para empezar será necesario crear un usuario debido a que el api tiene implementada la validación por JWT.
+### Creación de usuario
+Para esto hay que registrarse la siguiente query
+ ```
+ mutation{
+  signup(signUpUserInput:{
+    username:"tuusuario"
+    password:"tuclave"
+  }){
+    id
+    username
+  }
+}
+ ```
+ ### Generación de Token
+ ```
+ mutation{
+  login(loginUserInput:{
+    username:"tuusuario"
+    password:"tuclave"
+  }){
+    access_token
+    user{
+      username
+    }
+  }
+}
+```
+Esto retornará un token el cual podrás usar para hacer uso de las otras Queries y Mutaciones disponibles en el api. Este token debe pasarte en los headers HTTP de la siguiente forma.
+```
+{
+  "Authorization":"Bearer <token>"
+}
+```
+
+### Creando una transacción
+Este es un ejemplo de una transacción que será rechazada por el tema del monto limite. 
+```
+mutation{
+  createTransaction(transactionInput:{
+    accountExternalIdDebit:"3ED351C6-B3A3-423C-A002-A6AB8772BFB5"
+    accountExternalIdCredit:"CCA26FC4-F987-4992-8C90-FD5AA13AAD21"
+    transferTypeId:1
+    value:1200
+  }){
+    transactionExternalId,
+    transactionStatus{
+      id
+      name
+    }
+  }
+}
+```
+Para la creación de transacciones se ha considerado los datos `accountExternalIdDebit` y `accountExternalIdCredit` con datos ficticios solamente se valida que sean datos UUID los demas datos si son considerados para la logica del reto, como el `transferTypeId` el cual es 1(Transferencia) en el ejemplo ese si deberá hacer match con los tipos de transacciones de la base de datos y el `value`(monto) que se usará para su validación o para la logica que se necesite luego de la aprovación de la transacción.
+
+## NOTA: 
+Hay muchos mas Queries y Mutaciones que se pueden usar y se puede explorar en la documentación del API.
+
+ 
