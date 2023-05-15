@@ -1,18 +1,28 @@
-import {Controller, Inject} from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { TransactionService } from '../service/transaction.service';
-import {ClientKafka, MessagePattern, Payload} from '@nestjs/microservices';
+import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('transactions')
 export class TransactionController {
   constructor(
-    private readonly transactionService: TransactionService,
-    // @Inject('TRANSACTION_SERVICE') private readonly client: ClientKafka,
+    private transactionService: TransactionService, // @Inject('TRANSACTION_SERVICE') private readonly client: ClientKafka,
   ) {}
 
   @MessagePattern('transaction.create')
   async createTransaction(@Payload() transactionPayload: transactionDTO) {
-    console.log('CREATE TRANSACTION: ', transactionPayload)
-    return this.transactionService.createTransaction(transactionPayload);
+    const result = await this.transactionService.createTransaction(
+      transactionPayload,
+    );
+    return {
+      requestId: transactionPayload.requestId,
+      result: {
+        transactionExternalId: result.transactionExternalId,
+        transferTypeId: result.transferTypeId,
+        transactionStatus: result.transactionStatus,
+        amount: result.amount,
+        createdAt: result.created_at,
+      },
+    };
   }
 }
 
@@ -23,5 +33,5 @@ export interface transactionDTO {
     accountExternalIdCredit: string;
     amount: number;
     transferTypeId: number;
-  }
+  };
 }

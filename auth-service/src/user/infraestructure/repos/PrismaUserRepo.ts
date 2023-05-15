@@ -1,31 +1,28 @@
-import {Injectable} from "@nestjs/common";
-import {IUserRepo} from "../../domain/user.repo";
-import {PrismaService} from "../../../prisma/prisma.service";
-import {User, UserProps} from "../../domain/user";
-import {UserID} from "../../domain/user-id";
-import {UserName} from "../../domain/user-name";
-import {UserLastname} from "../../domain/user-lastname";
-import {UserStatus} from "../../domain/user-status";
-import {Result} from "../../../shared/core/result";
-import {UserPassword} from "../../domain/user-password";
-import {UserEmail} from "../../domain/user-email";
+import { Injectable } from '@nestjs/common';
+import { IUserRepo } from '../../domain/user.repo';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { User, UserProps } from '../../domain/user';
+import { UserID } from '../../domain/user-id';
+import { UserName } from '../../domain/user-name';
+import { UserLastname } from '../../domain/user-lastname';
+import { UserStatus } from '../../domain/user-status';
+import { Result } from '../../../shared/core/result';
+import { UserPassword } from '../../domain/user-password';
+import { UserEmail } from '../../domain/user-email';
 
 @Injectable()
 export class PrismaUserRepo implements IUserRepo {
-  constructor(private readonly prismaService: PrismaService) {
-  }
+  constructor(private readonly prismaService: PrismaService) {}
 
   async userExists(email: string): Promise<boolean> {
     try {
       const user = await this.prismaService.user.findUnique({
         where: {
-          email
+          email,
         },
       });
-      console.log(!!user === true);
       return !!user === true;
     } catch (e) {
-      console.log('return false');
       return false;
     }
   }
@@ -34,7 +31,7 @@ export class PrismaUserRepo implements IUserRepo {
     const dbUserResponse = await this.prismaService.user.findFirst({
       where: {
         email: email,
-      }
+      },
     });
     const userProps: UserProps = {
       id: UserID.create(dbUserResponse.id).getValue(),
@@ -43,12 +40,12 @@ export class PrismaUserRepo implements IUserRepo {
       name: UserName.create(dbUserResponse.name).getValue(),
       lastName: UserLastname.create(dbUserResponse.lastName).getValue(),
       status: UserStatus.create(dbUserResponse.status).getValue(),
-    }
+    };
     const values = Result.combine<UserProps>(userProps);
-    if (values.isFailure) throw new Error("User not found");
+    if (values.isFailure) throw new Error('User not found');
 
     const userResult = User.create(values.getValue());
-    if (userResult.isFailure) throw new Error("User not found");
+    if (userResult.isFailure) throw new Error('User not found');
     return userResult.getValue();
   }
 
@@ -64,13 +61,12 @@ export class PrismaUserRepo implements IUserRepo {
             password: user.password,
             name: user.name,
             lastName: user.lastname,
-          }
+          },
         });
       }
       return;
     } catch (e) {
-      console.log('user - ', JSON.stringify(user))
-      console.log('error - ', e)
+      throw new Error(e);
     }
   }
 }

@@ -31,7 +31,7 @@ export class AuthController implements OnModuleInit, OnModuleDestroy {
     const payload = await this.authService.createUser(data);
     return this.client.send('user.create', {
       requestId: data.requestId,
-      payload
+      payload,
     });
   }
 
@@ -39,7 +39,6 @@ export class AuthController implements OnModuleInit, OnModuleDestroy {
   async loginUser(@Body() data: createUserDto): Promise<any> {
     const payload = await this.authService.login(data);
     const res = await this.client.send('user.login', payload);
-    console.log('RES: ', res)
     return res;
   }
 }

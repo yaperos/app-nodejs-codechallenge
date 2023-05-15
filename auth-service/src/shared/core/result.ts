@@ -47,8 +47,8 @@ export class Result<T> {
       const error = val.errorValue();
       if (error) acc.push(error);
       return acc;
-    },[]);
-    if(errors.length > 0) {
+    }, []);
+    if (errors.length > 0) {
       return Result.fail(errors);
     }
     return Result.ok(results);

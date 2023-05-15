@@ -1,9 +1,9 @@
 import { ValueObject } from '../../shared/domain/value-object';
-import {UserEmail} from './user-email';
-import {UserPassword, } from './user-password';
-import {UserName, } from './user-name';
-import {UserLastname, } from './user-lastname';
-import {UserStatus, } from './user-status';
+import { UserEmail } from './user-email';
+import { UserPassword } from './user-password';
+import { UserName } from './user-name';
+import { UserLastname } from './user-lastname';
+import { UserStatus } from './user-status';
 import { Result } from '../../shared/core/result';
 import {UserID} from "./user-id";
 import {AggregateRoot} from "@nestjs/cqrs";
