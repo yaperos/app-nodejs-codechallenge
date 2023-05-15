@@ -7,7 +7,7 @@
     Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
 ```
 ## Tecnologías:
-NestJS: Debido a que utiliza TypeScript, lo cual facilita mucho el desarrollo, además de ser bastante escalable y estar basado en Express, el framework más utilizado en el backend con NodeJS.
+- **NestJS:** Debido a que utiliza TypeScript, lo cual facilita mucho el desarrollo, además de ser bastante escalable y estar basado en Express, el framework más utilizado en el backend con NodeJS.
 
 - **PostgreSQL:** Decidí utilizar una base de datos relacional debido a que, como es un proyecto relacionado con usuarios, cuentas y transacciones, en su mayoría finanzas, creo que una base de datos relacional nos da una mejor forma de organizar este tipo de datos.
 
