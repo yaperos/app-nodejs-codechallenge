@@ -49,22 +49,19 @@ export class PrismaUserRepo implements IUserRepo {
     return userResult.getValue();
   }
 
-  async createUser(user: any, hashed: boolean): Promise<User> {
+  async createUser(user: User, hashed: boolean): Promise<User> {
     try {
-      const userCheck = await this.userExists(user.email);
-      if (!userCheck) {
-        // @ts-ignore
-        return this.prismaService.user.create({
-          data: {
-            id: user.id,
-            email: user.email,
-            password: user.password,
-            name: user.name,
-            lastName: user.lastname,
-          },
-        });
-      }
-      return;
+      console.log('Creating User', user)
+      // @ts-ignore
+      return this.prismaService.user.create({
+        data: {
+          id: user.id.props._id,
+          email: user.email.value,
+          password: await user.password.getHashedPassword(),
+          name: user.name.value,
+          lastName: user.lastName.value,
+        },
+      });
     } catch (e) {
       throw new Error(e);
     }

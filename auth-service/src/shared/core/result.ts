@@ -54,6 +54,27 @@ export class Result<T> {
     return Result.ok(results);
   }
 
+  public static combineValues(
+    results: { [index: string]: Result<any> } = {},
+  ): Result<any> {
+    const result = Object.entries(results)?.reduce(
+      (acc, [key, val]) => {
+        const error = val.errorValue();
+        if (error) acc.Errors.push(error);
+        acc.Values[key] = val.getValue();
+        return acc;
+    }, {
+      Values: {},
+      Errors: [],
+    });
+
+    if (result.Errors.length > 0) {
+      return new Result(false, result.Errors);
+    }
+
+    return Result.ok(result.Values);
+  }
+
   public static ok<U>(value?: U): Result<U> {
     return new Result<U>(true, null, value);
   }

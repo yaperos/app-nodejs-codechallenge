@@ -5,7 +5,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 @Controller()
 export class AppController {
   constructor(
-    private readonly appService: AppService, // @Inject('AUTH_SERVICE') private readonly client: ClientKafka,
+    private readonly appService: AppService
   ) {}
 
   @Get()

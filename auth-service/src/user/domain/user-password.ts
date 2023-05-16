@@ -22,7 +22,6 @@ export class UserPassword extends ValueObject<userPasswordProps> {
     if (!this.isValidPassword(value)) {
       return Result.fail<UserPassword>('Invalid password');
     }
-
     return Result.ok<UserPassword>(new UserPassword({ value }));
   }
 
@@ -32,7 +31,7 @@ export class UserPassword extends ValueObject<userPasswordProps> {
     );
   }
 
-  private async hashPassword(password: string): Promise<string> {
+  public async hashPassword(password: string): Promise<string> {
     const salt = await genSalt(10);
     return await hash(password, salt);
   }
