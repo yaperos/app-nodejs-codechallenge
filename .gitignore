@@ -82,6 +82,11 @@ typings/
 .nuxt
 dist
 
+transactions/.nuxt
+transaction-anti-fraud/.nuxt
+
+transactions/dist/
+transaction-anti-fraud/dist/
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and *not* Next.js
