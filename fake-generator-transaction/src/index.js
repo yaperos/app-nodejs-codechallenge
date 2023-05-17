@@ -4,7 +4,7 @@ const { logger } = require("./datadog");
 
 async function start() {
   const axios = require("axios");
-  let data = JSON.stringify({
+  const data = JSON.stringify({
     query:
       "mutation Create($createTransactionInput: CreateTransactionInput!) {\n  create(createTransactionInput: $createTransactionInput) {\n    value\n  }\n}",
     variables: {
@@ -20,7 +20,7 @@ async function start() {
     },
   });
 
-  let config = {
+  const config = {
     method: "post",
     maxBodyLength: Infinity,
     url: "http://transaction-api:3003/graphql",
@@ -30,14 +30,12 @@ async function start() {
     data: data,
   };
 
-  axios
-    .request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  try {
+    const response = await axios.request(config);
+    console.log(JSON.stringify(response.data));
+  } catch (error) {
+    console.log(error);
+  }
 }
 cron.schedule("*/1 * * * * *", async () => {
   logger.log("info", {
