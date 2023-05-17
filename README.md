@@ -67,6 +67,7 @@ You must have two resources:
   "value": 120,
   "createdAt": "Date"
 }
+
 ```
 
 ## Optional
