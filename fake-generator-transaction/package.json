@@ -1,0 +1,16 @@
+{
+  "name": "fake-generator-transaction",
+  "version": "1.0.0",
+  "description": "generate fake request to send transactions every minute to transactions services",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "node ./src/index"
+  },
+  "author": "Oscar Martinez ",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "node-cron": "^3.0.2",
+    "winston": "^3.8.2"
+  }
+}
