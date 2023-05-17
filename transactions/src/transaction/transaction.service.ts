@@ -32,23 +32,19 @@ export class TransactionService {
     }
 
     function generateRandomId() {
-      // Genera un ID único, por ejemplo utilizando un algoritmo como cuid()
-      // Puedes implementar tu propio generador de IDs únicos
+  
       return 'fake-id-' + Math.random().toString(36).substring(7);
     }
 
     function generateRandomNumber() {
-      // Genera un número aleatorio
       return Math.floor(Math.random() * 10000);
     }
 
     function generateRandomWord() {
-      // Genera una palabra aleatoria
       return Math.random().toString(36).substring(7);
     }
 
     function generateRandomDate() {
-      // Genera una fecha aleatoria en el rango de los últimos 10 años
       const currentDate = new Date();
       const startDate = new Date(
         currentDate.getFullYear() - 10,
@@ -64,6 +60,7 @@ export class TransactionService {
     }
 
     createTransactionInput = createFakeTransaction();
+    createTransactionInput.transactionStatus = "pending";
     console.log(createTransactionInput);
     const result = await this.prisma.transaction.create({
       data: createTransactionInput,
