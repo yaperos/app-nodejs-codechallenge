@@ -1,6 +1,28 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# How To Start
+
+```
+docker-compose up
+```
+
+# How To Test
+
+You can use the app-nodejs-code-challenge.postman_collection.json file to import the collection into postman to run transaction creation and retrieval.
+
+Or
+
+You can run the test.sh file with:
+
+```
+bash ./test.sh
+```
+
+command to run the transaction creation and retrieval flow.
+
+# Info
+
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 

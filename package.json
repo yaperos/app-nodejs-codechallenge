@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@nestjs/axios": "^2.0.0"
+  }
+}

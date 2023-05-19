@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "eb56829a-b77c-4ba0-a9e3-632f43cb52e1",
+		"name": "app-nodejs-codechallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23739292"
+	},
+	"item": [
+		{
+			"name": "create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function(){",
+							"    const responseJson = pm.response.json();",
+							"    const uuid = responseJson.transactionExternalId;",
+							"    pm.collectionVariables.set(\"uuid\", uuid)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"accountExternalIdDebit\": \"abc123\",\n  \"accountExternalIdCredit\": \"def456\",\n  \"transferTypeId\": \"1\",\n  \"value\": 10000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "retrieve",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/transactions/{{uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transactions",
+						"{{uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "antifraud",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transactionExternalId\": {{uuid}},\n  \"accountExternalIdDebit\": \"a8c9f420-4fe1-4e86-ae2d-8d0e9d8883e4\",\n  \"accountExternalIdCredit\": \"b7d6e533-52cc-4c9e-af13-8b03f83d7fd9\",\n  \"transferTypeId\": \"f6e2b53a-37fe-47b4-85a7-0e0b286dcf3d\",\n  \"value\": 1000,\n  \"status\": \"pending\",\n  \"createdAt\": \"2023-05-18T15:30:00.000Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transactionExternalId\": {{uuid}},\n  \"accountExternalIdDebit\": \"a8c9f420-4fe1-4e86-ae2d-8d0e9d8883e4\",\n  \"accountExternalIdCredit\": \"b7d6e533-52cc-4c9e-af13-8b03f83d7fd9\",\n  \"transferTypeId\": \"f6e2b53a-37fe-47b4-85a7-0e0b286dcf3d\",\n  \"value\": 1000,\n  \"status\": \"approve\",\n  \"createdAt\": \"2023-05-18T15:30:00.000Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "uuid",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
