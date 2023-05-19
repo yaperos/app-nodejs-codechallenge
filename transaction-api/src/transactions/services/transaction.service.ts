@@ -59,7 +59,7 @@ export class TransactionService {
 
     try {
       const response = await this.httpService
-        .post('http://antifraud-api:4000/', transaction)
+        .post('http://' + process.env.ANTIFRAUD_HOST + '/', transaction)
         .toPromise();
     } catch (error) {
       throw new Error('Error al crear la transacción: ' + error);
