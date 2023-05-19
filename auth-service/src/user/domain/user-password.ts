@@ -8,7 +8,7 @@ export interface userPasswordProps {
 
 export class UserPassword extends ValueObject<userPasswordProps> {
   public static minLength = 6;
-  public static maxLength = 30;
+  public static maxLength = 120;
 
   private constructor(props: userPasswordProps) {
     super(props);
@@ -42,7 +42,7 @@ export class UserPassword extends ValueObject<userPasswordProps> {
     });
   }
 
-  public static isMatch(
+  public isMatch(
     password: string,
     hashedPassword: string,
   ): Promise<boolean> {

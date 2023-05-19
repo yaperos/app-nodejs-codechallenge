@@ -1,5 +1,5 @@
 import {Module, OnModuleInit} from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import {ConfigModule, ConfigService} from '@nestjs/config';
 import { PrismaModule } from '../prisma/prisma.module';
 import { PrismaUserRepo } from './infraestructure/repos/PrismaUserRepo';
 import { USER_REPO } from './domain/user.repo';
@@ -10,12 +10,21 @@ import {CommandBus, CqrsModule, EventBus} from "@nestjs/cqrs";
 import {CreateUserUseCase} from "./application/create-user/create-user.usecase";
 import {CreateUserHandler} from "./application/create-user/create-user.handler";
 import {EventBusModule} from "../event-bus/event-bus.module";
+import {AuthUserHandler} from "./application/auth-user/auth-user.handler";
+import {AuthUserUseCase} from "./application/auth-user/auth-user.usecase";
+import {AuthVerifyUseCase} from "./application/auth-verify/auth-verify.usecase";
+import {AuthVerifyCommand} from "./application/auth-verify/auth-verify.cmd";
+import {AuthVerifyHandler} from "./application/auth-verify/auth-verify.handler";
 
 export const useCases = [
-  CreateUserUseCase
+  CreateUserUseCase,
+  AuthUserUseCase,
+  AuthVerifyUseCase
 ];
 export const CommandHandlers = [
-  CreateUserHandler
+  CreateUserHandler,
+  AuthUserHandler,
+  AuthVerifyHandler
 ];
 
 
@@ -24,6 +33,9 @@ export const CommandHandlers = [
     EventBusModule,
     CqrsModule,
     PrismaModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
   providers: [
     ...useCases,

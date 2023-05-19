@@ -2,9 +2,17 @@ import {ICommand} from "@nestjs/cqrs";
 
 export class AuthUserCommand implements ICommand {
   constructor(
-        public readonly email: string,
-        public readonly password: string,
-        public readonly name: string,
-        public readonly lastname: string,
-    ) {}
+    public readonly LoginPayload: DefaultRequest,
+  ) {
+  }
+}
+
+export interface DefaultRequest {
+  requestID: string;
+  payload: LoginPayload,
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
 }
