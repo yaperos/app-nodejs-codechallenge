@@ -11,7 +11,7 @@ Back-end development:
 https://github.com/IngenieroCesar/api-transactions
 It is an event driven/API developed on nestjs with hex modular architecture.
 - Api-AntiFraud:
-https://github.com/IngenieroCesar/api-antifraude
+https://github.com/IngenieroCesar/api-antifraud
 It is an event driven application developed on nestjs with hexagonal modular architecture.
 
 Database:
