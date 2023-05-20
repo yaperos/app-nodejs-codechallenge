@@ -1,8 +1,8 @@
 import { App } from './app';
 
-const start = () => {
+const start = async () => {
   const app = new App();
-  app.start();
+  await app.start();
 };
 
 start();
