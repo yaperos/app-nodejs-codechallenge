@@ -17,6 +17,8 @@ settings: {
 }
 plugins:
   - '@typescript-eslint'
+ignorePatterns:
+  - src/graphql/types/types.ts
 rules: {
   'import/extensions': [
       'error',

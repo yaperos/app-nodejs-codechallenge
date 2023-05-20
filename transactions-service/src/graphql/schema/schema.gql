@@ -1,3 +1,52 @@
 type Query {
-    hello: String
+  "Fetch a transaction with its transaction external id"
+  transaction(transactionExternalId: String!): Transaction!
+}
+
+type Mutation {
+  "Mutation to create a new transaction"
+  createTransaction(data: TransactionInput!): Transaction!
+}
+
+"A date-time string at UTC"
+scalar DateTime
+
+"Transaction definition"
+type Transaction {
+  "Transaction unique id"
+  transactionExternalId: String!
+  "Transaction's external id debit"
+  accountExternalIdDebit: String!
+  "Transaction's external id credit"
+  accountExternalIdCredit: String!
+  "Transaction's type id"
+  transactionTypeId: Int!
+  "Transaction amount"
+  value: Int!
+  "Transaction's type data"
+  transactionType: TransactionType
+  "Transaction's current status"
+  transactionStatus: String!
+  "Transaction's createdAt timestamp"
+  createdAt: DateTime!
+}
+
+"Transaction type definition"
+type TransactionType {
+  "Transaction type unique id"
+  id: Int!
+  "Transaction type name"
+  name: String!
+}
+
+"Input needed for transaction create opertation"
+input TransactionInput {
+  "Transaction's external id debit"
+  accountExternalIdDebit: String!
+  "Transaction's external id credit"
+  accountExternalIdCredit: String!
+  "Transaction's type id"
+  transactionTypeId: Int!
+  "Transaction amount"
+  value: Int!
 }
