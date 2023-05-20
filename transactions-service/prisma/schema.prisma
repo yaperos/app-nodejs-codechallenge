@@ -29,6 +29,6 @@ model Transaction {
   transactionTypeId       Int
   value                   Int
   transactionType         TransactionType   @relation(fields: [transactionTypeId], references: [id])
-  transactionStatus       TransactionStatus
+  transactionStatus       TransactionStatus @default(PENDING)
   createdAt               DateTime          @default(now())
 }
