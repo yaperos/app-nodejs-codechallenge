@@ -3,8 +3,12 @@ import Express, { Application } from 'express';
 import { json } from 'body-parser';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import { resolvers } from './graphql/resolvers/resolvers';
+import { PrismaClient } from '@prisma/client';
+import { Query } from './graphql/resolvers/query';
+import { Mutation } from './graphql/resolvers/mutation';
 import * as typeDefs from './graphql/schema/schema.gql';
+import { AppContext } from './@types/types';
+import { TransactionService } from './modules/transaction/transaction.service';
 
 export class App {
   private app: Application;
@@ -25,13 +29,19 @@ export class App {
   }
 
   async graphql() {
-    const server = new ApolloServer({
+    const server = new ApolloServer<AppContext>({
       typeDefs,
-      resolvers: { ...resolvers },
+      resolvers: { Query, Mutation },
     });
 
     await server.start();
-    this.app.use('/graphql', expressMiddleware(server));
+    this.app.use('/graphql', expressMiddleware(server, {
+      context: async () => {
+        const prismaClient = new PrismaClient();
+        const transactionService = new TransactionService(prismaClient);
+        return { transactionService };
+      },
+    }));
   }
 
   async start() {
