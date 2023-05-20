@@ -20,14 +20,19 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.22",
+    "prisma": "^4.14.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
   "dependencies": {
     "@apollo/server": "^4.7.1",
+    "@prisma/client": "4.14.1",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
     "graphql": "^16.6.0",
     "graphql-import-node": "^0.0.5"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
