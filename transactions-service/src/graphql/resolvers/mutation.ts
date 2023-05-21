@@ -1,4 +1,4 @@
-import { AppContext } from '../../@types/types';
+import { AppContext } from '../../@types';
 import { MutationResolvers } from '../types/types';
 
 export const Mutation: MutationResolvers<AppContext> = {
