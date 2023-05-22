@@ -33,6 +33,10 @@ export class TransactionService {
 
   async create(data: TransactionInput): Promise<Transaction> {
     try {
+      if (data.value <= 0) {
+        return Promise.reject(ErrorBuilder.badRequestError('Transaction value cannot be 0 or less'));
+      }
+
       const type = await this.client.transactionType.findUnique({
         where: { id: data.transactionTypeId },
       });
