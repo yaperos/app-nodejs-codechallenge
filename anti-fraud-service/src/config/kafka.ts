@@ -50,7 +50,6 @@ export class KafkaClient implements EventStreamer {
 
       // Start running new consumer
       await consumer.run({
-        autoCommitInterval: 5000,
         eachMessage: async ({ topic: msgTopic, partition, message }) => {
           console.info(`New message received for topic ${msgTopic}`, {
             partition,
