@@ -14,6 +14,7 @@ import { TransactionService } from './modules/transaction/transaction.service';
 import { TransactionController } from './modules/transaction/transaction.controller';
 import { KafkaClient } from './config/kafka';
 import { EventStreamer } from './config/event.streamer.interface';
+import { LoggerPlugin } from './utils/apollo.server.logger';
 
 export class App {
   private app: Application;
@@ -72,6 +73,8 @@ export class App {
     const server = new ApolloServer<AppContext>({
       typeDefs,
       resolvers: { Query, Mutation },
+      introspection: process.env.NODE_ENV !== 'production',
+      plugins: [LoggerPlugin],
     });
     // Start server to use it as an express middleware
     await server.start();
