@@ -3,7 +3,9 @@ import { QueryResolvers } from '../types/types';
 
 export const Query: QueryResolvers<AppContext> = {
   transaction: async (_parent, args, context) => {
-    const transaction = await context.transactionService.get(args.transactionExternalId);
+    const transaction = await context.transactionController.handleGetTransaction(
+      args.transactionExternalId
+    );
     return transaction;
   },
 };

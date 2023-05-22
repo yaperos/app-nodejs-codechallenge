@@ -1,5 +1,11 @@
-import { TransactionService } from '../modules/transaction/transaction.service';
+import { TransactionController } from '../modules/transaction/transaction.controller';
 
-export type AppContext = {
-  transactionService: TransactionService
+type AppContext = {
+  transactionController: TransactionController
 }
+
+const Symbols = {
+  EventStreamer: Symbol.for('EventStreamer'),
+};
+
+export { AppContext, Symbols };

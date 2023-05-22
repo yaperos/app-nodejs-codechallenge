@@ -3,18 +3,18 @@ import Express, { Application } from 'express';
 import { json } from 'body-parser';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import { PrismaClient, TransactionStatus } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { config } from 'dotenv';
 import { Server } from 'http';
 import { Query } from './graphql/resolvers/query';
 import { Mutation } from './graphql/resolvers/mutation';
 import * as typeDefs from './graphql/schema/schema.gql';
-import { AppContext } from './@types';
-import { TransactionService } from './modules/transaction/transaction.service';
-import { TransactionController } from './modules/transaction/transaction.controller';
-import { KafkaClient } from './config/kafka';
+import { AppContext, Symbols } from './@types';
 import { EventStreamer } from './config/event.streamer.interface';
 import { LoggerPlugin } from './utils/apollo.server.logger';
+import { appContainer } from './config/inversify.container';
+import { buildTransactionConsumers } from './modules/transaction/transaction.consumers';
+import { TransactionController } from './modules/transaction/transaction.controller';
 
 export class App {
   private app: Application;
@@ -40,34 +40,17 @@ export class App {
   }
 
   async setup() {
-    // Create new prisma client
-    const prismaClient = new PrismaClient();
-    this.prismaClient = prismaClient;
+    // Get prisma client
+    this.prismaClient = appContainer.get(PrismaClient);
 
-    // Create new event streamer instance
-    const kafka = new KafkaClient('transaction-app', process.env.KAFKA_HOST_URL ?? '');
-    this.eventStreamer = kafka;
+    // Get event streamer
+    this.eventStreamer = appContainer.get<EventStreamer>(Symbols.EventStreamer);
 
-    const transactionService = new TransactionService(prismaClient, kafka);
-    const transactionController = new TransactionController(transactionService);
+    // Get transaction service for app context
+    const transactionController = appContainer.get(TransactionController);
 
-    kafka.createSubscription({
-      topic: 'transaction-approved',
-    }, (message) => {
-      transactionController.handleUpdateTransactionStatus(
-        message.value?.toString() ?? '',
-        TransactionStatus.APPROVED
-      );
-    });
-
-    kafka.createSubscription({
-      topic: 'transaction-rejected',
-    }, (message) => {
-      transactionController.handleUpdateTransactionStatus(
-        message.value?.toString() ?? '',
-        TransactionStatus.REJECTED
-      );
-    });
+    // Setup Transaction consumers
+    buildTransactionConsumers();
 
     // Create new Apollo Server
     const server = new ApolloServer<AppContext>({
@@ -76,20 +59,26 @@ export class App {
       introspection: process.env.NODE_ENV !== 'production',
       plugins: [LoggerPlugin],
     });
+
     // Start server to use it as an express middleware
     await server.start();
 
     // Setup graphql
     this.app.use('/graphql', expressMiddleware(server, {
-      context: async () => ({ transactionService }),
+      context: async () => ({ transactionController }),
     }));
   }
 
   close(server: Server) {
     server.close(() => {
       console.info('Server closed');
-      this.eventStreamer?.closeConnections().then(() => console.info('Event streamer connections closed'));
-      this.prismaClient?.$disconnect().then(() => console.info('Prisma client closed'));
+      this.eventStreamer?.closeConnections().then(() => {
+        console.info('Event streamer connections closed');
+      });
+      this.prismaClient?.$disconnect().then(() => {
+        console.info('Prisma client closed');
+      });
+      appContainer.unbindAll();
     });
   }
 

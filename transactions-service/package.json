@@ -37,7 +37,9 @@
     "express": "^4.18.2",
     "graphql": "^16.6.0",
     "graphql-import-node": "^0.0.5",
-    "kafkajs": "^2.2.4"
+    "inversify": "^6.0.1",
+    "kafkajs": "^2.2.4",
+    "reflect-metadata": "^0.1.13"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

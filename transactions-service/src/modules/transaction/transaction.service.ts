@@ -1,22 +1,28 @@
 import { PrismaClient, TransactionStatus } from '@prisma/client';
+import { inject, injectable } from 'inversify';
 import { ErrorBuilder } from '../../error/error.builder';
 import { Transaction, TransactionInput } from '../../graphql/types/types';
 import { EventStreamer } from '../../config/event.streamer.interface';
 import { mapPrismaToGQLTransaction } from './transaction.mapper';
+import { Symbols } from '../../@types';
 
+@injectable()
 export class TransactionService {
-  private readonly client: PrismaClient;
+  private readonly _client: PrismaClient;
 
-  private readonly kafka: EventStreamer;
+  private readonly _kafka: EventStreamer;
 
-  constructor(prismaClient: PrismaClient, kafkaClient: EventStreamer) {
-    this.client = prismaClient;
-    this.kafka = kafkaClient;
+  constructor(
+    prismaClient: PrismaClient,
+    @inject(Symbols.EventStreamer) kafkaClient: EventStreamer
+  ) {
+    this._client = prismaClient;
+    this._kafka = kafkaClient;
   }
 
   async get(id: string): Promise<Transaction> {
     try {
-      const transaction = await this.client.transaction.findUnique(
+      const transaction = await this._client.transaction.findUnique(
         { where: { transactionExternalId: id }, include: { transactionType: true } }
       );
 
@@ -37,7 +43,7 @@ export class TransactionService {
         return Promise.reject(ErrorBuilder.badRequestError('Transaction value cannot be 0 or less'));
       }
 
-      const type = await this.client.transactionType.findUnique({
+      const type = await this._client.transactionType.findUnique({
         where: { id: data.transactionTypeId },
       });
 
@@ -45,9 +51,9 @@ export class TransactionService {
         return Promise.reject(ErrorBuilder.badRequestError('Transaction type does not exists'));
       }
 
-      const transaction = await this.client.transaction.create({ data });
+      const transaction = await this._client.transaction.create({ data });
 
-      await this.kafka.sendMessage('transaction-created', JSON.stringify(transaction));
+      await this._kafka.sendMessage('transaction-created', JSON.stringify(transaction));
 
       return Promise.resolve(mapPrismaToGQLTransaction(transaction));
     } catch (error) {
@@ -58,7 +64,7 @@ export class TransactionService {
 
   async updateStatus(id: string, status: TransactionStatus): Promise<Transaction> {
     try {
-      const transaction = await this.client.transaction.update({
+      const transaction = await this._client.transaction.update({
         where: { transactionExternalId: id }, data: { transactionStatus: status },
       });
 
