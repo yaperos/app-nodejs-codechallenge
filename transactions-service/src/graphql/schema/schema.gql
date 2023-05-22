@@ -22,7 +22,7 @@ type Transaction {
   "Transaction's type id"
   transactionTypeId: Int!
   "Transaction amount"
-  value: Int!
+  value: Float!
   "Transaction's type data"
   transactionType: TransactionType
   "Transaction's current status"
@@ -48,5 +48,5 @@ input TransactionInput {
   "Transaction's type id"
   transactionTypeId: Int!
   "Transaction amount"
-  value: Int!
+  value: Float!
 }

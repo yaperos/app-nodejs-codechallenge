@@ -56,7 +56,7 @@ export type Transaction = {
   /** Transaction's type id */
   transactionTypeId: Scalars['Int'];
   /** Transaction amount */
-  value: Scalars['Int'];
+  value: Scalars['Float'];
 };
 
 /** Input needed for transaction create opertation */
@@ -68,7 +68,7 @@ export type TransactionInput = {
   /** Transaction's type id */
   transactionTypeId: Scalars['Int'];
   /** Transaction amount */
-  value: Scalars['Int'];
+  value: Scalars['Float'];
 };
 
 /** Transaction type definition */
@@ -153,6 +153,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
@@ -166,6 +167,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   DateTime: Scalars['DateTime'];
+  Float: Scalars['Float'];
   Int: Scalars['Int'];
   Mutation: {};
   Query: {};
@@ -195,7 +197,7 @@ export type TransactionResolvers<ContextType = any, ParentType extends Resolvers
   transactionStatus?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   transactionType?: Resolver<Maybe<ResolversTypes['TransactionType']>, ParentType, ContextType>;
   transactionTypeId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

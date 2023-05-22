@@ -27,7 +27,7 @@ model Transaction {
   accountExternalIdDebit  String
   accountExternalIdCredit String
   transactionTypeId       Int
-  value                   Int
+  value                   Decimal
   transactionType         TransactionType   @relation(fields: [transactionTypeId], references: [id])
   transactionStatus       TransactionStatus @default(PENDING)
   createdAt               DateTime          @default(now())

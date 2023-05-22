@@ -2,6 +2,7 @@ import { PrismaClient, TransactionStatus } from '@prisma/client';
 import { ErrorBuilder } from '../../error/error.builder';
 import { Transaction, TransactionInput } from '../../graphql/types/types';
 import { EventStreamer } from '../../config/event.streamer.interface';
+import { mapPrismaToGQLTransaction } from './transaction.mapper';
 
 export class TransactionService {
   private readonly client: PrismaClient;
@@ -23,7 +24,7 @@ export class TransactionService {
         return Promise.reject(ErrorBuilder.notFoundError('Transaction not found'));
       }
 
-      return Promise.resolve(transaction);
+      return Promise.resolve(mapPrismaToGQLTransaction(transaction));
     } catch (error) {
       console.error(error);
       return Promise.reject(ErrorBuilder.internalError('Error while getting transaction'));
@@ -44,7 +45,7 @@ export class TransactionService {
 
       await this.kafka.sendMessage('transaction-created', JSON.stringify(transaction));
 
-      return Promise.resolve(transaction);
+      return Promise.resolve(mapPrismaToGQLTransaction(transaction));
     } catch (error) {
       console.error(error);
       return Promise.reject(ErrorBuilder.internalError('Error while creating transaction'));
@@ -57,7 +58,7 @@ export class TransactionService {
         where: { transactionExternalId: id }, data: { transactionStatus: status },
       });
 
-      return Promise.resolve(transaction);
+      return Promise.resolve(mapPrismaToGQLTransaction(transaction));
     } catch (error) {
       console.error(error);
       return Promise.reject(ErrorBuilder.internalError('Error while updating transaction'));
