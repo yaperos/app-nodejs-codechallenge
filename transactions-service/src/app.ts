@@ -4,7 +4,6 @@ import { json } from 'body-parser';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { PrismaClient } from '@prisma/client';
-import { config } from 'dotenv';
 import { Server } from 'http';
 import { Query } from './graphql/resolvers/query';
 import { Mutation } from './graphql/resolvers/mutation';
@@ -15,6 +14,7 @@ import { LoggerPlugin } from './utils/apollo.server.logger';
 import { appContainer } from './config/inversify.container';
 import { buildTransactionConsumers } from './modules/transaction/transaction.consumers';
 import { TransactionController } from './modules/transaction/transaction.controller';
+import environment from './environment';
 
 export class App {
   private app: Application;
@@ -26,13 +26,12 @@ export class App {
   // eslint-disable-next-line no-unused-vars
   constructor(private port?: number | string) {
     this.app = Express();
-    config();
     this.settings();
     this.middleware();
   }
 
   settings() {
-    this.app.set('port', this.port || process.env.PORT || 3000);
+    this.app.set('port', this.port || environment.PORT || 3000);
   }
 
   middleware() {

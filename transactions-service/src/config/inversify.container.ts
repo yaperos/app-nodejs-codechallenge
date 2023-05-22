@@ -5,6 +5,7 @@ import { EventStreamer } from './event.streamer.interface';
 import { KafkaClient } from './kafka';
 import { TransactionController } from '../modules/transaction/transaction.controller';
 import { TransactionService } from '../modules/transaction/transaction.service';
+import environment from '../environment';
 
 const appContainer = new Container();
 
@@ -12,7 +13,7 @@ const appContainer = new Container();
 appContainer.bind(PrismaClient).toConstantValue(new PrismaClient());
 
 // Kafka Event Streamer client (Singleton)
-const kafka = new KafkaClient('transaction-app', process.env.KAFKA_HOST_URL ?? '');
+const kafka = new KafkaClient('transaction-app', environment.KAFKA_HOST ?? '');
 appContainer.bind<EventStreamer>(Symbols.EventStreamer).toConstantValue(kafka);
 
 // Transaction (Transient)
