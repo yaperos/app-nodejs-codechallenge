@@ -4,18 +4,18 @@ import {
 import { EventStreamer, SubscriptionOptions } from './event.streamer.interface';
 
 export class KafkaClient implements EventStreamer {
-  private readonly client: Kafka;
+  private readonly _client: Kafka;
 
   private consumers: Consumer[];
 
   private producer: Producer;
 
   constructor(clientId: string, host: string) {
-    this.client = new Kafka({
+    this._client = new Kafka({
       clientId,
       brokers: [host],
     });
-    this.producer = this.client.producer();
+    this.producer = this._client.producer();
     this.consumers = [];
   }
 
@@ -38,7 +38,7 @@ export class KafkaClient implements EventStreamer {
   ): Promise<void> {
     try {
       // Create new consumer
-      const consumer = this.client.consumer({ groupId: `${topic}-group` });
+      const consumer = this._client.consumer({ groupId: `${topic}-group` });
 
       // Save consumer on consumers list
       this.consumers.push(consumer);

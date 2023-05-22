@@ -10,14 +10,14 @@ import { Symbols } from '../../@types';
 export class TransactionService {
   private readonly _client: PrismaClient;
 
-  private readonly _kafka: EventStreamer;
+  private readonly _streamer: EventStreamer;
 
   constructor(
     prismaClient: PrismaClient,
-    @inject(Symbols.EventStreamer) kafkaClient: EventStreamer
+    @inject(Symbols.EventStreamer) eventStreamer: EventStreamer
   ) {
     this._client = prismaClient;
-    this._kafka = kafkaClient;
+    this._streamer = eventStreamer;
   }
 
   async get(id: string): Promise<Transaction> {
@@ -53,7 +53,7 @@ export class TransactionService {
 
       const transaction = await this._client.transaction.create({ data });
 
-      await this._kafka.sendMessage('transaction-created', JSON.stringify(transaction));
+      await this._streamer.sendMessage('transaction-created', JSON.stringify(transaction));
 
       return Promise.resolve(mapPrismaToGQLTransaction(transaction));
     } catch (error) {

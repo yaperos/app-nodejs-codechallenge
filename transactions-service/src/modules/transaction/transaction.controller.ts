@@ -5,10 +5,10 @@ import { Transaction, TransactionInput } from '../../graphql/types/types';
 
 @injectable()
 export class TransactionController {
-  private service: TransactionService;
+  private readonly _service: TransactionService;
 
   constructor(service: TransactionService) {
-    this.service = service;
+    this._service = service;
   }
 
   handleUpdateTransactionStatus = async (
@@ -17,7 +17,7 @@ export class TransactionController {
   ): Promise<Transaction> => {
     try {
       const transactionData: Transaction = JSON.parse(message);
-      const transaction = await this.service.updateStatus(
+      const transaction = await this._service.updateStatus(
         transactionData.transactionExternalId,
         status,
       );
@@ -30,7 +30,7 @@ export class TransactionController {
 
   handleCreateTransaction = async (data: TransactionInput) => {
     try {
-      const transaction = this.service.create(data);
+      const transaction = this._service.create(data);
       return Promise.resolve(transaction);
     } catch (error) {
       console.error('Something went wrong when creating transaction', { error });
@@ -40,7 +40,7 @@ export class TransactionController {
 
   handleGetTransaction = async (id: string) => {
     try {
-      const transaction = await this.service.get(id);
+      const transaction = await this._service.get(id);
       return Promise.resolve(transaction);
     } catch (error) {
       console.error('Something went wrong when getting the transaction', { id, error });
