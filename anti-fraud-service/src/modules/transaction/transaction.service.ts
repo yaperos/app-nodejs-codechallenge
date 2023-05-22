@@ -1,11 +1,14 @@
+import { inject, injectable } from 'inversify';
 import { ITransaction, TransactionStatus } from './transaction.interface';
 import { EventStreamer } from '../../config/event.streamer.interface';
+import { Symbols } from '../../@types';
 
+@injectable()
 export class TransactionService {
-  private readonly streamer: EventStreamer;
+  private readonly _streamer: EventStreamer;
 
-  constructor(streamerClient: EventStreamer) {
-    this.streamer = streamerClient;
+  constructor(@inject(Symbols.EventStreamer) eventStreamer: EventStreamer) {
+    this._streamer = eventStreamer;
   }
 
   async validate(transaction: ITransaction) {
@@ -18,10 +21,10 @@ export class TransactionService {
 
       const data = { ...transaction, transactionStatus: status };
 
-      await this.streamer.sendMessage(`transaction-${status.toLowerCase()}`, JSON.stringify(data));
+      await this._streamer.sendMessage(`transaction-${status.toLowerCase()}`, JSON.stringify(data));
     } catch (error) {
-      console.error(error);
-      throw new Error('Error while getting transaction');
+      console.error('Error while validating transaction', { error });
+      throw (error);
     }
   }
 }

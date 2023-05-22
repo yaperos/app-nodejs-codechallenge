@@ -1,15 +1,17 @@
+import { injectable } from 'inversify';
 import { ITransaction } from './transaction.interface';
 import { TransactionService } from './transaction.service';
 
+@injectable()
 export class TransactionController {
-  private service: TransactionService;
+  private readonly _service: TransactionService;
 
   constructor(service: TransactionService) {
-    this.service = service;
+    this._service = service;
   }
 
-  handleTransactionValidation = (message: string) => {
+  handleTransactionValidation = async (message: string) => {
     const transactionData: ITransaction = JSON.parse(message);
-    this.service.validate(transactionData);
+    await this._service.validate(transactionData);
   };
 }
