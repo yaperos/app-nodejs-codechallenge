@@ -1,12 +1,16 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, TransactionStatus } from '@prisma/client';
 import { ErrorBuilder } from '../../error/error.builder';
 import { Transaction, TransactionInput } from '../../graphql/types/types';
+import { EventStreamer } from '../../config/event.streamer.interface';
 
 export class TransactionService {
   private readonly client: PrismaClient;
 
-  constructor(prismaClient: PrismaClient) {
+  private readonly kafka: EventStreamer;
+
+  constructor(prismaClient: PrismaClient, kafkaClient: EventStreamer) {
     this.client = prismaClient;
+    this.kafka = kafkaClient;
   }
 
   async get(id: string): Promise<Transaction> {
@@ -38,10 +42,25 @@ export class TransactionService {
 
       const transaction = await this.client.transaction.create({ data });
 
+      await this.kafka.sendMessage('transaction-created', JSON.stringify(transaction));
+
       return Promise.resolve(transaction);
     } catch (error) {
       console.error(error);
       return Promise.reject(ErrorBuilder.internalError('Error while creating transaction'));
+    }
+  }
+
+  async updateStatus(id: string, status: TransactionStatus): Promise<Transaction> {
+    try {
+      const transaction = await this.client.transaction.update({
+        where: { transactionExternalId: id }, data: { transactionStatus: status },
+      });
+
+      return Promise.resolve(transaction);
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(ErrorBuilder.internalError('Error while updating transaction'));
     }
   }
 }
