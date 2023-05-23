@@ -3,13 +3,24 @@ import {
 } from 'kafkajs';
 import { EventStreamer, SubscriptionOptions } from './event.streamer.interface';
 
-export class KafkaClient implements EventStreamer {
+/**
+ * Kafka event streamer client
+ * @implements {EventStreamer}
+ */
+class KafkaClient implements EventStreamer {
+  /** Kafka client instance */
   private readonly _client: Kafka;
 
+  /** List of created kafka consumers */
   private consumers: Consumer[];
 
+  /** Kafka producer used to send messages */
   private producer: Producer;
 
+  /**
+   * @param {string} clientId Kafka clientId to use
+   * @param {string} host Host of the kafka server
+   */
   constructor(clientId: string, host: string) {
     this._client = new Kafka({
       clientId,
@@ -84,3 +95,5 @@ export class KafkaClient implements EventStreamer {
     }
   }
 }
+
+export { KafkaClient };

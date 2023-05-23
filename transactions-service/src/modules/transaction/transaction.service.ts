@@ -6,12 +6,21 @@ import { EventStreamer } from '../../config/event.streamer.interface';
 import { mapPrismaToGQLTransaction } from './transaction.mapper';
 import { Symbols } from '../../@types';
 
+/**
+ * Service used to execute Transaction operations
+ */
 @injectable()
-export class TransactionService {
+class TransactionService {
+  /** Prisma client instance */
   private readonly _client: PrismaClient;
 
+  /** Event Streamer client instance */
   private readonly _streamer: EventStreamer;
 
+  /**
+   * @param {PrismaClient} prismaClient Prisma client
+   * @param {EventStreamer} eventStreamer Event Streamer client
+   */
   constructor(
     prismaClient: PrismaClient,
     @inject(Symbols.EventStreamer) eventStreamer: EventStreamer
@@ -20,6 +29,11 @@ export class TransactionService {
     this._streamer = eventStreamer;
   }
 
+  /**
+   * Fetch a Transaction with its ID
+   * @param {string} id The id of the Transaction to fetch
+   * @returns {Promise<Transaction>} A Promise with the Transaction that matches the provided id
+   */
   async get(id: string): Promise<Transaction> {
     try {
       const transaction = await this._client.transaction.findUnique(
@@ -37,6 +51,11 @@ export class TransactionService {
     }
   }
 
+  /**
+   * Create a new Transaction
+   * @param {TransactionInput} data The data to create the Transaction.
+   * @returns {Promise<Transaction>} A Promise with the created Transaction
+   */
   async create(data: TransactionInput): Promise<Transaction> {
     try {
       if (data.value <= 0) {
@@ -62,6 +81,12 @@ export class TransactionService {
     }
   }
 
+  /**
+   * Update the status of an existing Transaction
+   * @param {string} id The id of the Transaction to update
+   * @param {TransactionStatus} status The new status of the Transaction
+   * @returns {Promise<Transaction>} A Promise with the updated Transaction
+   */
   async updateStatus(id: string, status: TransactionStatus): Promise<Transaction> {
     try {
       const transaction = await this._client.transaction.update({
@@ -75,3 +100,5 @@ export class TransactionService {
     }
   }
 }
+
+export { TransactionService };

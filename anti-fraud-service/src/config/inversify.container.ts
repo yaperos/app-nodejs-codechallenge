@@ -6,6 +6,7 @@ import { TransactionController } from '../modules/transaction/transaction.contro
 import { TransactionService } from '../modules/transaction/transaction.service';
 import environment from '../environment';
 
+/** Depency injection container */
 const appContainer = new Container();
 
 // Kafka Event Streamer client (Singleton)

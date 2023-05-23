@@ -17,32 +17,42 @@ import { TransactionController } from './modules/transaction/transaction.control
 import environment from './environment';
 
 export class App {
+  /** Express application instance */
   private app: Application;
 
+  /** Event Streamer instance */
   private eventStreamer?: EventStreamer;
 
+  /** Prisma client instance */
   private prismaClient?: PrismaClient;
 
   // eslint-disable-next-line no-unused-vars
   constructor(private port?: number | string) {
+    // Create express application
     this.app = Express();
+
+    // Setup settings
     this.settings();
+
+    // Setup middlewares
     this.middleware();
   }
 
   settings() {
+    // Set port
     this.app.set('port', this.port || environment.PORT || 3000);
   }
 
   middleware() {
+    // Set body-parser middleware for json requests
     this.app.use(json());
   }
 
   async setup() {
-    // Get prisma client
+    // Get prisma client instance
     this.prismaClient = appContainer.get(PrismaClient);
 
-    // Get event streamer
+    // Get event streamer instance
     this.eventStreamer = appContainer.get<EventStreamer>(Symbols.EventStreamer);
 
     // Get transaction service for app context
@@ -69,24 +79,33 @@ export class App {
   }
 
   close(server: Server) {
+    // Close server
     server.close(() => {
       console.info('Server closed');
-      this.eventStreamer?.closeConnections().then(() => {
-        console.info('Event streamer connections closed');
-      });
-      this.prismaClient?.$disconnect().then(() => {
-        console.info('Prisma client closed');
-      });
+
+      // Close event streamer connections
+      this.eventStreamer?.closeConnections().then(() => console.info('Event streamer connections closed'));
+
+      // Close prisma client connection
+      this.prismaClient?.$disconnect().then(() => console.info('Prisma client closed'));
+
+      // Remove container bindings
       appContainer.unbindAll();
     });
   }
 
   async start() {
+    // Call setup method
     await this.setup();
+
+    // Get defined app port
     const port = this.app.get('port');
+
+    // Start express server
     const server = this.app.listen(port);
     console.info('App running on port', port);
 
+    // Define server end callbacks
     process.on('SIGTERM', () => this.close(server));
     process.on('SIGINT', () => this.close(server));
   }
