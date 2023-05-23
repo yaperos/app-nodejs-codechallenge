@@ -1,0 +1,25 @@
+{
+  "name": "@app-nodejs-codechallenge/http-lib",
+  "version": "1.0.0",
+  "author": "Gedy Palomino",
+  "license": "MIT",
+  "description": "HTTP utils library for the code challenge",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "development": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "esbuild ./src/index.ts --bundle --platform=node --outdir=dist"
+  },
+  "devDependencies": {
+    "@types/koa__router": "^12.0.0"
+  },
+  "dependencies": {
+    "@app-nodejs-codechallenge/shared-lib": "workspace:^",
+    "@types/koa": "^2.13.6",
+    "koa": "^2.14.2"
+  }
+}

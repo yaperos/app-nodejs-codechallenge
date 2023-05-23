@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1684789301731,
+      "tag": "0000_breezy_bastion",
+      "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1684871328231,
+      "tag": "0001_cold_warbound",
+      "breakpoints": false
+    }
+  ]
+}

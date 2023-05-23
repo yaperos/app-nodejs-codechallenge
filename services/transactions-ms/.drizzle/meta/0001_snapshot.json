@@ -1,0 +1,77 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "id": "520e9da8-c450-4bdd-986e-a793b83979a3",
+  "prevId": "7c594774-a45a-471b-bd02-08842f829881",
+  "tables": {
+    "transactions": {
+      "name": "transactions",
+      "schema": "",
+      "columns": {
+        "transaction_external_id": {
+          "name": "transaction_external_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "transaction_type_name": {
+          "name": "transaction_type_name",
+          "type": "transaction_type_name_enum",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transaction_status_name": {
+          "name": "transaction_status_name",
+          "type": "transaction_status_name_enum",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "numeric(12, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    }
+  },
+  "enums": {
+    "transaction_status_name_enum": {
+      "name": "transaction_status_name_enum",
+      "values": {
+        "pending": "pending",
+        "approved": "approved",
+        "rejected": "rejected"
+      }
+    },
+    "transaction_type_name_enum": {
+      "name": "transaction_type_name_enum",
+      "values": {
+        "debit": "debit",
+        "credit": "credit"
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "importHelpers": true,
+    "customConditions": [
+      "development"
+    ],
+    "lib": [
+      "esnext"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "gateway/src",
+    "services/*/src",
+    "libs/*/src",
+    "services/transactions-ms/index.ts",
+    "services/antifraud-ms/index.ts"
+  ]
+}

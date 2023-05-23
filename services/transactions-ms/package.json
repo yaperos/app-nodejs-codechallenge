@@ -1,0 +1,24 @@
+{
+  "name": "@app-nodejs-codechallenge/transactions-ms",
+  "version": "1.0.0",
+  "author": "Gedy Palomino",
+  "license": "MIT",
+  "description": "Transactions microservice",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "esbuild ./index.ts --bundle --platform=node --outdir=dist",
+    "dev": "tsx --conditions=development ./index.ts",
+    "dev:watch": "tsx watch --conditions=development ./index.ts",
+    "start": "node ./dist/index.js",
+    "generate": "drizzle-kit generate:pg"
+  },
+  "dependencies": {
+    "@app-nodejs-codechallenge/http-lib": "workspace:^",
+    "@app-nodejs-codechallenge/shared-lib": "workspace:^",
+    "dotenv": "^16.0.3",
+    "drizzle-orm": "^0.26.0",
+    "kafkajs": "^2.2.4",
+    "postgres": "^3.3.4",
+    "zod": "^3.21.4"
+  }
+}
