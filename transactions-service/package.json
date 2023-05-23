@@ -5,10 +5,11 @@
   "main": "index.ts",
   "scripts": {
     "lint": "eslint src/**/*.ts --fix",
-    "build": "tsc",
+    "build": "tsc && yarn copy-schema",
     "start": "node ./dist/index.js",
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "copy-schema": "copyfiles -u 1 src/graphql/schema/schema.gql dist",
     "migrate:dev": "prisma migrate dev",
     "codegen": "graphql-codegen --config codegen.yml"
   },
@@ -21,6 +22,7 @@
     "@types/express": "^4.17.17",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.41.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
