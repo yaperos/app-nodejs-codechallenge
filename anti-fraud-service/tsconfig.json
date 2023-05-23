@@ -3,7 +3,7 @@
     "incremental": true,
     "target": "ES2016",
     "module": "commonjs",
-    "rootDir": "./src",
+    "rootDir": "./",
     "typeRoots": [
       "node_modules/@types",
       "src/@types"
@@ -19,10 +19,10 @@
   },
   "include": [
     "src/**/*",
+    "tests/**/*"
   ],
   "exclude": [
     "node_modules/**",
     "dist/**",
-    "tests/**"
   ]
 }
