@@ -3,7 +3,7 @@
     "incremental": true,
     "target": "ES2016",
     "module": "commonjs",
-    "rootDir": "./src",
+    "rootDir": "./",
     "typeRoots": [
       "node_modules/@types",
       "src/@types"
@@ -21,11 +21,11 @@
     "src/@types/graphql.d.ts"
   ],
   "include": [
+    "tests/**/*",
     "src/**/*",
   ],
   "exclude": [
     "node_modules/**",
     "dist/**",
-    "tests/**"
   ]
 }
