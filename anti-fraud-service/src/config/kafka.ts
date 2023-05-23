@@ -1,12 +1,14 @@
 import {
   Kafka, Consumer, Producer, KafkaMessage,
 } from 'kafkajs';
+import { injectable } from 'inversify';
 import { EventStreamer, SubscriptionOptions } from './event.streamer.interface';
 
 /**
  * Kafka event streamer client
  * @implements {EventStreamer}
  */
+@injectable()
 class KafkaClient implements EventStreamer {
   /** Kafka client instance */
   private readonly _client: Kafka;
@@ -18,14 +20,10 @@ class KafkaClient implements EventStreamer {
   private producer: Producer;
 
   /**
-   * @param {string} clientId Kafka clientId to use
-   * @param {string} host Host of the kafka server
+   * @param {Kafka} client Kafka client to use
    */
-  constructor(clientId: string, host: string) {
-    this._client = new Kafka({
-      clientId,
-      brokers: [host],
-    });
+  constructor(client: Kafka) {
+    this._client = client;
     this.producer = this._client.producer();
     this.consumers = [];
   }
@@ -88,7 +86,7 @@ class KafkaClient implements EventStreamer {
         ],
       });
     } catch (error) {
-      console.error(`Error when creating sending message to ${topic}`);
+      console.error(`Error when sending message to ${topic}`);
     } finally {
       // Disconnect producer
       await this.producer.disconnect();
