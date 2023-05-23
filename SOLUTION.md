@@ -6,7 +6,7 @@ This repository contains a solution to Yape's code challenge. This solution was 
 
 - Flow: Transaction - Anti-fraud microservice - Transaction Status Update
 - Event-based architecture using Kafka
-- Technology stack: Node.js, Koa, PostgreSQL, Kafka
+- Technology stack: Node.js, Koa, PostgreSQL (Drizzle ORM), Kafka
 - Resources for creating and retrieving transactions
 
 
