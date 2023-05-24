@@ -114,7 +114,7 @@ yarn prisma db seed
 npm prisma db seed
 ```
 This seed will create the following rows:
-```json
+```
 [
   { id: 1, name: 'Transaction 1' },
   { id: 2, name: 'Transaction 2' },
