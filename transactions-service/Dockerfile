@@ -6,8 +6,6 @@ COPY . .
 
 RUN yarn install
 
-RUN yarn prisma db seed
-
 RUN yarn build
 
 

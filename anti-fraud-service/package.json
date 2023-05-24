@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src/**/*.ts --fix",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "yarn test && tsc -p tsconfig.build.json",
     "test": "jest --coverage --config jest.config.ts",
     "start": "node ./dist/index.js",
     "dev": "nodemon"

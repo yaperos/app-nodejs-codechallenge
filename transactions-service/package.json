@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "lint": "eslint src/**/*.ts --fix",
-    "build": "tsc -p tsconfig.build.json && yarn copy-schema",
+    "build": "yarn test && tsc -p tsconfig.build.json && yarn copy-schema",
     "start": "yarn migrate:prod && node ./dist/index.js",
     "dev": "yarn migrate:dev && nodemon",
     "test": "jest --coverage --config jest.config.ts",
