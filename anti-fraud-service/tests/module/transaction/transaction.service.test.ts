@@ -3,19 +3,22 @@ import { Kafka } from 'kafkajs';
 import { TransactionService } from '../../../src/modules/transaction/transaction.service';
 import { KafkaClient } from '../../../src/config/kafka';
 import { ITransaction, TransactionStatus } from '../../../src/modules/transaction/transaction.interface';
+import { producerConnectMock } from '../../__mocks__/kafka.mock';
 
+let kafkaClient: KafkaClient;
 const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => { });
 
 describe('Transaction Service tests', () => {
-  let kafkaClient: KafkaClient;
-
   beforeAll(() => {
+    consoleErrorMock.mockClear();
+    producerConnectMock.mockClear();
     const kafka = new Kafka({ brokers: ['any_host'] });
     kafkaClient = new KafkaClient(kafka);
   });
 
   beforeEach(() => {
     consoleErrorMock.mockClear();
+    producerConnectMock.mockClear();
   });
 
   // Tests for validate service
@@ -60,18 +63,6 @@ describe('Transaction Service tests', () => {
     });
 
     it('should return the same transaction if status is not PENDING', async () => {
-      const expected: ITransaction = {
-        ...validTransaction,
-        transactionStatus: TransactionStatus.APPROVED,
-      };
-
-      const transactionService = new TransactionService(kafkaClient);
-      const res = await transactionService.validate(expected);
-
-      expect(res).toStrictEqual(expected);
-    });
-
-    it('should return error if streamer throws error', async () => {
       const expected: ITransaction = {
         ...validTransaction,
         transactionStatus: TransactionStatus.APPROVED,

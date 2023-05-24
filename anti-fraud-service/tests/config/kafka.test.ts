@@ -2,34 +2,18 @@
 
 import { Kafka } from 'kafkajs';
 import {
-  kafkaConsumerMock, kafkaProducerMock,
+  producerDisconnectMock,
+  producerConnectMock,
+  producerSendMock,
+  consumerDisconnectMock,
+  consumerConnectMock,
+  consumerSubscribeMock,
+  consumerRunMock,
 } from '../__mocks__/kafka.mock';
 import { KafkaClient } from '../../src/config/kafka';
 
 let kafkaClient: KafkaClient;
 const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => { });
-
-const producerDisconnectMock = jest.fn().mockImplementation(() => { });
-const producerConnectMock = jest.fn().mockImplementation(() => { });
-const producerSendMock = jest.fn().mockImplementation(() => { });
-
-kafkaProducerMock.mockImplementation(() => ({
-  connect: producerConnectMock,
-  send: producerSendMock,
-  disconnect: producerDisconnectMock,
-}));
-
-const consumerDisconnectMock = jest.fn().mockImplementation(() => { });
-const consumerConnectMock = jest.fn().mockImplementation(() => { });
-const consumerSubscribeMock = jest.fn().mockImplementation(() => { });
-const consumerRunMock = jest.fn().mockImplementation(() => { });
-
-kafkaConsumerMock.mockImplementation(() => ({
-  connect: consumerConnectMock,
-  subscribe: consumerSubscribeMock,
-  run: consumerRunMock,
-  disconnect: consumerDisconnectMock,
-}));
 
 describe('Kafka client tests', () => {
   beforeAll(() => {
