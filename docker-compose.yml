@@ -1,19 +1,45 @@
 version: "3.7"
 services:
   postgres:
+    container_name: postgres
     image: postgres:14
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    container_name: kafka
+    depends_on: [ zookeeper ]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "kafka-topics",
+          "--bootstrap-server",
+          "kafka:9092",
+          "--list"
+        ]
+      interval: 20s
+      timeout: 10s
+      retries: 6
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -23,3 +49,44 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    expose:
+      - '29092'
+
+  create-topics:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: "no"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        kafka-topics --create --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1 --topic transaction-created 
+        kafka-topics --create --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1 --topic transaction-approved
+        kafka-topics --create --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1 --topic transaction-rejected 
+
+  transaction-service:
+    build:
+      context: ./transactions-service
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/transactionDB?schema=public"
+        KAFKA_HOST_URL: "kafka:29092"
+    ports:
+      - "3000:3000"
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  anti-fraud-service:
+    build:
+      context: ./anti-fraud-service
+      dockerfile: Dockerfile
+      args:
+        KAFKA_HOST_URL: "kafka:29092"
+    ports:
+      - "3005:3005"
+    depends_on:
+      kafka:
+        condition: service_healthy

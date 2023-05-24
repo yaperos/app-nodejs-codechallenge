@@ -6,10 +6,11 @@
   "scripts": {
     "lint": "eslint src/**/*.ts --fix",
     "build": "tsc -p tsconfig.build.json && yarn copy-schema",
-    "start": "node ./dist/index.js",
-    "dev": "nodemon",
+    "start": "yarn migrate:prod && node ./dist/index.js",
+    "dev": "yarn migrate:dev && nodemon",
     "test": "jest --coverage --config jest.config.ts",
     "copy-schema": "copyfiles -u 1 src/graphql/schema/schema.gql dist",
+    "migrate:prod": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
     "codegen": "graphql-codegen --config codegen.yml"
   },
