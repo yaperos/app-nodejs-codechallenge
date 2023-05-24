@@ -1,82 +1,146 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge - Rodrigo Guadalupe
+This repository includes the implementation of `Yape Code Challenge` ([instructions here](./old.md)), that consists on a GraphQL API that manages Transactions and a Anti-Fraud service used to validate all created Transactions.
+## Tech Stack
+- Typescript
+- Node.js + Express.js
+- Prisma ORM + Postgres
+- Kafka
+- GraphQL
+- Docker
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+## Project Structure
+The project structure is organized in the following directories: 
+```
+.
+├── anti-fraud-service      # Anti-Fraud Express app
+    ├── src                 # Source files of the solution
+    └── test                # Tests for solution services
+├── transactions-service    # Transactions Express app
+    ├── src                 # Source files of the solution
+    ├── prisma              # Prisma ORM schema definition and migrations
+    └── test                # Tests for solution services
+├── .gitignore
+├── docker-compose.yml
+└── README.md
 ```
 
-# Tech Stack
+## Environment Variables
+The project has 2 main environment variables: 
+```
+KAFKA_HOST_URL   # Host where the Kafka cluster is running
+DATABASE_URL     # Postgres SQL database connection url
+```
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## Execution
+Here we could find guides to test, build and execute the solution.
+### Run tests
+In order to run the project unit tests, we first need to go to `transactions-service` directory.
+```sh
+cd transactions-service
+```
+Then, we need to install the project's dependencies.
+```sh
+yarn install 
+# or
+npm install
+```
+Finally, to execute the unit test we run:
+```sh
+yarn test
+# or
+npm test
+```
+Tests run will be shown on CLI and a jest `coverage` report will be displayed and saved on a `coverage` directory.
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+We would follow the same steps to run the unit tests from the Anti-Fraud service, but this time with the `anti-fraud-service` directory.
+```sh
+cd anti-fraud-service
+yarn install  or  npm install
+yarn test  or  npm test
+```
 
-You must have two resources:
+### Build package
+In order to generate a deployment ready build, we would follow the next steps for both applications:
+```sh
+cd transactions-service
+#or
+cd anti-fraud-service
+```
+Then, we need to install the project's dependencies.
+```sh
+yarn install 
+# or
+npm install
+```
+Finally, to create the build run the following command:
+```sh
+yarn build
+# or
+npm build
+```
+This will first execute the following steps: 
+ - Run project's tests
+ - Create a Typescript build using the tsconfig.build.json file
+ - Copy the GraphQL schema file to `dist` folder using [copyfiles](https://www.npmjs.com/package/copyfiles) package (Only for `transactions-service`)
 
-1. Resource to create a transaction that must containt:
+## Docker Execution
+Before starting the execution process: 
+ - Make sure that you have docker already installed (it could be [docker-desktop](https://docs.docker.com/desktop/) or [docker-engine](https://docs.docker.com/engine/)).
+ - Make sure you have docker Compose plugin installed (install [compose-plugin](https://docs.docker.com/compose/install/)). IMPORTANT: If you have a docker-desktop installation, the Compose plugin is already included.
 
+First, we need to be on project `root` directory. There, we need to run the following command to build the services specified on the `docker-compose.yml` file: 
+
+```sh
+docker compose -f "docker-compose.yml" up -d --build 
+```
+
+The compose file will create and run the following: 
+```
+- Zookeeper             (PORT:'2182')
+- Kafka cluster         (PORT:'9092')
+- Postgres DB           (PORT:'5432', USER:'postgres', PASSWORD:'postgres')
+- PgAdmin               (PORT:'5050', EMAIL:'admin@admin.com', PASSWORD:'root')
+- Transactions Service  (PORT:'3000')
+- Anti-Fraud Service    (PORT:'3005')
+```
+
+The file will also create a service that would be in charge of creating the needed `topics` for producers and consumers communication
+
+After the execution is completed, there is one last step to start using the application. We will call a seed function to populate the `Transaction Type` table with some pre-defined values: 
+
+```sh
+yarn prisma db seed
+# or
+npm prisma db seed
+```
+This seed will create the following rows:
 ```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+[
+  { id: 1, name: 'Transaction 1' },
+  { id: 2, name: 'Transaction 2' },
+  { id: 3, name: 'Transaction 3' }
+]
 ```
 
-2. Resource to retrieve a transaction
+#### That's All !!
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+Now you can go to the [Transaction Service GraphQL Playground](http://localhost:3000/graphql) to start using the app. 
+
+
+### Other useful commands:
+
+- Stop all the services
+```sh
+docker compose -f "docker-compose.yml" down 
 ```
 
-## Optional
+- Restart all the services (It would execute down and up sequentially)
+```sh
+docker compose -f "docker-compose.yml" down 
+docker compose -f "docker-compose.yml" up -d --build 
+```
+## API Consumer Experience 
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+A ready-to-use playground is created for the `transactions-service` on the `/graphql` endpoint.
 
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+Documentation of schema, queries and mutations can also be found inside the playground.
