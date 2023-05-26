@@ -1,6 +1,7 @@
 version: "3.7"
 services:
   postgres:
+    container_name: "db-postgres"
     image: postgres:14
     ports:
       - "5432:5432"
@@ -12,6 +13,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
+    container_name: "kafka"
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
     environment:
@@ -23,3 +25,27 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  transaction:
+    container_name: "transaction"
+    depends_on:
+      - kafka
+      - postgres
+    build: ./transaction
+    ports:
+      - "3000:3000"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - CREATED_TOPIC=transaction.created
+      - APPROVED_TOPIC=transaction.approved
+      - REJECTED_TOPIC=transaction.rejected
+  anti-fraud:
+    container_name: "anti-fraud"
+    depends_on:
+      - kafka
+      - postgres
+    build: ./anti-fraud
+    environment:
+      - CREATED_TOPIC=transaction.created
+      - APPROVED_TOPIC=transaction.approved
+      - REJECTED_TOPIC=transaction.rejected
