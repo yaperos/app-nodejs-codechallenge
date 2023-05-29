@@ -1,4 +1,5 @@
-version: "3.7"
+version: '3.8'
+
 services:
   postgres:
     image: postgres:14
@@ -7,13 +8,32 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - transaction-service-network
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - transaction-service-network
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: 
+      - zookeeper
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "kafka-topics",
+          "--bootstrap-server",
+          "kafka:9092",
+          "--list"
+        ]
+      interval: 20s
+      timeout: 10s
+      retries: 6
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -23,3 +43,108 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    expose:
+      - '29092'
+    networks:
+      - transaction-service-network
+
+  create-topics:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - transaction-service-network
+    command:
+      - /bin/bash
+      - -c
+      - |
+        kafka-topics --create --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1 --topic KAFKA-TOPIC-TRANSACTION-CREATED 
+        kafka-topics --create --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1 --topic KAFKA-TOPIC-TRANSACTION-APPROVED
+        kafka-topics --create --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1 --topic KAFKA-TOPIC-TRANSACTION-REJECTED
+
+  transaction-service-api:
+    container_name: transaction-service-api
+    build:
+      context: ./transaction-service
+      dockerfile: ./Dockerfile
+      target: development
+    command: yarn start:dev transaction-service-api
+    env_file:
+      - ./transaction-service/.env
+    restart: always
+    depends_on:
+      - db-mongo-transaction
+      - kafka
+    volumes:
+      - ./transaction-service:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+    networks:
+      - transaction-service-network
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://root:password123@db-mongo-transaction:27017/yape?authSource=admin&readPreference=primary
+      - KAFKA_HOST_URL=kafka:29092
+      - KAFKA_TOPIC_ANTIFRAUD=TOPIC-ANTIFRAUD-DOCKER
+      - KAFKA_TOPIC_TRANSACTION=TOPIC-TRANSACTION-DOCKER
+      - KAFKAJS_NO_PARTITIONER_WARNING=1
+      - KAFKA_GROUP_ID=TEST-GROUP-TRANSACTION-DOCKER
+
+  db-mongo-transaction:
+    container_name: db-mongo-transaction
+    image: mongo:5.0.9
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    ports:
+      - "27017:27017"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - transaction-service-network
+
+  antifraud-service:
+    container_name: antifraud-service
+    build:
+      context: ./antifraud-service
+      dockerfile: ./Dockerfile
+      target: development
+    command: yarn start:dev antifraud-service
+    env_file:
+      - ./antifraud-service/.env
+    restart: always
+    volumes:
+      - ./antifraud-service:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3005:3005'
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - transaction-service-network
+    environment:
+      - PORT=3005
+      - NODE_ENV=development
+      - KAFKA_HOST_URL=kafka:29092
+      - KAFKA_TOPIC_ANTIFRAUD=TOPIC-ANTIFRAUD-DOCKER
+      - KAFKA_TOPIC_TRANSACTION=TOPIC-TRANSACTION-DOCKER
+      - KAFKAJS_NO_PARTITIONER_WARNING=1
+      - KAFKA_GROUP_ID=TEST-GROUP-ANTIFRAUD-DOCKER
+      - KAFKA_NAME=KAFKA-SERVICE-DOCKER
+
+networks:
+  transaction-service-network:
+    name: transaction-service-network
+
+volumes:
+  mongodb_data:
+    driver: local
