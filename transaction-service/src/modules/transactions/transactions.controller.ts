@@ -7,6 +7,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   Post,
@@ -90,7 +91,7 @@ export class TransactionsController {
     );
 
     if (!transactionType) {
-      throw new Error('Invalid transfer type');
+      throw new HttpException('Invalid transfer type', HttpStatus.BAD_REQUEST);
     }
 
     const transactionsDto: TransactionsDto = {

@@ -86,6 +86,8 @@ The transaction-service is running on port 3000 and the api documentation is ava
 
 The available endpoints are listed below, you can import the postman collection found in the "collection" folder.
 
+For the initial tests there are only two valid "transferTypeId" "1" and "2".
+
 ```sh
 # Tests api start
 curl -X 'GET' \
