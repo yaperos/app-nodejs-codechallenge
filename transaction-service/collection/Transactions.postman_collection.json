@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "a9d397fc-97a1-42b8-a147-490c7bbc2d7e",
+		"name": "Transactions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22995382"
+	},
+	"item": [
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/ping",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/api/transactions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/api/transactions/187054d1-987f-463e-a742-d7c11f8e663f",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"transactions",
+						"187054d1-987f-463e-a742-d7c11f8e663f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "created",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountExternalIdDebit\": \"GUI\",\n    \"accountExternalIdCredit\": \"GUI\",\n    \"transferTypeId\": \"1\",\n    \"value\": 12\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/api/transactions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/swagger",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"swagger"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
