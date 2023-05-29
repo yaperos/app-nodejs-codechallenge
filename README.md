@@ -1,82 +1,131 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge :rocket: - Alejo Bianchi
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Description
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+In this repository is the implementation of `Yape Code Challenge` ([instructions here](./README-CHALLENGE.md)), which consists of a REST API that manages Transactions and an Anti-Fraud service used to validate all Transactions created.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
 
-# Problem
+#### Services
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+The idea of ​​the services is to implement it with hexagonal architecture
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+<img src="images/hexagonal.png" alt="Hexagonal" width="380">
 
-Every transaction with a value greater than 1000 should be rejected.
+The goal is to create loosely coupled application components that can be easily connected to your software environment through ports and adapters.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+To see the detail in the implementation of the projects and what the folders represent, go to the readme of each project.
+
+- Transaction Service: This service is responsible for managing all transactions, it is the entry point for creating transactions and also has the responsibility of notifying the Anti-Fraud service when a transaction is created. Here you can find the readme of the service `transaction-service` ([readme](./transaction-service/README.md)).
+
+- Antifraud Service: This service is responsible for validating all transactions created, it is the entry point for validating transactions and also has the responsibility of notifying the Transaction service when a transaction is approved or rejected. Here you can find the readme of the service `antifraud-service` ([readme](./antifraud-service/README.md)).
+## ENVIRONMENT
+
+- Typescript
+- Nestjs - Fastify
+- Docker
+- Mongodb - Mongoose
+- Kafka
+
+### Requirements
+
+- It is necessary for tests from local environment that the kafka and mongodb services are running.
+- Environment variables need to be complete.
+
+
+### Local setup
+
+Fisrt it is necessary to use some environment variables so that the service can connect to the servers. Add the following variables to your .env file:
+
+```
+.env.example
+
+# Antifraud Service
+PORT=3005
+NODE_ENV=development
+KAFKA_HOST_URL=localhost:9092
+KAFKA_TOPIC_TRANSACTION_CREATED=KAFKA-TOPIC-TRANSACTION-CREATED
+KAFKA_TOPIC_TRANSACTION_APPROVED=KAFKA-TOPIC-TRANSACTION-APPROVED
+KAFKA_TOPIC_TRANSACTION_REJECTED=KAFKA-TOPIC-TRANSACTION-REJECTED
+KAFKA_CLIENT_ID=ANTIFRAUD-SERVICE
+KAFKAJS_NO_PARTITIONER_WARNING=1
+KAFKA_GROUP_ID=TEST-GROUP-ANTIFRAUD
+KAFKA_NAME=KAFKA-SERVICE
+
+# Transaction Service
+PORT=3000
+NODE_ENV=development
+MONGODB_URI=mongodb://root:password123@localhost:27017/yape?authSource=admin&readPreference=primary
+KAFKA_HOST_URL=localhost:9092
+KAFKA_TOPIC_TRANSACTION_CREATED=KAFKA-TOPIC-TRANSACTION-CREATED
+KAFKA_TOPIC_TRANSACTION_APPROVED=KAFKA-TOPIC-TRANSACTION-APPROVED
+KAFKA_TOPIC_TRANSACTION_REJECTED=KAFKA-TOPIC-TRANSACTION-REJECTED
+KAFKAJS_NO_PARTITIONER_WARNING=1
+KAFKA_GROUP_ID=TEST-GROUP-TRANSACTION
 ```
 
-# Tech Stack
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+To start all services in docker: 
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+```sh
+# Start Up
+make start-all-services
+```
 
-You must have two resources:
+If the make command does not work you can run the following command
 
-1. Resource to create a transaction that must containt:
+```sh
+# Start Up
+docker-compose up -d
+```
 
-```json
-{
+After that, the database, kafka server, transaction-service and antifraud-service are up and running on docker.
+
+#### Api transaction-service
+
+The transaction-service is running on port 3000 and the api documentation is available at http://localhost:3000/swagger#/
+
+The available endpoints are listed below, you can import the postman collection found in the "collection" folder.
+
+```sh
+# Tests api start
+curl -X 'GET' \
+  'http://localhost:3000/ping' \
+  -H 'accept: */*'
+
+# Create transaction
+curl -X 'POST' \
+  'http://localhost:3000/v1/api/transactions' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
   "accountExternalIdDebit": "Guid",
   "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+  "transferTypeId": "1",
+  "value": 500
+}'
+
+# Get transaction by id
+curl -X 'GET' \
+  'http://localhost:3000/v1/api/transactions/${transactionExternalId}' \
+  -H 'accept: application/json'
+
+# Get all transactions
+curl -X 'GET' \
+  'http://localhost:3000/v1/api/transactions' \
+  -H 'accept: application/json'
+
 ```
+#### Test operation
 
-2. Resource to retrieve a transaction
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
 
-## Optional
+#### Vscode Debugging
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+Set a breakpoint in the code and press F5 to start debugging.
+![Breakpoint](images/breakpoint-debug.png?raw=true "Breakpoint")
 
-You can use Graphql;
+Or manual run the debugger with the configuration "Launch Program".
+![Run](images/run-debug.png?raw=true "Run")
 
-# Send us your challenge
+*Note: debugging does not feature hot reload.*
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
