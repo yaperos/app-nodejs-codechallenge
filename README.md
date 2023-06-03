@@ -1,82 +1,70 @@
 # Yape Code Challenge :rocket:
+Renato Chavez Urday
+## Tech stack
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+- **Nest JS**: for the transaction API and the antifraud service.
+- **GraphQL** for the API in the transaction API.
+- **Apache Kafka**: to send messages between the transaction API and the anti fraud service. Also to queue database write operations in the transaction API.
+- **PostgreSQL**: as database.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Description
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+There are two Nest JS projects, the transaction API (an API to create and get transactions data) and the anti fraud service (which verifies if a transaction should be approved or denied).
 
-# Problem
+We use kafka for:
+- Both services interact using Kafka to verify and update the status of transactions. On transaction creation the transaction API sends a message with the transaction data to Kafka. The antifraud service consume the created message and sends a new message with the updated transaction status. The transaction API will consume the last message and update the transaction status in DB.
+- We also use Kafka inside the transaction API, to queue database write operations (approach to store transaction data and reduce the load on database). We use the transaction transactionExternalId (since is unique) for the message key, which is important to keep the create/update messages in the same partition and maintain messages order.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Also, the transaction API uses GraphQL for transaction creation and to retrieve transaction data.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+## Run the project
 
-Every transaction with a value greater than 1000 should be rejected.
+##### 1. Run the project with docker compose, and wait for the transaction-api and antifraud-service to be deployed.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```sh
+$ docker-compose build
+$ docker-compose up
 ```
 
-# Tech Stack
+##### 2. Go to the GraphQL Playground ([http://localhost:3001/graphql](http://localhost:3001/graphql))
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+##### 3. Example of GraphQL mutation to create a new transaction
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+```sh
+mutation {
+  addTransaction(
+    transactionData: {
+      accountExternalIdDebit: "36afe91c-c59c-453c-b671-2c6cefa9c113"
+      accountExternalIdCredit: "47295f84-f2a3-43ff-92e3-9a72c59a8b05"
+      transferTypeId: 1
+      value: 999
+    }
+  ) {
+    transactionExternalId
+    status
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
+##### 4. Example of GraphQL query to retrieve transaction data
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+```sh
+query {
+  transaction(transactionExternalId: "TRANSACTION_EXTERNAL_ID") {
+    transactionExternalId
+    transactionType {
+      name
+    }
+    transactionStatus {
+      name
+    }
+    value
+    createdAt
+  }
 }
 ```
 
-## Optional
+### Problems and limitations
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+A problem about the approach used to store transaction data in the database would be that on transaction creation, we are sending a message to Kafka to create a new transaction. The problem is that if we try to use the retrieve transaction resource before the created transaction message is consumed, it would return 404, since the transaction  is not created yet in the database. A workaround would be to use a listener for the kafka message or a listener to verify if the transaction was created in the database, that listener should be added in the creation endpoint, depending on the product requirements.
