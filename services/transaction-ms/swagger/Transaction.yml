@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: Yape Transaction API
+  version: 1.0.0
+paths:
+  /transaction:
+    post:
+      summary: Create a new transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountExternalIdDebit:
+                  type: string
+                  format: uuid
+                accountExternalIdCredit:
+                  type: string
+                  format: uuid
+                transferTypeId:
+                  type: integer
+                  enum: 
+                    - 1
+                    - 2
+                    - 3
+                value:
+                  type: number
+                  example: 1000
+      responses:
+        200:
+          description: Transaction created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionExternalId:
+                    type: string
+                    format: uuid
+                  transactionType:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                  transactionStatus:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        enum: 
+                          - PENDING
+                          - APPROVED
+                          - REJECTED
+                  value:
+                    type: number
+                    example: 1000
+                  createdAt:
+                    type: string
+                    format: date-time
+  /transaction/{id}:
+    get:
+      summary: Get transaction details by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Transaction details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionExternalId:
+                    type: string
+                    format: uuid
+                  transactionType:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: Bank Transfer
+                  transactionStatus:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        enum:
+                          - APPROVED
+                          - REJECTED
+                          - PENDING
+                  value:
+                    type: number
+                    example: 1000
+                  createdAt:
+                    type: string
+                    format: date-time

@@ -1,0 +1,35 @@
+{
+  "name": "libs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "start:watch": "tsx watch src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Lizeth La Serna",
+  "license": "ISC",
+  "dependencies": {
+    "kafkajs": "^2.2.4",
+    "yup": "^1.2.0"
+  },
+  "files": [
+    "src/*"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "esbuild": "^0.17.19",
+    "eslint": "^8.41.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
+    "tsx": "^3.12.7",
+    "typescript": "^5.0.4"
+  }
+}
