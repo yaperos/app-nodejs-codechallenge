@@ -13,10 +13,9 @@ export class AppService {
     event: TransactionCreatedEvent,
   ): Promise<void> {
     await this.antifraudClient.connect();
+    event.transactionStatus = process.env.STATUS_APPROVED;
     if (event.value > 1000) {
       event.transactionStatus = process.env.STATUS_REJECTED;
-    } else {
-      event.transactionStatus = process.env.STATUS_APPROVED;
     }
     this.antifraudClient.emit(process.env.TOPIC, {
       key: process.env.KEY,

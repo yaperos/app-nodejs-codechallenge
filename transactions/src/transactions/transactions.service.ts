@@ -38,24 +38,27 @@ export class TransactionService {
   }
 
   async handleTransactionCreated(event: TransactionCreatedEvent) {
-    const record = await this.repository.findOneBy({
-      transactionExternalId: event.transactionExternalId,
-    });
+    const record: Transactions = await this.entityManager
+      .createQueryBuilder(Transactions, 'transactions')
+      .where('transactions.transactionExternalId = :transactionExternalId', {
+        transactionExternalId: event.transactionExternalId,
+      })
+      .getOne();
     if (event.transactionStatus === config.approved_status) {
-      record.transactionStatus = 'transaction_approved';
+      record.setTransactionStatus('transaction_approved');
     } else if (event.transactionStatus === config.rejected_status) {
-      record.transactionStatus = 'transaction_rejected';
+      record.setTransactionStatus('transaction_rejected');
     }
     await this.repository.save(record);
   }
 
   saveTransaction = (record) => {
     const transactionEntity = new Transactions();
-    transactionEntity.createdAt = new Date();
-    transactionEntity.transactionStatus = process.env.PENDING_STATUS;
-    transactionEntity.transactionType = 'transfer';
-    transactionEntity.transactionExternalId = record.transactionExternalId;
-    transactionEntity.value = record.value;
+    transactionEntity.setCreatedAt(new Date());
+    transactionEntity.setTransactionStatus(process.env.PENDING_STATUS);
+    transactionEntity.setTransactionType('transfer');
+    transactionEntity.setTransactionExternalId(record.transactionExternalId);
+    transactionEntity.setValue(record.value);
     this.repository.save(transactionEntity);
   };
 }

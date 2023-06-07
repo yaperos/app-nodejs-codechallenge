@@ -3,15 +3,65 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Transactions {
   @PrimaryGeneratedColumn()
-  id: number;
+  private id: number;
   @Column()
-  transactionType: string;
+  private transactionType: string;
   @Column()
-  transactionStatus: string;
+  private transactionStatus: string;
   @Column()
-  transactionExternalId: string;
+  private transactionExternalId: string;
   @Column()
-  value: number;
+  private value: number;
   @Column()
-  createdAt: Date;
+  private createdAt?: Date;
+
+  constructor(
+    transacationType?: string,
+    transactionStatus?: string,
+    transactionExternalId?: string,
+    value?: number,
+    createdAt?: Date,
+  ) {
+    this.transactionType = transacationType;
+    this.transactionStatus = transactionStatus;
+    this.transactionExternalId = transactionExternalId;
+    this.value = value;
+    this.createdAt = createdAt;
+  }
+  public getId(): number {
+    return this.id;
+  }
+  public setId(id: number): void {
+    this.id = id;
+  }
+  public getTransactionType(): string {
+    return this.transactionType;
+  }
+  public setTransactionType(transactionType: string): void {
+    this.transactionType = transactionType;
+  }
+  public getTransactionStatus(): string {
+    return this.transactionStatus;
+  }
+  public setTransactionStatus(transactionStatus: string): void {
+    this.transactionStatus = transactionStatus;
+  }
+  public getTransactionExternalId(): string {
+    return this.transactionExternalId;
+  }
+  public setTransactionExternalId(transactionExternalId: string): void {
+    this.transactionExternalId = transactionExternalId;
+  }
+  public getValue(): number {
+    return this.value;
+  }
+  public setValue(value: number): void {
+    this.value = value;
+  }
+  public getCreatedAt(): Date {
+    return this.createdAt;
+  }
+  public setCreatedAt(createdAt: Date): void {
+    this.createdAt = createdAt;
+  }
 }
