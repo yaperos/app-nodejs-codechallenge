@@ -27,7 +27,7 @@ export const ensureTopic = async (topic: string) => {
 };
 
 export const startKafkaConsumer = async (handler: EachMessageHandler) => {
-  await ensureTopic("antifraud.transaction.update.done");
+  await ensureTopic("transaction.create.done");
 
   await consumer.connect();
   await consumer.subscribe({
