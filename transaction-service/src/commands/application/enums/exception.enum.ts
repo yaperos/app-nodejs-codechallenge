@@ -1,0 +1,4 @@
+export enum ExceptionEnum {
+    ERROR_CREATE_TRANSACTION = 50001,
+    ERROR_UPDATE_TRANSACTION_STATUS = 40001
+}
