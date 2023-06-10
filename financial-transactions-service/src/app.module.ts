@@ -6,7 +6,9 @@ import { FinancialTransactionEntity } from './shared/infrastructure/financial-tr
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url: process.env.DATABASE_URL,

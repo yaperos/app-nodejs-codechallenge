@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { FinancialTransaction } from '../../core/create-financial-transaction/domain/financial-transaction';
 import { FinancialTransactionId } from '../../core/create-financial-transaction/domain/financial-transaction-id';
+import { FinancialTransactionStatus } from '../../core/create-financial-transaction/domain/financial-transaction-status';
 import { FinancialTransactionsRepository } from '../../core/create-financial-transaction/domain/financial-transactions.repository';
 import { FinancialTransactionEntity } from './financial-transaction.entity';
 
@@ -45,5 +46,21 @@ export class MongoFinancialTransactionsRepository
       transferTypeId: financialTransactionEntity.transferTypeId,
       transferStatusId: financialTransactionEntity.transferStatusId,
     });
+  }
+
+  async updateStatus(
+    id: FinancialTransactionId,
+    financialTransactionStatus: FinancialTransactionStatus,
+  ): Promise<number> {
+    const updateResult = await this.repository.updateOne(
+      { externalId: id.value },
+      {
+        $set: {
+          transferStatusId: financialTransactionStatus.value,
+        },
+      },
+    );
+
+    return updateResult.modifiedCount;
   }
 }

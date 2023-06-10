@@ -51,4 +51,8 @@ export class FinancialTransaction {
       FinancialTransactionStatus.fromValue(plainData.transferStatusId),
     );
   }
+
+  toString(): string {
+    return JSON.stringify(this);
+  }
 }

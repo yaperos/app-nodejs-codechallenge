@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { ClientKafka } from '@nestjs/microservices';
 import { Uuid } from '../../../shared/domain/value-object/Uuid';
+import { Topics } from '../../../shared/infrastructure/topics';
 import { Account } from '../domain/account';
 import { FinancialTransaction } from '../domain/financial-transaction';
 import { FinancialTransactionId } from '../domain/financial-transaction-id';
@@ -15,6 +18,9 @@ export class CreateFinancialTransactionService {
   constructor(
     @Inject('FinancialTransactionsRepository')
     private readonly financialTransactionsRepository: FinancialTransactionsRepository,
+    @Inject('FINANCIAL_TRANSACTION_SERVICE')
+    private readonly antifraudService: ClientKafka,
+    private readonly configService: ConfigService,
   ) {}
 
   async handle(
@@ -52,6 +58,11 @@ export class CreateFinancialTransactionService {
     );
 
     await this.financialTransactionsRepository.save(financialTransaction);
+
+    this.antifraudService.emit(
+      Topics.FinancialTransactionCreatedTopic,
+      financialTransaction.toString(),
+    );
 
     return financialTransaction;
   }
