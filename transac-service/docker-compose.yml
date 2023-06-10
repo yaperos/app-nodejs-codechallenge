@@ -1,0 +1,15 @@
+services:
+  transact:
+    container_name: yp_transact
+    platform: linux/amd64
+    build:
+      context: ./transac-service
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka-post-build:
+        condition: service_completed_successfully

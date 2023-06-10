@@ -1,82 +1,77 @@
-# Yape Code Challenge :rocket:
+# Yape Transaction Simulation 🚀
+This project is an approach to solve the `Yape Code Challenge` 
+([description](./CHALLENGE.md)).
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+*important details:*
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+- We may deal with high volume scenarios where we have a huge 
+amount of writes and reads for the same data at the same time.
+- I'm considering two `TransferTypes`:
+  - *DEBIT* `(1)`
+  - *CREDIT* `(2)`
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+*Index:*
+- [My approach](#my-approach)
+  - [Create Transaction Flow](#create-transaction-flow)
+  - [Get Transaction Flow](#get-transaction-flow)
+- [Why?](#why-)
+- [Tech Stack](#tech-stack)
+- [How to run it?](#how-to-run-it)
+- [Stay in touch](#stay-in-touch)
 
-# Problem
+## My approach
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### Create Transaction Flow
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+![](./public/images/design.png)
 
-Every transaction with a value greater than 1000 should be rejected.
+1. `Proxy Service`: acts as the API gateway, it enables to decouple 
+    the infrastructure and controls the information flow.
+2. `Transacts Service`: is the **core service** which execute business logic.
+3. `Antifraud Service`: is the validation service.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+### Get Transaction Flow
+
+![](./public/images/get-api-design.png)
+
+## Why? 🤔
+
+This approach have multiple advantages:
+1. The microservices infrastructure is decoupled and every service has its
+   own responsability.
+2. Every microservice can be **scaled** based on load.
+3. The database has an only point of entry (Transact Service) which
+   facilitates future improvements like having a *Read DB Instance* and 
+   *Write DB Instance*.
+4. Kafka acts as the main orchestrator and allows to deal with HUGE 
+   amounts of requests `to the DB` and `to other microservices`. 
+5. Using kafka in the transactions creation allows to save the 
+   request `in case of any failure` and can be used to **apply retries**.
+
+## Tech Stack
+- Typescript
+- NestJS & Express.js
+- TypeORM & Postgres
+- Kafka
+- docker
+- docker-compose
+- Make
+
+## How to run it?
+
+All the project will run with docker:
+
+```shell
+make up-all
+```
+or TODOOO
+```shell
+docker-compose -f docker-compose.yml \
+                -f ./transac-service/docker-compose.yml \
+                up --build
 ```
 
-# Tech Stack
+## Stay in touch
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+- Author 👷🏾‍♂️- [aLucaz](https://github.com/aLucaz)
+- Linkedin 🧛🏾‍♂️- [Arturo Lucas](https://www.linkedin.com/in/arturo-lucas/)
