@@ -1,82 +1,111 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Financial Transactions Service
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+The Financial Transactions Service is a microservice responsible for handling financial transactions and related operations.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+### Features
 
-# Problem
+Create, retrieve, and update financial transactions.
+Perform validations and checks on transactions.
+Process transactions asynchronously and handle events.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### Getting Started
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+Clone the repository:
 
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```
+git clone https://github.com/alexandersotoc/app-nodejs-codechallenge
 ```
 
-# Tech Stack
+Install dependencies:
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```
+cd financial-transactions-service
+npm install
 ```
 
-2. Resource to retrieve a transaction
+### Configuration
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+Configure the environment variables required for the service. See the .env.example file for reference.
+
+Modify the configuration files according to your environment and service requirements.
+
+Usage
+Start the service:
+
+```
+npm run start:dev
 ```
 
-## Optional
+The service will be accessible at http://localhost:3000. Make sure to replace port with the appropriate port number.
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+### API Endpoints
 
-You can use Graphql;
+The Financial Transactions Service exposes the following API endpoints:
 
-# Send us your challenge
+- POST /financial-transactions: Create a new financial transaction.
+- GET /financial-transactions/:id: Retrieve a specific transaction by ID.
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+### Events
 
-If you have any questions, please let us know.
+The Antifraud Service emits for the following events:
+
+- TransactionCreated: Emitted when a new transaction is created.
+
+The Antifraud Service listens for the following events:
+
+- TransactionApproved: Emitted when a transaction is updated.
+- TransactionRejected: Emitted when a transaction is rejected.
+
+## Antifraud Service
+
+The Antifraud Service is a microservice responsible for fraud detection and prevention in financial transactions.
+
+### Features
+
+Analyze transactions for potential fraudulent activities.
+Implement antifraud algorithms and rules.
+Communicate with the Financial Transactions Service for transaction data.
+
+### Getting Started
+
+Clone the repository:
+
+```
+git clone https://github.com/alexandersotoc/app-nodejs-codechallenge
+```
+
+Install dependencies:
+
+```
+cd antifraud-service
+npm install
+```
+
+### Configuration
+
+Configure the environment variables required for the service. See the .env.example file for reference.
+
+Modify the configuration files according to your environment and service requirements.
+
+### Usage
+
+Start the service:
+
+```
+npm run start:dev
+```
+
+The service will be accessible at http://localhost:3001. Make sure to replace the port with the appropriate port number.
+
+### Events
+
+The Antifraud Service listens for the following events:
+
+- TransactionCreated: Emitted when a new transaction is created.
+
+The Antifraud Service emits for the following events:
+
+- TransactionApproved: Emitted when a transaction is updated.
+- TransactionRejected: Emitted when a transaction is rejected.
