@@ -1,12 +1,10 @@
 services:
-  proxy:
-    container_name: yp_proxy
+  antifraud:
+    container_name: yp_antifraud
     platform: linux/amd64
     build:
-      context: ./proxy-service
+      context: ./antifraud-service
       dockerfile: Dockerfile
-    ports:
-      - 3001:3001
     restart: on-failure
     depends_on:
       kafka:

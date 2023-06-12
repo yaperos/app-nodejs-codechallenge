@@ -48,18 +48,3 @@ services:
       interval: 20s
       timeout: 10s
       retries: 6
-
-  kafka-post-build:
-    platform: linux/amd64
-    container_name: yp_kafka_pb
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on:
-      kafka:
-        condition: service_healthy
-    command:
-      - /bin/bash
-      - -c
-      - |
-        sleep 10
-        kafka-topics --bootstrap-server kafka:9092 --create --topic db-write-event-topic --partitions 1 --replication-factor 1
-        exit 0

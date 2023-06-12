@@ -17,6 +17,7 @@ amount of writes and reads for the same data at the same time.
 - [Why?](#why-)
 - [Tech Stack](#tech-stack)
 - [How to run it?](#how-to-run-it)
+- [Errors?](#errors)
 - [Stay in touch](#stay-in-touch)
 
 ## My approach
@@ -64,11 +65,28 @@ All the project will run with docker:
 ```shell
 make up-all
 ```
-or TODOOO
+or
 ```shell
 docker-compose -f docker-compose.yml \
+                -f ./antifraud-service/docker-compose.yml \
+                -f ./proxy-service/docker-compose.yml \
                 -f ./transac-service/docker-compose.yml \
-                up --build
+                up --build -d
+```
+After finish, you can off the project
+```shell
+make off-all
+```
+
+## Errors?
+
+Is common to find this error if you run this project multiple times.
+
+![](./public/images/error-1.png)
+
+To solve it just off the project and run it again.
+```shell
+make off-all
 ```
 
 ## Stay in touch

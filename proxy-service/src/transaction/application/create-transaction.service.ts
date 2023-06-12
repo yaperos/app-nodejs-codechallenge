@@ -27,6 +27,15 @@ export class CreateTransactionService {
         message,
       );
 
+      const updateRequest = {
+        transactionId: generatedId,
+        value: request.value,
+      };
+      this.pubsubService.publish(
+        process.env.KAFKA_ANTIFRAUD_EVENT_TOPIC,
+        JSON.stringify(updateRequest),
+      );
+
       return {
         message: 'The transaction is being processed.',
         transactionExternalId: generatedId,

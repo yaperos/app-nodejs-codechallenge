@@ -1,3 +1,3 @@
 export abstract class ServiceCommunicationInterface {
-  abstract get(url: string, params?: unknown): Promise<unknown>;
+  abstract get(url: string): Promise<unknown>;
 }
