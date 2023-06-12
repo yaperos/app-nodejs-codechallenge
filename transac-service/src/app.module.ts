@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TransactionModule } from './transaction.module';
+import { TransactionModule } from './transaction/infrastructure/nest/modules/transaction.module';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';

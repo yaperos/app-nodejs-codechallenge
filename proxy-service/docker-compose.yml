@@ -1,0 +1,13 @@
+services:
+  proxy:
+    container_name: yp_proxy
+    platform: linux/amd64
+    build:
+      context: ./proxy-service
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    restart: on-failure
+    depends_on:
+      kafka-post-build:
+        condition: service_completed_successfully
