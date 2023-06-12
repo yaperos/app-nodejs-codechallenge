@@ -17,6 +17,7 @@ amount of writes and reads for the same data at the same time.
 - [Why?](#why-)
 - [Tech Stack](#tech-stack)
 - [How to run it?](#how-to-run-it)
+- [How to test it?](#how-to-test-it)
 - [Errors?](#errors)
 - [Stay in touch](#stay-in-touch)
 
@@ -77,6 +78,10 @@ After finish, you can off the project
 ```shell
 make off-all
 ```
+
+## How to test it?
+
+This project can be tested using curl or with the [postman collection](./public/postman/yape.postman_collection.json). 
 
 ## Errors?
 

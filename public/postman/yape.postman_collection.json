@@ -1,0 +1,56 @@
+{
+	"info": {
+		"_postman_id": "9e8b92ea-a500-4899-9a1c-44a68ff1d7c3",
+		"name": "yape",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25222023"
+	},
+	"item": [
+		{
+			"name": "get-transaction",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/transaction/85dd8a85-730a-43f5-80b0-0f157f37796f",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"transaction",
+						"85dd8a85-730a-43f5-80b0-0f157f37796f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"transferTypeId\": 1,\n  \"value\": 1520,\n  \"accountExternalIdDebit\": \"9fb6b169-66fb-4d2b-9750-e8a5f7d3b17e\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/transaction",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
