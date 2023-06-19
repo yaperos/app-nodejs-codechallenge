@@ -64,7 +64,7 @@ You can use Postman to interact with the API endpoints of the transaction manage
 
 1.  Download and install [Postman](https://www.postman.com/downloads/).
     
-2.  Import the provided Postman collection file ([api-definition.json](https://github.com/anibal-vergaray-unmsm/app-nodejs-codechallenge/blob/main/microservice-transaction/postman/api-definition.json)) into Postman. You can do this by clicking on the **Import** button in the top-left corner of the Postman window, selecting the file, and confirming the import.
+2.  Import the provided Postman collection file ([api-definition.json](https://github.com/anibal-vergaray-unmsm/app-nodejs-codechallenge/blob/main/microservice-transaction/postman/api-definiton.json)) into Postman. You can do this by clicking on the **Import** button in the top-left corner of the Postman window, selecting the file, and confirming the import.
     
 3.  Once imported, you will see a collection named "API" containing various API endpoints.
     
