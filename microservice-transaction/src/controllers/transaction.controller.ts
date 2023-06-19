@@ -20,9 +20,9 @@ export class TransactionController {
   }
 
   @MessagePattern('transaction-verified')
-  async updateStatus(@Payload('value') data: TransactionUpdateDTO) {
+  async updateStatus(@Payload() data: TransactionUpdateDTO) {
     Logger.log('[updateStatus] Verfied Transaction received:', data);
     const transaction = await this.transactionService.updateStatus(data);
-    Logger.log('[updateStatus] Transaction updated:', transaction);
+    Logger.log('[updateStatus] Transaction updated:', JSON.stringify(transaction));
   }
 }

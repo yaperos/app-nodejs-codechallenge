@@ -16,7 +16,6 @@ export class UpdateTransactionCommandHandler
     const transaction = await this.transactionRepository.findOne({ where: { transactionExternalId } });
     
     transaction.status = status
-
     return await this.transactionRepository.save(transaction);
   }
 }

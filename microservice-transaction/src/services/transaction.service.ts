@@ -31,7 +31,8 @@ export class TransactionService {
   async updateStatus(data: TransactionUpdateDTO) {
     return this.classMapper.mapAsync(
       await this.commandBus.execute(
-        new UpdateTransactionCommand(data.transactionExternalId, data.status)),
+        new UpdateTransactionCommand(data.transactionExternalId, data.status)
+      ),
       Transaction,
       TransactionReadDTO)
   }

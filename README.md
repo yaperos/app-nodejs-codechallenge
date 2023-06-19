@@ -1,4 +1,5 @@
-# My Transaction Management Project
+
+ # My Transaction Management Project
   
 This project is a solution to the challenge using NestJS.
 
@@ -64,7 +65,16 @@ You can use Postman to interact with the API endpoints of the transaction manage
 
 1.  Download and install [Postman](https://www.postman.com/downloads/).
     
-2.  Import the provided Postman collection file ([api-definition.json](https://github.com/anibal-vergaray-unmsm/app-nodejs-codechallenge/blob/main/microservice-transaction/postman/api-definiton.json)) into Postman. You can do this by clicking on the **Import** button in the top-left corner of the Postman window, selecting the file, and confirming the import.
+2.  Import the provided Postman collection file ([api-definition.json](https://github.com/anibal-vergaray-unmsm/app-nodejs-codechallenge/blob/main/microservice-transaction/postman/api-definition.json)) into Postman. You can do this by clicking on the **Import** button in the top-left corner of the Postman window, selecting the file, and confirming the import.
     
 3.  Once imported, you will see a collection named "API" containing various API endpoints.
     
+
+##   Redis and Get-Through Cache
+
+Redis, combined with Get-Through Cache, offers key advantages for high-volume environments:
+
+-   **Improved response times**: Redis caching reduces read query latency by serving frequently accessed transaction data directly from memory.
+-   **Reduced database load**: Get-Through Cache relieves the database of repetitive read requests, optimizing its performance and scalability.
+-   **Flexible data freshness**: The TTL (Time-To-Live) for cached transaction data can be easily adjusted, allowing you to balance data currency and caching efficiency (It was set to 30 seconds for the project),
+-   **Enhanced performance**: By utilizing Redis and Get-Through Cache, your application can achieve faster and more efficient data retrieval, resulting in improved overall performance.

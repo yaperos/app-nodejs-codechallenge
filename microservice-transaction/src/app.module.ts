@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedisClientOptions } from 'redis';
 import { AutomapperModule } from '@automapper/nestjs'
 import { classes } from '@automapper/classes';
+import { redisStore } from "cache-manager-redis-yet";
 import { Transaction } from './entities/transaction.entity';
 import { TransactionProfile } from './profile/transaction.profile';
 import { TransactionController } from './controllers/transaction.controller';
@@ -18,6 +21,25 @@ import { GetTransactionQueryHandler } from './operations/queries/get/get.transac
     ConfigModule.forRoot({
       envFilePath: [`.env`],
     }),
+    CacheModule.registerAsync<RedisClientOptions>({
+      isGlobal: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        const store = await redisStore({
+          password: configService.get('REDIS_PASSWORD'),
+          socket: {
+            host: configService.get('REDIS_HOST'),
+            port: configService.get('REDIS_PORT'),
+          }
+        });
+        return {
+          store: {
+            create: () => store,
+          },
+        };
+      },
+    }),    
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
