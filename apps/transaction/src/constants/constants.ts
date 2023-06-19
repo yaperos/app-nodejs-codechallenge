@@ -1,0 +1,1 @@
+export const GENERIC_ERROR_MESSAGE = 'Unexpected error, please check server log errors';

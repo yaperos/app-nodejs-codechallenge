@@ -1,0 +1,100 @@
+{
+	"info": {
+		"_postman_id": "4cf991ab-6e6a-4714-b8a3-26f0425f23f0",
+		"name": "YapeCodeChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3030914"
+	},
+	"item": [
+		{
+			"name": "Create Transaction Approved",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountExternalIdDebit\": \"{{$guid}}\",\r\n  \"accountExternalIdCredit\": \"{{$guid}}\",\r\n  \"tranferTypeId\": 2,\r\n  \"value\": 650\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3333/api/transaction/",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"api",
+						"transaction",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction Rejected",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountExternalIdDebit\": \"{{$guid}}\",\r\n  \"accountExternalIdCredit\": \"{{$guid}}\",\r\n  \"tranferTypeId\": 2,\r\n  \"value\": 2000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3333/api/transaction/",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"api",
+						"transaction",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3333/api/transaction/9dfd16e2-9173-4cc1-aa71-bf72bee98503",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"api",
+						"transaction",
+						"9dfd16e2-9173-4cc1-aa71-bf72bee98503"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

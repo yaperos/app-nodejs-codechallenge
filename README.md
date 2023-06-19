@@ -1,9 +1,5 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
 - [Send us your challenge](#send_us_your_challenge)
@@ -69,14 +65,106 @@ You must have two resources:
 }
 ```
 
-## Optional
+# Proposed Solution
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## Endpoints
 
-You can use Graphql;
+#### Create Transaction
 
-# Send us your challenge
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+| Path  | Type |
+| ------------- | ------------- |
+| $SERVER:$PORT/api/transaction  | POST |
 
-If you have any questions, please let us know.
+
+RequestBody
+
+```json
+{
+  "accountExternalIdDebit": "Guid",
+  "accountExternalIdCredit": "Guid",
+  "tranferTypeId": 1,
+  "value": 120
+}
+```
+
+Response Body
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionType": {
+    "name": ""
+  },
+  "transactionStatus": {
+    "name": ""
+  },
+  "value": 120,
+  "createdAt": "Date"
+}
+```
+
+####  Get Transaction By Id
+
+
+| Path  | Type |
+| ------------- | ------------- |
+| $SERVER:$PORT/api/transaction/:transactionExternalId  | GET |
+
+
+Response Body
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionType": {
+    "name": "DEPOSIT TO OWN ACCOUNT"
+  },
+  "transactionStatus": {
+    "name": "APPROVED"
+  },
+  "value": 120,
+  "createdAt": "Date"
+}
+```
+
+Values list
+
+| Property  | Value | Description  |
+| ------------- | ------------- | ------------- |
+| tranferTypeId  | 1 | DEPOSIT TO OWN ACCOUNT |
+| tranferTypeId  | 2 | TRANSFER TO ACCOUNT IN SAMEBANK |
+| tranferTypeId  | 3 | TRANSFER TO ACCOUNT IN ANOTHER BANK |
+| transactionStatus[name]  | 1 | PENDING |
+| transactionStatus[name]  | 2 | APPROVED |
+| transactionStatus[name]  | 3 | REJECTED |
+
+
+### Instalation 🔧
+
+From a terminal execute the next steps:
+
+A) Access the project folder and then run the following command to get the required project dependencies
+
+```
+cd app-nodejs-codechallenge
+npm install
+```
+
+C) Enable development environment
+
+```
+docker-compose up -d
+```
+
+D) Start microservices run
+
+```
+nx run-many --target=serve --all --maxParallel=100
+```
+
+### Postman
+
+Postman test collection is located in the following file
+
+```
+/postman/YapeChallenge.postman_collection.json
+```
