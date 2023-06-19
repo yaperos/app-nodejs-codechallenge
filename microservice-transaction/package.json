@@ -1,5 +1,5 @@
 {
-  "name": "microservice-anti-fraud",
+  "name": "microservice-transaction",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -21,14 +21,26 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@automapper/classes": "^8.7.7",
+    "@automapper/core": "^8.7.7",
+    "@automapper/nestjs": "^8.7.7",
+    "@automapper/types": "^6.3.1",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/cqrs": "^8.0.0",
+    "@nestjs/microservices": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.2.1",
+    "@nestjs/typeorm": "^10.0.0",
+    "class-validator": "^0.13.2",
+    "kafkajs": "^2.2.4",
+    "mongodb": "^5.6.0",
+    "pg": "^8.11.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.3.16"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
