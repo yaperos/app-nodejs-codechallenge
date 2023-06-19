@@ -1,82 +1,70 @@
-# Yape Code Challenge :rocket:
+# My Transaction Management Project
+  
+This project is a solution to the challenge using NestJS.
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Description
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+The application allows creating and querying financial transactions, validating them through an anti-fraud microservice. It uses an architecture based on the CQRS (Command Query Responsibility Segregation) pattern to separate write and read operations.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Technologies Used
 
-# Problem
+- NestJS: A Node.js application development framework
+- PostgreSQL: Relational database for storing transactions
+- Redis: In-memory database for caching
+- Kafka: Streaming platform for message sending and receiving
+- TypeScript: Programming language
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+## Installation
 
-Every transaction with a value greater than 1000 should be rejected.
+ ``1. Clone the repository:`` 
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+	git clone https://github.com/anibal-vergaray-unmsm/app-nodejs-codechallenge.git
+ ``2. Create containers:`` 
 
-# Tech Stack
+	docker-compose up
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+ `3. Run Anti Fraud microservice:` 
+ 
+ `3.1. Move to folder project:` 
+ 
+		cd microservice-anti-fraud 
+`3.2. Install dependencies:` 
+ 
+		npm install
+`3.3. Run project:`
+ 
+		npm run start:dev
+ `4. Run Transaction Microservice:`
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+ `4.1. Move to folder project:` 
+ 
+		cd microservice-transaction 
+`4.2. Install dependencies:` 
+ 
+		npm install
+`4.3. Set enviroment variables (Rename .env.example to .env):`
+ 
+		PORT=3000
 
-You must have two resources:
+		DB_HOST=localhost
 
-1. Resource to create a transaction that must containt:
+		DB_PORT=5432
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
+		DB_USERNAME=postgres
 
-2. Resource to retrieve a transaction
+		DB_PASSWORD=postgres
+`4.4. Run project:`
+ 
+		npm run start:dev
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+## API Documentation with Postman
 
-## Optional
+You can use Postman to interact with the API endpoints of the transaction management application. Follow the steps below to import the Postman collection and start making requests:
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+1.  Download and install [Postman](https://www.postman.com/downloads/).
+    
+2.  Import the provided Postman collection file ([api-definition.json](https://github.com/anibal-vergaray-unmsm/app-nodejs-codechallenge/blob/main/microservice-transaction/postman/api-definition.json)) into Postman. You can do this by clicking on the **Import** button in the top-left corner of the Postman window, selecting the file, and confirming the import.
+    
+3.  Once imported, you will see a collection named "API" containing various API endpoints.
+    
