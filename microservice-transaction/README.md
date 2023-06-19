@@ -1,73 +1,70 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# My Transaction Management Project
+  
+This project is a solution to the challenge using NestJS.
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The application allows creating and querying financial transactions, validating them through an anti-fraud microservice. It uses an architecture based on the CQRS (Command Query Responsibility Segregation) pattern to separate write and read operations.
+
+## Technologies Used
+
+- NestJS: A Node.js application development framework
+- PostgreSQL: Relational database for storing transactions
+- Redis: In-memory database for caching
+- Kafka: Streaming platform for message sending and receiving
+- TypeScript: Programming language
+
 
 ## Installation
 
-```bash
-$ npm install
-```
+ ``1. Clone the repository:`` 
 
-## Running the app
+	git clone https://github.com/anibal-vergaray-unmsm/app-nodejs-codechallenge.git
+ ``2. Create containers:`` 
 
-```bash
-# development
-$ npm run start
+	docker-compose up
 
-# watch mode
-$ npm run start:dev
+ `3. Run Anti Fraud microservice:` 
+ 
+ `3.1. Move to folder project:` 
+ 
+		cd microservice-anti-fraud 
+`3.2. Install dependencies:` 
+ 
+		npm install
+`3.3. Run project:`
+ 
+		npm run start:dev
+ `4. Run Transaction Microservice:`
 
-# production mode
-$ npm run start:prod
-```
+ `4.1. Move to folder project:` 
+ 
+		cd microservice-transaction 
+`4.2. Install dependencies:` 
+ 
+		npm install
+`4.3. Set enviroment variables (Rename .env.example to .env):`
+ 
+		PORT=3000
 
-## Test
+		DB_HOST=localhost
 
-```bash
-# unit tests
-$ npm run test
+		DB_PORT=5432
 
-# e2e tests
-$ npm run test:e2e
+		DB_USERNAME=postgres
 
-# test coverage
-$ npm run test:cov
-```
+		DB_PASSWORD=postgres
+`4.4. Run project:`
+ 
+		npm run start:dev
 
-## Support
+## API Documentation with Postman
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+You can use Postman to interact with the API endpoints of the transaction management application. Follow the steps below to import the Postman collection and start making requests:
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+1.  Download and install [Postman](https://www.postman.com/downloads/).
+    
+2.  Import the provided Postman collection file ([api-definition.json](https://github.com/anibal-vergaray-unmsm/app-nodejs-codechallenge/blob/main/microservice-transaction/postman/api-definition.json)) into Postman. You can do this by clicking on the **Import** button in the top-left corner of the Postman window, selecting the file, and confirming the import.
+    
+3.  Once imported, you will see a collection named "API" containing various API endpoints.
+    

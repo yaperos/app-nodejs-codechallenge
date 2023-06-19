@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "3bbe6fc3-b36a-43c5-89e2-059b97cc7de0",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19971751"
+	},
+	"item": [
+		{
+			"name": "Get Transaction",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/transactions/b1dc07f2-4ce9-4681-bf6f-edc858f345c8",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"transactions",
+						"b1dc07f2-4ce9-4681-bf6f-edc858f345c8"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/transactions/:transactionExternalId",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"transactions",
+								":transactionExternalId"
+							],
+							"variable": [
+								{
+									"key": "transactionExternalId",
+									"value": "c4dc1a2b-51db-418c-9a4f-ed719ece83fc"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "186"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"ba-UedIMpVUmELPTtCSyLNSHLjMiq4\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Jun 2023 04:50:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"transactionExternalId\": \"c4dc1a2b-51db-418c-9a4f-ed719ece83fc\",\n    \"value\": 2000,\n    \"createdAt\": \"2023-06-19T09:49:56.280Z\",\n    \"transactionStatus\": {\n        \"name\": \"Pending\"\n    },\n    \"transactionType\": {\n        \"name\": 100\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountExternalIdDebit\": \"4dac906d-882c-454e-8c56-98bdc93953ad\",\r\n    \"accountExternalIdCredit\": \"b1dc07f2-4ce9-4681-bf6f-edc858f345c8\",\r\n    \"tranferTypeId\": 100,\r\n    \"value\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/transactions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountExternalIdDebit\": \"4dac906d-882c-454e-8c56-98bdc93953ad\",\r\n    \"accountExternalIdCredit\": \"b1dc07f2-4ce9-4681-bf6f-edc858f345c8\",\r\n    \"tranferTypeId\": 100,\r\n    \"value\": 2000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/transactions",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"transactions"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "186"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"ba-jyzq99clqcDB5lQo2v78qj5FLFU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Jun 2023 04:55:23 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"transactionExternalId\": \"f44f61ac-3fae-4c4b-9ed2-11093b265afb\",\n    \"value\": 2000,\n    \"createdAt\": \"2023-06-19T09:55:23.635Z\",\n    \"transactionStatus\": {\n        \"name\": \"Pending\"\n    },\n    \"transactionType\": {\n        \"name\": 100\n    }\n}"
+				}
+			]
+		}
+	]
+}

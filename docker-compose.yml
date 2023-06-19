@@ -7,13 +7,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  mongo:
-    image: mongodb/mongodb-community-server:6.0-ubi8
-    ports:
-      - "8081:27017"
-    environment:
-      - MONGODB_INITDB_ROOT_USERNAME=user
-      - MONGODB_INITDB_ROOT_PASSWORD=pass
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
