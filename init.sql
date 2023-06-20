@@ -1,0 +1,1 @@
+CREATE DATABASE "yp-transaction" WITH OWNER postgres;
