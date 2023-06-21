@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "test": "yarn workspace transactions test && yarn workspace antifraud test",
+    "test:cov": "yarn workspace transactions test:cov && yarn workspace antifraud test:cov",
     "lint": "yarn workspace transactions lint && yarn workspace antifraud lint"  
   },
   "dependencies": {
