@@ -7,7 +7,7 @@ export class EventValue implements EventEntity{
     accountExternalIdCredit: string;
     value: number;
 
-    constructor({transactionExternalId, accountExternalIdDebit, accountExternalIdCredit, value, eventId}: EventEntity){
+    constructor({transactionExternalId, accountExternalIdDebit, accountExternalIdCredit, value}: EventEntity){
         this.transactionExternalId = transactionExternalId;
         this.accountExternalIdCredit = accountExternalIdCredit;
         this.accountExternalIdDebit = accountExternalIdDebit;

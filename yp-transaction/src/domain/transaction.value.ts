@@ -9,7 +9,7 @@ export class TransactionValue implements TransactionEntity{
     accountExternalIdCredit: string;
     tranferTypeId: number;
     value: number;
-    status: number;
+    status?: number;
     createdAt: string;
     createdAtTimestamp: number;
     updatedAt: string;

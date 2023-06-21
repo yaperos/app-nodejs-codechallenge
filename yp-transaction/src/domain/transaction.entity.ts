@@ -5,14 +5,14 @@ export enum TransactionStates{
 }
 
 export default interface TransactionEntity {
-    transactionExternalId: string;
+    transactionExternalId?: string;
     accountExternalIdDebit: string;
     accountExternalIdCredit: string;
     tranferTypeId: number;
     value: number;
-    status: number;
-    createdAt: string;
-    createdAtTimestamp: number;
-    updatedAt: string;
-    updatedAtTimestamp: number;
+    status?: number;
+    createdAt?: string;
+    createdAtTimestamp?: number;
+    updatedAt?: string;
+    updatedAtTimestamp?: number;
 }

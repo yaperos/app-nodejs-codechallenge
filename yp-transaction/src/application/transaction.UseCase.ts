@@ -19,7 +19,7 @@ export default class TransactionUseCase {
             await this.eventService.addEvent(EventMessages.TRANSACTION_CREATED,{
                 accountExternalIdCredit: createTransaction.accountExternalIdCredit,
                 accountExternalIdDebit: createTransaction.accountExternalIdDebit,
-                transactionExternalId: createTransaction.transactionExternalId,
+                transactionExternalId: createTransaction.transactionExternalId!,
                 value: createTransaction.value
             })
         }

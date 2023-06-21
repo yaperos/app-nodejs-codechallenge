@@ -7,14 +7,14 @@ export class TransactionRepository implements ITransactionRepository {
     async createTransaction(transaction: TransactionEntity): Promise<TransactionEntity | null> {
         let tr = new Transaction();
 
-        tr.transactionExternalId = transaction.transactionExternalId
+        tr.transactionExternalId = transaction.transactionExternalId!
         tr.accountExternalIdCredit = transaction.accountExternalIdCredit
         tr.accountExternalIdDebit = transaction.accountExternalIdDebit
         tr.value = transaction.value
         tr.tranferTypeId = transaction.tranferTypeId
-        tr.status = transaction.status
-        tr.createdAt = transaction.createdAt
-        tr.createdAtTimestamp = transaction.createdAtTimestamp
+        tr.status = transaction.status!
+        tr.createdAt = transaction.createdAt!
+        tr.createdAtTimestamp = transaction.createdAtTimestamp!
 
         return await tr.save()
     }
