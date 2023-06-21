@@ -26,4 +26,15 @@ export class AuthService {
       },
     };
   }
+
+  async verify(data: any) {
+    const request = data.requestId;
+    delete data.requestId;
+    return {
+      requestID: request,
+      payload: {
+        ...data,
+      },
+    };
+  }
 }

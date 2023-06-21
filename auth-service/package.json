@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.12.0",
     "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
     "kafkajs": "^2.2.4",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",

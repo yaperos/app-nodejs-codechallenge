@@ -33,38 +33,31 @@ export class PrismaUserRepo implements IUserRepo {
         email: email,
       },
     });
-    const userProps: UserProps = {
+    if(!dbUserResponse) {
+      throw new Error('User not found');
+    }
+    const user = User.create({
       id: UserID.create(dbUserResponse.id).getValue(),
       email: UserEmail.create(dbUserResponse.email).getValue(),
       password: UserPassword.create(dbUserResponse.password).getValue(),
-      name: UserName.create(dbUserResponse.name).getValue(),
-      lastName: UserLastname.create(dbUserResponse.lastName).getValue(),
       status: UserStatus.create(dbUserResponse.status).getValue(),
-    };
-    const values = Result.combine<UserProps>(userProps);
-    if (values.isFailure) throw new Error('User not found');
-
-    const userResult = User.create(values.getValue());
-    if (userResult.isFailure) throw new Error('User not found');
-    return userResult.getValue();
+    });
+    return user.isFailure ? null : user.getValue();
   }
 
-  async createUser(user: any, hashed: boolean): Promise<User> {
+  async createUser(user: User, hashed: boolean): Promise<User> {
     try {
-      const userCheck = await this.userExists(user.email);
-      if (!userCheck) {
-        // @ts-ignore
-        return this.prismaService.user.create({
-          data: {
-            id: user.id,
-            email: user.email,
-            password: user.password,
-            name: user.name,
-            lastName: user.lastname,
-          },
-        });
-      }
-      return;
+      console.log('Creating User', user)
+      // @ts-ignore
+      return this.prismaService.user.create({
+        data: {
+          id: user.id.props._id,
+          email: user.email.value,
+          password: await user.password.getHashedPassword(),
+          name: user.name.value,
+          lastName: user.lastName.value,
+        },
+      });
     } catch (e) {
       throw new Error(e);
     }

@@ -8,7 +8,7 @@ export interface userPasswordProps {
 
 export class UserPassword extends ValueObject<userPasswordProps> {
   public static minLength = 6;
-  public static maxLength = 30;
+  public static maxLength = 120;
 
   private constructor(props: userPasswordProps) {
     super(props);
@@ -22,7 +22,6 @@ export class UserPassword extends ValueObject<userPasswordProps> {
     if (!this.isValidPassword(value)) {
       return Result.fail<UserPassword>('Invalid password');
     }
-
     return Result.ok<UserPassword>(new UserPassword({ value }));
   }
 
@@ -32,7 +31,7 @@ export class UserPassword extends ValueObject<userPasswordProps> {
     );
   }
 
-  private async hashPassword(password: string): Promise<string> {
+  public async hashPassword(password: string): Promise<string> {
     const salt = await genSalt(10);
     return await hash(password, salt);
   }
@@ -43,7 +42,7 @@ export class UserPassword extends ValueObject<userPasswordProps> {
     });
   }
 
-  public static isMatch(
+  public isMatch(
     password: string,
     hashedPassword: string,
   ): Promise<boolean> {

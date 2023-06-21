@@ -7,7 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { createUserDto } from './dto';
+import {createUserDto, loginUserDto} from './dto';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Controller('auth')
@@ -19,6 +19,8 @@ export class AuthController implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     this.client.subscribeToResponseOf('user.create');
+    this.client.subscribeToResponseOf('user.login');
+    this.client.subscribeToResponseOf('user.verify');
     await this.client.connect();
   }
 
@@ -36,9 +38,16 @@ export class AuthController implements OnModuleInit, OnModuleDestroy {
   }
 
   @Post('login')
-  async loginUser(@Body() data: createUserDto): Promise<any> {
+  async loginUser(@Body() data: loginUserDto): Promise<any> {
     const payload = await this.authService.login(data);
-    const res = await this.client.send('user.login', payload);
-    return res;
+    console.log('[LOGIN PAYLOAD]: ', payload)
+    return await this.client.send('user.login', payload);
+  }
+
+  @Post('verify')
+  async verifyUser(@Body() data: any): Promise<any> {
+    const payload = await this.authService.verify(data);
+    console.log('[VERIFY PAYLOAD]: ', payload)
+    return await this.client.send('user.verify', payload);
   }
 }

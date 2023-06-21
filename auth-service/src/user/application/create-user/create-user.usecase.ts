@@ -1,19 +1,38 @@
-import { Either, failure, Result, success } from '../../../shared/core/result';
-import { IUserRepo, USER_REPO } from '../../domain/user.repo';
-import { Inject } from '@nestjs/common';
-import { UserID } from '../../domain/user-id';
-import { UserPassword } from '../../domain/user-password';
-import { User } from '../../domain/user';
-import { UseCase } from '../../../shared/core/use-case';
+import {Either, failure, Result, success} from "src/shared/core/result";
+import {UseCase} from "../../../shared/core/use-case";
+import {Inject} from "@nestjs/common";
+import {IUserRepo, USER_REPO} from "../../domain/user.repo";
+import {User, UserProps} from "../../domain/user";
 
-type Response = Either<Error | Result<any>, Result<void>>;
+type Response = Either<Error | Result<any>, Result<any>>;
 
-export class CreateUserUsecase implements UseCase<any, Promise<any>> {
-  constructor(@Inject(USER_REPO) private readonly userRepository: IUserRepo) {}
+export class CreateUserUseCase
+  implements UseCase<UserProps, Promise<Response>> {
 
-  async execute(request: any): Promise<any> {
-    console.log('request', JSON.stringify(request));
-
-    return Result.ok();
+  constructor(
+    @Inject(USER_REPO) private readonly userRepository: IUserRepo,
+  ) { }
+  async execute(request: UserProps): Promise<Response> {
+    const { id, email, password, name, lastName, status } = request;
+    const UserValue = User.create({
+      id,
+      email,
+      password,
+      name,
+      lastName,
+      status,
+    });
+    try {
+      const existingUser = await this.userRepository.userExists(request.email.value);
+      if(!existingUser) {
+      }
+      await this.userRepository.createUser(UserValue.getValue(), true);
+      return success(Result.ok({
+        id: UserValue.getValue().id.id,
+        email: UserValue.getValue().email.value,
+      }));
+    } catch (e) {
+      return failure(Result.fail(e));
+    }
   }
 }

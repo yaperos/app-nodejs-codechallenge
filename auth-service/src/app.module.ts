@@ -5,13 +5,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
+import {EventBusModule} from "./event-bus/event-bus.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     UserModule,
-    ClientsModule.register([
+    /*ClientsModule.register([
       {
         name: 'AUTH_SERVICE',
         transport: Transport.KAFKA,
@@ -25,7 +26,8 @@ import { UserModule } from './user/user.module';
           },
         },
       },
-    ]),
+    ]),*/
+    EventBusModule,
   ],
   controllers: [AppController],
   providers: [AppService],

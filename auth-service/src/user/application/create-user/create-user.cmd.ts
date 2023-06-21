@@ -1,10 +1,17 @@
-import { ICommand } from '@nestjs/cqrs';
+import {ICommand} from "@nestjs/cqrs";
 
-export class CreateUserCmd implements ICommand {
-  constructor(public readonly CreateUserDTO: CreateUserDTO) {}
+export class CreateUserCommand implements ICommand {
+  constructor(
+    public readonly UserPayload: DefaultRequest,
+  ) { }
 }
 
-export interface CreateUserDTO {
+export interface DefaultRequest  {
+  requestID: string;
+  payload: UserPayload
+}
+
+export interface UserPayload {
   email: string;
   password: string;
   name: string;

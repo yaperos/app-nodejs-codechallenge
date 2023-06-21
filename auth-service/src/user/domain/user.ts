@@ -9,7 +9,7 @@ import {UserID} from "./user-id";
 import {AggregateRoot} from "@nestjs/cqrs";
 import {Guard} from "../../shared/core/guard";
 
-export interface UserProps {
+export interface UserAttributes {
   id?: UserID;
   email?: UserEmail;
   password?: UserPassword;
@@ -17,6 +17,8 @@ export interface UserProps {
   lastName?: UserLastname;
   status?: UserStatus;
 }
+
+export interface UserProps extends UserAttributes { }
 
 export class User extends AggregateRoot implements UserProps {
   id?: UserID;
