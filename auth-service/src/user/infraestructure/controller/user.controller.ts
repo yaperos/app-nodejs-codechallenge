@@ -1,32 +1,21 @@
-import { Controller, Inject, Post } from '@nestjs/common';
-import { UserUseCases } from '../../application/user.usecases';
+import { Controller, Inject } from '@nestjs/common';
 import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateUserDTO } from '../dto/user.register.dto';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CreateUserCmd } from '../../application/create-user/create-user.cmd';
 
 @Controller('user')
 export class UserController {
   constructor(
-    private readonly userService: UserUseCases,
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
     @Inject('AUTH_SERVICE') private readonly client: ClientKafka,
   ) {}
 
   @MessagePattern('user.create')
   async signup(@Payload() data: any) {
-    const userData = data.payload;
-    const user = await this.userService.createUser(userData);
-    if (user.value.isSuccess) {
-      this.client.emit('user.create.completed', {
-        userID: user.value._value.id,
-      });
-    }
-    const responseData = {
-      userID: user.value._value.id,
-      userStatus: user.value._value.status,
-    };
-    return {
-      requestId: data.payload.requestID,
-      statusCode: user.value.isSuccess ? 200 : 400,
-      data: user.value.isSuccess ? responseData : 'An error occurred',
-    };
+    console.log('data', JSON.stringify(data));
+    const userData = data;
+
+    return this.commandBus.execute(new CreateUserCmd(userData.payload));
   }
 }
