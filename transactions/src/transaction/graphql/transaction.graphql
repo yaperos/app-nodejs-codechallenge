@@ -1,0 +1,27 @@
+scalar Date
+
+type Transaction{
+  transactionExternalId: ID!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  transactionType: TransferType!
+  transactionStatus: Status!
+  value: Int!
+  createdAt: Date!
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum TransferType {
+  IMPS
+  NEFT
+  RTGS
+}
+
+type Query{
+  transactionById(id: ID!): Transaction
+}

@@ -4,9 +4,11 @@ Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
+- [Yape Code Challenge :rocket:](#yape-code-challenge-rocket)
 - [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+- [Tech Stack](#tech-stack)
+  - [Optional](#optional)
+- [Send us your challenge](#send-us-your-challenge)
 
 # Problem
 
