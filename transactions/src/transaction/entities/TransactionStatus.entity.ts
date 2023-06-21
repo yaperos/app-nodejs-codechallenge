@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { Status } from '../graphql/types';
 import { Transaction } from './Transaction.entity';
 import { TABLES } from '../../commons/database/constants';
 
@@ -18,7 +19,7 @@ export class TransactionStatus {
   id: number;
 
   @Column({ type: 'varchar', length: 15 })
-  name: string;
+  name: Status;
 
   @OneToMany(() => Transaction, (transaction) => transaction.transactionStatus)
   transactions: Transaction[];

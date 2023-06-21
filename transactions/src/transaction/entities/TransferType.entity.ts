@@ -8,6 +8,7 @@ import {
 
 import { Transaction } from './Transaction.entity';
 import { TABLES } from '../../commons/database/constants';
+import { TransferType as TransferTypeEnum } from '../graphql/types';
 
 const { TRANSFER_TYPE } = TABLES;
 
@@ -18,7 +19,7 @@ export class TransferType {
   id: number;
 
   @Column({ type: 'varchar', length: 15 })
-  name: string;
+  name: TransferTypeEnum;
 
   @OneToMany(() => Transaction, (transaction) => transaction.transferType)
   transactions: Transaction[];

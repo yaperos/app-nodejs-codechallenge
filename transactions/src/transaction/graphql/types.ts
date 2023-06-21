@@ -8,33 +8,41 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export enum Status {
-    PENDING = "PENDING",
-    APPROVED = "APPROVED",
-    REJECTED = "REJECTED"
-}
-
 export enum TransferType {
     IMPS = "IMPS",
     NEFT = "NEFT",
     RTGS = "RTGS"
 }
 
+export enum Status {
+    PENDING = "PENDING",
+    APPROVED = "APPROVED",
+    REJECTED = "REJECTED"
+}
+
 export class Transaction {
-    __typename?: 'Transaction';
-    transactionExternalId: string;
+    id: string;
     accountExternalIdDebit: string;
     accountExternalIdCredit: string;
-    transactionType: TransferType;
-    transactionStatus: Status;
+    transferType: TransactionType;
+    transactionStatus: TransactionStatus;
     value: number;
     createdAt: Date;
 }
 
-export abstract class IQuery {
-    __typename?: 'IQuery';
+export class TransactionType {
+    id: NumericID;
+    name: TransferType;
+}
 
+export class TransactionStatus {
+    id: NumericID;
+    name: Status;
+}
+
+export abstract class IQuery {
     abstract transactionById(id: string): Nullable<Transaction> | Promise<Nullable<Transaction>>;
 }
 
+export type NumericID = any;
 type Nullable<T> = T | null;

@@ -1,25 +1,37 @@
 scalar Date
+scalar NumericID
+
 
 type Transaction{
-  transactionExternalId: ID!
+  id: ID!
   accountExternalIdDebit: String!
   accountExternalIdCredit: String!
-  transactionType: TransferType!
-  transactionStatus: Status!
+  transferType: TransactionType!
+  transactionStatus: TransactionStatus!
   value: Int!
   createdAt: Date!
 }
 
-enum Status {
-  PENDING
-  APPROVED
-  REJECTED
+type TransactionType {
+  id: NumericID!
+  name: TransferType!
 }
 
 enum TransferType {
   IMPS
   NEFT
   RTGS
+}
+
+type TransactionStatus {
+  id: NumericID!
+  name: Status!
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 type Query{
