@@ -12,13 +12,18 @@ describe("EventValue", () => {
 
     });
 
-    expect(eventValue.transactionExternalId).not.toBeUndefined();
-    expect(eventValue.accountExternalIdDebit).toBe("12345");
-    expect(eventValue.accountExternalIdCredit).toBe("123456");
-    expect(eventValue.value).toBe(100);
-    expect(eventValue.status).toBe(1);
-    expect(eventValue.createdAt).not.toBeUndefined();
-    expect(eventValue.createdAtTimestamp).not.toBeUndefined();
+    expect(eventValue).toEqual(
+      expect.objectContaining({
+        transactionExternalId: expect.any(String),
+        accountExternalIdDebit: "12345",
+        accountExternalIdCredit: "123456",
+        value: 100,
+        status: 1,
+        createdAt: expect.any(String),
+        createdAtTimestamp: expect.any(Number),
+      })
+    )
+
     expect(eventValue.updatedAt).toBeUndefined();
     expect(eventValue.updatedAtTimestamp).toBeUndefined();
   });

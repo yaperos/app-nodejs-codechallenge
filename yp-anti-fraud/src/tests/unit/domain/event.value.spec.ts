@@ -9,13 +9,9 @@ describe("EventValue", () => {
       value: 100,
     });
 
-    expect(eventValue).toEqual(
-      expect.objectContaining({
-        accountExternalIdCredit: "321654",
-        accountExternalIdDebit: "654321",
-        transactionExternalId: expect.any(String),
-        value: 100,
-      })
-    )
+    expect(eventValue.transactionExternalId).toBe("123456");
+    expect(eventValue.accountExternalIdDebit).toBe("654321");
+    expect(eventValue.accountExternalIdCredit).toBe("321654");
+    expect(eventValue.value).toBe(100);
   });
 });

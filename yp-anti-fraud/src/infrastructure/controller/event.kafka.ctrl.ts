@@ -43,7 +43,7 @@ export default class EventConsumer implements SimpleConsumer {
         const data = message.value.toString()
         const value: EventEntity = JSON.parse(data);
         Logger.debug(`Message received ${data} on topic ${topic}`)
-        this.useCase.updateTransaction(value);
+        this.useCase.checkLimit(value);
     }
 
      disconnect= async(): Promise<void> => {

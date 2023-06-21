@@ -24,15 +24,18 @@ describe("Transaction UseCase", () => {
             value: 120.00,
         })
 
-        expect(transaction).not.toBeNull();
-        expect(transaction?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(transaction?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(transaction?.tranferTypeId).toBe(1)
-        expect(transaction?.value).toBe(120.00)
-        expect(transaction?.createdAt).not.toBeUndefined()
-        expect(transaction?.createdAtTimestamp).not.toBeUndefined()
-        expect(transaction?.transactionExternalId).not.toBeUndefined()
-        expect(transaction?.status).toBe(TransactionStates.TRANSACTION_PENDING)
+        expect(transaction).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_PENDING,
+            })
+        )
         expect(log).toBeCalledWith(EventMessages.TRANSACTION_CREATED)
         expect(log).toBeCalledWith({
             transactionExternalId: transaction?.transactionExternalId,
@@ -62,18 +65,21 @@ describe("Transaction UseCase", () => {
             accountExternalIdDebit:  "abc-de-fff-ghi",
             tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
             value: 120.00,
-            status: TransactionStates.TRANSACTION_PENDING,
+            status: TransactionStates.TRANSACTION_APPROVED,
         })
 
-        expect(transaction).not.toBeNull();
-        expect(transaction?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(transaction?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(transaction?.tranferTypeId).toBe(1)
-        expect(transaction?.value).toBe(120.00)
-        expect(transaction?.createdAt).not.toBeUndefined()
-        expect(transaction?.createdAtTimestamp).not.toBeUndefined()
-        expect(transaction?.transactionExternalId).not.toBeUndefined()
-        expect(transaction?.status).toBe(TransactionStates.TRANSACTION_PENDING)
+        expect(transaction).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_PENDING,
+            })
+        )
         expect(log).toBeCalledWith(EventMessages.TRANSACTION_CREATED)
         expect(log).toBeCalledWith({
             transactionExternalId: transaction?.transactionExternalId,
@@ -92,15 +98,18 @@ describe("Transaction UseCase", () => {
             status: TransactionStates.TRANSACTION_PENDING,
         })
 
-        expect(transaction).not.toBeNull();
-        expect(transaction?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(transaction?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(transaction?.tranferTypeId).toBe(1)
-        expect(transaction?.value).toBe(120.00)
-        expect(transaction?.createdAt).not.toBeUndefined()
-        expect(transaction?.createdAtTimestamp).not.toBeUndefined()
-        expect(transaction?.transactionExternalId).not.toBeUndefined()
-        expect(transaction?.status).toBe(TransactionStates.TRANSACTION_PENDING)
+        expect(transaction).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_PENDING,
+            })
+        )
         expect(log).toBeCalledWith(EventMessages.TRANSACTION_CREATED)
         expect(log).toBeCalledWith({
             transactionExternalId: transaction?.transactionExternalId,
@@ -111,15 +120,18 @@ describe("Transaction UseCase", () => {
 
         const transaction2 = await trUseCase.findTransactionById(transaction?.transactionExternalId!)
 
-        expect(transaction2).not.toBeNull();
-        expect(transaction2?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(transaction2?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(transaction2?.tranferTypeId).toBe(1)
-        expect(transaction2?.value).toBe(120.00)
-        expect(transaction2?.createdAt).not.toBeUndefined()
-        expect(transaction2?.createdAtTimestamp).not.toBeUndefined()
-        expect(transaction2?.transactionExternalId).not.toBeUndefined()
-        expect(transaction2?.status).toBe(TransactionStates.TRANSACTION_PENDING)
+        expect(transaction2).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_PENDING,
+            })
+        )
         expect(log).toBeCalledWith(EventMessages.TRANSACTION_CREATED)
         expect(log).toBeCalledWith({
             transactionExternalId: transaction2?.transactionExternalId,
@@ -142,16 +154,18 @@ describe("Transaction UseCase", () => {
             value: 120.00,
         })
 
-        expect(transaction).not.toBeNull();
-        expect(transaction?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(transaction?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(transaction?.tranferTypeId).toBe(1)
-        expect(transaction?.value).toBe(120.00)
-        expect(transaction?.createdAt).not.toBeUndefined()
-        expect(transaction?.createdAtTimestamp).not.toBeUndefined()
-        expect(transaction?.transactionExternalId).not.toBeUndefined()
-        expect(transaction?.status).toBe(TransactionStates.TRANSACTION_PENDING)
-        expect(log).toBeCalledWith(EventMessages.TRANSACTION_CREATED)
+        expect(transaction).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_PENDING,
+            })
+        )
         expect(log).toBeCalledWith({
             transactionExternalId: transaction?.transactionExternalId,
             accountExternalIdCredit: "abc-de-fff-ghi",
@@ -161,15 +175,18 @@ describe("Transaction UseCase", () => {
 
         const updTransaction = await evUseCase.updateTransaction(transaction?.transactionExternalId!, EventMessages.TRANSACTION_REJECTED);
         
-        expect(updTransaction).not.toBeNull();
-        expect(updTransaction?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(updTransaction?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(updTransaction?.tranferTypeId).toBe(1)
-        expect(updTransaction?.value).toBe(120.00)
-        expect(updTransaction?.createdAt).not.toBeUndefined()
-        expect(updTransaction?.createdAtTimestamp).not.toBeUndefined()
-        expect(updTransaction?.transactionExternalId).not.toBeUndefined()
-        expect(updTransaction?.status).toBe(TransactionStates.TRANSACTION_REJECTED)
+        expect(updTransaction).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_REJECTED,
+            })
+        )
     });
 
     it("it should create a transaction and update accepted", async() => {
@@ -180,15 +197,18 @@ describe("Transaction UseCase", () => {
             value: 120.00,
         })
 
-        expect(transaction).not.toBeNull();
-        expect(transaction?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(transaction?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(transaction?.tranferTypeId).toBe(1)
-        expect(transaction?.value).toBe(120.00)
-        expect(transaction?.createdAt).not.toBeUndefined()
-        expect(transaction?.createdAtTimestamp).not.toBeUndefined()
-        expect(transaction?.transactionExternalId).not.toBeUndefined()
-        expect(transaction?.status).toBe(TransactionStates.TRANSACTION_PENDING)
+        expect(transaction).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_PENDING,
+            })
+        )
         expect(log).toBeCalledWith(EventMessages.TRANSACTION_CREATED)
         expect(log).toBeCalledWith({
             transactionExternalId: transaction?.transactionExternalId,
@@ -199,15 +219,18 @@ describe("Transaction UseCase", () => {
 
         const updTransaction = await evUseCase.updateTransaction(transaction?.transactionExternalId!, EventMessages.TRANSACTION_APPROVED);
         
-        expect(updTransaction).not.toBeNull();
-        expect(updTransaction?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(updTransaction?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(updTransaction?.tranferTypeId).toBe(1)
-        expect(updTransaction?.value).toBe(120.00)
-        expect(updTransaction?.createdAt).not.toBeUndefined()
-        expect(updTransaction?.createdAtTimestamp).not.toBeUndefined()
-        expect(updTransaction?.transactionExternalId).not.toBeUndefined()
-        expect(updTransaction?.status).toBe(TransactionStates.TRANSACTION_APPROVED)
+        expect(updTransaction).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_APPROVED,
+            })
+        )
     });
 
     it("it should create a transaction and not update invalid message", async() => {
@@ -218,15 +241,18 @@ describe("Transaction UseCase", () => {
             value: 120.00,
         })
 
-        expect(transaction).not.toBeNull();
-        expect(transaction?.accountExternalIdCredit).toBe("abc-de-fff-ghi")
-        expect(transaction?.accountExternalIdDebit).toBe("abc-de-fff-ghi")
-        expect(transaction?.tranferTypeId).toBe(1)
-        expect(transaction?.value).toBe(120.00)
-        expect(transaction?.createdAt).not.toBeUndefined()
-        expect(transaction?.createdAtTimestamp).not.toBeUndefined()
-        expect(transaction?.transactionExternalId).not.toBeUndefined()
-        expect(transaction?.status).toBe(TransactionStates.TRANSACTION_PENDING)
+        expect(transaction).toEqual(
+            expect.objectContaining({
+              accountExternalIdCredit: "abc-de-fff-ghi",
+              accountExternalIdDebit: "abc-de-fff-ghi",
+              tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
+              value: 120,
+              createdAt: expect.any(String),
+              createdAtTimestamp: expect.any(Number),
+              transactionExternalId: expect.any(String),
+              status: TransactionStates.TRANSACTION_PENDING,
+            })
+        )
         expect(log).toBeCalledWith(EventMessages.TRANSACTION_CREATED)
         expect(log).toBeCalledWith({
             transactionExternalId: transaction?.transactionExternalId,

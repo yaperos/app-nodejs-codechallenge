@@ -6,11 +6,11 @@ export default class EventUseCase {
         
     }
 
-    updateTransaction = async(transaction: EventEntity) => {
+    checkLimit = async(transaction: EventEntity) => {
         if(transaction.value > 1000) {
-            this.eventService.addEvent(EventMessages.TRANSACTION_REJECTED, transaction)
+            this.eventService.checkLimit(EventMessages.TRANSACTION_REJECTED, transaction)
         } else {
-            this.eventService.addEvent(EventMessages.TRANSACTION_APPROVED, transaction)
+            this.eventService.checkLimit(EventMessages.TRANSACTION_APPROVED, transaction)
         }
     }
 }
