@@ -1,4 +1,4 @@
-import TransactionEntity, { TransactionStates } from "../domain/transaction.entity";
+import TransactionEntity, { TransactionStates,TransactionTypesMap } from "../domain/transaction.entity";
 import { ITransactionRepository } from "../domain/transaction.repository";
 import { EventMessages } from "../domain/event.entity";
 import { IEventService } from "../domain/event.service";
@@ -7,11 +7,16 @@ import { TransactionValue } from "../domain/transaction.value";
 export default class TransactionUseCase {
     constructor(private readonly transactionRepo: ITransactionRepository,
         private readonly eventService: IEventService){
-
     }
 
     createTransaction = async(transaction: TransactionEntity) => {
         transaction.status = TransactionStates.TRANSACTION_PENDING;
+        
+        const tranferType = TransactionTypesMap[transaction.tranferTypeId];
+
+        if (!tranferType){
+            throw Error("Not valid transfer type");
+        }
 
         const transactionValue = new TransactionValue(transaction);
         const createTransaction = await this.transactionRepo.createTransaction(transactionValue);

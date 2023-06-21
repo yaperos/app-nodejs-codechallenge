@@ -1,6 +1,12 @@
 
 import { HttpResponse } from "./express"
-import { Response } from "express"
+import { Response, Request } from "express"
+
+export const urlNotFound = () => {
+    return (_req: Request, res: Response) => {
+        notFound("Url not found",res)
+    }
+}
 
 export const badRequest = (err: string, res: Response) => {
     const code = 400
@@ -12,7 +18,7 @@ export const badRequest = (err: string, res: Response) => {
         success: false
     }
 
-    res.status(code).send(body)
+    res.status(code).json(body)
 }
 
 export const notFound = (err: string, res: Response) => {
@@ -25,7 +31,7 @@ export const notFound = (err: string, res: Response) => {
         success: false
     }
 
-    res.status(code).send(body)
+    res.status(code).json(body)
 }
 
 export const unauthorized = (err: string, res: Response) => {
@@ -38,7 +44,7 @@ export const unauthorized = (err: string, res: Response) => {
         success: false
     }
 
-    res.status(code).send(body)
+    res.status(code).json(body)
 }
 
 export const forbidden = (err: string, res: Response) => {
@@ -51,7 +57,7 @@ export const forbidden = (err: string, res: Response) => {
         success: false
     }
 
-    res.status(code).send(body)
+    res.status(code).json(body)
 }
 
 export const conflict = (err: string, res: Response) => {
@@ -64,11 +70,11 @@ export const conflict = (err: string, res: Response) => {
         success: false
     }
 
-    res.status(code).send(body)
+    res.status(code).json(body)
 }
 
 export const internalError = (err: string, res: Response) => {
-    const code = 409
+    const code = 500
     const body: HttpResponse<any> = {
         error: err,
         messageId: "INTERNAL_SERVER_ERROR",
@@ -77,15 +83,15 @@ export const internalError = (err: string, res: Response) => {
         success: false
     }
 
-    res.status(code).send(body)
+    res.status(code).json(body)
 }
 
 export const statusOk = (data: any, res: Response) => {
     const code = 200
-    res.status(code).send(data)
+    res.status(code).json(data)
 }
 
 export const statusCreated = (data: any, res: Response) => {
     const code = 201
-    res.status(code).send(data)
+    res.status(code).json(data)
 }

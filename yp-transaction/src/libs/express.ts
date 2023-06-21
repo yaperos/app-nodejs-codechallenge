@@ -1,5 +1,6 @@
 import { RequestHandler, Router, Request, Response, NextFunction } from "express"
 import { ObjectSchema } from "joi"
+import { internalError } from "./response";
 
 export enum Http {
     Post = "POST",
@@ -36,7 +37,6 @@ export interface Validate {
     params?: ObjectSchema
 }
 
-
 export interface Route {
     method: string
     url: string
@@ -61,12 +61,7 @@ export default class Express {
                 this.validate(req.headers, schema.headers);
                 this.validate(req.params, schema.params);
             } catch(err: any){
-                let response: HttpResponse<null> = {}
-                response.statusCode = 500
-                response.message = err.message
-                response.success = false
-
-                res.status(response.statusCode).send(response)
+                internalError(err.message,res)
                 return
             }
 
@@ -107,16 +102,5 @@ export default class Express {
         })
         
         return router
-    }
-}
-
-export const urlNotFound = () => {
-    return (_req: Request, res: Response) => {
-        let response: HttpResponse<null> = {}
-        response.statusCode = 404
-        response.message = "Url not found"
-        response.success = false
-
-        res.status(response.statusCode).send(response)
     }
 }

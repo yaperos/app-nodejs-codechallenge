@@ -1,6 +1,6 @@
 import TransactionUseCase from "../../../application/transaction.UseCase";
 import EventUseCase from "../../../application/event.UseCase";
-import { TransactionStates } from "../../../domain/transaction.entity";
+import { TransactionStates,TransactionTypes } from "../../../domain/transaction.entity";
 import { EventMessages } from "../../../domain/event.entity";
 import { TransactionRepositoryMock, EventServiceMock } from "./transaction.useCase.mock"
 
@@ -20,7 +20,7 @@ describe("Transaction UseCase", () => {
         const transaction = await trUseCase.createTransaction({
             accountExternalIdCredit: "abc-de-fff-ghi",
             accountExternalIdDebit:  "abc-de-fff-ghi",
-            tranferTypeId: 1,
+            tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
             value: 120.00,
         })
 
@@ -42,11 +42,25 @@ describe("Transaction UseCase", () => {
         })
     });
 
+    it("it should not create, not valid transfer", async() => {
+        expect.assertions(1)
+        try {
+            await trUseCase.createTransaction({
+                accountExternalIdCredit: "abc-de-fff-ghi",
+                accountExternalIdDebit:  "abc-de-fff-ghi",
+                tranferTypeId: 12,
+                value: 120.00,
+            })
+        } catch(e: any){
+            expect(e.message).toBe("Not valid transfer type");
+        }
+    });
+
     it("it should not set status", async() => {
         const transaction = await trUseCase.createTransaction({
             accountExternalIdCredit: "abc-de-fff-ghi",
             accountExternalIdDebit:  "abc-de-fff-ghi",
-            tranferTypeId: 1,
+            tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
             value: 120.00,
             status: TransactionStates.TRANSACTION_PENDING,
         })
@@ -73,7 +87,7 @@ describe("Transaction UseCase", () => {
         const transaction = await trUseCase.createTransaction({
             accountExternalIdCredit: "abc-de-fff-ghi",
             accountExternalIdDebit:  "abc-de-fff-ghi",
-            tranferTypeId: 1,
+            tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
             value: 120.00,
             status: TransactionStates.TRANSACTION_PENDING,
         })
@@ -124,7 +138,7 @@ describe("Transaction UseCase", () => {
         const transaction = await trUseCase.createTransaction({
             accountExternalIdCredit: "abc-de-fff-ghi",
             accountExternalIdDebit:  "abc-de-fff-ghi",
-            tranferTypeId: 1,
+            tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
             value: 120.00,
         })
 
@@ -162,7 +176,7 @@ describe("Transaction UseCase", () => {
         const transaction = await trUseCase.createTransaction({
             accountExternalIdCredit: "abc-de-fff-ghi",
             accountExternalIdDebit:  "abc-de-fff-ghi",
-            tranferTypeId: 1,
+            tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
             value: 120.00,
         })
 
@@ -200,7 +214,7 @@ describe("Transaction UseCase", () => {
         const transaction = await trUseCase.createTransaction({
             accountExternalIdCredit: "abc-de-fff-ghi",
             accountExternalIdDebit:  "abc-de-fff-ghi",
-            tranferTypeId: 1,
+            tranferTypeId: TransactionTypes.TRANSACTION_DEPOSIT,
             value: 120.00,
         })
 

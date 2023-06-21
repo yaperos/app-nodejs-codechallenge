@@ -1,8 +1,17 @@
-import Joi, { number } from "joi"
+import Joi from "joi"
 
 export const joiError = ({ msg = 'Code Error => ', code = "" }) => new Error(`${msg} ${code}`);
-export const joiNumber = (min: number, max?: number) => {
+export const joiInteger = (min: number, max?: number) => {
     let ret = Joi.number().integer().min(min);
+
+    if(max !== undefined){
+        ret = ret.max(max);
+    }
+
+    return ret
+}
+export const joiDouble = (min: number, max?: number) => {
+    let ret = Joi.number().min(min);
 
     if(max !== undefined){
         ret = ret.max(max);

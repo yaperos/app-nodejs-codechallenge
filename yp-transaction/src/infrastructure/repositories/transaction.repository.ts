@@ -1,6 +1,6 @@
 import TransactionEntity from "../../domain/transaction.entity";
 import { ITransactionRepository } from "../../domain/transaction.repository";
-import { Transaction } from "../models/transaction.schema"
+import { Transaction } from "../models/db/transaction.schema"
 import DateUtil from "../../libs/date"
 
 export class TransactionRepository implements ITransactionRepository {

@@ -2,7 +2,6 @@ import DateUtil from "../libs/date";
 import TransactionEntity from "./transaction.entity";
 import UuidUtil from "../libs/uuid";
 
-
 export class TransactionValue implements TransactionEntity{
     transactionExternalId: string;
     accountExternalIdDebit: string;

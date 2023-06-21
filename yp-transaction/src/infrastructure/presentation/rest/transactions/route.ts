@@ -1,5 +1,5 @@
 import Express, {Http} from "../../../../libs/express"
-import { joiNumber, joiError, joiString, joiObj } from "../../../../libs/joi";
+import { joiInteger, joiError, joiString, joiObj, joiDouble } from "../../../../libs/joi";
 import TransactionUseCase from "../../../../application/transaction.UseCase";
 import TransactionController from "../../../controller/transaction.ctrl"
 import { TransactionRepository } from "../../../repositories/transaction.repository";
@@ -25,8 +25,8 @@ const loadTransactions = () => {
                     payload: joiObj({
                         accountExternalIdDebit: joiString(36,36).required().error(joiError({code : '*1'})),
                         accountExternalIdCredit: joiString(36,36).required().error(joiError({code : '*2'})),
-                        tranferTypeId: joiNumber(1).required().error(joiError({code : '*3'})),
-                        value: joiNumber(1).required().error(joiError({code : '*4'})),
+                        tranferTypeId: joiInteger(1).required().error(joiError({code : '*3'})),
+                        value: joiDouble(1).required().error(joiError({code : '*4'})),
                     }),
                 },
                 handler: controller.createTransaction,

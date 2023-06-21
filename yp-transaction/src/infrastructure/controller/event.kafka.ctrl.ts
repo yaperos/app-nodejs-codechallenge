@@ -10,7 +10,6 @@ export interface SimpleConsumer {
     disconnect(): Promise<void>;
 }
 
-
 export default class EventConsumer implements SimpleConsumer {
     private readonly queue: KafkaQueue = new KafkaQueue();
     private consumer: Consumer;

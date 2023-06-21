@@ -4,7 +4,7 @@ import AppRoutes, { initialize } from './infrastructure/presentation';
 import env from './infrastructure/config/env/env'
 import Db from './infrastructure/config/db/typeorm'
 import Logger from "./infrastructure/config/logger/winston"
-import { urlNotFound } from "./libs/express"
+import { urlNotFound } from "./libs/response"
 import cors from "cors"
 
 const start = async () => {

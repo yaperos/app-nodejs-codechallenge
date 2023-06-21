@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import TransactionUseCase from "../../application/transaction.UseCase";
 import TransactionEntity from "../../domain/transaction.entity";
 import { badRequest, internalError, statusCreated, statusOk} from "../../libs/response"
+import { CreateTransaction,FindTransactionById } from "../models/rest/transaction.model"
 
 export default class TransactionController {
     constructor(private useCase: TransactionUseCase) {
@@ -11,9 +12,10 @@ export default class TransactionController {
         try {
             const data = <TransactionEntity>body;
             const transact = await this.useCase.createTransaction(data);
-
+            
             if(transact !== null){
-                statusCreated(transact,res);
+                let response = new CreateTransaction(transact);
+                statusCreated(response,res);
             } else {
                 badRequest("Cannot create an user",res);
             }
