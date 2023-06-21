@@ -37,3 +37,14 @@ enum Status {
 type Query{
   transactionById(id: ID!): Transaction
 }
+
+input TransactionInput {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  transferTypeId: Int!
+  value: Int!
+}
+
+type Mutation{
+  createTransaction(transaction: TransactionInput): Transaction
+}

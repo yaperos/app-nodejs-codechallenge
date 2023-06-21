@@ -20,6 +20,13 @@ export enum Status {
     REJECTED = "REJECTED"
 }
 
+export class TransactionInput {
+    accountExternalIdDebit: string;
+    accountExternalIdCredit: string;
+    transferTypeId: number;
+    value: number;
+}
+
 export class Transaction {
     id: string;
     accountExternalIdDebit: string;
@@ -42,6 +49,10 @@ export class TransactionStatus {
 
 export abstract class IQuery {
     abstract transactionById(id: string): Nullable<Transaction> | Promise<Nullable<Transaction>>;
+}
+
+export abstract class IMutation {
+    abstract createTransaction(transaction?: Nullable<TransactionInput>): Nullable<Transaction> | Promise<Nullable<Transaction>>;
 }
 
 export type NumericID = any;
