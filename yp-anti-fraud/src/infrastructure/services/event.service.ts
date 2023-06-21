@@ -9,8 +9,8 @@ export class EventService implements IEventService {
     constructor(){ 
         this.producer = this.queue.getProducer();
     }
-
-    async addEvent(topic: string, transaction: eventEntity): Promise<any | null> {
+    
+    async checkLimit(topic: string, transaction: eventEntity): Promise<any | null> {
         try {
             await this.producer.connect()
             await this.producer.send({

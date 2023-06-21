@@ -1,4 +1,9 @@
 version: "3.7"
+
+networks:
+  backend:
+    driver: "bridge"
+
 services:
   postgres:
     image: postgres:14
@@ -9,14 +14,18 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - backend
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - backend
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    hostname: broker
-    container_name: broker
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -32,6 +41,9 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+    networks:
+      - backend
+
   kafka-setup:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     hostname: kafka-setup
@@ -46,3 +58,55 @@ services:
     environment:
       KAFKA_BROKER_ID: ignored
       KAFKA_ZOOKEEPER_CONNECT: ignored
+    networks:
+      - backend
+      
+  yp-transaction:
+    container_name: yp-transaction
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        - app=yp-transaction
+    ports:
+      - "3000:3000"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APP_STAGE: production
+      APP_PORT: 3000
+      APP_NAME: yp-transaction
+      LOG_LEVEL: debug
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: yp-transaction
+      DB_SYNC: true
+      DB_LOGGING: false
+      QUEUE_CLIENT_ID: yp-transaction
+      QUEUE_BROKERS: kafka:29092
+      QUEUE_GROUP_ID: yp-transaction
+    networks:
+      - backend
+  
+  yp-anti-fraud:
+    container_name: yp-anti-fraud
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        - app=yp-anti-fraud
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APP_STAGE: production
+      APP_NAME: yp-anti-fraud
+      LOG_LEVEL: debug
+      QUEUE_CLIENT_ID: yp-anti-fraud
+      QUEUE_BROKERS: kafka:29092
+      QUEUE_GROUP_ID: yp-anti-fraud
+    networks:
+      - backend
