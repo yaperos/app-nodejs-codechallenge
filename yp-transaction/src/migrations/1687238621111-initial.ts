@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm"
 
 export class Initial1687238621111 implements MigrationInterface {
 
@@ -60,6 +60,48 @@ export class Initial1687238621111 implements MigrationInterface {
                         isNullable: true
                     },
                 ]
+            })
+        );
+
+        await queryRunner.createIndex("transactions",
+            new TableIndex({
+                name: "transactions-accountExternalIdDebit-idx",
+                columnNames: ["accountExternalIdDebit"]
+            })
+        );
+
+        await queryRunner.createIndex("transactions",
+            new TableIndex({
+                name: "transactions-accountExternalIdCredit-idx",
+                columnNames: ["accountExternalIdCredit"]
+            })
+        );
+
+        await queryRunner.createIndex("transactions",
+            new TableIndex({
+                name: "transactions-tranferTypeId-idx",
+                columnNames: ["tranferTypeId"]
+            })
+        );
+
+        await queryRunner.createIndex("transactions",
+            new TableIndex({
+                name: "transactions-status-idx",
+                columnNames: ["status"]
+            })
+        );
+
+        await queryRunner.createIndex("transactions",
+            new TableIndex({
+                name: "transactions-createdAtTimestamp-idx",
+                columnNames: ["createdAtTimestamp"]
+            })
+        );
+
+        await queryRunner.createIndex("transactions",
+            new TableIndex({
+                name: "transactions-updatedAtTimestamp-idx",
+                columnNames: ["updatedAtTimestamp"]
             })
         );
     }

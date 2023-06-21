@@ -24,7 +24,7 @@ export class CreateTransaction {
     }
 }
 
-export interface FindTransactionById {
+export class FindTransactionById {
     transactionExternalId: string;
     transactionType: {
         name: string;
@@ -34,4 +34,16 @@ export interface FindTransactionById {
     };
     value: number;
     createdAt: string;
+
+    constructor(entity: TransactionEntity){
+        this.createdAt = entity.createdAt!
+        this.transactionExternalId = entity.transactionExternalId!
+        this.value = entity.value
+        this.transactionType = {
+            name: TransactionStatesMap[entity.status!],
+        }
+        this.transactionStatus = {
+            name: TransactionTypesMap[entity.tranferTypeId],
+        }
+    }
 }

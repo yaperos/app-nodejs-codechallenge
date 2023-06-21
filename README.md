@@ -1,5 +1,29 @@
-# Yape Code Challenge :rocket:
+# Comments
+The enviroment is ready to start on docker using `make up` and it automatically run a container with the migrations
+If is required to start it manually, then you need to run:
+1. Run yp-transaction
+<ol>
+  <li>make up-local</li>
+  <li>cd yp-transaction</li>
+  <li>npm run migration:run</li>
+  <li>cp .env.example .env</li>
+  <li>npm run install</li>
+  <li>npm run install --save-dev</li>
+  <li>npm run dev</li>
+</ol>
 
+2. Run yp-anti-fraud
+<ol>
+  <li>cd yp-anti-fraud</li>
+  <li>cp .env.example .env</li>
+  <li>npm run install</li>
+  <li>npm run install --save-dev</li>
+  <li>npm run dev</li>
+</ol>
+
+If you don't have make, then commands in `Makefile` can give you tips for run it manually
+
+# Yape Code Challenge :rocket:
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!

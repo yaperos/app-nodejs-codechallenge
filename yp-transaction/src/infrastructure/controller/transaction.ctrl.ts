@@ -30,7 +30,8 @@ export default class TransactionController {
 
             const transact = await this.useCase.findTransactionById(id);
             if(transact !== null){
-                statusOk(transact,res);
+                let response = new FindTransactionById(transact);
+                statusOk(response,res);
             } else {
                 badRequest("Cannot retrieve the user",res);
             }

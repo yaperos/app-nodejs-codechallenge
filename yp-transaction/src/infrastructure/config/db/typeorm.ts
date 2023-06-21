@@ -12,5 +12,5 @@ export default new DataSource({
     logging: env.Db.Logging,
     migrationsRun: true,
     entities: [__dirname + '/../../models/**/*.schema{.ts,.js}'],
-    migrations: [__dirname + '/../../../migrations/**/*-*.{.ts,.js}']
+    migrations: [__dirname + '/../../../migrations/**/*{.ts,.js}']
 });

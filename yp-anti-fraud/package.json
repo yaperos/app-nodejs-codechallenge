@@ -8,8 +8,6 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "dev": "ts-node-dev src/app.ts",
-    "migration:create": "npx typeorm-ts-node-commonjs migration:create src/migrations/${MIGRATION_NAME}",
-    "migration:rollback": "npx typeorm-ts-node-commonjs migration:revert --dataSource=src/infrastructure/config/db/typeorm.ts",
     "migration:run": "npx typeorm-ts-node-commonjs migration:run --dataSource=src/infrastructure/config/db/typeorm.ts"
   },
   "repository": {
