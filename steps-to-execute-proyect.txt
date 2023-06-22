@@ -1,11 +1,11 @@
 
 SETUP PROYECT:
 
-1. Ejecutar npm i en cada uno de los tres microservices
-2. Crear una bd llamada transactions_db
-3. Posicionarse en el microservice financial-transactions -> cd financial-transactions
-4. En cd financial-transactions ejecutar -> npm run migration:run
-5. Ejecutar microservicios posicionandose en su carpeta respectiva
+1. Run npm i on each of the three projects
+2. Create batabase transactions_db
+3. In financial-transactions (cd transactions)
+4. In financial-transactions run -> npm run migration:run
+5. Run microservices
 	cd anti-fraud -> nest start anti-fraud
 	cd financial-transactions -> nest start financial-transactions
 	cd gql-gateway -> nest start gql-gateway
@@ -15,7 +15,7 @@ SETUP PROYECT:
 
 TEST PROYECT:
 
-1. Para crear transaccion ejecutar el mutation:
+1. Create transaction:
 
 mutation createFinancialTransaction(
     $tranferTypeId: Float!,
@@ -31,7 +31,7 @@ mutation createFinancialTransaction(
     }
 }
 
-2. Para obtener una transaccion ejecutar el query:
+2. Find transaction:
 
 query($transactionExternalId:String!){
     getTransactionByExternalId(transactionExternalId:$transactionExternalId){
