@@ -1,0 +1,47 @@
+
+SETUP PROYECT:
+
+1. Ejecutar npm i en cada uno de los tres microservices
+2. Posicionarse en el microservice financial-transactions -> cd challenge/financial-transactions
+3. En cd financial-transactions ejecutar -> npm run migration:run
+4. Ejecutar microservicios posicionandose en su carpeta respectiva
+	cd challenge/anti-fraud -> nest start anti-fraud
+	cd challenge/financial-transactions -> nest start financial-transactions
+	cd challenge/gql-gateway -> nest start gql-gateway
+
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+TEST PROYECT:
+
+1. Para crear transaccion ejecutar el mutation:
+
+mutation createFinancialTransaction(
+    $tranferTypeId: Float!,
+    $value: Float!
+){
+    createFinancialTransaction(
+    tranferTypeId:$tranferTypeId,
+    value: $value
+    ){
+        transactionStatus,
+        transactionDate,
+        transactionExternalId
+    }
+}
+
+2. Para obtener una transaccion ejecutar el query:
+
+query($transactionExternalId:String!){
+    getTransactionByExternalId(transactionExternalId:$transactionExternalId){
+        transactionExternalId,
+        transactionType{
+            name
+        },
+        transactionStatus{
+            name
+        },
+        value,
+        createdAt
+    }
+}
