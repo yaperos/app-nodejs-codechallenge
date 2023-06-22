@@ -2,12 +2,13 @@
 SETUP PROYECT:
 
 1. Ejecutar npm i en cada uno de los tres microservices
-2. Posicionarse en el microservice financial-transactions -> cd challenge/financial-transactions
-3. En cd financial-transactions ejecutar -> npm run migration:run
-4. Ejecutar microservicios posicionandose en su carpeta respectiva
-	cd challenge/anti-fraud -> nest start anti-fraud
-	cd challenge/financial-transactions -> nest start financial-transactions
-	cd challenge/gql-gateway -> nest start gql-gateway
+2. Crear una bd llamada transactions_db
+3. Posicionarse en el microservice financial-transactions -> cd financial-transactions
+4. En cd financial-transactions ejecutar -> npm run migration:run
+5. Ejecutar microservicios posicionandose en su carpeta respectiva
+	cd anti-fraud -> nest start anti-fraud
+	cd financial-transactions -> nest start financial-transactions
+	cd gql-gateway -> nest start gql-gateway
 
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
