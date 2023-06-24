@@ -8,7 +8,6 @@ import { TransactionInput } from '../graphql/types';
 import { TransactionStatus } from '../constants/enums';
 import { Transaction } from '../entities/Transaction.entity';
 import { KafkaService } from '../../kafka/services/kafka.service';
-import { UpdateTransactionStatusMessage } from '../contracts/types';
 
 @Injectable()
 export class TransactionService {

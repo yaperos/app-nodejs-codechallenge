@@ -1,3 +1,3 @@
-export type UpdateTransactionStatusMessage = {
+export type UpdateTransactionStatusEvent = {
   id: string;
 };

@@ -1,16 +1,16 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 
-import { UpdateTransactionStatusMessage } from '../contracts/types';
-import { TransactionService } from '../services/transaction.service';
 import { TransactionStatus } from '../constants/enums';
+import { UpdateTransactionStatusEvent } from '../contracts/types';
+import { TransactionService } from '../services/transaction.service';
 
 @Controller()
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @EventPattern(process.env.APPROVE_TRANSACTION_EVENT)
-  approveTransaction({ id }: UpdateTransactionStatusMessage): void {
+  approveTransaction({ id }: UpdateTransactionStatusEvent): void {
     this.transactionService.updateTransactionStatus(
       id,
       TransactionStatus.APPROVED,
@@ -18,7 +18,7 @@ export class TransactionController {
   }
 
   @EventPattern(process.env.REJECT_TRANSACTION_EVENT)
-  rejectTransaction({ id }: UpdateTransactionStatusMessage): void {
+  rejectTransaction({ id }: UpdateTransactionStatusEvent): void {
     this.transactionService.updateTransactionStatus(
       id,
       TransactionStatus.REJECTED,
