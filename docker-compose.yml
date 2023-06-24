@@ -1,16 +1,34 @@
-version: "3.7"
+version: "3.9"
 services:
+
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=transactions
+    container_name: transactions-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - transaction_network
+  
+  cache:
+    image: redis:7.0
+    ports:
+      - 6379:6379
+    networks:
+      - transaction_network
+    
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - transaction_network
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,3 +41,60 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    expose:
+      - 29092
+    networks:
+      - transaction_network
+
+  init-kafka:
+    depends_on: [kafka]
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      kafka-topics --create --topic transactions-validate --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1
+      kafka-topics --create --topic transactions-update-status --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1
+    networks:
+      - transaction_network
+  
+  transactions-service:
+    build: 
+      context: ./transactions-service
+      dockerfile: .docker/transactions-service.dockerfile
+    container_name: transaction-service
+    ports:
+      - 8080:8080
+    depends_on: [kafka, postgres, cache]
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=transactions
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - KAFKA_BROKERS=kafka:29092
+      - TRANSACTION_VALIDATE_TOPIC=transactions-validate
+      - TRANSACTION_UPDATE_STATUS_TOPIC=transactions-update-status
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+    networks:
+      - transaction_network
+    
+  anti-fraud-service:
+    build: 
+      context: ./anti-fraud-service
+      dockerfile: .docker/anti-fraud-service.dockerfile
+    container_name: anti-fraud-service
+    depends_on: [kafka]
+    environment:
+      - KAFKA_BROKERS=kafka:29092
+      - TRANSACTION_VALIDATE_TOPIC=transactions-validate
+      - TRANSACTION_UPDATE_STATUS_TOPIC=transactions-update-status
+    networks:
+      - transaction_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  transaction_network:
+    driver: bridge
