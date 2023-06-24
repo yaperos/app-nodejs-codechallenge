@@ -17,6 +17,9 @@ async function bootstrap() {
       consumer: {
         groupId: 'transactions-consumer',
       },
+      subscribe: {
+        fromBeginning: true,
+      },
     },
   });
 

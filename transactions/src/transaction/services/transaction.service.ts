@@ -12,7 +12,7 @@ import { UpdateTransactionStatusMessage } from '../contracts/types';
 
 @Injectable()
 export class TransactionService {
-  private transactionsTopic: string;
+  private createTransactionEvent: string;
   constructor(
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
@@ -21,7 +21,9 @@ export class TransactionService {
   ) {}
 
   onModuleInit(): void {
-    this.transactionsTopic = this.configService.get('TRANSACTIONS_TOPIC');
+    this.createTransactionEvent = this.configService.get(
+      'TRANSACTION_CREATE_EVENT',
+    );
   }
 
   findOneById(id: string): Promise<Transaction> {
@@ -39,14 +41,19 @@ export class TransactionService {
     const savedTransaction = await this.transactionRepository.save(
       newTransaction,
     );
-    this.kafkaService.sendMessage(this.transactionsTopic, savedTransaction);
+
+    this.kafkaService.emitEvent(
+      this.createTransactionEvent,
+      JSON.stringify(savedTransaction),
+    );
+
     return this.findOneById(savedTransaction.id);
   }
 
-  async updateTransactionStatus(message: UpdateTransactionStatusMessage) {
-    const status = message.approved
-      ? TransactionStatus.APPROVED
-      : TransactionStatus.REJECTED;
+  async updateTransactionStatus(
+    message: UpdateTransactionStatusMessage,
+    status: TransactionStatus,
+  ) {
     this.transactionRepository.update(
       { id: message.id },
       { transactionStatusId: status },

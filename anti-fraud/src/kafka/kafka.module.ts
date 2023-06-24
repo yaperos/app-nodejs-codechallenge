@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { KafkaService } from './services/kafka.service';
-import { KafkaController } from './controllers/kafka.controller';
 
 @Module({
   imports: [
@@ -13,6 +12,9 @@ import { KafkaController } from './controllers/kafka.controller';
         name: 'KAFKA_CLIENT',
         transport: Transport.KAFKA,
         options: {
+          subscribe: {
+            fromBeginning: true,
+          },
           client: {
             clientId: 'anti-fraud-microservice',
             brokers: process.env.BROKER_SEED.split(' '),
@@ -23,7 +25,6 @@ import { KafkaController } from './controllers/kafka.controller';
       },
     ]),
   ],
-  controllers: [KafkaController],
   providers: [KafkaService],
   exports: [KafkaService],
 })

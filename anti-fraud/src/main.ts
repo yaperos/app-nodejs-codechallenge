@@ -17,6 +17,9 @@ async function bootstrap() {
         consumer: {
           groupId: 'anti-fraud-consumer',
         },
+        subscribe: {
+          fromBeginning: true,
+        },
       },
     },
   );
