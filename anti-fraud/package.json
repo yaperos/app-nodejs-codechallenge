@@ -1,5 +1,5 @@
 {
-  "name": "transactions",
+  "name": "anti-fraud",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -18,36 +18,18 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "generate:types": "ts-node ./src/commons/scripts/generate-typings",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "migration:create": "yarn typeorm migration:create",
-    "migration:show": "yarn typeorm migration:show --dataSource ormconfig.ts",
-    "migration:run": "yarn typeorm migration:run --dataSource ormconfig.ts",
-    "migration:revert": "yarn typeorm migration:revert --dataSource ormconfig.ts",
-    "migration:generate": "yarn typeorm migration:generate --dataSource ormconfig.ts"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@apollo/server": "^4.7.4",
-    "@nestjs/apollo": "^12.0.1",
-    "@nestjs/common": "^10.0.2",
+    "@nestjs/common": "^10.0.3",
     "@nestjs/config": "^3.0.0",
-    "@nestjs/core": "^10.0.2",
-    "@nestjs/graphql": "^12.0.1",
+    "@nestjs/core": "^10.0.3",
     "@nestjs/microservices": "^10.0.3",
-    "@nestjs/platform-express": "^10.0.2",
-    "@nestjs/typeorm": "^10.0.0",
-    "class-transformer": "^0.5.1",
-    "dotenv": "^16.3.1",
-    "graphql": "^16.6.0",
-    "graphql-scalars": "^1.22.2",
-    "graphql-tools": "^9.0.0",
+    "@nestjs/platform-express": "^10.0.3",
     "kafkajs": "^2.2.4",
-    "pg": "^8.11.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0",
-    "typeorm": "^0.3.17"
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
@@ -68,7 +50,6 @@
     "supertest": "^6.1.3",
     "ts-jest": "^27.0.3",
     "ts-loader": "^9.2.3",
-    "ts-morph": "^19.0.0",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"

@@ -4,13 +4,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
+import { KafkaModule } from '../kafka/kafka.module';
 import { Transaction } from './entities/Transaction.entity';
 import DateScalar from '../commons/graphql/scalars/date.scalar';
 import NumericID from '../commons/graphql/scalars/numeric-id.scalar';
 import { TransactionService } from './services/transaction.service';
 import { TransactionResolver } from './resolvers/transaction.resolver';
+import { TransactionController } from './controllers/transaction.controller';
 
 @Module({
+  controllers: [TransactionController],
   imports: [
     TypeOrmModule.forFeature([Transaction]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -26,6 +29,7 @@ import { TransactionResolver } from './resolvers/transaction.resolver';
         NumericID: NumericID,
       },
     }),
+    KafkaModule,
   ],
   providers: [TransactionResolver, TransactionService],
 })
