@@ -9,7 +9,7 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @EventPattern(process.env.TRANSACTION_CREATE_EVENT)
-  validateTransaction(@Payload() message: Transaction): void {
-    this.transactionsService.sendValidationStatusMessage(message);
+  validateTransaction(@Payload() trxData: Transaction): void {
+    this.transactionsService.sendValidationStatusEvent(trxData);
   }
 }

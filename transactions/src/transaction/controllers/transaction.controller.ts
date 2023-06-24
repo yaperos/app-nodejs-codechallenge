@@ -10,17 +10,17 @@ export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @EventPattern(process.env.APPROVE_TRANSACTION_EVENT)
-  approveTransaction(message: UpdateTransactionStatusMessage): void {
+  approveTransaction({ id }: UpdateTransactionStatusMessage): void {
     this.transactionService.updateTransactionStatus(
-      message,
+      id,
       TransactionStatus.APPROVED,
     );
   }
 
   @EventPattern(process.env.REJECT_TRANSACTION_EVENT)
-  rejectTransaction(message: UpdateTransactionStatusMessage): void {
+  rejectTransaction({ id }: UpdateTransactionStatusMessage): void {
     this.transactionService.updateTransactionStatus(
-      message,
+      id,
       TransactionStatus.REJECTED,
     );
   }

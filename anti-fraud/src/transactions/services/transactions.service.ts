@@ -25,16 +25,16 @@ export class TransactionsService {
     );
   }
 
-  sendValidationStatusMessage(message: Transaction): void {
-    if (message.value > this.maxTransactionValue) {
+  sendValidationStatusEvent(trxData: Transaction): void {
+    if (trxData.value > this.maxTransactionValue) {
       this.kafkaService.emitEvent(this.rejectTransactionEvent, {
-        id: message.id,
+        id: trxData.id,
       });
       return;
     }
 
     this.kafkaService.emitEvent(this.approveTransactionEvent, {
-      id: message.id,
+      id: trxData.id,
     });
   }
 }

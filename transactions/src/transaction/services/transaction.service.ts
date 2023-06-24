@@ -50,13 +50,7 @@ export class TransactionService {
     return this.findOneById(savedTransaction.id);
   }
 
-  async updateTransactionStatus(
-    message: UpdateTransactionStatusMessage,
-    status: TransactionStatus,
-  ) {
-    this.transactionRepository.update(
-      { id: message.id },
-      { transactionStatusId: status },
-    );
+  async updateTransactionStatus(id: string, status: TransactionStatus) {
+    this.transactionRepository.update({ id }, { transactionStatusId: status });
   }
 }
