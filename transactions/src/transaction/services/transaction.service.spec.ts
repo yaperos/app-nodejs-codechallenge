@@ -6,6 +6,7 @@ import { Transaction } from '../entities/Transaction.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { KafkaService } from '../../kafka/services/kafka.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { TransactionStatus } from '../constants/enums';
 
 describe('TransactionService', () => {
   let service: TransactionService;
@@ -34,7 +35,7 @@ describe('TransactionService', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn(),
+            get: jest.fn().mockImplementation((env) => env),
           },
         },
       ],
@@ -49,5 +50,44 @@ describe('TransactionService', () => {
   it('onModuleInit should initialize the service constants', () => {
     service.onModuleInit();
     expect(configService.get).toBeCalledWith('TRANSACTION_CREATE_EVENT');
+  });
+
+  it('findOneById should call the findOne repository method', () => {
+    service.findOneById('trx-id');
+
+    expect(transactionRepository.findOne).toBeCalledWith({
+      where: { id: 'trx-id' },
+      relations: ['transactionStatus', 'transferType'],
+    });
+  });
+
+  it('createTransaction should call the correct transactionRepository methods', async () => {
+    service.onModuleInit();
+    jest
+      .spyOn(transactionRepository, 'save')
+      .mockResolvedValue({ id: 'trx-id', value: 5000 } as any);
+    jest.spyOn(service, 'findOneById').mockResolvedValue({} as any);
+    const transaction = { value: 5000 } as any;
+
+    await service.createTransaction(transaction);
+
+    expect(transactionRepository.save).toBeCalledWith({
+      value: 5000,
+      transactionStatusId: TransactionStatus.PENDING,
+    });
+    expect(kafkaService.emitEvent).toBeCalledWith(
+      'TRANSACTION_CREATE_EVENT',
+      JSON.stringify({ id: 'trx-id', value: 5000 }),
+    );
+    expect(service.findOneById).toBeCalledWith('trx-id');
+  });
+
+  it('updateTransactionStatus should call the update transactionRepository method', () => {
+    service.updateTransactionStatus('trx-id', TransactionStatus.APPROVED);
+
+    expect(transactionRepository.update).toBeCalledWith(
+      { id: 'trx-id' },
+      { transactionStatusId: TransactionStatus.APPROVED },
+    );
   });
 });
