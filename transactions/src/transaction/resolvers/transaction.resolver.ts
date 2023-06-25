@@ -1,3 +1,4 @@
+import { CacheKey } from '@nestjs/cache-manager';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Transaction, TransactionInput } from '../graphql/types';
@@ -8,6 +9,7 @@ export class TransactionResolver {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Query()
+  @CacheKey('transaction')
   async transactionById(@Args('id') id: string): Promise<Transaction> {
     return this.transactionService.findOneById(id);
   }

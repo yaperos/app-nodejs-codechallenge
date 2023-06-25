@@ -3,8 +3,11 @@ import { GraphQLScalarType, Kind } from 'graphql';
 const DateScalar = new GraphQLScalarType({
   name: 'Date',
   description: 'Date custom scalar type',
-  serialize(value: Date) {
-    return value.toISOString();
+  serialize(value: Date | string) {
+    if (value instanceof Date) {
+      return value.toISOString();
+    }
+    return new Date(value);
   },
   parseValue(value: string) {
     return new Date(value);

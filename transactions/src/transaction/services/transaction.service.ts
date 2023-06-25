@@ -1,8 +1,10 @@
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
+import { Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 import { TransactionInput } from '../graphql/types';
 import { TransactionStatus } from '../constants/enums';
@@ -13,6 +15,7 @@ import { KafkaService } from '../../kafka/services/kafka.service';
 export class TransactionService {
   private createTransactionEvent: string;
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
     private readonly kafkaService: KafkaService,
@@ -25,11 +28,20 @@ export class TransactionService {
     );
   }
 
-  findOneById(id: string): Promise<Transaction> {
-    return this.transactionRepository.findOne({
+  async findOneById(id: string): Promise<Transaction> {
+    const cachedTransaction: string = await this.cacheManager.get(id);
+
+    if (cachedTransaction) {
+      return plainToInstance(Transaction, JSON.parse(cachedTransaction));
+    }
+    const transaction = await this.transactionRepository.findOne({
       where: { id },
       relations: ['transactionStatus', 'transferType'],
     });
+
+    await this.cacheManager.set(id, JSON.stringify(transaction));
+
+    return transaction;
   }
 
   async createTransaction(transaction: TransactionInput): Promise<Transaction> {
@@ -50,6 +62,10 @@ export class TransactionService {
   }
 
   async updateTransactionStatus(id: string, status: TransactionStatus) {
-    this.transactionRepository.update({ id }, { transactionStatusId: status });
+    await this.transactionRepository.update(
+      { id },
+      { transactionStatusId: status },
+    );
+    await this.cacheManager.del(id);
   }
 }
