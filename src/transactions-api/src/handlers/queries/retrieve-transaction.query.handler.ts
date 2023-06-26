@@ -19,10 +19,7 @@ export class RetrieveTransactionQueryHandler
 
   async execute(query: RetrieveTransactionQuery): Promise<Transaction[]> {
     try {
-
-        console.info('query', query);
-
-        const whereClause = {
+      const whereClause = {
             accountExternalId: query.transferExternalId,
             transactionType: query.transactionType,
             status: query.transactionStatus,
@@ -32,18 +29,24 @@ export class RetrieveTransactionQueryHandler
 
       const queryValues = omitBy(whereClause, isUndefined || isNull || isEmpty);
 
-      console.info('queryValues', queryValues);
+      const cacheKey = JSON.stringify(queryValues);
+
+      const cachedTransactions: Transaction[] = await this.cache.get(cacheKey) as Transaction[];
+
+      if (cachedTransactions) {
+        return cachedTransactions;
+      }
 
       const transactions = await this.transactionRepository.find({
         where: queryValues,
       });
 
-      console.info('transactions', transactions);
-
       if (!transactions) {
         console.error('Transaction not found');
         return [] as Transaction[];
       }
+
+      await this.cache.set(cacheKey, transactions);
 
       return transactions;
     } catch (error) {
