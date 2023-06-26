@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "6609fd5b-8c02-4753-a88f-6fe9159ec3f5",
+    "name": "Transactions LOCAL",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2023-06-26T01:31:28.496Z",
+    "modified": "2023-06-26T01:31:28.496Z",
+    "data": [
+      {
+        "name": "URL",
+        "value": "localhost:5000"
+      }
+    ]
+  }
+]

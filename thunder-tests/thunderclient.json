@@ -1,0 +1,47 @@
+[
+  {
+    "_id": "8e79f189-4fd8-4040-85c8-4725de94d03b",
+    "colId": "260d47d6-7528-4dc6-8747-65eae5db58f2",
+    "containerId": "",
+    "name": "Get transaction by id",
+    "url": "{{URL}}/graphql",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2023-06-26T01:32:14.393Z",
+    "modified": "2023-06-26T01:53:20.194Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "graphql",
+      "raw": "",
+      "form": [],
+      "graphql": {
+        "query": "{\n  transactionById(id: \"2d4233cb-f5b4-451f-986a-ad270f296df2\") {\n    transactionExternalId: accountExternalIdDebit\n    transactionType: transferType {\n      name\n    }\n    transactionStatus {\n      name\n    }\n    value\n    createdAt\n  }\n}"
+      }
+    },
+    "tests": []
+  },
+  {
+    "_id": "2e01edaa-2685-4a0d-95f8-bf46f6b12854",
+    "colId": "260d47d6-7528-4dc6-8747-65eae5db58f2",
+    "containerId": "",
+    "name": "Create transaction",
+    "url": "{{URL}}/graphql",
+    "method": "POST",
+    "sortNum": 20000,
+    "created": "2023-06-26T01:52:14.445Z",
+    "modified": "2023-06-26T01:53:02.204Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "graphql",
+      "raw": "",
+      "form": [],
+      "graphql": {
+        "query": "mutation CreateTransaction($transaction: TransactionInput!) {\n  createTransaction(transaction: $transaction) {\n    id\n    accountExternalIdDebit\n    accountExternalIdCredit\n    value\n    transferType {\n      name\n    }\n  }\n}",
+        "variables": "{\n  \"transaction\": {\n    \"accountExternalIdDebit\": \"0697fcb7-7946-4a2b-897b-eebf9346ee3b\",\n    \"accountExternalIdCredit\": \"4106fc8f-7d31-464d-9351-9c8b1c1c04fc\",\n    \"transferTypeId\": 1,\n    \"value\": 100\n  }\n}"
+      }
+    },
+    "tests": []
+  }
+]
