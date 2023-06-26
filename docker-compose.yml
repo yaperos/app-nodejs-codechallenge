@@ -55,7 +55,7 @@ services:
       dockerfile: ../../.docker/transactions-api.dockerfile
     container_name: transaction-api
     ports:
-      - 8080:8080
+      - 8080:3000
     depends_on: [kafka-queue, postgres, cache]
     environment:
       - DB_HOST=postgres
