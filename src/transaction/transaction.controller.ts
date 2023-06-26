@@ -14,7 +14,7 @@ export class TransactionController {
 
     @MessagePattern('transaction.receipt')
     public async TransactionReceipt(@Payload() Transaction: CreateTransactionInput) {
-        const newTransaction = await this.transactionService.create( Transaction );
+        this.transactionService.create( Transaction );
     }
 
     @MessagePattern('message.created')
