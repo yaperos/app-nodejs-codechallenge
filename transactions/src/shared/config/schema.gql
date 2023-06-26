@@ -1,0 +1,32 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionResponseDto {
+  transactionExternalId: String!
+  transactionType: String!
+  transactionStatus: TransactionStatus!
+  value: Float!
+  createdAt: String!
+}
+
+enum TransactionStatus {
+  Pending
+  Approved
+  Failed
+}
+
+type Query {
+  getTransaction(id: String!): TransactionResponseDto!
+}
+
+type Mutation {
+  createTransaction(transactionRequest: TransactionRequestDto!): TransactionResponseDto!
+}
+
+input TransactionRequestDto {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  transferTypeId: String!
+  value: Float!
+}
