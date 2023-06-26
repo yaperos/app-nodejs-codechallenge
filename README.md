@@ -64,7 +64,7 @@ PUT: http://localhost:3800/api/update/{transactionExternalId}
                     |     Service      |      |     Service      |
                     |                  |      |           	 |
 		    +------------------+      +------------------+
-							|
+		    					|
 					      +------------------+
 					      |			 |
 					      |     MongoDB 	 |
