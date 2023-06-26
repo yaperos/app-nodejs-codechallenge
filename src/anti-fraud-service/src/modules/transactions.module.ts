@@ -5,13 +5,12 @@ import { ValidateTransactionsConsumer } from 'src/consumers/transactions.consume
 import { ValidateTransactionService } from 'src/services/validate-transaction.service';
 
 @Module({
-  imports: [
-    KafkaModule,
+  imports: [    
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    KafkaModule,
   ],
-  controllers: [],
   providers: [ValidateTransactionsConsumer, ValidateTransactionService],
 })
 export class TransactionsModule {}

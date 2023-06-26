@@ -13,6 +13,8 @@ export class KafkaConsumerService implements OnApplicationShutdown {
   private readonly consumers: Consumer[] = [];
 
   constructor(private readonly configService: ConfigService) {
+    console.info('KafkaConsumerService constructor');
+    console.info('KAFKA_BROKERS', this.configService.get('KAFKA_BROKERS'))
     this.kafka = new Kafka({
       brokers: this.configService.get('KAFKA_BROKERS').split(','),
     });

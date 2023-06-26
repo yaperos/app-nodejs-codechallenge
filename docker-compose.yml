@@ -16,6 +16,7 @@ services:
       - transaction_network
   
   cache:
+    container_name: transactions-cache
     image: redis:7.0
     ports:
       - 6379:6379
@@ -32,11 +33,14 @@ services:
   kafka-queue:
     image: wurstmeister/kafka:latest
     depends_on: [zookeeper]
-    container_name: transctions-kafka
+    container_name: transactions-kafka
+    hostname: kafka-queue
     environment:
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=LISTENER_DOCKER_INTERNAL://kafka-queue:29092,LISTENER_DOCKER_EXTERNAL://localhost:9092
+      - KAFKA_LISTENERS=LISTENER_DOCKER_INTERNAL://kafka-queue:29092,LISTENER_DOCKER_EXTERNAL://localhost:9092
+      - KAFKA_INTER_BROKER_LISTENER_NAME=LISTENER_DOCKER_EXTERNAL      
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
       - KAFKA_BROKER_ID=1
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
       - KAFKA_JMX_PORT=9991
@@ -45,8 +49,6 @@ services:
       - KAFKA_CREATE_TOPICS=transactions-validate:1:1,transactions-update-status:1:1
     ports:
       - 9092:9092
-    expose:
-      - 29092
     networks:
       - transaction_network
   
@@ -59,18 +61,18 @@ services:
       - 8080:8080
     depends_on: [kafka-queue, postgres, cache]
     environment:
-      - DB_HOST=localhost
+      - DB_HOST=postgres
       - DB_PORT=5432
       - DB_NAME=transactions
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - DB_TYPE=postgres
-      - KAFKA_BROKERS=kafka-queue:9092
+      - KAFKA_BROKERS=kafka-queue:29092
       - TRANSACTION_VALIDATE_TOPIC=transactions-validate
       - TRANSACTION_UPDATE_STATUS_TOPIC=transactions-update-status
       - TRANSACTION_VALIDATE_CONSUMER_GROUP=transactions-validate-group
       - TRANSACTION_UPDATE_STATUS_CONSUMER_GROUP=transactions-update-status-group
-      - REDIS_URL=cache:6379
+      - REDIS_URL=transactions-cache:6379
       - REDIS_TTL=5000
     networks:
       - transaction_network
@@ -82,7 +84,7 @@ services:
     container_name: anti-fraud-service
     depends_on: [kafka-queue]
     environment:
-      - KAFKA_BROKERS=kafka-queue:9092
+      - KAFKA_BROKERS=kafka-queue:29092
       - TRANSACTION_VALIDATE_TOPIC=transactions-validate
       - TRANSACTION_UPDATE_STATUS_TOPIC=transactions-update-status
       - TRANSACTION_VALIDATE_CONSUMER_GROUP=transactions-validate-group
