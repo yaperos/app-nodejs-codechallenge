@@ -8,7 +8,7 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-06-26T01:32:14.393Z",
-    "modified": "2023-06-26T01:53:20.194Z",
+    "modified": "2023-06-26T03:05:38.733Z",
     "headers": [],
     "params": [],
     "body": {
@@ -16,7 +16,7 @@
       "raw": "",
       "form": [],
       "graphql": {
-        "query": "{\n  transactionById(id: \"2d4233cb-f5b4-451f-986a-ad270f296df2\") {\n    transactionExternalId: accountExternalIdDebit\n    transactionType: transferType {\n      name\n    }\n    transactionStatus {\n      name\n    }\n    value\n    createdAt\n  }\n}"
+        "query": "{\n  transactionById(id: \"68745c79-aeed-4a5e-a110-e99ec20f126a\") {\n    transactionExternalId: accountExternalIdDebit\n    transactionType: transferType {\n      name\n    }\n    transactionStatus {\n      name\n      id\n    }\n    value\n    createdAt\n  }\n}"
       }
     },
     "tests": []
