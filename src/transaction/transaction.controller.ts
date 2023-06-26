@@ -3,7 +3,7 @@ import { TransactionService } from './transaction.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { TransactionInput, TransactionInputOnject } from './dto/inputs/transaction.input';
 import { TransactionStatus } from './enums/transaction-status.enum';
-import { UpdateTransactionInput } from './dto/inputs';
+import { CreateTransactionInput, UpdateTransactionInput } from './dto/inputs';
 
 @Controller('transaction')
 export class TransactionController {
@@ -11,6 +11,11 @@ export class TransactionController {
     constructor(
         private readonly transactionService: TransactionService,
     ){}
+
+    @MessagePattern('transaction.receipt')
+    public async TransactionReceipt(@Payload() Transaction: CreateTransactionInput) {
+        const newTransaction = await this.transactionService.create( Transaction );
+    }
 
     @MessagePattern('message.created')
     public async TransactionCreated(@Payload() Transaction: TransactionInputOnject) {
