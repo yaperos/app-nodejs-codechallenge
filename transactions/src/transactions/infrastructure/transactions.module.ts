@@ -9,6 +9,9 @@ import { TransactionsResolver } from '@transactions/infrastructure/transactions.
 @Module({
   imports: [TypeOrmModule.forFeature([Transaction])],
   providers: [
+    TransactionsResolver,
+    TransactionCreator,
+    TransactionFinder,
     TransactionRepository,
   ],
 })

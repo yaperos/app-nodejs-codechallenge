@@ -17,8 +17,20 @@ export default {
   clearMocks: true,
   resetMocks: true,
   restoreMocks: true,
-  moduleNameMapper: {},
+  moduleNameMapper: {
+    '@transactions/(.*)': '<rootDir>/transactions/$1',
+  },
+  collectCoverageFrom: [
+    '**/*.resolver.(t|j)s',
+    '**/*.creator.(t|j)s',
+    '**/*.finder.(t|j)s',
+    '**/*.repository.(t|j)s',
+  ],
   coveragePathIgnorePatterns: [
+    '/src/transactions/domain/transaction.mock.ts',
+    '/src/transactions/infrastructure/dtos/transaction-request.mock.ts',
+    '/src/transactions/infrastructure/dtos/transaction-response.mock.ts',
+    '/src/transactions/infrastructure/transaction.module.ts',
   ],
   coverageThreshold: {
     global: {
