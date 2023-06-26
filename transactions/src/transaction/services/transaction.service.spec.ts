@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import { Cache } from 'cache-manager';
 import { ConfigService } from '@nestjs/config';
 
 import { TransactionService } from './transaction.service';
@@ -7,17 +8,27 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { KafkaService } from '../../kafka/services/kafka.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { TransactionStatus } from '../constants/enums';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 describe('TransactionService', () => {
   let service: TransactionService;
   let transactionRepository: Repository<Transaction>;
   let kafkaService: KafkaService;
   let configService: ConfigService;
+  let cacheManager: Cache;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TransactionService,
+        {
+          provide: CACHE_MANAGER,
+          useValue: {
+            get: jest.fn(),
+            set: jest.fn(),
+            del: jest.fn(),
+          },
+        },
         {
           provide: getRepositoryToken(Transaction),
           useValue: {
@@ -45,6 +56,7 @@ describe('TransactionService', () => {
     transactionRepository = module.get(getRepositoryToken(Transaction));
     kafkaService = module.get<KafkaService>(KafkaService);
     configService = module.get<ConfigService>(ConfigService);
+    cacheManager = module.get<Cache>(CACHE_MANAGER);
   });
 
   it('onModuleInit should initialize the service constants', () => {
@@ -52,12 +64,37 @@ describe('TransactionService', () => {
     expect(configService.get).toBeCalledWith('TRANSACTION_CREATE_EVENT');
   });
 
-  it('findOneById should call the findOne repository method', () => {
-    service.findOneById('trx-id');
+  describe('findOneById', () => {
+    it('findOneById should call the findOne repository method (and caching transaction data)', async () => {
+      const trxMock = { id: 'trx-id', value: 5000 } as any;
+      jest.spyOn(cacheManager, 'get').mockResolvedValue(null);
+      jest.spyOn(transactionRepository, 'findOne').mockResolvedValue(trxMock);
 
-    expect(transactionRepository.findOne).toBeCalledWith({
-      where: { id: 'trx-id' },
-      relations: ['transactionStatus', 'transferType'],
+      await service.findOneById('trx-id');
+
+      expect(cacheManager.get).toBeCalledWith('trx-id');
+      expect(transactionRepository.findOne).toBeCalledWith({
+        where: { id: 'trx-id' },
+        relations: ['transactionStatus', 'transferType'],
+      });
+      expect(cacheManager.set).toBeCalledWith(
+        'trx-id',
+        JSON.stringify(trxMock),
+      );
+    });
+
+    it('findOneById should call the findOne repository method (and retrieve cached transaction data)', async () => {
+      const trxMock = { id: 'trx-id', value: 5000 } as any;
+
+      jest
+        .spyOn(cacheManager, 'get')
+        .mockResolvedValue(JSON.stringify(trxMock));
+
+      await service.findOneById('trx-id');
+
+      expect(cacheManager.get).toBeCalledWith('trx-id');
+      expect(transactionRepository.findOne).not.toBeCalled();
+      expect(cacheManager.set).not.toBeCalled();
     });
   });
 
@@ -82,12 +119,13 @@ describe('TransactionService', () => {
     expect(service.findOneById).toBeCalledWith('trx-id');
   });
 
-  it('updateTransactionStatus should call the update transactionRepository method', () => {
-    service.updateTransactionStatus('trx-id', TransactionStatus.APPROVED);
+  it('updateTransactionStatus should call the update transactionRepository method and should invalidate cache', async () => {
+    await service.updateTransactionStatus('trx-id', TransactionStatus.APPROVED);
 
     expect(transactionRepository.update).toBeCalledWith(
       { id: 'trx-id' },
       { transactionStatusId: TransactionStatus.APPROVED },
     );
+    expect(cacheManager.del).toBeCalledWith('trx-id');
   });
 });
