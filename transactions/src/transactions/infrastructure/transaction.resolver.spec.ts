@@ -51,4 +51,18 @@ describe(TransactionsResolver, () => {
       value: transactionMock.value,
     });
   });
+
+  it('should get a transaction', async () => {
+    jest.spyOn(transactionFinder, 'run').mockResolvedValue(transactionMock);
+
+    const transaction = await resolver.getTransaction(transactionMock.id);
+
+    expect(transactionFinder.run).toBeCalledWith(transactionMock.id);
+    expect(transaction).toEqual({
+      transactionStatus: transactionMock.status,
+      transactionType: transactionMock.transferTypeId,
+      createdAt: transactionMock.createdAt,
+      value: transactionMock.value,
+    });
+  });
 });

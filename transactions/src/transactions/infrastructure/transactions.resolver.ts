@@ -16,9 +16,9 @@ export class TransactionsResolver {
   public async getTransaction(
     @Args('id') id: string,
   ): Promise<TransactionResponseDto> {
-    const transactions = await this.transactionFinder.run(id);
+    const transaction = await this.transactionFinder.run(id);
 
-    return toResponse(transactions);
+    return toResponse(transaction);
   }
 
   @Mutation(() => TransactionResponseDto)
