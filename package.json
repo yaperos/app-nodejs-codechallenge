@@ -7,12 +7,16 @@
   "scripts": {
     "test": "yarn workspace transactions test && yarn workspace antifraud test",
     "test:cov": "yarn workspace transactions test:cov && yarn workspace antifraud test:cov",
-    "lint": "yarn workspace transactions lint && yarn workspace antifraud lint"  
+    "lint": "yarn workspace transactions lint && yarn workspace antifraud lint",
+    "start:trx": "yarn workspace transactions start:dev"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "class-validator": "^0.14.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "typescript": "5.0.4"
