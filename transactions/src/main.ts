@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { AppModule } from './app.module';
@@ -11,6 +12,8 @@ async function bootstrap() {
   if (logEnabled) {
     app.useLogger(['log', 'error', 'warn']);
   }
+
+  app.useGlobalPipes(new ValidationPipe());
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
