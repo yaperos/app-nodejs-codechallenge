@@ -1,3 +1,74 @@
+# Used technology
+<ol>
+  <li>NodeJS</li>
+  <li>Express</li>
+  <li>Apache Kafka</li>
+  <li>mongoose</li>
+  <li>MongoDB</li> 
+</ol>
+
+# Start microservices
+1. Go to the transaction and antifraud folders execute the command "npm start" to run microservice.
+Kafka to running before starting services.
+
+# EndPoints
+1. Create a transaction
+POST: http://localhost:3800/api/transactions
+```json
+{
+  "accountExternalIdDebit": "Guid",
+  "accountExternalIdCredit": "Guid",
+  "tranferTypeId": 1,
+  "value": 965
+}
+```
+
+2. Retrieve a transaction
+POST: http://localhost:3800/api/transactionsRetrieve
+```json
+{
+  "transactionExternalId": "435dd7ab-64cf-4574-960b-1211378e0e6b",
+  "transactionType": "normal",
+  "transactionStatus": "",
+  "value": 965,
+  "createdAt": "2023-06-23T00:00:00.000+00:00"
+}
+```
+
+3. Update status transaction
+PUT: http://localhost:3800/api/update/{transactionExternalId}
+```json
+{
+    "estadoTransaccion": "approved"
+}
+```
+
+# Services process
+
+                    +------------------+      +------------------+
+                    |                  |      |                  |
+                    |   Transaction    |      |    Antifraud     |
+                    |     Service      |      |     Service      |
+                    |                  |      |                  |
+                    +---------+--------+      +--------+---------+
+                              |                        |
+                    +---------+--------+      +--------+---------+
+                    |                  |      |                  |
+                    |       Kafka      |      |       Kafka      |
+                    |                  |      |                  |
+                    +---------+--------+      +--------+---------+
+                              |                        |
+                    +---------+--------+      +--------+---------+	 +--------+---------+
+                    |                  |      |                  |	 |					|
+                    |    Antifraud     |      |    Transaction   | - |					|
+                    |     Service      |      |     Service      |   |     MongoDB		|
+                    |                  |      |           		 |   |					|
+                    +------------------+      +------------------+	 +------------------+
+					
+
+# Data Base name and Collection name
+financial.transactions
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
@@ -80,3 +151,4 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+

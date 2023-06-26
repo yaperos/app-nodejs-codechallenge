@@ -1,0 +1,24 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "Our code challenge will let you marvel us with your Jedi coding skills",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Maxware",
+  "license": "MIT",
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "express": "^4.18.2",
+    "kafkajs": "^2.2.4",
+    "moment": "^2.29.4",
+    "mongodb": "^5.6.0",
+    "mongoose": "^7.3.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
