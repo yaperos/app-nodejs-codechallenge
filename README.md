@@ -1,8 +1,8 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge 🚀
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills 😄.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Don't forget that the proper way to submit your work is to fork the repo and create a PR 😉 ... have fun !!
 
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
@@ -35,7 +35,7 @@ Every transaction with a value greater than 1000 should be rejected.
 <ol>
   <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
   <li>Any database</li>
-  <li>Kafka</li>    
+  <li>Kafka</li>  
 </ol>
 
 We do provide a `Dockerfile` to help you get started with a dev environment.

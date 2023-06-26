@@ -2,7 +2,8 @@
   "private": true,
   "workspaces": [
     "antifraud",
-    "transactions"
+    "transactions",
+    "shared"
   ],
   "scripts": {
     "test": "yarn workspace transactions test && yarn workspace antifraud test",
@@ -15,8 +16,10 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/microservices": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
     "class-validator": "^0.14.0",
+    "kafkajs": "^2.2.4",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "typescript": "5.0.4"
