@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import {
   Transaction,
   TransactionStatus,
-  TransferType
+  TransferType,
 } from '@transactions/domain/transaction.entity';
 
 export const transactionMock: Transaction = new Transaction();

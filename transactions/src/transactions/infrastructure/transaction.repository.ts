@@ -19,4 +19,11 @@ export class TransactionRepository {
       where: { id },
     });
   }
+
+  public async update(
+    id: string,
+    transaction: Partial<Transaction>,
+  ): Promise<void> {
+    await this.repository.update(id, transaction);
+  }
 }

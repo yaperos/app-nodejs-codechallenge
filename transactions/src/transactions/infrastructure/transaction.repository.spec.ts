@@ -18,6 +18,7 @@ describe(TransactionRepository, () => {
           useValue: {
             save: jest.fn(),
             findOne: jest.fn(),
+            update: jest.fn(),
           },
         },
       ],
@@ -45,5 +46,16 @@ describe(TransactionRepository, () => {
     const transaction = await repository.findById(transactionMock.id);
 
     expect(transaction).toEqual(transactionMock);
+  });
+
+  it('should update a transaction', async () => {
+    jest.spyOn(transactionRepo, 'update').mockResolvedValue(null);
+
+    await repository.update(transactionMock.id, transactionMock);
+
+    expect(transactionRepo.update).toBeCalledWith(
+      transactionMock.id,
+      transactionMock,
+    );
   });
 });

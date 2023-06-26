@@ -41,7 +41,9 @@ describe(TransactionsResolver, () => {
   it('should create a transaction', async () => {
     jest.spyOn(transactionCreator, 'run').mockResolvedValue(transactionMock);
 
-    const transaction = await resolver.createTransaction(transactionRequestMock);
+    const transaction = await resolver.createTransaction(
+      transactionRequestMock,
+    );
 
     expect(transactionCreator.run).toBeCalledWith(transactionRequestMock);
     expect(transaction).toEqual({
