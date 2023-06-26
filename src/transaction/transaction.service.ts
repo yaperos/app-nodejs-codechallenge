@@ -1,0 +1,82 @@
+import { Injectable, Inject } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Transaction } from './entity/transaction.entity';
+import { CreateTransactionInput, UpdateTransactionInput } from './dto/inputs';
+import { Repository } from 'typeorm';
+import { TransactionStatus } from './enums/transaction-status.enum';
+import { TranferType } from './enums/transfer-type.enum';
+import { TransactionType } from './enums/transaction-type.enum';
+import { ClientProxy } from '@nestjs/microservices';
+import { PaginationArgs, SearchArgs } from 'src/common/dto/arg';
+
+@Injectable()
+export class TransactionService {
+
+    constructor(
+        @InjectRepository( Transaction )
+        private readonly transactionRepository: Repository<Transaction>,
+
+        @Inject('KAFKA')
+        private readonly kafka: ClientProxy
+    ){}
+
+    async create(createTransactionInput: CreateTransactionInput ): Promise<Transaction> {
+
+        const transaction = new Transaction();
+        if(!createTransactionInput.accountExternalIdCredit) transaction.transactionExternalId =  createTransactionInput.accountExternalIdDebit
+        else transaction.transactionExternalId =  createTransactionInput.accountExternalIdCredit
+        
+        switch (createTransactionInput.tranferTypeId) {
+            case TranferType.instant:
+                transaction.transactionType = TransactionType.instant;
+                break;
+            case TranferType.ordinary:
+                transaction.transactionType = TransactionType.ordinary;
+                break;
+            case TranferType.urgent:
+                transaction.transactionType = TransactionType.urgent;
+                break;
+            default:
+                transaction.transactionType = TransactionType.ordinary;
+                break;
+        }
+        transaction.transactionStatus = TransactionStatus.pending;
+        transaction.value = createTransactionInput.value;
+
+        const newTransaction = this.transactionRepository.create( transaction );  
+        const transactionCreated = await this.transactionRepository.save( newTransaction )
+        await this.kafka.emit('message.created', {transactionCreated});
+        return transactionCreated; 
+
+    }
+
+    
+    async findOne(id: string ): Promise<Transaction> {
+        const transaction = await this.transactionRepository.findOneBy({
+            id
+        });
+        return transaction
+    }
+
+    async findAll( paginationArgs: PaginationArgs, searchArgs: SearchArgs ): Promise<Transaction[]> {
+
+        const { limit, offset } = paginationArgs;
+        const { search } = searchArgs;
+
+        const queryBuilder = this.transactionRepository.createQueryBuilder()
+          .take( limit )
+          .skip( offset );
+    
+        if ( search ) {
+          queryBuilder.andWhere('transactionExternalId ILIKE :transactionExternalId', { transactionExternalId: `%${search}%` });
+        }
+    
+        return queryBuilder.getMany();
+      }
+
+      
+    async update( {id, transactionStatus}: UpdateTransactionInput ) {
+        const transactionToUpdate = await this.transactionRepository.update( {id: id}, {transactionStatus: transactionStatus} );
+        return transactionToUpdate
+    }
+}
