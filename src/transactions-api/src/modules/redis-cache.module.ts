@@ -1,12 +1,12 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { redisStore } from 'cache-manager-redis-yet';
+import { redisStore } from 'cache-manager-redis-store';
 import { RedisCacheService } from 'src/services/redis-cache.service';
 
 @Module({
   imports: [
-    CacheModule.registerAsync({
+    CacheModule.register({
       useFactory: async (configService: ConfigService) => ({
         store: await redisStore({
           url: configService.get<string>('REDIS_URL'),

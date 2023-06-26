@@ -21,7 +21,7 @@ export class KafkaProducerService
     this.producer = this.kafka.producer();
   }
   async produce(record: ProducerRecord) {
-    await this.producer.send(record);
+    return await this.producer.send(record);
   }
 
   async onModuleInit() {

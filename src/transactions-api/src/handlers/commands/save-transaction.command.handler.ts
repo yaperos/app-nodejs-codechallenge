@@ -6,12 +6,15 @@ import { isEmpty } from 'lodash';
 import { TransactionStatus, TransactionType } from 'src/models/enums';
 import { KafkaProducerService } from 'src/services/kafka-producer.service';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ValidateTransaction } from 'src/types/validate-transction';
 
 @CommandHandler(SaveTransactionCommand)
 export class SaveTransactionCommandHandler
   implements ICommandHandler<SaveTransactionCommand>
 {
   constructor(
+    @InjectRepository(Transaction)
     readonly repository: Repository<Transaction>,
     readonly kafkaService: KafkaProducerService,
     readonly configService: ConfigService,
@@ -20,7 +23,7 @@ export class SaveTransactionCommandHandler
   async execute(command: SaveTransactionCommand) {
     try {
       const transaction = new Transaction();
-      transaction.tranferTypeId = command.tranferTypeId;
+      transaction.transferTypeId = command.transferTypeId;
       transaction.createdAt = new Date();
       transaction.updatedAt = new Date();
 
@@ -37,15 +40,17 @@ export class SaveTransactionCommandHandler
 
       const createdTransaction = await this.repository.save(transaction);
 
-      this.kafkaService.produce({
+      const payload: ValidateTransaction = {
+        id: createdTransaction.id,
+        value: createdTransaction.value,
+      };
+
+      await this.kafkaService.produce({
         topic: this.configService.get('TRANSACTION_VALIDATE_TOPIC'),
         messages: [
           {
-            key: transaction.accountExternalId,
-            value: JSON.stringify({
-              id: createdTransaction.id,
-              value: createdTransaction.value,
-            }),
+            key: crypto.randomUUID(),
+            value: JSON.stringify(payload),
           },
         ],
       });

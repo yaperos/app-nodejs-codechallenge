@@ -2,12 +2,16 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateTransactionCommand } from './update-transaction.command';
 import { Transaction } from 'src/models/transaction.entity';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
-@CommandHandler(UpdateTransactionHandler)
-export class UpdateTransactionHandler
+@CommandHandler(UpdateTransactionCommand)
+export class UpdateTransactionCommandHandler
   implements ICommandHandler<UpdateTransactionCommand>
 {
-  constructor(readonly repository: Repository<Transaction>) {}
+  constructor(
+    @InjectRepository(Transaction)
+    readonly repository: Repository<Transaction>,
+  ) {}
 
   async execute(command: UpdateTransactionCommand): Promise<void> {
     try {

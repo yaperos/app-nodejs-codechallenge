@@ -9,7 +9,6 @@ import {
 
 @Injectable()
 export class KafkaConsumerService implements OnApplicationShutdown {
-  
   private readonly kafka: Kafka;
   private readonly consumers: Consumer[] = [];
 
@@ -18,9 +17,13 @@ export class KafkaConsumerService implements OnApplicationShutdown {
       brokers: this.configService.get('KAFKA_BROKERS').split(','),
     });
   }
-  
+
   async consume(topic: ConsumerSubscribeTopics, config: ConsumerRunConfig) {
-    const consumer = this.kafka.consumer({ groupId: this.configService.get('KAFKA_GROUP_ID') });
+    const consumer = this.kafka.consumer({
+      groupId: this.configService.get(
+        'TRANSACTION_UPDATE_STATUS_CONSUMER_GROUP',
+      ),
+    });
     await consumer.connect();
     await consumer.subscribe(topic);
     await consumer.run(config);

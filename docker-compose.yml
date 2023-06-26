@@ -23,71 +23,70 @@ services:
       - transaction_network
     
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: wurstmeister/zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     networks:
       - transaction_network
 
-  kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
+  kafka-queue:
+    image: wurstmeister/kafka:latest
     depends_on: [zookeeper]
+    container_name: transctions-kafka
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_BROKER_ID=1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_JMX_PORT=9991
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_CREATE_TOPICS=transactions-validate:1:1,transactions-update-status:1:1
     ports:
       - 9092:9092
     expose:
       - 29092
     networks:
       - transaction_network
-
-  init-kafka:
-    depends_on: [kafka]
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    entrypoint: [ '/bin/sh', '-c' ]
-    command: |
-      kafka-topics --create --topic transactions-validate --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1
-      kafka-topics --create --topic transactions-update-status --bootstrap-server kafka:29092 --replication-factor 1 --partitions 1
-    networks:
-      - transaction_network
   
   transactions-service:
     build: 
-      context: ./transactions-service
-      dockerfile: .docker/transactions-service.dockerfile
-    container_name: transaction-service
+      context: ./src/transactions-api
+      dockerfile: ../../.docker/transactions-api.dockerfile
+    container_name: transaction-api
     ports:
       - 8080:8080
-    depends_on: [kafka, postgres, cache]
+    depends_on: [kafka-queue, postgres, cache]
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=localhost
       - DB_PORT=5432
       - DB_NAME=transactions
       - DB_USER=postgres
       - DB_PASSWORD=postgres
-      - KAFKA_BROKERS=kafka:29092
+      - DB_TYPE=postgres
+      - KAFKA_BROKERS=kafka-queue:9092
       - TRANSACTION_VALIDATE_TOPIC=transactions-validate
       - TRANSACTION_UPDATE_STATUS_TOPIC=transactions-update-status
-      - REDIS_HOST=cache
-      - REDIS_PORT=6379
+      - TRANSACTION_VALIDATE_CONSUMER_GROUP=transactions-validate-group
+      - TRANSACTION_UPDATE_STATUS_CONSUMER_GROUP=transactions-update-status-group
+      - REDIS_URL=cache:6379
+      - REDIS_TTL=5000
     networks:
       - transaction_network
     
   anti-fraud-service:
     build: 
-      context: ./anti-fraud-service
-      dockerfile: .docker/anti-fraud-service.dockerfile
+      context: ./src/anti-fraud-service
+      dockerfile: ../../.docker/anti-fraud-service.dockerfile
     container_name: anti-fraud-service
-    depends_on: [kafka]
+    depends_on: [kafka-queue]
     environment:
-      - KAFKA_BROKERS=kafka:29092
+      - KAFKA_BROKERS=kafka-queue:9092
       - TRANSACTION_VALIDATE_TOPIC=transactions-validate
       - TRANSACTION_UPDATE_STATUS_TOPIC=transactions-update-status
+      - TRANSACTION_VALIDATE_CONSUMER_GROUP=transactions-validate-group
+      - TRANSACTION_UPDATE_STATUS_CONSUMER_GROUP=transactions-update-status-group
     networks:
       - transaction_network
 

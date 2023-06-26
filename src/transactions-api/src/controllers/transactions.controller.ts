@@ -3,7 +3,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { SaveTransactionCommand } from 'src/handlers/commands/save-transaction.command';
 import { TransferCreate } from 'src/types/transfer-create';
 
-@Controller()
+@Controller('transactions')
 export class TransactionsController {
   constructor(private readonly commandBus: CommandBus) {}
 

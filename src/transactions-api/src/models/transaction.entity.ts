@@ -16,7 +16,7 @@ export class Transaction {
   transactionType: string;
 
   @Column()
-  tranferTypeId: number;
+  transferTypeId: number;
 
   @Column()
   value: number;
