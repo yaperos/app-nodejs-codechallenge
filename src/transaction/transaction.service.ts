@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entity/transaction.entity';
 import { CreateTransactionInput, UpdateTransactionInput } from './dto/inputs';
@@ -8,6 +8,7 @@ import { TranferType } from './enums/transfer-type.enum';
 import { TransactionType } from './enums/transaction-type.enum';
 import { ClientProxy } from '@nestjs/microservices';
 import { PaginationArgs, SearchArgs } from 'src/common/dto/arg';
+import { CreateTransactionArgs } from './dto/args/create-transaction.arg';
 
 @Injectable()
 export class TransactionService {
@@ -75,8 +76,16 @@ export class TransactionService {
       }
 
       
-    async update( {id, transactionStatus}: UpdateTransactionInput ) {
-        const transactionToUpdate = await this.transactionRepository.update( {id: id}, {transactionStatus: transactionStatus} );
-        return transactionToUpdate
+    async update( id: string, transactionStatus: TransactionStatus ): Promise<Transaction> {
+        const transactionUpdate = new UpdateTransactionInput();
+        transactionUpdate.id = id;
+        transactionUpdate.transactionStatus = transactionStatus;
+
+        const transaction = await this.transactionRepository.preload( transactionUpdate );
+      
+        if ( !transaction ) throw new NotFoundException(`Item with id: ${ id } not found`);
+      
+        return await this.transactionRepository.save( transaction );    
+      
     }
 }

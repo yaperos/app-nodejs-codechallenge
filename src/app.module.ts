@@ -7,7 +7,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { TransactionModule } from './transaction/transaction.module';
 import { ClientsModule, Transport } from '@nestjs/microservices'
-import { TransactionsController } from './transactions/transactions.controller';
 
 
 @Module({
@@ -31,7 +30,7 @@ import { TransactionsController } from './transactions/transactions.controller';
   }),
   TransactionModule,
 ],
-  controllers: [TransactionsController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}

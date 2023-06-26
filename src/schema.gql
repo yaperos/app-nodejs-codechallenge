@@ -17,13 +17,13 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Query {
-  transaction(id: ID!): Transaction!
-  transactions(offset: Int = 0, limit: Int = 10, search: String): [Transaction!]!
+  findTransaction(id: ID!): Transaction!
+  findAll(offset: Int = 0, limit: Int = 10, search: String): [Transaction!]!
 }
 
 type Mutation {
-  CreateTransaction(createTransactionInput: CreateTransactionInput!): Transaction!
-  updateList(updateTransactionInput: UpdateTransactionInput!): Transaction!
+  createTransaction(createTransactionInput: CreateTransactionInput!): Transaction!
+  update(id: String!, transactionStatus: TransactionStatus!): Transaction!
 }
 
 input CreateTransactionInput {
@@ -33,7 +33,9 @@ input CreateTransactionInput {
   value: Int!
 }
 
-input UpdateTransactionInput {
-  id: String!
-  transactionStatus: String!
+"""Estado de la transacción"""
+enum TransactionStatus {
+  pending
+  approved
+  rejected
 }

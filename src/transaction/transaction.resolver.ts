@@ -1,12 +1,11 @@
 import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TransactionService } from './transaction.service';
 import { Transaction } from './entity/transaction.entity';
-import { CreateTransactionInput, UpdateTransactionInput } from './dto/inputs';
-import { ClientProxy, MessagePattern, Payload } from '@nestjs/microservices';
-import { Logger, Inject, ParseUUIDPipe } from '@nestjs/common';
-import { TransactionInput } from './dto/inputs/transaction.input';
-import { TransactionStatus } from './enums/transaction-status.enum';
+import { ParseUUIDPipe } from '@nestjs/common';
 import { PaginationArgs, SearchArgs } from 'src/common/dto/arg';
+import { UpdateTransactionArgs } from './dto/args/update-transaction.arg';
+import { CreateTransactionArgs } from './dto/args/create-transaction.arg';
+import { CreateTransactionInput } from './dto/inputs';
 
 @Resolver()
 export class TransactionResolver {
@@ -15,7 +14,7 @@ export class TransactionResolver {
         private readonly transactionService: TransactionService,
     ){}
 
-    @Mutation( () => Transaction, { name: "CreateTransaction"})
+    @Mutation( () => Transaction, { name: "createTransaction"})
     async createTransaction(
         @Args('createTransactionInput') createTransactionInput: CreateTransactionInput
     ): Promise<Transaction> {
@@ -25,26 +24,26 @@ export class TransactionResolver {
         return newTransaction;
     }
 
-    @Query(() => Transaction, { name: 'transaction' })
+    @Query(() => Transaction, { name: 'findTransaction' })
     async findOne(
         @Args('id', { type: () => ID }, ParseUUIDPipe ) id: string,
     ): Promise<Transaction> {
-        return this.transactionService.findOne( id );
+        return await this.transactionService.findOne( id );
     }
 
-    @Query(() => [Transaction], { name: 'transactions' })
+    @Query(() => [Transaction], { name: 'findAll' })
     async findAll(
         @Args() paginationArgs: PaginationArgs,
         @Args() searchArgs: SearchArgs,
     ):Promise<Transaction[]> {
-        return this.transactionService.findAll(paginationArgs, searchArgs);
+        return await this.transactionService.findAll(paginationArgs, searchArgs);
     }
 
-    @Mutation(() => Transaction)
-    updateList(
-        @Args('updateTransactionInput') updateTransactionInput: UpdateTransactionInput
+    @Mutation(() => Transaction, { name: 'update' })
+    async updateList(
+        @Args() updateTransactionArgs: UpdateTransactionArgs
     ) {
-        return this.transactionService.update(updateTransactionInput);
+        return await this.transactionService.update(updateTransactionArgs.id, updateTransactionArgs.transactionStatus);
     }
 
 }

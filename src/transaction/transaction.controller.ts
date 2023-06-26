@@ -24,6 +24,6 @@ export class TransactionController {
 
         transactionupdate.id = Transaction.transactionCreated.id;
 
-        this.transactionService.update(transactionupdate);
+        this.transactionService.update(transactionupdate.id, transactionupdate.transactionStatus );
     }
 }
