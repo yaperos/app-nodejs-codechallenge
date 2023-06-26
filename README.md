@@ -62,17 +62,15 @@ PUT: http://localhost:3800/api/update/{transactionExternalId}
                     |                  |      |                  |      		  
                     |    Antifraud     |      |    Transaction   |    		  
                     |     Service      |      |     Service      |          	  
-                    |                  |      |           	 |      		   
-		    +------------------+      +------------------+ 
-		    					|
-	 				      +------------------+
-					      |			 |
-					      |			 |
-					      |     MongoDB 	 |	
-					      |			 |
-     					      +--------+---------+
+                    |                  |      |           	 	 |      		   
+					+------------------+      +------------------+ 
+													   |
+											  +------------------+	
+											  |			 		 |
+											  |     MongoDB 	 |	
+											  |			 		 |
+											  +--------+---------+
 					
-
 # Data Base name and Collection name
 financial.transactions
 
