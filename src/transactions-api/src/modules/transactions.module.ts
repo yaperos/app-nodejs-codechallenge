@@ -10,6 +10,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Transaction } from 'src/models/transaction.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ValidatedTransactionsConsumer } from 'src/consumers/transaction.consumer';
+import { GraphQLModule } from '@nestjs/graphql'
+import { join } from 'path';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { TransactionResolver } from 'src/resolvers/transaction.resolver';
 
 export const CommandHandlers = [
   SaveTransactionCommandHandler,
@@ -24,6 +28,12 @@ export const QueryHandlers = [RetrieveTransactionQueryHandler];
     RedisCacheModule,
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+        driver: ApolloDriver,
+        autoSchemaFile: join(process.cwd(), 'schema.gql'),
+        sortSchema: true,
+        playground: true,
     }),
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
@@ -43,6 +53,7 @@ export const QueryHandlers = [RetrieveTransactionQueryHandler];
   controllers: [TransactionsController],
   providers: [
     ValidatedTransactionsConsumer,
+    TransactionResolver,
     ...CommandHandlers,
     ...QueryHandlers,
   ],

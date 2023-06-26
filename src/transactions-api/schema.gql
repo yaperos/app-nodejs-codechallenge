@@ -1,0 +1,43 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  transactions(createdAt: DateTime, transactionStatus: TransactionStatusRequest, transactionType: TransactionTypeRequest, transferExternalId: String, value: Float): [Transaction!]!
+}
+
+type Transaction {
+  accountExternalId: String!
+  createdAt: DateTime!
+  externalId: String!
+  id: ID!
+  status: String!
+  transactionType: String!
+  transferTypeId: Float!
+  updatedAt: DateTime!
+  value: Float!
+}
+
+enum TransactionStatus {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+input TransactionStatusRequest {
+  name: TransactionStatus!
+}
+
+enum TransactionType {
+  CREDIT
+  DEBIT
+}
+
+input TransactionTypeRequest {
+  name: TransactionType!
+}

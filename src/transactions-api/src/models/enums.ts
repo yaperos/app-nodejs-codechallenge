@@ -1,10 +1,11 @@
 export enum TransactionStatus {
-  Pending = 'pending',
-  Approved = 'approved',
-  Rejected = 'rejected',
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
 }
 
 export enum TransactionType {
-  Debit = 'debit',
-  Credit = 'credit',
+  DEBIT = 'DEBIT',
+  CREDIT = 'CREDIT',
 }
+

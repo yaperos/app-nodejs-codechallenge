@@ -11,13 +11,13 @@ export class ValidateTransactionService {
     if (transaction.value > 1000) {
       return {
         id: transaction.id,
-        status: TransactionStatus.Rejected,
+        status: TransactionStatus.REJECTED,
       };
     }
 
     return {
       id: transaction.id,
-      status: TransactionStatus.Approved,
+      status: TransactionStatus.APPROVED,
     };
   }
 }

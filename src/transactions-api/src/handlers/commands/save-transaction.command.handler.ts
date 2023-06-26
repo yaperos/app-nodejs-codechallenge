@@ -28,14 +28,14 @@ export class SaveTransactionCommandHandler
       transaction.updatedAt = new Date();
 
       transaction.value = command.value;
-      transaction.status = TransactionStatus.Pending;
+      transaction.status = TransactionStatus.PENDING;
 
       if (isEmpty(command.accountExternalIdDebit)) {
         transaction.accountExternalId = command.accountExternalIdCredit;
-        transaction.transactionType = TransactionType.Credit;
+        transaction.transactionType = TransactionType.CREDIT;
       } else {
         transaction.accountExternalId = command.accountExternalIdDebit;
-        transaction.transactionType = TransactionType.Debit;
+        transaction.transactionType = TransactionType.DEBIT;
       }
 
       const createdTransaction = await this.repository.save(transaction);

@@ -1,4 +1,4 @@
 export enum TransactionStatus {
-  Approved = 'approved',
-  Rejected = 'rejected',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
 }
