@@ -3,8 +3,8 @@ import { Cache } from 'cache-manager';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
-import { Inject, Injectable } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 
 import { TransactionInput } from '../graphql/types';
 import { TransactionStatus } from '../constants/enums';
@@ -13,7 +13,9 @@ import { KafkaService } from '../../kafka/services/kafka.service';
 
 @Injectable()
 export class TransactionService {
+  private readonly logger = new Logger(TransactionService.name);
   private createTransactionEvent: string;
+
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Transaction)
@@ -53,6 +55,9 @@ export class TransactionService {
       newTransaction,
     );
 
+    this.logger.log(
+      `Emiting transaction create event for transaction ID ${savedTransaction.id}`,
+    );
     this.kafkaService.emitEvent(
       this.createTransactionEvent,
       JSON.stringify(savedTransaction),
@@ -62,6 +67,9 @@ export class TransactionService {
   }
 
   async updateTransactionStatus(id: string, status: TransactionStatus) {
+    this.logger.log(
+      `Updating transaction status for transaction ID ${id} to ${TransactionStatus[status]}`,
+    );
     await this.transactionRepository.update(
       { id },
       { transactionStatusId: status },

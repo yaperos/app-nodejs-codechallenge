@@ -6,6 +6,12 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const logEnabled = process.env.LOG_ENABLED === 'true';
+
+  if (logEnabled) {
+    app.useLogger(['log', 'error', 'warn']);
+  }
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {

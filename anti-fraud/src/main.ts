@@ -24,6 +24,12 @@ async function bootstrap() {
     },
   );
 
+  const logEnabled = process.env.LOG_ENABLED === 'true';
+
+  if (logEnabled) {
+    app.useLogger(['log', 'error', 'warn']);
+  }
+
   await app.listen();
 }
 bootstrap();
