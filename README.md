@@ -1,3 +1,6 @@
+# Developed by 
+Max Henry Valenzuela Del Villar
+
 # Used technology
 <ol>
   <li>NodeJS</li>
