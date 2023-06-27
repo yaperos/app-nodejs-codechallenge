@@ -13,6 +13,7 @@ export const typeOrmConfig = TypeOrmModule.forRootAsync({
     port: configService.get('DB_PORT'),
     username: configService.get('DB_USER'),
     database: configService.get('DB_NAME'),
+    password: configService.get('DB_PASSWORD'),
     entities: [Transaction],
     synchronize: true,
   }),

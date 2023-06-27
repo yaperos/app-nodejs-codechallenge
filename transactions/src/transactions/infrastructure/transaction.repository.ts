@@ -14,9 +14,9 @@ export class TransactionRepository {
     await this.repository.save(transaction);
   }
 
-  public async findById(id: string): Promise<Transaction> {
+  public async findById(externalId: string): Promise<Transaction> {
     return await this.repository.findOne({
-      where: { id },
+      where: { externalId },
     });
   }
 

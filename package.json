@@ -9,10 +9,15 @@
     "test": "yarn workspace transactions test && yarn workspace antifraud test",
     "test:cov": "yarn workspace transactions test:cov && yarn workspace antifraud test:cov",
     "lint": "yarn workspace transactions lint && yarn workspace antifraud lint",
-    "start:trx": "yarn workspace transactions start:dev"
+    "start:trx": "yarn workspace transactions start:dev",
+    "start:prod:trx": "yarn workspace transactions start:prod",
+    "start:prod:frd": "yarn workspace antifraud start:prod",
+    "build:trx": "yarn workspace transactions build",
+    "build:frd": "yarn workspace antifraud build"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@nestjs/cli": "^10.0.5",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",
@@ -25,7 +30,6 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
     "@types/express": "^4.17.17",
