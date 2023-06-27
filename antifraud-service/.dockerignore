@@ -1,0 +1,13 @@
+**/node_modules/
+**/dist
+.git
+logs
+*.log
+npm-debug.log
+.npm
+.coverage
+.coverage.*
+*.lcov
+#.env
+.aws
+package-lock.json
