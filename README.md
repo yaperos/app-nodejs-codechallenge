@@ -1,21 +1,21 @@
 # Yape Code Challenge :rocket:
 
-## Requisitos previos
+## Previous Requirements
 
-1. Instalar node-v18.x.x
-2. Instalar npm
+1. Install node-v18.x.x
+2. Install npm
 * npm
   ```sh
   npm install npm@latest -g
   ```
-3. Instalar docker
+3. Install docker
 
 
 ## Instalation
 
 _Below is an example of how to install and configure the application._
 
-1. Clona the repository
+1. Clon the repository
    ```sh
    git clone https://github.com/CarlosAnchayhuaRamos/app-nodejs-codechallenge
    ```
