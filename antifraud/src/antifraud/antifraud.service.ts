@@ -12,7 +12,7 @@ export class AntifraudService {
   }
 
   public validateTransaction(transaction: { id: string; value: number }) {
-    if (transaction.value > this.MAX_TRANSACTION_VALUE) {
+    if (transaction.value > Number(this.MAX_TRANSACTION_VALUE)) {
       return 'failed';
     }
 

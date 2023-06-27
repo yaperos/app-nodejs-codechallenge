@@ -12,6 +12,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
     networks:
       - backend
 
@@ -55,5 +57,50 @@ services:
     environment:
       KAFKA_BROKER_ID: ignored
       KAFKA_ZOOKEEPER_CONNECT: ignored
+    networks:
+      - backend
+
+  transaction-service:
+    image: transaction-service
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=yape
+      - KAFKA_BROKER=kafka:29092
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Docker/transaction.dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_started
+      kafka-topics:
+        condition: service_started
+      
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+
+  antifraud-service:
+    image: antifraud-service
+    environment:
+      - MAX_TRANSACTION_VALUE=1000
+      - KAFKA_BROKER=kafka:29092
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Docker/antifraud.dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+      kafka-topics:
+        condition: service_started
+    ports:
+      - "3001:3001"
     networks:
       - backend
