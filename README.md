@@ -1,5 +1,43 @@
 # Yape Code Challenge :rocket:
 
+## Requisitos previos
+
+1. Instalar node-v18.x.x
+2. Instalar npm
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+3. Instalar docker
+
+
+## Instalation
+
+_Below is an example of how to install and configure the application._
+
+1. Clona the repository
+   ```sh
+   git clone https://github.com/CarlosAnchayhuaRamos/app-nodejs-codechallenge
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Run in terminal
+   ```sh
+   docker compose up -d
+   ```
+
+## Use
+
+1. You can review the Query and Mutations in the apollo interface: http://localhost:3000/graphql
+
+2. Use PGAdmin to manage PostgreSQL database: http://localhost:5050
+
+3. Don't worry about kafka, it already has everything set up to work properly. 
+
+## Challenge
+
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
