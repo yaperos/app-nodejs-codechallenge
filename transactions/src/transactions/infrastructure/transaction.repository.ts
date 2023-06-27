@@ -14,12 +14,14 @@ export class TransactionRepository {
     await this.repository.save(transaction);
   }
 
+  // TODO: add Redis decorator to cache transaction
   public async findById(externalId: string): Promise<Transaction> {
     return await this.repository.findOne({
       where: { externalId },
     });
   }
 
+  // TODO: adde Redis decorator to invalidate cache
   public async update(
     id: string,
     transaction: Partial<Transaction>,

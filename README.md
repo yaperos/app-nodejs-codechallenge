@@ -1,3 +1,32 @@
+# HOW TO RUN
+
+Kafka tarda un arrancar, sea paciente por favor 🙏
+
+Todos los servicios estan en el docker compose, para levantar todo el proyecto use:
+
+```
+docker-compose up
+```
+
+Si desea probar las endpoints puede ejecutar lo siguiente
+
+Para buscar una transacción
+
+```
+curl --location 'http://localhost:3000/graphql' \
+--header 'Content-Type: application/json' \
+--data '{"query":"query getTransaction($id: String!){\ngetTransaction(id: $id) {\n    transactionExternalId\n    transactionType\n      transactionStatus\n      value\n      createdAt\n}\n}\n","variables":{"id":"a71a4a5e-43b2-4658-a43a-2b447a3f2a63"}}'
+```
+
+Para crear una transacción:
+
+```
+curl --location 'http://localhost:3000/graphql' \
+--header 'Content-Type: application/json' \
+--data '{"query":"mutation createTransaction($transactionRequest: TransactionRequestDto!){\n    createTransaction(transactionRequest: $transactionRequest) {\n        transactionExternalId\n        transactionType\n        transactionStatus\n        value\n        createdAt\n    }\n}","variables":{"transactionRequest":{"accountExternalIdDebit":"57a51cb1-3587-43a9-a352-c52bd3e7606c","accountExternalIdCredit":"0376de90-b11a-445a-8163-d8b5b46c235b","transferTypeId":"1","value":10300}}}'
+```
+
+
 # Yape Code Challenge 🚀
 
 Our code challenge will let you marvel us with your Jedi coding skills 😄.

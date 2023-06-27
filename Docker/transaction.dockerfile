@@ -1,3 +1,5 @@
+# TODO: add multistage deploy
+
 FROM node:18.15-alpine AS builder
 
 ARG DB_HOST
