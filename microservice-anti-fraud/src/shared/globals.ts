@@ -1,0 +1,1 @@
+export const MAXIMUN_VALUE_TO_REJECT = 1000;
