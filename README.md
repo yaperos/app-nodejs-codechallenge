@@ -1,82 +1,63 @@
-# Yape Code Challenge :rocket:
+# Financial Transaction and Anti-Fraud Microservices
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+This repository contains two microservices: the Transaction Microservice and the Anti-Fraud Microservice. The Transaction Microservice is responsible for handling financial transactions, while the Anti-Fraud Microservice validates these transactions.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Setting up the project
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+1. Run the docker-compose file to start the microservices and their dependencies.
+2. The GraphQL API will be available at `http://localhost:4000/graphql`.
 
-# Problem
+## Transaction Microservice
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+The Transaction Microservice is responsible for creating and retrieving financial transactions. It exposes a GraphQL API for creating transactions and retrieving transaction details.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+### Using the Transaction Microservice
 
-Every transaction with a value greater than 1000 should be rejected.
+To create a transaction, you can send a GraphQL mutation to the Transaction Microservice. For example:
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
-
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+```graphql
+mutation {
+  createTransaction(
+    accountExternalIdDebit: "12345",
+    accountExternalIdCredit: "67890",
+    transactionType: "1",
+    value: 120
+  ) {
+    transactionExternalId
+    accountExternalIdDebit
+    accountExternalIdCredit
+    value
+    transactionStatus
+    createdAt
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
+To retrieve a transaction, you can send a GraphQL query:
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+```graphql
+query {
+  getTransaction(transactionExternalId: "transaction-id") {
+    accountExternalIdCredit
+    accountExternalIdDebit
+    createdAt
+    transactionExternalId
+    transactionStatus
+    transactionType
+    value
+  }
 }
 ```
 
-## Optional
+## Anti-Fraud Microservice
+The Anti-Fraud Microservice is responsible for validating financial transactions created by the Transaction Microservice. If a transaction has a value greater than 1000, it will be rejected; otherwise, it will be approved.
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## Integration
+The Anti-Fraud Microservice is integrated with the Transaction Microservice through Kafka. When a transaction is created, the Transaction Microservice sends a message to a Kafka topic. The Anti-Fraud Microservice listens to this topic, validates the transaction, and updates the transaction status accordingly.
 
-You can use Graphql;
+## Testing the Microservices Together
+Ensure both microservices are running.
 
-# Send us your challenge
+Create a transaction using the Transaction Microservice's GraphQL API.
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+Check the transaction details to see if the status has been updated based on the validation performed by the Anti-Fraud Microservice.
