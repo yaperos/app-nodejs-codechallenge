@@ -4,7 +4,7 @@ import { updateTransactionStatus } from '../controllers/transaction.controller.j
 
 const kafka = new Kafka({
   clientId: 'transaction-microservice',
-  brokers: ['localhost:9092'],
+  brokers: ['kafka:9092'],
 });
 
 const consumer = kafka.consumer({ groupId: 'transaction-group' });

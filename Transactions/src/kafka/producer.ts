@@ -3,7 +3,7 @@ import { Transaction } from '../models/transaction.model.js';
 
 const kafka = new Kafka({
   clientId: 'transactions-microservice',
-  brokers: ['localhost:9092'],
+  brokers: ['kafka:9092'],
 });
 
 const producer = kafka.producer();

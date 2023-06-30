@@ -8,7 +8,7 @@ import { Transaction } from './models/transaction.model.js';
 
 const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: 'localhost',
+  host: 'postgres',
   port: 5432,
   username: 'postgres',
   password: 'postgres',

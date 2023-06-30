@@ -3,7 +3,7 @@ import { validateTransaction } from '../controllers/antiFraud.controller.js';
 
 const kafka = new Kafka({
   clientId: 'anti-fraud-microservice',
-  brokers: ['localhost:9092'],
+  brokers: ['kafka:9092'],
 });
 
 const consumer = kafka.consumer({ groupId: 'anti-fraud-group' });
