@@ -2,24 +2,62 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: postgres
+    hostname: postgres
     ports:
-      - "5432:5432"
+      - 5434:5432
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    networks:
+      - ms_yape
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - ms_yape
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
+    hostname: 'kafka-internal.io'
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_HOST_NAME: kafka-internal.io
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-internal.io:29092,PLAINTEXT_HOST://kafka-internal.io:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - ms_yape
+  microservice-anti-fraud:
+    image: microservice-anti-fraud
+    container_name: microservice-anti-fraud
+    env_file: .env
+    build:
+      context: ./microservice-anti-fraud
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - kafka
+    networks:
+      - ms_yape
+  microservice-transaction:
+    image: microservice-transaction
+    container_name: microservice-transaction
+    env_file: .env
+    build:
+      context: ./microservice-transaction
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - 3000:3000
+    networks:
+      - ms_yape
+networks:
+  ms_yape:
