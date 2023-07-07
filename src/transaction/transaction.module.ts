@@ -5,6 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './entity/transaction.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TransactionController } from './transaction.controller';
+import { ConfigModule } from '../config/config.module';
+import * as process from 'process';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Module({
   providers: [
@@ -12,6 +17,7 @@ import { TransactionController } from './transaction.controller';
     TransactionService
   ],
   imports:[
+    ConfigModule,
     TypeOrmModule.forFeature([ Transaction ]),
     ClientsModule.register([
       {
@@ -19,15 +25,15 @@ import { TransactionController } from './transaction.controller';
         transport: Transport.KAFKA,
         options: {
           consumer: {
-            groupId: 'kafka-consumer',
+            groupId: process.env.BROKER_CONSUMER,
           },
           client: {
-            brokers: ['pkc-ymrq7.us-east-2.aws.confluent.cloud:9092'],
+            brokers: [process.env.BROKER_SERVER],
             ssl: true,
             sasl: {
               mechanism: 'plain',
-              username: 'JOEYP22BDKQ4GLKI',
-              password: 'VNZMmXdNQaAVs0tvFpkJy2KW4fourFbpT5KH60JSK1Y0A6pfY60nIsK/Ec0/GbWx'
+              username: process.env.BROKER_USERNAME,
+              password: process.env.BROKER_PASSWORD
             }
             
           },

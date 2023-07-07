@@ -6,8 +6,6 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { TransactionModule } from './transaction/transaction.module';
-import { ClientsModule, Transport } from '@nestjs/microservices'
-
 
 @Module({
   imports: [

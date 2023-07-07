@@ -8,12 +8,16 @@ import { TranferType } from './enums/transfer-type.enum';
 import { TransactionType } from './enums/transaction-type.enum';
 import { ClientProxy } from '@nestjs/microservices';
 import { PaginationArgs, SearchArgs } from 'src/common/dto/arg';
-import { CreateTransactionArgs } from './dto/args/create-transaction.arg';
+import { ConfigurationEnum } from '../config/config.keys';
+import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class TransactionService {
 
     constructor(
+        
+        private readonly configService: ConfigService,
+
         @InjectRepository( Transaction )
         private readonly transactionRepository: Repository<Transaction>,
 
@@ -45,8 +49,9 @@ export class TransactionService {
         transaction.value = createTransactionInput.value;
 
         const newTransaction = this.transactionRepository.create( transaction );  
-        const transactionCreated = await this.transactionRepository.save( newTransaction )
-        await this.kafka.emit('message.created', {transactionCreated});
+        const transactionCreated = await this.transactionRepository.save( newTransaction );
+        const topic = this.configService.get(ConfigurationEnum.TOPIC_MESSAGE);
+        await this.kafka.emit(topic, {transactionCreated});
         return transactionCreated; 
 
     }

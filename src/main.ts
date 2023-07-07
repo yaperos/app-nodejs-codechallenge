@@ -1,30 +1,32 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ClientsModule, MicroserviceOptions } from '@nestjs/microservices';
-import { Transport } from '@nestjs/microservices'
-import { GqlModuleAsyncOptions, GqlModuleOptions, GraphQLModule } from '@nestjs/graphql';
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/dist/esm/plugin/landingPage/default';
-import { KafkaModule } from 'nestjs-kafka';
+import { MicroserviceOptions } from '@nestjs/microservices';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const BROKER_SERVER = process.env.BROKER_SERVER;
+  const BROKER_USERNAME = process.env.BROKER_USERNAME;
+  const BROKER_PASSWORD = process.env.BROKER_PASSWORD;
+  const BROKER_CONSUMER = process.env.BROKER_CONSUMER;
 
   app.connectMicroservice({
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: ['pkc-ymrq7.us-east-2.aws.confluent.cloud:9092'],
+        brokers: [BROKER_SERVER],
         ssl: true,
         sasl: {
           mechanism: 'plain',
-          username: 'JOEYP22BDKQ4GLKI',
-          password: 'VNZMmXdNQaAVs0tvFpkJy2KW4fourFbpT5KH60JSK1Y0A6pfY60nIsK/Ec0/GbWx'
+          username: BROKER_USERNAME,
+          password: BROKER_PASSWORD
         }
         
       },
       consumer: {
-        groupId: 'kafka-consumer',
+        groupId: BROKER_CONSUMER,
       },
       subscribe: {
         fromBeginning: true,
@@ -41,7 +43,8 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(3000);
+  const PORT = process.env.PORT || 3000;
+  await app.listen(PORT);
 }
 
 bootstrap();

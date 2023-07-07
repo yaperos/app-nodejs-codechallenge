@@ -1,15 +1,16 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { TransactionInput, TransactionInputOnject } from './dto/inputs/transaction.input';
+import { TransactionInputOnject } from './dto/inputs/transaction.input';
 import { TransactionStatus } from './enums/transaction-status.enum';
 import { CreateTransactionInput, UpdateTransactionInput } from './dto/inputs';
+
 
 @Controller('transaction')
 export class TransactionController {
 
     constructor(
-        private readonly transactionService: TransactionService,
+        private readonly transactionService: TransactionService
     ){}
 
     @MessagePattern('transaction.receipt')

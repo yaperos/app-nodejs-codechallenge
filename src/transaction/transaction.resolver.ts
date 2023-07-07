@@ -4,7 +4,6 @@ import { Transaction } from './entity/transaction.entity';
 import { ParseUUIDPipe } from '@nestjs/common';
 import { PaginationArgs, SearchArgs } from 'src/common/dto/arg';
 import { UpdateTransactionArgs } from './dto/args/update-transaction.arg';
-import { CreateTransactionArgs } from './dto/args/create-transaction.arg';
 import { CreateTransactionInput } from './dto/inputs';
 
 @Resolver()
