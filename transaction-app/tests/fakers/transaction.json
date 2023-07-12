@@ -1,0 +1,6 @@
+{
+  "accountExternalIdDebit": "Guid",
+  "accountExternalIdCredit": "Guid",
+  "tranferTypeId": 1,
+  "value": 120
+}

@@ -23,3 +23,9 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  mongo:
+    image: mongo:6.0.5
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongo:/data/db

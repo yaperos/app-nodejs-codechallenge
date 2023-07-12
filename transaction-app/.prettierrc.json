@@ -1,0 +1,12 @@
+{
+  "singleQuote": true,
+  "printWidth": 150,
+  "overrides": [
+    {
+      "files": ["*.html", "*.css", "*.scss", "*.sass", "*.less", "*.yml", "*.yaml", "*.config"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
+}
