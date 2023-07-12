@@ -26,7 +26,8 @@ const start = async () => {
   app.listen(port, async () => {
     await database.connect();
     await kafkaProducer.connect();
-    subscribeTransactionTopics();
+    await subscribeTransactionTopics();
+
     logger.info(`Server is running on http://localhost:${port}`);
   });
 };

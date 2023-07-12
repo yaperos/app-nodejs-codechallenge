@@ -6,7 +6,7 @@ let producer: Producer;
 
 if (!kafka) {
   kafka = new Kafka({
-    clientId: process.env.KAFKA_CLIENT_ID,
+    clientId: 'my-kafka-app',
     brokers: process.env.KAFKA_HOST.split(','),
   });
 
