@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Kafka, logLevel, Consumer, Producer } from 'kafkajs';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class KafkaService {
@@ -42,7 +43,10 @@ export class KafkaService {
   public emit(topic: string, message: any) {
     return this.producer.send({
       topic,
-      messages: [message],
+      messages: [{
+        key: uuid(),
+        value: JSON.stringify(message)
+      }],
     });
   }
 

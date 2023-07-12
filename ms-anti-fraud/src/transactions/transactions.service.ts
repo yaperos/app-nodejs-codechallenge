@@ -9,10 +9,10 @@ export class TransactionsService {
   ) {}
 
   public async evaluate(data: any): Promise<void> {
-    await this.events.emit('transaction_approved', {
-      key: (new Date).getTime().toString(),
-      value: JSON.stringify({...data,
-        process: 'ok'})
+    const topic = data.value > 1000 ? 'transaction_rejected' : 'transaction_approved';
+
+    await this.events.emit(topic, {
+      transactionExternalId: data.transactionExternalId,
     });
   }
 }
