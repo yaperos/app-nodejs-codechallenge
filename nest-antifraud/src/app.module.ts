@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { getEnvironmentVars } from './app/Enviroment';
-import { CustomKafkaClientModule } from './app/kafka';
 
 @Module({
   imports: [
@@ -11,7 +10,6 @@ import { CustomKafkaClientModule } from './app/kafka';
       isGlobal: true,
       load: [getEnvironmentVars],
     }),
-    CustomKafkaClientModule,
   ],
   controllers: [AppController],
   providers: [],

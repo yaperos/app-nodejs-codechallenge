@@ -1,17 +1,18 @@
-import { Controller, Inject, Logger } from '@nestjs/common';
-import { KAFKA_INSTANCE_NAME, KAFKA_TOPIC_NOTIFY_CREATE } from './app/kafka';
-import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Logger } from '@nestjs/common';
+import { KAFKA_TOPIC_ANTIFRAUD_VALIDATION } from './app/kafka';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { TransactionMessageDto } from './dto/transaction.message';
+import { TransactionMessageResponse } from './dto/transaction.response';
 
 @Controller()
 export class AppController {
-  constructor(
-    @Inject(KAFKA_INSTANCE_NAME)
-    private readonly client: ClientKafka,
-  ) {}
-
-  @MessagePattern(KAFKA_TOPIC_NOTIFY_CREATE)
-  async infoTransaction(@Payload() message: any): Promise<any> {
-    Logger.log('MESSAGE RECEIVED', message);
-    return { response: 'FROM MICROSERVICE' };
+  @MessagePattern(KAFKA_TOPIC_ANTIFRAUD_VALIDATION)
+  async infoTransaction(@Payload() dto: TransactionMessageDto): Promise<any> {
+    const { id, value } = dto;
+    const response: TransactionMessageResponse = {
+      id,
+      status: value > 1000 ? 'REJECTED' : 'APPROVED',
+    };
+    return response;
   }
 }

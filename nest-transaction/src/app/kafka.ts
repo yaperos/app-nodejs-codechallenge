@@ -5,7 +5,7 @@ import {
   ClientProvider,
 } from '@nestjs/microservices';
 
-export const KAFKA_TOPIC_NOTIFY_CREATE = 'topic-notify-create';
+export const KAFKA_TOPIC_ANTIFRAUD_VALIDATION = 'topic-notify-antifraud';
 
 export const KAFKA_INSTANCE_NAME = 'my-kafka-instance';
 export const KAFKA_CONSUMER_CLIENTID = 'transaction-app';

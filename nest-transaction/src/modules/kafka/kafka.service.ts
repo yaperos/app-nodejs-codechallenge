@@ -3,7 +3,7 @@ import { ClientKafka } from '@nestjs/microservices';
 
 import {
   KAFKA_INSTANCE_NAME,
-  KAFKA_TOPIC_NOTIFY_CREATE,
+  KAFKA_TOPIC_ANTIFRAUD_VALIDATION,
 } from '../../app/kafka';
 import { TransactionMessage } from '../transaction/entities/transaction.message';
 
@@ -15,7 +15,7 @@ export class KafkaService {
   ) {}
 
   async onModuleInit() {
-    [KAFKA_TOPIC_NOTIFY_CREATE].forEach((topic) => {
+    [KAFKA_TOPIC_ANTIFRAUD_VALIDATION].forEach((topic) => {
       this.kafka.subscribeToResponseOf(topic);
     });
     await this.kafka.connect();
@@ -25,9 +25,9 @@ export class KafkaService {
     await this.kafka.close();
   }
 
-  async sendMesage(message: TransactionMessage): Promise<any> {
+  async antiFraudValidation(message: TransactionMessage): Promise<any> {
     return await this.kafka
-      .send(KAFKA_TOPIC_NOTIFY_CREATE, JSON.stringify(message))
+      .send(KAFKA_TOPIC_ANTIFRAUD_VALIDATION, JSON.stringify(message))
       .toPromise();
   }
 }

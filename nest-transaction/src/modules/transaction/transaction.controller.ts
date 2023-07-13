@@ -12,7 +12,7 @@ import {
 
 import { ToMessageDto } from './utils/functions';
 import { KafkaService } from '../kafka/kafka.service';
-import { KAFKA_TOPIC_NOTIFY_CREATE } from '../../app/kafka';
+import { KAFKA_TOPIC_ANTIFRAUD_VALIDATION } from '../../app/kafka';
 
 import { TransactionService } from './transaction.service';
 import { ParseMongoIdPipe } from '../../common/parse-mongo-id.pipe';
@@ -35,7 +35,7 @@ export class TransactionController {
       throw new InternalServerErrorException('INTERNAL_ERROR');
     }
 
-    const responseKafka = await this.kafkaService.sendMesage(
+    const responseKafka = await this.kafkaService.antiFraudValidation(
       ToMessageDto(transaction),
     );
     Logger.log(responseKafka);
