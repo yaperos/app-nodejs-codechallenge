@@ -14,8 +14,14 @@ export class TransactionService {
 
   async create(
     createTransactionDto: CreateTransactionDto,
+    accountExternalIdDebit: string,
+    accountExternalIdCredit: string,
   ): Promise<Transaction> {
-    return await this.model.create(createTransactionDto);
+    return await this.model.create({
+      ...createTransactionDto,
+      accountExternalIdDebit,
+      accountExternalIdCredit,
+    });
   }
 
   async findAll(): Promise<Transaction[]> {

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ApiTags } from '@nestjs/swagger';
 import {
   Get,
@@ -26,10 +27,26 @@ export class TransactionController {
     private readonly transactionStateService: TransactionStateService,
   ) {}
 
+  @Delete('clean-up')
+  async removeAll() {
+    const transactions = await this.transactionService.findAll();
+    await Promise.all(
+      transactions.map(async (t) => {
+        await this.transactionStateService.remove(t.id);
+        await this.remove(t.id);
+      }),
+    );
+    return true;
+  }
+
   @Post()
   async create(@Body() createTransactionDto: CreateTransactionDto) {
+    const accountExternalIdDebit = uuidv4();
+    const accountExternalIdCredit = uuidv4();
     const transaction = await this.transactionService.create(
       createTransactionDto,
+      accountExternalIdDebit,
+      accountExternalIdCredit,
     );
     if (!transaction) {
       throw new InternalServerErrorException('INTERNAL_ERROR');
