@@ -83,4 +83,10 @@ If you have any questions, please let us know.
 
 # BUILD AND UP
 
+### BEFORE
+
+Create file .env with command `cp example.env .env`
+
+### AFTER
+
 execute `docker-compose build && docker-compose up -d` for run all process and microservices

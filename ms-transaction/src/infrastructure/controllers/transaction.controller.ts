@@ -18,7 +18,17 @@ import GetAllTransactionsUseCase from '../../application/usecases/getAllTransact
 import GetTransactionUseCase from '../../application/usecases/getTransaction.usecase';
 import TransactionVerifiedUseCase from '../../application/usecases/transactionVerified.usecase';
 import UpdateTransactionUseCase from '../../application/usecases/updateTransaction.usecase';
+import { GetTransactionDto } from '../../application/dtos/getTransaction.dto';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import Transaction from '../../domain/transaction';
 
+@ApiTags('Transaccion')
 @Controller('transactions')
 export class TransactionController {
   constructor(
@@ -33,11 +43,16 @@ export class TransactionController {
   ) {}
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todas las transacciones' })
+  @ApiResponse({ status: 200, type: Transaction, isArray: true })
   async getTransactions(): Promise<any> {
     return await this.getAllTransactionsUseCase.handler();
   }
 
   @Get(':transactionId')
+  @ApiOperation({ summary: 'Obtener una transaccion por id' })
+  @ApiParam({ name: 'transactionId', format: 'uuid' })
+  @ApiResponse({ status: 200, type: GetTransactionDto })
   async getTransaction(
     @Param('transactionId') transactionId: string,
   ): Promise<any> {
@@ -45,6 +60,9 @@ export class TransactionController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Crear una transaccion' })
+  @ApiBody({ type: TransactionCommand })
+  @ApiResponse({ status: 200, type: Transaction })
   async createTransaction(
     @Body() createTransactionDTO: TransactionCommand,
   ): Promise<any> {
@@ -62,6 +80,9 @@ export class TransactionController {
   }
 
   @Put(':transactionId')
+  @ApiOperation({ summary: 'Actualizar una transaccion' })
+  @ApiParam({ name: 'transactionId', format: 'uuid' })
+  @ApiResponse({ status: 200, type: Transaction })
   async updateTransaction(
     @Param('transactionId') transactionId: string,
     @Body() newTransaction: UpdateTransactionDTO,
@@ -73,6 +94,9 @@ export class TransactionController {
   }
 
   @Delete(':transactionId')
+  @ApiOperation({ summary: 'Eliminar una transaccion' })
+  @ApiParam({ name: 'transactionId', format: 'uuid' })
+  @ApiResponse({ status: 200, type: Transaction })
   async deleteTransaction(
     @Param('transactionId') transactionId: string,
   ): Promise<any> {

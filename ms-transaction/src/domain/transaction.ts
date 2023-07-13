@@ -1,10 +1,25 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export default class Transaction {
+  @ApiProperty({ format: 'uuid' })
   transactionId: string;
+
+  @ApiProperty({ format: 'uuid' })
   accountExternalIdDebit: string;
+
+  @ApiProperty({ format: 'uuid' })
   accountExternalIdCredit: string;
+
+  @ApiProperty()
   tranferTypeId: number;
+
+  @ApiProperty()
   value: number;
+
+  @ApiProperty()
   status: string;
+
+  @ApiProperty()
   createdAt: Date;
 
   constructor(params: Partial<Transaction>) {
