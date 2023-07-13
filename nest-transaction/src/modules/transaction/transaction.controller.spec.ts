@@ -1,11 +1,13 @@
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { KafkaModule } from '../kafka/kafka.module';
 import { MongooseModuleForTest } from '../../app/mongo';
 
 import { TransactionService } from './transaction.service';
 import { TransactionController } from './transaction.controller';
 import { Transaction, TransactionSchema } from './entities/transaction.entity';
+import { ConfigService } from '@nestjs/config';
 
 describe('TransactionController', () => {
   let storedId = '';
@@ -20,6 +22,8 @@ describe('TransactionController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
+        ConfigService,
+        KafkaModule,
         MongooseModuleForTest,
         MongooseModule.forFeature([
           {

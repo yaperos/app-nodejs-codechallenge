@@ -7,6 +7,7 @@ import {
   Delete,
   Controller,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 
 import { ToMessageDto } from './utils/functions';
@@ -34,10 +35,10 @@ export class TransactionController {
       throw new InternalServerErrorException('INTERNAL_ERROR');
     }
 
-    await this.kafkaService.sendMesage(
-      KAFKA_TOPIC_NOTIFY_CREATE,
+    const responseKafka = await this.kafkaService.sendMesage(
       ToMessageDto(transaction),
     );
+    Logger.log(responseKafka);
 
     return transaction;
   }
