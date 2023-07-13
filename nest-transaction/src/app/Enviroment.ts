@@ -4,7 +4,10 @@ import { ConfigService } from '@nestjs/config';
 export const getEnvironmentVars = () => {
   Logger.log(`PORT: ${process.env.PORT}`);
   return {
-    port: parseInt(process.env.PORT) || 4000,
+    port: Number(process.env.PORT) || 4000,
+    database: {
+      uri: String(process.env.MONGO_URI) || '',
+    },
   };
 };
 
