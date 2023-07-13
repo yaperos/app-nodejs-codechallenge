@@ -9,14 +9,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
-  /*app.connectMicroservice({
+  app.connectMicroservice({
     transport: Transport.KAFKA,
     options: {
       client: {
         brokers: [`${process.env.KAFKA_HOST}:${process.env.KAFKA_PORT}`],
       },
     },
-  });*/
+  });
 
   const config = new DocumentBuilder()
     .setTitle('YAPE - API')
