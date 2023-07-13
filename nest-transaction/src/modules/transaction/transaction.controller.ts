@@ -8,6 +8,7 @@ import {
   Delete,
   Controller,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 
 import { KafkaService } from '../kafka/kafka.service';
@@ -30,12 +31,7 @@ export class TransactionController {
   @Delete('clean-up')
   async removeAll() {
     const transactions = await this.transactionService.findAll();
-    await Promise.all(
-      transactions.map(async (t) => {
-        await this.transactionStateService.remove(t.id);
-        await this.remove(t.id);
-      }),
-    );
+    await Promise.all(transactions.map(async (t) => await this.remove(t.id)));
     return true;
   }
 
@@ -55,19 +51,22 @@ export class TransactionController {
     await this.transactionStateService.create(
       transaction,
       'PAYMENT',
-      'CREATED',
+      'PENDING',
     );
 
-    const responseKafka = await this.kafkaService.antiFraudValidation(
-      ToMessageDto(transaction),
-    );
-
-    if (!!responseKafka.status?.length) {
-      await this.transactionStateService.create(
-        transaction,
-        'PAYMENT',
-        responseKafka.status,
+    try {
+      const responseKafka = await this.kafkaService.antiFraudValidation(
+        ToMessageDto(transaction),
       );
+      if (!!responseKafka.status?.length) {
+        await this.transactionStateService.create(
+          transaction,
+          'PAYMENT',
+          responseKafka.status,
+        );
+      }
+    } catch (e) {
+      Logger.log(e);
     }
 
     const status = await this.transactionStateService.findAll(transaction.id);
@@ -86,6 +85,7 @@ export class TransactionController {
 
   @Delete(':transactionId')
   remove(@Param('transactionId', ParseMongoIdPipe) transactionId: string) {
+    this.transactionStateService.remove(transactionId);
     return this.transactionService.remove(transactionId);
   }
 }
