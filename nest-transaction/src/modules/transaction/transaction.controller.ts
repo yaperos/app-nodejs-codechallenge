@@ -7,23 +7,23 @@ import {
   Delete,
   Controller,
   InternalServerErrorException,
-  Logger,
 } from '@nestjs/common';
 
-import { ToMessageDto } from './utils/functions';
 import { KafkaService } from '../kafka/kafka.service';
-import { KAFKA_TOPIC_ANTIFRAUD_VALIDATION } from '../../app/kafka';
 
 import { TransactionService } from './transaction.service';
 import { ParseMongoIdPipe } from '../../common/parse-mongo-id.pipe';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { TransactionStateService } from './transaction.state.service';
+import { ToMessageDto } from './utils/functions';
 
 @ApiTags('Transaction')
 @Controller('transaction')
 export class TransactionController {
   constructor(
-    private readonly transactionService: TransactionService,
     private readonly kafkaService: KafkaService,
+    private readonly transactionService: TransactionService,
+    private readonly transactionStateService: TransactionStateService,
   ) {}
 
   @Post()
@@ -35,12 +35,26 @@ export class TransactionController {
       throw new InternalServerErrorException('INTERNAL_ERROR');
     }
 
+    await this.transactionStateService.create(
+      transaction,
+      'PAYMENT',
+      'CREATED',
+    );
+
     const responseKafka = await this.kafkaService.antiFraudValidation(
       ToMessageDto(transaction),
     );
-    Logger.log(responseKafka);
 
-    return transaction;
+    if (!!responseKafka.status?.length) {
+      await this.transactionStateService.create(
+        transaction,
+        'PAYMENT',
+        responseKafka.status,
+      );
+    }
+
+    const status = await this.transactionStateService.findAll(transaction.id);
+    return { ...transaction.toJSON(), status };
   }
 
   @Get()
