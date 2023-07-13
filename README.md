@@ -17,7 +17,7 @@ con un microservicio antifraude, al cual se comunica mediante kafka, toda inform
 
 # Instalación
 
-- [Instalación en local](./docs/local-deploy.md)
+- [Instalación](./docs/deplopment.md)
 - [Capturas](./docs/software-description.md)
 
 # Diagrama de Arquitectura
