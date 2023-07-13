@@ -3,6 +3,7 @@ version: "3.7"
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
+    container_name: kafka
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -11,6 +12,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:latest
+    container_name: kafka
     depends_on:
       - zookeeper
     ports:
@@ -36,3 +38,6 @@ services:
       - mongodb:/data/db
     expose:
       - 27017
+
+volumes:
+  mongodb:
