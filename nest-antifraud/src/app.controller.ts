@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Inject, Logger } from '@nestjs/common';
+import { KAFKA_INSTANCE_NAME, KAFKA_TOPIC_NOTIFY_CREATE } from './app/kafka';
+import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    @Inject(KAFKA_INSTANCE_NAME)
+    private readonly client: ClientKafka,
+  ) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @MessagePattern(KAFKA_TOPIC_NOTIFY_CREATE)
+  async infoTransaction(@Payload() message: any): Promise<any> {
+    Logger.log('MESSAGE RECEIVED', message);
+    return { response: 'FROM MICROSERVICE' };
   }
 }
