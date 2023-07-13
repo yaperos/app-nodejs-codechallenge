@@ -12,19 +12,26 @@ export class TransactionService {
     private readonly model: Model<Transaction>,
   ) {}
 
-  async create(createTransactionDto: CreateTransactionDto) {
+  async create(
+    createTransactionDto: CreateTransactionDto,
+  ): Promise<Transaction> {
     return await this.model.create(createTransactionDto);
   }
 
-  findAll() {
-    return `This action returns all transaction`;
+  async findAll(): Promise<Transaction[]> {
+    return await this.model.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
+  async findOne(transactionId: string): Promise<Transaction | null> {
+    const transaction = await this.model.findById(transactionId);
+    if (!transaction) {
+      return null;
+    }
+    return transaction;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async remove(transactionId: string): Promise<boolean> {
+    const result = await this.model.deleteOne({ _id: transactionId });
+    return result.deletedCount > 0;
   }
 }

@@ -2,7 +2,9 @@ import { Get, Post, Body, Param, Delete, Controller } from '@nestjs/common';
 
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('transaction')
 @Controller('transaction')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
@@ -17,13 +19,13 @@ export class TransactionController {
     return this.transactionService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.transactionService.findOne(+id);
+  @Get(':transactionId')
+  findOne(@Param('transactionId') transactionId: string) {
+    return this.transactionService.findOne(transactionId);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.transactionService.remove(+id);
+  @Delete(':transactionId')
+  remove(@Param('transactionId') transactionId: string) {
+    return this.transactionService.remove(transactionId);
   }
 }
