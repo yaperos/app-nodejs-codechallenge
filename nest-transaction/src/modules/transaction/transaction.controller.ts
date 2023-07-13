@@ -1,5 +1,17 @@
 import { ApiTags } from '@nestjs/swagger';
-import { Get, Post, Body, Param, Delete, Controller } from '@nestjs/common';
+import {
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Controller,
+  InternalServerErrorException,
+} from '@nestjs/common';
+
+import { ToMessageDto } from './utils/functions';
+import { KafkaService } from '../kafka/kafka.service';
+import { KAFKA_TOPIC_NOTIFY_CREATE } from '../../app/kafka';
 
 import { TransactionService } from './transaction.service';
 import { ParseMongoIdPipe } from '../../common/parse-mongo-id.pipe';
@@ -8,11 +20,26 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 @ApiTags('Transaction')
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(
+    private readonly transactionService: TransactionService,
+    private readonly kafkaService: KafkaService,
+  ) {}
 
   @Post()
-  create(@Body() createTransactionDto: CreateTransactionDto) {
-    return this.transactionService.create(createTransactionDto);
+  async create(@Body() createTransactionDto: CreateTransactionDto) {
+    const transaction = await this.transactionService.create(
+      createTransactionDto,
+    );
+    if (!transaction) {
+      throw new InternalServerErrorException('INTERNAL_ERROR');
+    }
+
+    await this.kafkaService.sendMesage(
+      KAFKA_TOPIC_NOTIFY_CREATE,
+      ToMessageDto(transaction),
+    );
+
+    return transaction;
   }
 
   @Get()

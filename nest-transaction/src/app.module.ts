@@ -3,8 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 
 import { CustomMongooseModule } from './app/mongo';
 import { getEnvironmentVars } from './app/Enviroment';
-import { TransactionModule } from './modules/transaction/transaction.module';
+
 import { KafkaModule } from './modules/kafka/kafka.module';
+import { TransactionModule } from './modules/transaction/transaction.module';
 
 @Module({
   imports: [

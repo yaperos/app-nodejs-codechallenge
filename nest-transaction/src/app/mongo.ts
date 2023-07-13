@@ -1,7 +1,9 @@
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { mongoEnvsFactory } from './Enviroment';
+export const mongoEnvsFactory = async (config: ConfigService) => ({
+  uri: config.get<string>('database.uri'),
+});
 
 export const CustomMongooseModule = MongooseModule.forRootAsync({
   imports: [ConfigModule],
