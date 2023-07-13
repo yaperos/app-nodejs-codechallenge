@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   Transport,
@@ -11,22 +12,22 @@ export const KAFKA_INSTANCE_NAME = 'my-kafka-instance';
 export const KAFKA_CONSUMER_CLIENTID = 'transaction-app';
 export const KAFKA_CONSUMER_GROUP_ID = 'transaction-group';
 
-export const kafkaEnvsFactory = (config: ConfigService): ClientProvider => ({
-  transport: Transport.KAFKA,
-  options: {
-    client: {
-      clientId: KAFKA_CONSUMER_CLIENTID,
-      brokers: [
-        `${config.get<string>('kafka.host')}:${config.get<number>(
-          'kafka.port',
-        )}`,
-      ],
+export const kafkaEnvsFactory = (config: ConfigService): ClientProvider => {
+  const host = config.get<string>('kafka.host');
+  const port = config.get<number>('kafka.port');
+  return {
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: KAFKA_CONSUMER_CLIENTID,
+        brokers: [`${host}:${port}`],
+      },
+      consumer: {
+        groupId: KAFKA_CONSUMER_GROUP_ID,
+      },
     },
-    consumer: {
-      groupId: KAFKA_CONSUMER_GROUP_ID,
-    },
-  },
-});
+  };
+};
 
 export const CustomKafkaClientModule = ClientsModule.registerAsync([
   {
