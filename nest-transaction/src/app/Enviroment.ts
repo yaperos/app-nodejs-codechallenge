@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 export const getEnvironmentVars = () => {
   Logger.log(`PORT: ${process.env.PORT}`);
+  Logger.log(`MONGO_URI: ${process.env.MONGO_URI}`);
   return {
     port: Number(process.env.PORT) || 4000,
     database: {
