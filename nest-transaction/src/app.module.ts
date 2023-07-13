@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { getEnvironmentVars, mongoEnvsFactory } from './app/Enviroment';
+import { TransactionModule } from './modules/transaction/transaction.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { getEnvironmentVars, mongoEnvsFactory } from './app/Enviroment';
       inject: [ConfigService],
       useFactory: mongoEnvsFactory,
     }),
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
