@@ -81,7 +81,7 @@ When you finish your challenge, after forking a repository, you **must** open a 
 
 If you have any questions, please let us know.
 
-# Run Solution
+# Solution
 
 ## `make start`
 
