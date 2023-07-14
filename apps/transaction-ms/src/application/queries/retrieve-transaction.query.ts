@@ -27,7 +27,7 @@ export class RetrieveTransactionQueryHandler
     if (transaction.isErr()) {
       throw new InternalServerErrorException(
         transaction.error.message,
-        'FIND_TRANSACTION_ERROR',
+        transaction.error.name,
       );
     }
 

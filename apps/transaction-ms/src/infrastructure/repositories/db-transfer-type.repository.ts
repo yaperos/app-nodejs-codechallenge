@@ -6,7 +6,7 @@ import {
 import { TransferTypeModel } from '../models/transfer-type.model';
 import { err, ok } from 'neverthrow';
 import { Injectable, Logger } from '@nestjs/common';
-import { TransferTypeFindException } from '../../domain/exceptions/transfer-type.exception copy';
+import { TransferTypeFindException } from '../../domain/exceptions/transfer-type.exception';
 
 @Injectable()
 export class DBTransferTypeRepository

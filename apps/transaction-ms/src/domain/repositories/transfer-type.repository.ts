@@ -1,6 +1,6 @@
 import { Result } from 'neverthrow';
 import { TransferTypeEntity } from '../entities/transfer-type.entity';
-import { TransferTypeFindException } from '../exceptions/transfer-type.exception copy';
+import { TransferTypeFindException } from '../exceptions/transfer-type.exception';
 
 export type FindTransferTypeEntityResult = Result<
   TransferTypeEntity,
