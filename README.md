@@ -118,6 +118,42 @@ Retrieve transaction by id.
 
 Create new transaction.
 
+```graphql
+mutation (
+  $accountExternalIdDebit: String!,
+  $accountExternalIdCredit: String!,
+  $transferTypeId: Float!,
+  $value: Float!,
+) {
+  createTransaction(
+    accountExternalIdDebit: $accountExternalIdDebit,
+    accountExternalIdCredit: $accountExternalIdCredit,
+    transferTypeId: $transferTypeId,
+    value: $value
+  ) {
+    transactionExternalId
+  }
+}
+```
+
 #### `query transaction`
 
 Retrieve transaction by id.
+
+```graphql
+query ($id: String!) {
+  transaction (id: $id) {
+    accountExternalIdDebit,
+    accountExternalIdCredit,
+    transactionExternalId,
+    value,
+    transactionType {
+      name
+    },
+    transactionStatus {
+      name
+    },
+    createdAt
+  }
+}
+```
