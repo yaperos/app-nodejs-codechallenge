@@ -8,10 +8,10 @@ import {
 } from '@nestjs/graphql';
 import { TransactionModel } from '../object-types/transaction.model';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { RetrieveTransactionQuery } from 'apps/transaction-ms/src/application/queries/retrieve-transaction.query';
+import { RetrieveTransactionQuery } from '../../../application/queries/retrieve-transaction.query';
 import { TransactionTypeModel } from '../object-types/transaction-type.model';
 import { TransactionEntity } from '../../../domain/entities/transaction.entity';
-import { CreateTransactionCommand } from 'apps/transaction-ms/src/application/commands/create-transaction.command';
+import { CreateTransactionCommand } from '../../../application/commands/create-transaction.command';
 
 @Resolver(() => TransactionModel)
 export class TransactionResolver {

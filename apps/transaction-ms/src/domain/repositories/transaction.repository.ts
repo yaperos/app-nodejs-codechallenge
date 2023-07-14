@@ -6,7 +6,7 @@ import {
   TransactionUpdateException,
 } from '../exceptions/transaction.exception';
 
-export type CcreateTransactionResult = Result<void, TransactionCreateException>;
+export type CreateTransactionResult = Result<void, TransactionCreateException>;
 export type UpdateTransactionResult = Result<void, TransactionUpdateException>;
 export type FindTransactionResult = Result<
   TransactionEntity,
@@ -16,7 +16,7 @@ export type FindTransactionResult = Result<
 export interface TransactionRepository {
   createTransaction(
     transaction: TransactionEntity,
-  ): Promise<CcreateTransactionResult>;
+  ): Promise<CreateTransactionResult>;
   updateTransaction(
     transaction: TransactionEntity,
   ): Promise<UpdateTransactionResult>;

@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
 import { TransactionEntity } from '../../domain/entities/transaction.entity';
 import {
-  CcreateTransactionResult,
+  CreateTransactionResult,
   FindTransactionResult,
   TransactionRepository,
   UpdateTransactionResult,
@@ -28,7 +28,7 @@ export class DBTransactionRespository
 
   async createTransaction(
     transaction: TransactionEntity,
-  ): Promise<CcreateTransactionResult> {
+  ): Promise<CreateTransactionResult> {
     try {
       const transactionModel = TransactionModel.fromEntity(transaction);
       await this.save(transactionModel);

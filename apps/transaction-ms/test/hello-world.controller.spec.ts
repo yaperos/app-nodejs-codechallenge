@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HelloWorldController } from './hello-world.controller';
-import { AppService } from '../../../app.service';
+import { HelloWorldController } from '../src/interfaces/http/hello-world/hello-world.controller';
+import { HelloWorldService } from '../src/application/services/hello-world.service';
+import { clientsModule } from './conftest';
 
 describe('HelloWorldController', () => {
   let appController: HelloWorldController;
@@ -8,7 +9,13 @@ describe('HelloWorldController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [HelloWorldController],
-      providers: [AppService],
+      providers: [
+        HelloWorldService,
+        {
+          provide: 'ANTIFRAUD_SERVICE',
+          useValue: clientsModule,
+        },
+      ],
     }).compile();
 
     appController = app.get<HelloWorldController>(HelloWorldController);

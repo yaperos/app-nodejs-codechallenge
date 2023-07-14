@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
-  CcreateTransactionResult,
+  CreateTransactionResult,
   FindTransactionResult,
   TransactionRepository,
   UpdateTransactionResult,
@@ -32,7 +32,7 @@ export class DocumentTransactionRepository implements TransactionRepository {
 
   async createTransaction(
     transaction: TransactionEntity,
-  ): Promise<CcreateTransactionResult> {
+  ): Promise<CreateTransactionResult> {
     try {
       await this.model.create(transaction.toJSON());
       this.logger.log(JSON.stringify(transaction.toJSON()));

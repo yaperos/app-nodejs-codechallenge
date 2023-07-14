@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { RetrieveTransactionQuery } from 'apps/transaction-ms/src/application/queries/retrieve-transaction.query';
+import { RetrieveTransactionQuery } from '../../../application/queries/retrieve-transaction.query';
 import { RetrieveTransactionResponse } from './retrieve-transaction.response';
 
 @Controller('transactions')
