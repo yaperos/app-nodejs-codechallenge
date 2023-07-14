@@ -16,10 +16,10 @@ export class TransactionModel {
   @Field()
   value: number;
 
-  @Field((type) => TransactionStatusModel)
+  @Field(() => TransactionStatusModel)
   transactionStatus: TransactionStatusModel;
 
-  @Field((type) => TransactionTypeModel)
+  @Field(() => TransactionTypeModel)
   transactionType: TransactionTypeModel;
 
   @Field()

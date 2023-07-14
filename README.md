@@ -109,3 +109,15 @@ Create new transaction.
 ### `GET /transactions/{id}`
 
 Retrieve transaction by id.
+
+## GraphQL
+
+### `Playground /graphql`
+
+#### `mutation createTransaction`
+
+Create new transaction.
+
+#### `query transaction`
+
+Retrieve transaction by id.
