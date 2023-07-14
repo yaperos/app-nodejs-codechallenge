@@ -1,0 +1,15 @@
+KAFKA_BROKER=kafka:29092
+KAFKA_SERVER_CLIENT_ID=transaction
+KAFKA_SERVER_GROUP_ID=transaction-consumer
+KAFKA_ANTIFRAUD_CLIENT_ID=antifraud
+KAFKA_ANTIFRAUD_GROUP_ID=antifraud-consumer
+
+DB_HOST=postgres
+DB_PORT=5432
+DB_USER=postgres
+DB_PASS=postgres
+DB_NAME=postgres
+
+MONGODB_HOST=mongo
+MONGODB_PORT=27017
+MONGODB_NAME=test

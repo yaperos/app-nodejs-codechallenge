@@ -1,0 +1,14 @@
+export enum ExceptionCode {
+  DEFAULT = 'DEFAULT_ERROR',
+  TRANSFER_TYPE_FIND_EXCEPTION = 'TRANSFER_TYPE_FIND_EXCEPTION',
+  TRANSACTION_FIND_EXCEPTION = 'TRANSACTION_FIND_EXCEPTION',
+  TRANSACTION_UPDATE_EXCEPTION = 'TRANSACTION_UPDATE_EXCEPTION',
+  TRANSACTION_CREATE_EXCEPTION = 'TRANSACTION_CREATE_EXCEPTION',
+}
+
+export abstract class BaseException extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = ExceptionCode.DEFAULT;
+  }
+}

@@ -1,0 +1,5 @@
+export const KAFKA_BROKER = process.env.KAFKA_BROKER;
+export const KAFKA_SERVER_CLIENT_ID = process.env.KAFKA_SERVER_CLIENT_ID;
+export const KAFKA_SERVER_GROUP_ID = process.env.KAFKA_SERVER_GROUP_ID;
+export const KAFKA_ANTIFRAUD_CLIENT_ID = process.env.KAFKA_ANTIFRAUD_CLIENT_ID;
+export const KAFKA_ANTIFRAUD_GROUP_ID = process.env.KAFKA_ANTIFRAUD_GROUP_ID;

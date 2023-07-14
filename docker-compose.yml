@@ -1,18 +1,40 @@
 version: "3.7"
 services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mdb:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "127.0.0.1/test", "--eval", "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
   postgres:
     image: postgres:14
+    restart: always
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    restart: always
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -23,3 +45,45 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 80s
+      interval: 5s
+      timeout: 20s
+      retries: 10
+  antifraud-ms:
+    env_file:
+      - ./apps/antifraud-ms/.env
+    build:
+      dockerfile: ./docker/antifraud-ms/Dockerfile
+      context: .
+    volumes:
+      - ./apps/antifraud-ms:/usr/src/app/apps/antifraud-ms
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: always
+  transaction-ms:
+    env_file:
+      - ./apps/transaction-ms/.env
+    build:
+      dockerfile: ./docker/transaction-ms/Dockerfile
+      context: .
+    volumes:
+      - ./apps/transaction-ms:/usr/src/app/apps/transaction-ms
+    ports:
+      - 3000:80
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  db:
+    driver: local
+  mdb:
+    driver: local
