@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { RetrieveTransactionQuery } from 'apps/transaction-ms/src/application/queries/retrieve-transaction.query';
+import { RetrieveTransactionResponse } from './retrieve-transaction.response';
 
 @Controller('transactions')
 export class RetrieveTransactionController {
@@ -9,6 +10,7 @@ export class RetrieveTransactionController {
   @Get(':transactionId')
   async retrieve(@Param('transactionId') transactionId: string) {
     const query = new RetrieveTransactionQuery(transactionId);
-    return this.queryBus.execute(query);
+    const response = await this.queryBus.execute(query);
+    return RetrieveTransactionResponse.toResponse(response);
   }
 }

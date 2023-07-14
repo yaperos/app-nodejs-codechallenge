@@ -28,6 +28,9 @@ import * as databaseConfig from '../config/database.config';
 import * as kafkaConfig from '../config/kafka.config';
 import * as mongoConfig from '../config/mongo.config';
 import { DocumentTransactionRepository } from './infrastructure/repositories/document-transaction.repository';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { TransactionResolver } from './interfaces/graphql/resolvers/transaction.resolver';
 
 const imports = [
   ClientsModule.register([
@@ -46,6 +49,10 @@ const imports = [
     },
   ]),
   CqrsModule,
+  GraphQLModule.forRoot<ApolloDriverConfig>({
+    autoSchemaFile: true,
+    driver: ApolloDriver,
+  }),
   MongooseModule.forRoot(mongoConfig.MONGODB_URI),
   MongooseModule.forFeature([
     { name: Transaction.name, schema: TransactionSchema },
@@ -101,9 +108,17 @@ const listeners = [
   TransactionUpdatedListener,
 ];
 
+const resolvers = [TransactionResolver];
+
 @Module({
   imports: [...imports],
   controllers: [...controllers, ...listeners],
-  providers: [...commands, ...repositories, ...services, ...queries],
+  providers: [
+    ...commands,
+    ...repositories,
+    ...resolvers,
+    ...services,
+    ...queries,
+  ],
 })
 export class AppModule {}

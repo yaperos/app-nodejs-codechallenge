@@ -1,7 +1,6 @@
 import { Inject, InternalServerErrorException, Logger } from '@nestjs/common';
 import { IQuery, IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { TransactionRepository } from '../../domain/repositories/transaction.repository';
-import { RetrieveTransactionResponse } from './responses/retrieve-transaction.response';
 
 export class RetrieveTransactionQuery implements IQuery {
   constructor(readonly transactionId: string) {}
@@ -33,6 +32,6 @@ export class RetrieveTransactionQueryHandler
     }
 
     this.logger.log(JSON.stringify(transaction.value));
-    return RetrieveTransactionResponse.toResponse(transaction.value);
+    return transaction.value;
   }
 }

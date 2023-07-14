@@ -1,4 +1,4 @@
-import { TransactionEntity } from '.././../../domain/entities/transaction.entity';
+import { TransactionEntity } from '../../../domain/entities/transaction.entity';
 
 export class RetrieveTransactionResponse {
   static toResponse(entity: TransactionEntity) {
