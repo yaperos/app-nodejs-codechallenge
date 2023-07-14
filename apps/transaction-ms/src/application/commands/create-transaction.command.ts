@@ -32,7 +32,7 @@ export class CreateTransactionCommandHandler
     private readonly clientKafka: ClientKafka,
   ) {}
 
-  async execute(command: CreateTransactionCommand): Promise<void> {
+  async execute(command: CreateTransactionCommand): Promise<TransactionEntity> {
     const transferType = await this.typeRepository.findTransferType(
       command.transferTypeId,
     );
@@ -66,5 +66,6 @@ export class CreateTransactionCommandHandler
     const event = new TransactionCreatedEvent(entity);
     this.clientKafka.emit(event.eventName, event.toString());
     this.logger.log(event.toString());
+    return entity;
   }
 }
