@@ -106,9 +106,50 @@ Remove docker containers.
 
 Create new transaction.
 
+Request:
+
+```json
+{
+  "accountExternalIdDebit": "Guid",
+  "accountExternalIdCredit": "Guid",
+  "tranferTypeId": 1,
+  "value": 120
+}
+```
+
+Response:
+
+```
+http status code: 201
+```
+
+```json
+{}
+```
+
 ### `GET /transactions/{id}`
 
 Retrieve transaction by id.
+
+Response:
+
+```
+http status code: 201
+```
+
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionType": {
+    "name": ""
+  },
+  "transactionStatus": {
+    "name": ""
+  },
+  "value": 120,
+  "createdAt": "Date"
+}
+```
 
 ## GraphQL
 
