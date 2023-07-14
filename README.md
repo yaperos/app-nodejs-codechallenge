@@ -134,7 +134,7 @@ Retrieve transaction by id.
 Response:
 
 ```
-http status code: 201
+http status code: 200
 ```
 
 ```json
