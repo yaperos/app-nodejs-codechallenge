@@ -80,3 +80,32 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Run Solution
+
+## `make start`
+
+Up project whit docker and docker compose.
+
+Containers:
+
+- postgres (write database).
+- mongo (read database).
+- kafka (streaming).
+- zookeeper
+- antifraud-ms.
+- transaction-ms.
+
+## `make down`
+
+Remove docker containers.
+
+## Endpoints
+
+### `POST /transactions`
+
+Create new transaction.
+
+### `GET /transactions/{id}`
+
+Retrieve transaction by id.
