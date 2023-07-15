@@ -1,3 +1,20 @@
+# Solución
+
+Situarse en la raiz del proyecto y ejecutar lo siguiente:
+
+```bash
+  docker-compose up -d
+```
+
+#### Documentación y pruebas
+
+```http
+  GET http://localhost:3000/graphql
+```
+La carpeta "doc-test-images" son imágenes de las pruebas realizadas
+
+
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 

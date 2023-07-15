@@ -16,10 +16,35 @@ services:
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  ms-anti-fraud:
+    build: ./ms-anti-fraud
+    image: ms-anti-fraud
+    depends_on:
+      kafka:
+        condition: service_started
+      postgres:
+        condition: service_started
+    environment:
+      KAFKA_BROKER: kafka:9092
+      MAX_TRANSACTION_VALUE: 1000
+  transaction:
+    build: ./transactions
+    image: transactions
+    depends_on: [ kafka, postgres, ms-anti-fraud ]
+    environment:
+      PORT: 3000
+      KAFKA_BROKER: kafka:9092
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_DATABASE: postgres
+      DB_SINCRONIZE: true
+    ports:
+      - 3000:3000
