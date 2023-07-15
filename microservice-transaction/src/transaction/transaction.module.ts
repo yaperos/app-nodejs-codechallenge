@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Transaction } from './entities/transaction.entity';
-import { TransactionService } from './services/transaction.service';
-import { TransactionController } from './controllers/transaction.controller';
+import { TransactionService } from './transaction.service';
+import { TransactionController } from './transaction.controller';
 
 @Module({
   imports: [
@@ -19,6 +19,9 @@ import { TransactionController } from './controllers/transaction.controller';
           },
           consumer: {
             groupId: 'anti-fraud-consumer',
+          },
+          subscribe: {
+            fromBeginning: true,
           },
         },
       },

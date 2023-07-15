@@ -23,7 +23,7 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
-  transaction-api:
+  microservice-transaction:
     build: ./microservice-transaction
     ports:
       - "3000:3000"
@@ -32,10 +32,10 @@ services:
     links:
       - kafka
       - postgres
-  anti-fraud:
+  microservice-antifraud:
     build: ./microservice-antifraud
     depends_on:
       - kafka
     links:
       - kafka
-      - transaction-api
+      - microservice-transaction
