@@ -2,11 +2,15 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
-    ports:
-      - "5432:5432"
+    restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=yapeBd
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -16,10 +20,43 @@ services:
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  ms-transactions:
+    image: lordjeferoon/ms-transactions:latest
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - 3000:3000
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=yapeBd
+      - ANTIFRAUD_SERVICE_URL=ms-antifraud:3001
+      - KAFKA_NAME=ms_transaction_name
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_CLIENT=ms-transactions
+      - KAFKA_TRANSACTION_TOPIC=transactions-topic
+      - KAFKA_GROUP_ID=transaction_consumer
+  ms-antifraud:
+    image: lordjeferoon/ms-antifraud:latest
+    depends_on:
+      - ms-transactions
+      - kafka
+    ports:
+      - 3001:3000
+    environment:
+      - TRANSACTIONS_SERVICE_URL=http://ms-transactions:3000
+      - KAFKA_NAME=ms_antifraud_name
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_CLIENT=ms-antifraud
+      - KAFKA_TRANSACTION_TOPIC=transactions-topic
+      - KAFKA_GROUP_ID=antifraud_consumer
