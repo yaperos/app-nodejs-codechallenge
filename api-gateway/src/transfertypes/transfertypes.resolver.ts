@@ -3,6 +3,8 @@ import { TransfertypesService } from './transfertypes.service';
 import { Transfertype } from './entities/transfertype.entity';
 import { CreateTransfertypeInput } from './dto/create-transfertype.input';
 import { UpdateTransfertypeInput } from './dto/update-transfertype.input';
+import { UseInterceptors } from '@nestjs/common';
+
 
 @Resolver(() => Transfertype)
 export class TransfertypesResolver {
