@@ -6,6 +6,7 @@ import { KafkaService } from "../kafka/kafka.service";
 import { UpdateTransactionInput } from './dto/update-transaction.input';
 import { Transfertype } from 'src/transfertypes/entities/transfertype.entity';
 import { Transactionstatus } from 'src/transactionstatus/entities/transactionstatus.entity';
+import { TRANSACTION_STATUS } from 'src/utils';
 
 @Resolver((of) => Transaction)
 export class TransactionsResolver {
@@ -21,7 +22,7 @@ export class TransactionsResolver {
          editedValue = {
           ...newTransaction,
           id: result.id,
-          transactionStatusId: result.isValid ? 2 : 3
+          transactionStatusId: result.isValid ? TRANSACTION_STATUS.APPROVED : TRANSACTION_STATUS.REJECTED
         }
         this._transactionService.update(editedValue.id, editedValue)
       }

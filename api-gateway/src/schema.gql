@@ -56,7 +56,7 @@ input CreateTransactionInput {
   value: Int!
   transactionTypeId: Float!
   transactionStatusId: Float! = 1
-  createdAt: DateTime! = "2023-07-22T05:23:36.045Z"
+  createdAt: DateTime! = "2023-07-22T05:42:57.456Z"
 }
 
 input CreateTransfertypeInput {

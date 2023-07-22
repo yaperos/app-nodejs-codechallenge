@@ -18,7 +18,7 @@ export class TransactionstatusService {
     const totalTransferTypes =  await this._transactionStatusRepository.count();
     if(totalTransferTypes == 0) {
       TRANSACTION_STATUS_DB.forEach(async (transfertype) => {
-        const _transfertype = this._transactionStatusRepository.create(transfertype);
+        const _transfertype = await this._transactionStatusRepository.create(transfertype);
         await this._transactionStatusRepository.save(_transfertype)
     })
     }
