@@ -1,3 +1,53 @@
+# EnriqueFcoG
+## Enrique Francisco García
+
+
+Se utilizo GraphQL como lenguaje de consulta.
+## Instalación
+script to run
+
+```sh
+docker compose up --build
+```
+## Examples of Querys and Mutations
+
+### Mutation to create a Transaction:
+```sh
+mutation {
+  createTransaction(createTransactionInput: {
+    accountExternalIdDebit: "123",
+    accountExternalIdCredit: "456",
+    value: 1200,
+    transactionTypeId: 3
+  }) {
+    value
+    transactionTypeId
+    transactionStatus{
+      name
+    }
+  }
+}
+
+```
+
+### Query to get One Transaction:
+```sh
+query {
+  transaction(id:"uuid"){
+    id
+    transactionType{
+      name
+    }
+    transactionStatus{
+      name
+    }
+  }
+}
+
+```
+
+
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
