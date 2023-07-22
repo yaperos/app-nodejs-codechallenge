@@ -35,6 +35,13 @@ export class TransactionsResolver {
         return res;
     }
 
+    @Query( returns =>  Transaction, { name: 'transaction' })
+    async transaction(@Args('id') id: string) {
+        const res = await this._transactionService.findOne(id);
+        console.log(res)
+        return res;
+    }
+
     @ResolveField(returns => Transfertype)
     transactionType(@Parent() transaction: Transaction): Promise<Transfertype>{ 
       return this._transactionService.getTransferType(transaction.transactionTypeId)

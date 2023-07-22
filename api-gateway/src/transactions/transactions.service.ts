@@ -21,9 +21,18 @@ export class TransactionsService {
         const new_data = this.transactionRepository.create(createTransactionInput);
         return this.transactionRepository.save(new_data)
     }
+
     async findAll(): Promise<Transaction[]> {
         return this.transactionRepository.find();
     }
+
+    async findOne(id: string): Promise<Transaction> {
+        return this.transactionRepository.findOne({
+          where: {
+            id
+          }
+        });
+      }
 
     update(id: string, updateTransactionInput: UpdateTransactionInput){
         return this.transactionRepository.update(id,updateTransactionInput);

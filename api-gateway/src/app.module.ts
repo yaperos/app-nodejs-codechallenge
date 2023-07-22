@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,12 +13,17 @@ import { ConfigModule } from '@nestjs/config';
 import { configLoader } from './config/config-loader';
 import { KafkaModule } from './kafka/kafka.module';
 import { TransactionstatusModule } from './transactionstatus/transactionstatus.module';
-
+import * as redisStore from 'cache-manager-redis-store';
+import type { RedisClientOptions } from 'redis';
 
 const db = configLoader().database
 @Module({
   imports: [
-
+    CacheModule.register<RedisClientOptions>({
+      store: redisStore,
+      host: "redis",
+      port: 6379
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), "src/schema.gql")
