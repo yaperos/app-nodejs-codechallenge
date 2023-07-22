@@ -12,7 +12,7 @@ export const getKafkaParameters =(config: ConfigService): ClientProvider => {
         options: {
             client: {
                 clientId: kafka.client_id,
-                brokers: ["kafka:9092"]
+                brokers: [`${kafka.host}:${kafka.port}`]
             },
             consumer: {
                 groupId: kafka.group_id
