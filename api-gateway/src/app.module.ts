@@ -14,6 +14,7 @@ import { KafkaModule } from './kafka/kafka.module';
 import { TransactionstatusModule } from './transactionstatus/transactionstatus.module';
 
 
+const db = configLoader().database
 @Module({
   imports: [
 
@@ -23,11 +24,11 @@ import { TransactionstatusModule } from './transactionstatus/transactionstatus.m
     }),
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: process.env.DATABASE_HOST,
-      port: Number(process.env.DATABASE_PORT),
-      username: "postgres",//process.env.DATABASE_USERNAME,
-      password: "postgres",//String(process.env.DATABASE_PASSWORD) ,
-      database: process.env.DATABASE_USERNAME,
+      host: db.host,
+      port: Number(db.port),
+      username: db.username,
+      password:  db.password,
+      database:  db.username,
       entities: [ __dirname + '/**/*.entity{.ts,.js}',],
       synchronize: true
     }),

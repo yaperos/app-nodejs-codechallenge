@@ -2,16 +2,25 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    restart: always
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: yape
+
+  redis:
+    image: redis:7.0.12-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -24,3 +33,36 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  api-gateway:
+    build: ./api-gateway
+    depends_on:
+      - kafka
+    links:
+      - kafka
+      - postgres
+    restart: always
+    environment:
+      PORT: 3000
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DB_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: yape
+      KAFKA_SERVICE_NAME: TRANSACTION_SERVICE
+      KAFKA_CLIENT_ID: transaction
+      KAFKA_HOST: kafka
+      KAFKA_PORT: 9092
+      KAFKA_GROUP_ID: transaction-consumer
+    ports:
+      - 3000:3000
+  ms-antifraud:
+    build: ./ms-antifraud
+    restart: always
+    ports:
+      - "3001:3000"
+    depends_on:
+      - kafka
+    links:
+      - kafka
+      - api-gateway
+

@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ClientKafka } from "@nestjs/microservices";
 import { ResponseTransaction } from "src/transactions/dto/response-transaction";
 import { KAFKA_NAME, KAFKA_TOPIC } from "./Kafka";
-
+import { configLoader } from "../config/config-loader";
 @Injectable()
 export class KafkaService {
     constructor(@Inject(KAFKA_NAME) private readonly _kafka: ClientKafka){
