@@ -1,0 +1,8 @@
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=paulsanchez
+DB_PASSWORD=paulsanchez
+DB_NAME=paulsanchez
+
+KAFKA_HOST=localhost
+KAFKA_PORT=29092
