@@ -17,6 +17,8 @@ export class CreateFinancialTransactionAdapter implements Ports.FinancialTransac
     if (!transaction) return null;
 
     const transactionResult = await this.repository.save({
+      accountExternalIdDebit: transaction.accountExternalIdDebit,
+      accountExternalIdCredit: transaction.accountExternalIdCredit,
       value: transaction.value,
       status: transaction.transactionStatus,
       transactionType: transaction.transactionType,

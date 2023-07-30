@@ -15,7 +15,7 @@ export class CreateTransactionStatusAdapter implements Ports.TransactionStatusPo
     if (!name) return null;
 
     const transactionStatusId = await this.transactionStatusRepository.findOne({
-      where: { status: Entities.StatusType[name] },
+      where: { status: Entities.StatusType[name.toUpperCase()] },
       select: ['id'],
     });
 

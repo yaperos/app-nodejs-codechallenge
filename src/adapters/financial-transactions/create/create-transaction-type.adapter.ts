@@ -15,7 +15,7 @@ export class CreateTransactionTypeAdapter implements Ports.TransactionTypePort {
     if (!name) return null;
 
     const transactionTypeId = await this.transactionTypeRepository.findOne({
-      where: { type: Entities.Type[name] },
+      where: { type: Entities.Type[name.toUpperCase()] },
       select: ['id'],
     });
 

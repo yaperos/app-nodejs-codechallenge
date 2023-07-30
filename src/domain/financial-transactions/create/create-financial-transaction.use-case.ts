@@ -11,6 +11,7 @@ import {
   StatusType,
 } from './create-financial-transaction.entities';
 import { InvalidTransactionTypeError } from './errors/invalid-transaction-type.error';
+import uuiAdapter from 'src/adapters/_shared/uui.adapter';
 
 @Injectable()
 export class CreateFinancialTransaction {
@@ -34,7 +35,7 @@ export class CreateFinancialTransaction {
   }
 
   private async createFinancialTransaction(request: CreateTransactionRequest): Promise<CreateTransactionResponse> {
-    const { value, transactionType } = request;
+    const { value, transactionType, accountExternalIdDebit, accountExternalIdCredit } = request;
 
     const transactionTypeId = await this.transactionTypePort.getTransactionTypeByName(transactionType);
 
@@ -45,14 +46,23 @@ export class CreateFinancialTransaction {
     const transactionStatusId = await this.transactionStatusPort.getTransactionStatusByName(StatusType.PENDING);
 
     const financialTransaction = await this.financialTransactionPort.createFinancialTransaction({
+      accountExternalIdDebit,
+      accountExternalIdCredit,
       value,
       transactionType: transactionTypeId,
       transactionStatus: transactionStatusId,
     });
 
     return {
-      description: 'Transaction created correctly',
-      status: StatusType.PENDING,
+      transactionExternalId: uuiAdapter.generate(),
+      transactionType: {
+        name: financialTransaction.transactionType.type,
+      },
+      transactionStatus: {
+        name: StatusType.PENDING,
+      },
+      value: financialTransaction.value,
+      createdAt: financialTransaction.createdAt.toISOString(),
       transactionId: financialTransaction.id,
     };
   }

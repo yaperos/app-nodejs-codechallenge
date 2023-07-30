@@ -1,9 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsString } from 'class-validator';
-import { Type } from '../../../../../domain/_shared/constants/transaction-type.enum';
+import { Type } from 'src/domain/_shared/constants/transaction-type.enum';
 import { Expose } from 'class-transformer';
 
 export class CreateFinancialTransactionRequest {
+  @ApiProperty({ description: 'The transaction value ' })
+  @IsString()
+  @Expose()
+  accountExternalIdDebit: string;
+
+  @ApiProperty({ description: 'The transaction value ' })
+  @IsString()
+  @Expose()
+  accountExternalIdCredit: string;
+
   @ApiProperty({ description: 'The transaction value ' })
   @IsNumber()
   @Expose()

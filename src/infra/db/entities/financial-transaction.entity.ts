@@ -22,6 +22,12 @@ export class FinancialTransaction {
   @Column({ name: 'value', default: 0 })
   public value!: number;
 
+  @Column({ name: 'account_external_id_debit' })
+  accountExternalIdDebit: string;
+
+  @Column({ name: 'account_external_id_credit' })
+  accountExternalIdCredit: string;
+
   @Index()
   @ManyToOne(() => TransactionStatus)
   @JoinColumn({ name: 'status_id' })

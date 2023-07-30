@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Migration1690709016367 implements MigrationInterface {
+export class Migration1690721310850 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`INSERT INTO transaction_status(status) VALUES ('pending'), ('approved'), ('rejected')`);
     await queryRunner.query(

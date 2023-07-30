@@ -12,4 +12,6 @@ export interface FinancialTransaction extends FinancialTransactionData {
 
 export type FinancialTransactionData = {
   value: number;
+  accountExternalIdDebit: string;
+  accountExternalIdCredit: string;
 };

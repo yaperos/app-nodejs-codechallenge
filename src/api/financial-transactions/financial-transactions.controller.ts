@@ -34,6 +34,8 @@ export class FinancialTransactionsController {
   @Post('/create')
   async createFinancialTransaction(@Body() body: CreateFinancialTransactionRequest) {
     return await this.createFinancialTransactionUseCase.execute({
+      accountExternalIdDebit: body.accountExternalIdDebit,
+      accountExternalIdCredit: body.accountExternalIdCredit,
       value: body.value,
       transactionType: body.transactionType,
     });
