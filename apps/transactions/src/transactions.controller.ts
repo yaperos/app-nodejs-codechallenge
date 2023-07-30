@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { TransactionDto } from './transaction.dto';
 import { TransactionStatus } from '@prisma/client';
@@ -15,6 +15,10 @@ export class TransactionsController {
   @Post()
   create(@Body() data: TransactionDto) {
     return this.transactionsService.create(data);
+  }
+  @Get(':transactionId')
+  getById(@Param('transactionId') transactionId: string){
+    return this.transactionsService.findByID(transactionId);
   }
 
   @MessagePattern('antifraud')

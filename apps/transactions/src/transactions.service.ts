@@ -31,6 +31,25 @@ export class TransactionsService {
     await lastValueFrom(this.kafkaClient.emit('transactions', transaction));
     return transaction;
   }
+  async findByID(id: string) {
+    const transaction = await this.prismaService.transaction.findFirst({
+      where: {
+        transaction_external_id: id,
+      },
+    });
+    return {
+      transactionExternalId: transaction.transaction_external_id,
+      transactionType: {
+        name: transaction.transaction_type,
+      },
+      transactionStatus: {
+        name: transaction.status,
+      },
+      value: transaction.value,
+      createdAt: transaction.created_at,
+    }
+  }
+
   async complete(id: string, status: TransactionStatus) {
     return await this.prismaService.transaction.update({
       where: { transaction_external_id: id },

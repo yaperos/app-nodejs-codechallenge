@@ -1,11 +1,11 @@
 version: "3.7"
 services:
-  #app:
-  #  build: .
-  #  ports:
-  #    - 3000:3000
-  #  volumes:
-  #    - .:/home/node/app
+  app:
+    build: .
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/workspace/app
   postgres:
     image: postgres:14
     ports:
