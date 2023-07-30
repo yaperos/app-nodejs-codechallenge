@@ -80,3 +80,40 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Run Project
+
+- Create a local database in PostgreSQL (DB connection params should be match with project environment file)
+- Place in project root folder with cmd or bash and execute <code>yarn install</code>
+- Replace data configuration in PostgreSQL DataSource <code>src/infra/db/data-source.ts</code> 
+- Execute <code>yarn build</code>
+- Execute <code>migration:run</code> script in package.json file
+- In project root folder, please rename the file <code>.env_example</code> to <code>.env</code> and adjust the DB connection vars:
+
+```
+# Environment
+NODE_ENV=
+
+# PORT
+PORT=
+
+#TYPEORM
+TYPEORM_HOST=
+TYPEORM_PORT=
+TYPEORM_DATABASE=
+TYPEORM_USERNAME=
+TYPEORM_PASSWORD=
+
+## KEYCLOAK
+KC_SERVER=https:
+KC_CLIENT=
+KC_CLIENT_SECRET=
+KC_REALM=
+```
+- You can find a Postmant Collection and Postman environment in folder <code>/docs</code> Please import this files in you postman to consume all API Endpoints.
+- Check the <code>Swagger Documentation</code> of API in http://localhost:3000/docs/
+
+
+## Run Unit Tests
+
+You can run unit tests executing the follow command <code>npm run test</code>. you should see a resume of code coverage in console screen.
