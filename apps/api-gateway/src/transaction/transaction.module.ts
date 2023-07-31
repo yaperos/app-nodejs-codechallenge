@@ -18,6 +18,15 @@ import { TransactionService } from './transaction.service';
           },
         },
       },
+      {
+        name: 'REDIS_MICROSERVICE',
+        transport: Transport.REDIS,
+        options: {
+          host: 'localhost',
+          port: 6379,
+          
+        },
+      },
     ]),
   ],
   providers: [TransactionService],

@@ -37,7 +37,7 @@ export class AppService {
   async updateTransactionStatus(
     updateTransactionDto: UpdateTransactionStatusDto
   ) {
-    console.log('must update transaction here transaction!');
+    console.log(`Updating transaction! ${updateTransactionDto.transactionId}`);
     const transaction = await this.transactionsRepository.findOneBy({
       id: updateTransactionDto.transactionId,
     });
