@@ -1,0 +1,10 @@
+### Create transaction
+POST http://localhost:3000/transaction
+Content-Type: application/json
+
+{
+  "accountExternalIdDebit": "134-1234-1234-1234",
+  "accountExternalIdCredit": "1230123-423-52-312",
+  "tranferTypeId": 1,
+  "value": 120
+}
