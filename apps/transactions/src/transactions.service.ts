@@ -16,20 +16,27 @@ export class TransactionsService {
     return this.prismaService.transaction.findMany();
   }
   async create(data: TransactionDto) {
-    const transaction = await this.prismaService.transaction.create({
-      data: {
-        transaction_external_id: data.accountExternalIdCredit
-          ? data.accountExternalIdCredit
-          : data.accountExternalIdDebit,
-        transaction_type: data.tranferTypeId,
-        value: data.value,
-        status: TransactionStatus.PENDING,
-        updated_at: new Date(),
-      },
-    });
-
-    await lastValueFrom(this.kafkaClient.emit('transactions', transaction));
-    return transaction;
+    try {
+      const transaction = await this.prismaService.transaction.create({
+        data: {
+          transaction_external_id: data.accountExternalIdCredit
+            ? data.accountExternalIdCredit
+            : data.accountExternalIdDebit,
+          transaction_type: data.tranferTypeId,
+          value: data.value,
+          status: TransactionStatus.PENDING,
+          updated_at: new Date(),
+        },
+      });
+      await lastValueFrom(
+        this.kafkaClient.emit('transactions', JSON.stringify(transaction)),
+      );
+      return transaction;
+    } catch (e: any) {
+      return {
+        message: 'ID duplicated',
+      };
+    }
   }
   async findByID(id: string) {
     const transaction = await this.prismaService.transaction.findFirst({

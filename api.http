@@ -1,12 +1,11 @@
-GET http://localhost:3003/transactions
+GET http://192.168.208.6:3003/transactions
 
 ###
-POST http://localhost:3003/transactions
+POST http://192.168.208.6:3003/transactions
 Content-Type: application/json
 
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "Guid4",
   "tranferTypeId": 1,
-  "value": 120
+  "value": 1080
 }

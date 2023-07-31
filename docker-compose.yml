@@ -1,17 +1,19 @@
 version: "3.7"
 services:
-  #ms-transaction:
-  #  build: .
-  #  ports:
-  #    - 3003:3001
-  #  command: >
-  #    sh -c "cd apps/transactions && 
-  #           pnpx prisma migrate dev && 
-  #           pnpm run start:dev
-  #           "
-  #  depends_on:
-  #    - postgres
-  #    - kafka
+  ms-transaction:
+    build: .
+    ports:
+      - 3003:3001
+    expose:
+      - "3003"
+    command: >
+      sh -c "cd apps/transactions && 
+             pnpx prisma migrate dev && 
+             pnpm run start:dev
+             "
+    depends_on:
+      - postgres
+      - kafka
   ms-antifraud:
     build: .
     ports:
