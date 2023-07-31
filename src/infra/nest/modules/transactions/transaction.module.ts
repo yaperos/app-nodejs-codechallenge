@@ -4,14 +4,14 @@ import { TransactionType } from '../../../db/entities/transaction-type.entity';
 import { TransactionStatus } from '../../../db/entities/transaction-status.entity';
 import { FinancialTransaction } from '../../../db/entities/financial-transaction.entity';
 import { FinancialTransactionsController } from '../../../../api/financial-transactions/financial-transactions.controller';
-import { createFinancialTransactionAdapters } from './providers/adapter.provider';
+import { createFinancialTransactionAdapters, viewFinancialTransactionAdapters } from './providers/adapter.provider';
 import { CreateFinancialTransaction } from 'src/domain/financial-transactions/create/create-financial-transaction.use-case';
-import { createFinancialTransactionDomainProviders } from './providers/domain.provider';
+import domainProviders from './providers/domain.provider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TransactionType, TransactionStatus, FinancialTransaction])],
   controllers: [FinancialTransactionsController],
-  providers: [...createFinancialTransactionAdapters, ...createFinancialTransactionDomainProviders],
+  providers: [...createFinancialTransactionAdapters, ...viewFinancialTransactionAdapters, ...domainProviders],
   exports: [CreateFinancialTransaction],
 })
 export class TransactionsModule {}

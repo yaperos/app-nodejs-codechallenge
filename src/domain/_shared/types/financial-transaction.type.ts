@@ -14,4 +14,5 @@ export type FinancialTransactionData = {
   value: number;
   accountExternalIdDebit: string;
   accountExternalIdCredit: string;
+  transactionExternalId: string;
 };

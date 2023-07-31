@@ -13,7 +13,7 @@ export class TransactionType {
   name: string;
 }
 
-export class CreateFinancialTransactionResponse {
+export class FinancialTransactionResponse {
   @ApiProperty({ description: 'Transaction code', type: String })
   @Expose()
   transactionExternalId: string;
@@ -55,7 +55,7 @@ export class CreateFinancialTransactionError {
   error: string;
 }
 
-export class CreateFinancialTransactionWithErrorsResponse {
+export class FinancialTransactionWithErrorsResponse {
   @ApiProperty({ type: CreateFinancialTransactionError, isArray: true })
   errors: CreateFinancialTransactionError[];
 }

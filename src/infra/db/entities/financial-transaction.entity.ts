@@ -29,6 +29,10 @@ export class FinancialTransaction {
   accountExternalIdCredit: string;
 
   @Index()
+  @Column({ name: 'transaction_external_id' })
+  transactionExternalId: string;
+
+  @Index()
   @ManyToOne(() => TransactionStatus)
   @JoinColumn({ name: 'status_id' })
   public status!: TransactionStatus;

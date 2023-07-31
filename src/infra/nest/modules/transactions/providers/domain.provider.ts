@@ -1,3 +1,4 @@
 import { CreateFinancialTransaction } from 'src/domain/financial-transactions/create';
+import { ViewFinancialTransaction } from 'src/domain/financial-transactions/view';
 
-export const createFinancialTransactionDomainProviders = [CreateFinancialTransaction];
+export default [CreateFinancialTransaction, ViewFinancialTransaction];

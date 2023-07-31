@@ -17,10 +17,13 @@ export class Migration1690721283694 implements MigrationInterface {
       `CREATE TABLE "transaction_type" ("id" SERIAL NOT NULL, "type" "public"."transaction_type_type_enum" NOT NULL DEFAULT 'Transfer', "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_e4e15bcea926d360cfeea703c36" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "financial_transactions" ("id" SERIAL NOT NULL, "value" integer NOT NULL DEFAULT '0', "account_external_id_debit" character varying NOT NULL, "account_external_id_credit" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "delete_at" TIMESTAMP, "status_id" integer, "type_id" integer, CONSTRAINT "PK_3f0ffe3ca2def8783ad8bb5036b" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "financial_transactions" ("id" SERIAL NOT NULL, "value" integer NOT NULL DEFAULT '0', "account_external_id_debit" character varying NOT NULL, "account_external_id_credit" character varying NOT NULL, "transaction_external_id" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "delete_at" TIMESTAMP, "status_id" integer, "type_id" integer, CONSTRAINT "PK_3f0ffe3ca2def8783ad8bb5036b" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(`CREATE INDEX "IDX_91f0ffe834adc103eb13d67bab" ON "financial_transactions" ("status_id") `);
     await queryRunner.query(`CREATE INDEX "IDX_0b284717a2bd6dd425425e8f3f" ON "financial_transactions" ("type_id") `);
+    await queryRunner.query(
+      `CREATE INDEX "IDX_0b284717a2bdc103eb13d67bab" ON "financial_transactions" ("transaction_external_id") `,
+    );
     await queryRunner.query(
       `ALTER TABLE "financial_transactions" ADD CONSTRAINT "FK_91f0ffe834adc103eb13d67bab4" FOREIGN KEY ("status_id") REFERENCES "transaction_status"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
@@ -34,6 +37,7 @@ export class Migration1690721283694 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "financial_transactions" DROP CONSTRAINT "FK_91f0ffe834adc103eb13d67bab4"`);
     await queryRunner.query(`DROP INDEX "public"."IDX_0b284717a2bd6dd425425e8f3f"`);
     await queryRunner.query(`DROP INDEX "public"."IDX_91f0ffe834adc103eb13d67bab"`);
+    await queryRunner.query(`DROP INDEX "public"."IDX_0b284717a2bdc103eb13d67bab"`);
     await queryRunner.query(`DROP TABLE "financial_transactions"`);
     await queryRunner.query(`DROP TABLE "transaction_type"`);
     await queryRunner.query(`DROP TYPE "public"."transaction_type_type_enum"`);

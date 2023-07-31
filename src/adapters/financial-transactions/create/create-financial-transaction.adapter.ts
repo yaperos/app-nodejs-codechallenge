@@ -3,6 +3,7 @@ import { Entities, Ports } from 'src/domain/financial-transactions/create';
 import { Repository } from 'typeorm';
 import { FinancialTransaction } from '../../../infra/db/entities/financial-transaction.entity';
 import { TypeOrmTransactionAdapter } from '../../_shared/db-transaction.adapter';
+import uuiAdapter from '../../_shared/uui.adapter';
 
 @Injectable({ scope: Scope.REQUEST })
 export class CreateFinancialTransactionAdapter implements Ports.FinancialTransactionPort {
@@ -17,6 +18,7 @@ export class CreateFinancialTransactionAdapter implements Ports.FinancialTransac
     if (!transaction) return null;
 
     const transactionResult = await this.repository.save({
+      transactionExternalId: uuiAdapter.generate(),
       accountExternalIdDebit: transaction.accountExternalIdDebit,
       accountExternalIdCredit: transaction.accountExternalIdCredit,
       value: transaction.value,

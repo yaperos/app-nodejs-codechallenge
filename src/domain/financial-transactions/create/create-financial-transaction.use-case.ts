@@ -54,7 +54,7 @@ export class CreateFinancialTransaction {
     });
 
     return {
-      transactionExternalId: uuiAdapter.generate(),
+      transactionExternalId: financialTransaction.transactionExternalId,
       transactionType: {
         name: financialTransaction.transactionType.type,
       },
