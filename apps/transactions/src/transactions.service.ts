@@ -37,16 +37,20 @@ export class TransactionsService {
         transaction_external_id: id,
       },
     });
-    return {
-      transactionExternalId: transaction.transaction_external_id,
-      transactionType: {
-        name: transaction.transaction_type,
-      },
-      transactionStatus: {
-        name: transaction.status,
-      },
-      value: transaction.value,
-      createdAt: transaction.created_at,
+    if (transaction) {
+      return {
+        transactionExternalId: transaction.transaction_external_id,
+        transactionType: {
+          name: transaction.transaction_type,
+        },
+        transactionStatus: {
+          name: transaction.status,
+        },
+        value: transaction.value,
+        createdAt: transaction.created_at,
+      };
+    } else {
+      return { message: 'Id not found' };
     }
   }
 

@@ -1,11 +1,26 @@
 version: "3.7"
 services:
-  app:
+  #ms-transaction:
+  #  build: .
+  #  ports:
+  #    - 3003:3001
+  #  command: >
+  #    sh -c "cd apps/transactions && 
+  #           pnpx prisma migrate dev && 
+  #           pnpm run start:dev
+  #           "
+  #  depends_on:
+  #    - postgres
+  #    - kafka
+  ms-antifraud:
     build: .
     ports:
-      - 5000:5000
-    volumes:
-      - .:/workspace/app
+      - 3004:3002
+    command: >
+      sh -c "pnpm run start:dev anti-fraud"
+    depends_on:
+      - kafka
+      - postgres
   postgres:
     image: postgres:14
     ports:
@@ -48,19 +63,19 @@ services:
       CONFLUENT_METRICS_ENABLE: 'false'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
 
-  control-center:
-    image: confluentinc/cp-enterprise-control-center:7.3.0
-    hostname: control-center
-    container_name: control-center
-    depends_on:
-      - kafka
-    ports:
-      - "9021:9021"
-    environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
-      CONTROL_CENTER_REPLICATION_FACTOR: 1
-      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
-      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
-      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
-      PORT: 9021
+  #control-center:
+  #  image: confluentinc/cp-enterprise-control-center:7.3.0
+  #  hostname: control-center
+  #  container_name: control-center
+  #  depends_on:
+  #    - kafka
+  #  ports:
+  #    - "9021:9021"
+  #  environment:
+  #    CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
+  #    CONTROL_CENTER_REPLICATION_FACTOR: 1
+  #    CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
+  #    CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+  #    CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+  #    PORT: 9021
     

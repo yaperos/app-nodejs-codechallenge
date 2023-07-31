@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { TransactionDto } from './transaction.dto';
-import { TransactionStatus } from '@prisma/client';
+import { TransactionStatus } from '.prisma/client/transactions';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 @Controller('transactions')
 export class TransactionsController {
