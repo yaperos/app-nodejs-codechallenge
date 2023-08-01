@@ -2,13 +2,13 @@ import { join } from 'path';
 import { LoggerModule } from 'nestjs-pino';
 import { Logger, MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { LoggingMiddleware } from './infra/nest/middlewares/logging.middleware';
 import { GlobalModule } from './infra/nest/modules/global.module';
 import { TransactionsModule } from './infra/nest/modules/transactions/transaction.module';
-
+import { KafkaModule } from './infra/nest/modules/kafka/kafka.module';
+import { AntiFraudModule } from './infra/nest/modules/anti-frauds/anti-fraud.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +17,7 @@ import { TransactionsModule } from './infra/nest/modules/transactions/transactio
     }),
     GlobalModule,
     TransactionsModule,
+    AntiFraudModule,
     LoggerModule.forRoot({
       pinoHttp: {
         transport: process.env.NODE_ENV === 'local' ? { target: 'pino-pretty' } : undefined,
@@ -30,6 +31,11 @@ import { TransactionsModule } from './infra/nest/modules/transactions/transactio
       password: process.env.TYPEORM_PASSWORD,
       database: process.env.TYPEORM_DATABASE,
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+    }),
+    KafkaModule.register({
+      clientId: process.env.KAFKA_CLIENT_ID,
+      brokers: [process.env.KAFKA_BROKER],
+      ssl: process.env.KAFKA_ENABLE_SSL === 'true',
     }),
   ],
   controllers: [AppController],

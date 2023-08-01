@@ -4,11 +4,15 @@ import { Repository } from 'typeorm';
 import { FinancialTransaction } from '../../../infra/db/entities/financial-transaction.entity';
 import { TypeOrmTransactionAdapter } from '../../_shared/db-transaction.adapter';
 import uuiAdapter from '../../_shared/uui.adapter';
+import { KafkaFinancialTransactionProducerAdapter } from './kafka-financial-transaction-producer.adapter';
 
 @Injectable({ scope: Scope.REQUEST })
 export class CreateFinancialTransactionAdapter implements Ports.FinancialTransactionPort {
   private repository: Repository<FinancialTransaction>;
-  constructor(private readonly transactionAdapter: TypeOrmTransactionAdapter) {
+  constructor(
+    private readonly transactionAdapter: TypeOrmTransactionAdapter,
+    private readonly kafkaProducerAdapter: KafkaFinancialTransactionProducerAdapter,
+  ) {
     this.repository = this.transactionAdapter.queryRunner.manager.getRepository(FinancialTransaction);
   }
 
@@ -33,6 +37,8 @@ export class CreateFinancialTransactionAdapter implements Ports.FinancialTransac
         relations: ['status', 'transactionType'],
       });
     }
+
+    await this.kafkaProducerAdapter.sendMessage(financialTransaction);
 
     return financialTransaction;
   }
