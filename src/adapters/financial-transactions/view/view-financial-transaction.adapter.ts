@@ -14,14 +14,10 @@ export class ViewFinancialTransactionAdapter implements Ports.FinancialTransacti
   async getByFilter(filters: Entities.FinancialTransactionFilters): Promise<Entities.FinancialTransaction> {
     if (!filters) return null;
 
-    console.log(filters);
-
     const financialTransaction = await this.financialTransactionRepository.findOne({
       where: { ...filters },
       relations: ['status', 'transactionType'],
     });
-
-    console.log(financialTransaction);
 
     if (!financialTransaction) return null;
 

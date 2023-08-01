@@ -20,8 +20,6 @@ export class ViewFinancialTransaction {
   private async getFinancialTransaction(request: FinancialTransactionFilters): Promise<FinancialTransactionResponse> {
     const filters: FinancialTransactionFilters = {};
 
-    console.log('Use case request: ', request);
-
     if (request.id) {
       filters.id = request.id;
     } else if (request.transactionExternalId) {
