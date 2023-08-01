@@ -11,6 +11,7 @@ services:
       - transactions-network
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    restart: always
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     networks:
@@ -25,8 +26,14 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+    restart: always
     ports:
       - 9092:9092
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server kafka:9092 --list"]
+      interval: 5s
+      timeout: 20s
+      retries: 200
     networks:
       - transactions-network
   transactions-api:
@@ -35,8 +42,10 @@ services:
       dockerfile: Dockerfile
     restart: on-failure
     depends_on:
-      - kafka
-      - postgres
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_started
     ports:
       - 3000:3000
     networks: 
@@ -47,8 +56,10 @@ services:
       dockerfile: Dockerfile
     restart: on-failure
     depends_on:
-      - kafka
-      - postgres
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_started
     networks: 
       - transactions-network
 networks:
