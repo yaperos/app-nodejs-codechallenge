@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { KafkaService } from '../shared/kafka/kafka.service';
@@ -44,7 +44,7 @@ export class TransactionService {
   }
 
   async getTransaction(getTransaction: GetTransactionDTO) {
-    return this.prismaService.transaction.findFirst({
+    const transaction = await this.prismaService.transaction.findFirst({
       where: {
         transactionExternalId: getTransaction.transactionExternalId,
         transferType: {
@@ -55,5 +55,10 @@ export class TransactionService {
         createdAt: getTransaction.createdAt,
       },
     });
+
+    if (!transaction)
+      throw new NotFoundException('No transaction found for query sent');
+
+    return transaction;
   }
 }
