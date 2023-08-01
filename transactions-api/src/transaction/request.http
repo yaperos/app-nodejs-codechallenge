@@ -5,6 +5,21 @@ Content-Type: application/json
 {
   "accountExternalIdDebit": "134-1234-1234-1234",
   "accountExternalIdCredit": "1230123-423-52-312",
-  "tranferTypeId": 1,
-  "value": 120
+  "transferTypeId": 1,
+  "value": 1200
+}
+
+### Get Transaction
+POST http://localhost:3000/transaction/get
+Content-Type: application/json
+
+{
+  "transactionType": {
+    "name": "TX_WIRE_TRANSFER"
+  },
+  "transactionStatus": {
+    "name": "APPROVED"
+  },
+  "value": 120,
+  "createdAt": "2023-07-31T22:22:46.902Z"
 }
