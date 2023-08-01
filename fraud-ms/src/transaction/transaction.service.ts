@@ -3,6 +3,7 @@ import { TransactionDTO } from './entities/transaction.dto';
 import { KafkaService } from '../shared/kafka/kafka.service';
 import { TransactionPresenter } from './entities/transaction.presenter';
 import { APPROVED, REJECTED } from './entities/transaction-status';
+import { KafkaStreamPatterns } from '../shared/kafka/kafka-stream-patterns';
 
 @Injectable()
 export class TransactionService {
@@ -16,7 +17,7 @@ export class TransactionService {
         : APPROVED;
 
     this.kafkaService.sendMessage(
-      'transactions-processed',
+      KafkaStreamPatterns.processedTransactions,
       new TransactionPresenter(
         transaction.transactionExternalId,
         transactionStatus,

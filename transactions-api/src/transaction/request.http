@@ -18,8 +18,8 @@ Content-Type: application/json
     "name": "TX_WIRE_TRANSFER"
   },
   "transactionStatus": {
-    "name": "APPROVED"
+    "name": "REJECTED"
   },
-  "value": 120,
-  "createdAt": "2023-07-31T22:22:46.902Z"
+  "value": 1200,
+  "createdAt": "2023-08-01T19:47:09.604Z"
 }

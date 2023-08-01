@@ -4,6 +4,7 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { GetTransactionDTO } from './dto/get-transaction.dto';
+import { KafkaStreamPatterns } from '../shared/kafka/kafka-stream-patterns';
 
 @Controller('transaction')
 export class TransactionController {
@@ -14,9 +15,13 @@ export class TransactionController {
     return this.transactionService.create(createTransactionDto);
   }
 
-  @MessagePattern('transactions-processed')
-  async pullProcessedTransactions(@Payload() data: UpdateTransactionDto) {
-    return this.transactionService.pullProcessedTransaction(data);
+  @MessagePattern(KafkaStreamPatterns.processedTransactions)
+  async pullProcessedTransactions(
+    @Payload() updateTransactionData: UpdateTransactionDto,
+  ) {
+    return this.transactionService.pullProcessedTransaction(
+      updateTransactionData,
+    );
   }
 
   // Using a POST since the service expects us to receive an object

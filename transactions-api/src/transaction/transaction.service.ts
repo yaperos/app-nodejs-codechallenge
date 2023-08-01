@@ -4,6 +4,8 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { KafkaService } from '../shared/kafka/kafka.service';
 import { PrismaService } from '../shared/prisma/prisma.service';
 import { GetTransactionDTO } from './dto/get-transaction.dto';
+import { PENDING } from './entities/transaction-status';
+import { KafkaStreamPatterns } from '../shared/kafka/kafka-stream-patterns';
 
 @Injectable()
 export class TransactionService {
@@ -17,12 +19,15 @@ export class TransactionService {
       data: {
         accountExternalIdDebit: createTransactionDto.accountExternalIdDebit,
         accountExternalIdCredit: createTransactionDto.accountExternalIdCredit,
-        transferTypeId: 1,
+        transferTypeId: createTransactionDto.transferTypeId,
         value: createTransactionDto.value,
-        transactionStatus: 'PENDING',
+        transactionStatus: PENDING,
       },
     });
-    this.kafkaService.sendMessage('transactions-pending', newTransaction);
+    this.kafkaService.sendMessage(
+      KafkaStreamPatterns.pendingTransactions,
+      newTransaction,
+    );
     return newTransaction;
   }
 
@@ -39,7 +44,6 @@ export class TransactionService {
   }
 
   async getTransaction(getTransaction: GetTransactionDTO) {
-    console.log(getTransaction);
     return this.prismaService.transaction.findFirst({
       where: {
         transactionExternalId: getTransaction.transactionExternalId,
