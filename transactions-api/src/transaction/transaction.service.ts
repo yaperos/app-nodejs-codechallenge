@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { KafkaService } from '../shared/kafka/kafka.service';
@@ -9,6 +9,8 @@ import { KafkaStreamPatterns } from '../shared/kafka/kafka-stream-patterns';
 
 @Injectable()
 export class TransactionService {
+  private readonly logger = new Logger(TransactionService.name);
+
   constructor(
     private readonly kafkaService: KafkaService,
     private readonly prismaService: PrismaService,
@@ -40,7 +42,10 @@ export class TransactionService {
         transactionStatus: transaction.transactionStatus,
       },
     });
-    console.log(updatedTransaction);
+    this.logger.log(
+      updatedTransaction,
+      'Result from processing the transaction',
+    );
   }
 
   async getTransaction(getTransaction: GetTransactionDTO) {
