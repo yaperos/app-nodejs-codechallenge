@@ -7,8 +7,8 @@ Don't forget that the proper way to submit your work is to fork the repo and cre
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
 - [Send us your challenge](#send_us_your_challenge)
-- [Service transaction](#Service_transaction)
-- [Service antifraud](#Service_antifraud)
+- [Service transaction](#service_transaction)
+- [Service antifraud](#service_antifraud)
 
 # Problem
 
@@ -85,7 +85,7 @@ If you have any questions, please let us know.
 
 
 
-# Service_transaction
+# service_transaction
 
 Pasos para correr este proyecto:
 
@@ -140,7 +140,7 @@ Pasos para correr este proyecto:
 - Kafka
 - Docker
 
-# Service_antifraud
+# service_antifraud
 
 Pasos para correr este proyecto:
 
