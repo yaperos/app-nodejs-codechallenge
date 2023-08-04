@@ -7,8 +7,8 @@ Don't forget that the proper way to submit your work is to fork the repo and cre
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
 - [Send us your challenge](#send_us_your_challenge)
-- [Service transaction](#Service transaction)
-- [Service antifraud](#Service antifraud)
+- [Service transaction](#Service_transaction)
+- [Service antifraud](#Service_antifraud)
 
 # Problem
 
@@ -32,7 +32,7 @@ Every transaction with a value greater than 1000 should be rejected.
     Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
 ```
 
-# Tech Stack
+# Tech_Stack
 
 <ol>
   <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
