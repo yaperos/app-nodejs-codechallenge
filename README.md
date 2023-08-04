@@ -77,7 +77,7 @@ You can use any approach to store transaction data but you should consider that 
 
 You can use Graphql;
 
-# Send us your challenge
+# send_us_your_challenge
 
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
@@ -85,7 +85,7 @@ If you have any questions, please let us know.
 
 
 
-# Service transaction
+# Service_transaction
 
 Pasos para correr este proyecto:
 
@@ -140,7 +140,7 @@ Pasos para correr este proyecto:
 - Kafka
 - Docker
 
-# Service antifraud
+# Service_antifraud
 
 Pasos para correr este proyecto:
 
