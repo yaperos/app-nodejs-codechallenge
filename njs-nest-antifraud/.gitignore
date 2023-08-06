@@ -265,7 +265,6 @@ $RECYCLE.BIN/
 node_modules
 
 # yarn.lock
-yarn.lock
 package-lock.json
 
 # .env

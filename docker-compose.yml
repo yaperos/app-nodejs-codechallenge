@@ -9,17 +9,14 @@ services:
     networks:
       - kafka-net
     environment:
-      - MONGO_URI=mongodb://mongodb:27017
-      - MONGO_DB=test
-      - KAFKA_BROKER_HOST=kafka
-      - KAFKA_BROKER_PORT=9092
+      - KAFKA_BROKERS=kafka1:9092,kafka2:9093,kafka3:9094
       - KAFKAJS_NO_PARTITIONER_WARNING=1
-      - PORT=5000
     depends_on:
-      kafka:
+      kafka1:
+        # start only if kafka is ready
         condition: service_started
-    env_file:
-      - ./njs-nest-antifraud/env/properties.env
+    #env_file:
+    #  - ./njs-nest-antifraud/env/properties.env
   njs-nest-transaction:
     build:
       context: ./njs-nest-transaction
@@ -33,18 +30,16 @@ services:
     environment:
       - MONGO_URI=mongodb://mongodb:27017
       - MONGO_DB=test
-      - KAFKA_BROKER_HOST=kafka
-      - KAFKA_BROKER_PORT=9092
+      - KAFKA_BROKERS=kafka1:9092,kafka2:9093,kafka3:9094
       - KAFKAJS_NO_PARTITIONER_WARNING=1
       - PORT=4000
     depends_on:
-      kafka:
+      kafka1:
         condition: service_started
       mongodb:
-        condition: service_started
-    env_file:
-      - ./njs-nest-transaction/env/properties.env
-
+        condition: service_healthy
+    #env_file:
+    #  - ./njs-nest-transaction/env/properties.env
   mongodb:
     image: mongo:4.2.8
     container_name: mongodb
@@ -60,6 +55,11 @@ services:
       - 27017
     networks:
       - kafka-net
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -69,12 +69,12 @@ services:
       - 2181:2181
     networks:
       - kafka-net
-  kafka:
-    container_name: kafka
+  kafka1:
+    container_name: kafka1
     image: confluentinc/cp-enterprise-kafka:5.5.3
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:29092,PLAINTEXT_HOST://kafka1:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -91,7 +91,53 @@ services:
       test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
       interval: 5s
       timeout: 3s
-      retries: 15
+      retries: 10
+  kafka2:
+    container_name: kafka2
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:29092,PLAINTEXT_HOST://kafka2:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_BROKER_ID: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9992
+    ports:
+      - 9093:9093
+    restart: always
+    depends_on:
+      zookeeper:
+        condition: service_started
+    networks:
+      - kafka-net
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9093", "--list"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  kafka3:
+    container_name: kafka3
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:29092,PLAINTEXT_HOST://kafka3:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_BROKER_ID: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9993
+    ports:
+      - 9094:9094
+    restart: always
+    depends_on:
+      zookeeper:
+        condition: service_started
+    networks:
+      - kafka-net
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9094", "--list"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 volumes:
   mongodb:
 networks:

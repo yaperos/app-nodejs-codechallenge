@@ -22,10 +22,8 @@ dotenv.config({ path: dotEnvOptions.path });
 const logger: LoggerConfig = new LoggerConfig();
 const http: HttpConfig = new HttpConfig();
 
-const kafkaHost = process.env.KAFKA_BROKER_HOST || 'localhost';
-const kafkaPort = process.env.KAFKA_BROKER_PORT || 9092;
-
-const brokers = [`${kafkaHost}:${kafkaPort}`];
+const brokersStr = process.env.KAFKA_BROKERS || 'kafka:9092,kafka:9093,kafka:9094';
+const brokers = brokersStr.split(',');
 
 const kafkaConfigDetails: MicroserviceOptions = {
 	transport: Transport.KAFKA,

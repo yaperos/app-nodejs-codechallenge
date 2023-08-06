@@ -1,7 +1,9 @@
 import { CreateTransactionDto } from '@api/dto';
-import { Transaction } from '@api/entity';
+import { Transaction, TransactionStatusGraphQL } from '@api/entity';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import dayjs from 'dayjs';
+import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
 import { MessageStatusEnum } from 'src/enum/message-status.enum';
 
@@ -33,7 +35,7 @@ export class TransactionRepository {
 
 		transactionFound.set(transaction.toObject());
 
-		const updatedTransaction = await this.model.updateOne({ _id: transactionId }, transactionFound);
+		await this.model.updateOne({ _id: transactionId }, transactionFound);
 
 		return transactionFound;
 	}
@@ -58,6 +60,39 @@ export class TransactionRepository {
 		if (!transaction) {
 			return null;
 		}
+		return transaction;
+	}
+
+	async findOneByExternalId(externalId: string): Promise<Transaction | null> {
+		const transaction = await this.model.findOne({ transactionExternalId: externalId });
+		if (!transaction) {
+			return null;
+		}
+		return transaction;
+	}
+
+	async findOneByStatusEntity(status: TransactionStatusGraphQL, tranferTypeId: number): Promise<Transaction | null> {
+		const { transactionStatus, createdAt, transactionId, transactionType, value } = status;
+
+		const query = { 
+			transactionStatus: transactionStatus.name,
+			tranferTypeId,
+			_id: new ObjectId(transactionId),
+			value,
+			createdAt: {
+				// A date-time string at UTC, such as  "2023-08-06T18:16:17.187Z", compliant with the date-time format.
+				$eq: dayjs(createdAt).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+			},
+		}
+
+		Logger.log(`[${TransactionRepository.name}] - Query: ${JSON.stringify(query)}`, TransactionRepository.name);
+
+		const transaction = await this.model.findOne(query);
+
+		if (!transaction) {
+			return null;
+		}
+
 		return transaction;
 	}
 }

@@ -15,7 +15,9 @@ import kafkaConfig from './config/kafka.config';
 import { HealthController, TransactionController } from '@api/controller';
 import { KafkaModule, TransactionKafkaClientModule } from '@api/module/kafka.module';
 import { TransactionMongooseModule } from '@api/module/mongo.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DevtoolsModule } from "@nestjs/devtools-integration";
+import { GraphQLModule } from '@nestjs/graphql';
 
 dotenv.config({ path: dotEnvOptions.path });
 
@@ -24,6 +26,14 @@ const http: HttpConfig = new HttpConfig();
 
 @Module({
 	imports: [
+		GraphQLModule.forRoot<ApolloDriverConfig>({
+			driver: ApolloDriver,
+			autoSchemaFile: './schema.gql',
+			sortSchema: true,
+			introspection: true,
+			playground: true,
+			path: '/graphql',
+		}),		
 		ConfigModule.forRoot({
 			envFilePath: [dotEnvOptions.path, '.env'],
 			load: [mongoConfig, apiConfig, kafkaConfig],

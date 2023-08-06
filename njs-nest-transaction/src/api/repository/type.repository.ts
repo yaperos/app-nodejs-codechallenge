@@ -35,6 +35,15 @@ export class TypeRepository {
 		return this.create(dataCreate);
 	}
 
+	async findOneById(id: string): Promise<Type> {
+		return this.model.findById(id);
+	}
+
+	// findByName using regex
+	findByName(name: string): Promise<Type> {
+		return this.model.findOne({ name: { $regex: name, $options: 'i' } });
+	}
+
 	async findAll(): Promise<Type[]> {
 		return this.model.find();
 	}

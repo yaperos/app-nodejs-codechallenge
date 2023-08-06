@@ -1,21 +1,20 @@
 FROM node:16-alpine
 
-RUN apk upgrade libssl3 libcrypto3
-
 WORKDIR /app
 
-COPY dist/ /app/dist
-COPY package.json .
-COPY node_modules/ /app/node_modules
+COPY dist /app/dist
+#COPY package.json /app
 
-RUN chown -R daemon /app/dist/
+# copy yarn.lock if you are using yarn and node_modules.
+#COPY yarn.lock /app
+# COPY node_modules /app/node_modules
 
-USER daemon
+COPY node_modules /app/node_modules
 
-RUN mkdir -p /app/dist/logs
 
-WORKDIR /app/dist
+##COPY . /app
 
-CMD ["yarn", "start:prod"]
+EXPOSE 3000
 
-EXPOSE 8081/TCP
+CMD ["node", "dist/src/main"]
+

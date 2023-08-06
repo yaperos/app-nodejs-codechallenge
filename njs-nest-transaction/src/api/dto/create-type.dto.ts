@@ -1,5 +1,4 @@
-// CreateTransactionDto;
-// with this one from njs-nest-transaction/src/api/dto/create-transaction.dto.ts:
+import { Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
@@ -18,3 +17,15 @@ export class CreateTypeDto {
 	typeExternalId?: string;
 }
 
+
+@InputType()
+export class CreateTypeGraphQL {
+	@Field()
+	name: string;
+
+	@Field()
+	numericId: number;
+
+	@Field({ nullable: true })
+	typeExternalId?: string;
+}

@@ -19,8 +19,27 @@ for PROJECT_NAME in "${PROJECT_NAMES[@]}"
  done
 echo "[start script] - Projects ($PROJECT_NAMES) built"
 
-echo "[start script] - Building the docker images..."
-#docker-compose up -d --build
-echo "[start script] - Docker images built"
+echo "[start script] - Starting third party services..."
+docker-compose up -d kafka1 kafka2 kafka3 mongodb
+echo "[start script] - Third party services started"
+
+# check if kafka is up and running
+echo "[start script] - Waiting for kafka1 to be up and running (1/3)..."
+docker-compose exec kafka1 bash -c "kafka-topics --list --zookeeper zookeeper:2181" > /dev/null 2>&1
+echo "[start script] - Waiting for kafka2 to be up and running (2/3)..."
+docker-compose exec kafka2 bash -c "kafka-topics --list --zookeeper zookeeper:2181" > /dev/null 2>&1
+echo "[start script] - Waiting for kafka3 to be up and running (3/3)..."
+docker-compose exec kafka3 bash -c "kafka-topics --list --zookeeper zookeeper:2181" > /dev/null 2>&1
+echo "[start script] - Third party services (kafka) are up and running"
+
+# check if mongodb is up and running
+echo "[start script] - Waiting for mongodb to be up and running..."
+docker-compose exec mongodb bash -c "mongo --eval 'db.runCommand({ connectionStatus: 1 })'" > /dev/null 2>&1
+echo "[start script] - Third party services are up and running"
+
+# start the containers of the projects
+echo "[start script] - Starting the docker containers of the projects $PROJECT_NAME_TRANSACTION and $PROJECT_NAME_ANTIFRAUD..."
+docker-compose up -d --build $PROJECT_NAME_TRANSACTION $PROJECT_NAME_ANTIFRAUD
+echo "[start script] - Docker containers of the projects $PROJECT_NAME_TRANSACTION and $PROJECT_NAME_ANTIFRAUD started"
 
 echo "[start script] - Running the docker containers..."

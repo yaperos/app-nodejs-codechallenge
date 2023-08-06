@@ -14,14 +14,14 @@ async function bootstrap() {
 
 	const winstonLogger = WinstonModule.createLogger(logger.console());
 
-	const brokerUrl = process.env.KAFKA_BROKER_HOST || 'localhost';
-	const brokerPort = process.env.KAFKA_BROKER_PORT || 9092;
+	const brokersStr = process.env.KAFKA_BROKERS || 'kafka:9092,kafka:9093,kafka:9094';
+	const brokers = brokersStr.split(',');
 
 	const kafkaConfig: MicroserviceOptions = {
 		transport: Transport.KAFKA,
 		options: {
 			client: {
-				brokers: [`${brokerUrl}:${brokerPort}`],
+				brokers,
 				clientId: 'kafka-client',
 			},
 			consumer: {

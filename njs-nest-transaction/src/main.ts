@@ -12,31 +12,31 @@ import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
 
 import { KAFKA_BROKER_CONSUMER_GROUP_ID_TRANSACTION, KAFKA_CONSUMER_CLIENTID } from '@api/constant/kafka.constant';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 // rome-ignore lint/suspicious/noExplicitAny: <explanation>
 declare const module: any;
 
 async function bootstrap() {
 	const logger: LoggerConfig = new LoggerConfig();
-
 	const winstonLogger = WinstonModule.createLogger(logger.console());
 
-	//const app = await NestFactory.create(AppModule, {
-	//		logger: winstonLogger,
-	//	snapshot: true,
-	// });
+	const app = await NestFactory.create(AppModule, {
+		logger: winstonLogger,
+		snapshot: true,
+		cors: false,
+	});
 
-	const app = await NestFactory.create<NestFastifyApplication>(AppModule);
-
+	// Configuración de CORS
+  app.enableCors({
+    origin: '*', // Cambia '*' por el origen permitido de tus solicitudes (ej. 'http://localhost:3000')
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  });
+	
 	const configService = app.get(ConfigService);
-
-	const kafkaHost = configService.get<string>('kafka.host');
-	const kafkaPort = configService.get<string>('kafka.port');
-
-
-	const brokers = [`${kafkaHost}:${kafkaPort}`, `${kafkaHost}:${Number(kafkaPort) + 1}`, `${kafkaHost}:${Number(kafkaPort) + 2}`];
-
+	const brokersStr = configService.get<string>('kafka.brokers');
+	const brokers = brokersStr.split(',');
 
 	app.connectMicroservice<MicroserviceOptions>({
 		transport: Transport.KAFKA,
@@ -55,14 +55,6 @@ async function bootstrap() {
 	});
 
 	winstonLogger.log(varMsjApp.APP_WELCOME_MESSAGE);
-
-	app.useGlobalFilters(new HttpExceptionFilter());
-	app.useGlobalPipes(
-		new ValidationPipe({
-			whitelist: true,
-			forbidNonWhitelisted: true,
-		}),
-	);
 	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 	app.setGlobalPrefix(process.env.GLOBAL_PREFIX || varMsjApp.APP_DEFAULT_GLOBAL_PREFIX);
 

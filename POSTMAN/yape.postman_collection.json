@@ -1,0 +1,440 @@
+{
+	"info": {
+		"_postman_id": "fc223002-ffbb-44e6-8c24-253d982ca843",
+		"name": "yape",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8636249",
+		"_collection_link": "https://peluca-team.postman.co/workspace/SAWA-PEC~d00680c3-620b-4b3b-ac7b-70269d6f2e13/collection/8636249-fc223002-ffbb-44e6-8c24-253d982ca843?action=share&creator=8636249&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "REST",
+			"item": [
+				{
+					"name": "create transac",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tranferTypeId\": 1,\n    \"value\": 10000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/retoyape/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"retoyape",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create transac",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"tranferTypeId\": 1,\n    \"value\": 10000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/retoyape/v1/transactions",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"retoyape",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "366"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"16e-9g4L+eAMijrm0eseWMwNIden8Ik\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 06 Aug 2023 19:04:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"accountExternalIdDebit\": \"c68173d3-5212-470a-ba76-5fa5aca356e7\",\n    \"accountExternalIdCredit\": \"d5ab8b0d-ef51-4666-8473-b17ddb390fc5\",\n    \"transactionExternalId\": \"d43a9a4a-c7c1-4fa2-9383-cb8705b054f3\",\n    \"transactionStatus\": \"PENDING\",\n    \"tranferTypeId\": 1,\n    \"value\": 10000,\n    \"_id\": \"64cfeea4cbf8185ec80dbe8b\",\n    \"createdAt\": \"2023-08-06T19:04:04.593Z\",\n    \"updatedAt\": \"2023-08-06T19:04:04.593Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get transacs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/retoyape/v1/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"retoyape",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/retoyape/v1/types",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"retoyape",
+								"v1",
+								"types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "drop collection",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/retoyape/v1/transactions/clean-up",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"retoyape",
+								"v1",
+								"transactions",
+								"clean-up"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GRAPHQL",
+			"item": [
+				{
+					"name": "create transac",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation createTransaction($transaction: CreateTransactionGrqphQL!) {\n  createTransaction(transaction: $transaction) {\n    _id\n    accountExternalIdCredit\n    accountExternalIdDebit\n    tranferTypeId\n    transactionExternalId\n    transactionStatus\n    type {\n      name\n      numericId\n      _id\n    }\n    value\n    createdAt\n  }\n}",
+								"variables": "{\n  \"transaction\": {\n    \"tranferTypeId\": 6,\n    \"value\": 100\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one transac",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query findTransaction($details: TransactionStatusGraphQL!){\n    findTransaction (details: $details) {\n        _id\n        value\n        accountExternalIdCredit\n        accountExternalIdDebit\n        transactionExternalId\n        tranferTypeId\n        type {\n            name\n            numericId\n        }\n    }\n}",
+								"variables": "{\n    \"details\": {\n    \"value\": 100000,\n    \"transactionId\": \"64cfe371a5d2d62c8bb3ed58\",\n    \"transactionStatus\": {\n      \"name\": \"APPROVED\"\n    },\n    \"transactionType\": {\n      \"name\": \"Type 6\"\n    },\n    \"createdAt\": \"2023-08-06T14:16:17.187-04:00\"\n  }\n}"
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get one transac example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query findTransaction($details: TransactionStatusGraphQL!){\n    findTransaction (details: $details) {\n        _id\n        value\n        accountExternalIdCredit\n        tranferTypeId\n        type {\n            name\n            numericId\n        }\n    }\n}",
+										"variables": "{\n    \"details\": {\n    \"value\": 100000,\n    \"transactionId\": \"64cfe371a5d2d62c8bb3ed58\",\n    \"transactionStatus\": {\n      \"name\": \"APPROVED\"\n    },\n    \"transactionType\": {\n      \"name\": \"Type 6\"\n    },\n    \"createdAt\": \"2023-08-06T14:16:17.187-04:00\"\n  }\n}"
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/graphql",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "201"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c9-QeF7VDccIqqsljcmvtNC0G6kwhE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 06 Aug 2023 18:46:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"findTransaction\": {\n            \"_id\": \"64cfe371a5d2d62c8bb3ed58\",\n            \"value\": 100000,\n            \"accountExternalIdCredit\": \"51eb0edb-dfa9-470b-ab25-e3af262d43fb\",\n            \"tranferTypeId\": 6,\n            \"type\": {\n                \"name\": \"Type 6\",\n                \"numericId\": 6\n            }\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "get transacs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\n    allTransactions {\n        _id\n        accountExternalIdCredit\n        accountExternalIdDebit\n        tranferTypeId\n        transactionExternalId\n        transactionStatus\n        value\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get transacs",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "{\n    allTransactions {\n        _id\n        accountExternalIdCredit\n        accountExternalIdDebit\n        tranferTypeId\n        transactionExternalId\n        transactionStatus\n        value\n    }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/graphql",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "3493"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"da5-9Ye7QePp62ZpevMvrQ2lyDGw/wQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 06 Aug 2023 18:59:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"allTransactions\": [\n            {\n                \"_id\": \"64cfe34da5d2d62c8bb3ed4f\",\n                \"accountExternalIdCredit\": \"51eb0edb-dfa9-470b-ab25-e3af262d43fb\",\n                \"accountExternalIdDebit\": \"47f5bf72-21e7-4cce-9f97-296be7708611\",\n                \"tranferTypeId\": 5,\n                \"transactionExternalId\": \"a1bf2d24-3e76-4f6c-b0ef-e06edaa99a85\",\n                \"transactionStatus\": \"APPROVED\",\n                \"value\": 100000\n            },\n            {\n                \"_id\": \"64cfe371a5d2d62c8bb3ed58\",\n                \"accountExternalIdCredit\": \"51eb0edb-dfa9-470b-ab25-e3af262d43fb\",\n                \"accountExternalIdDebit\": \"47f5bf72-21e7-4cce-9f97-296be7708611\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"a1bf2d24-3e76-4f6c-b0ef-e06edaa99a85\",\n                \"transactionStatus\": \"APPROVED\",\n                \"value\": 100000\n            },\n            {\n                \"_id\": \"64cfeac4f59eba19c547f530\",\n                \"accountExternalIdCredit\": \"845b1c0c-673d-4415-b0b2-ea9280006a6e\",\n                \"accountExternalIdDebit\": \"7a064af0-844a-474d-9d17-0f4f1f3a7e0a\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"db6dc4c7-91d7-4b5f-969b-88eeba7a7fb6\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfecdc2607c888a85be4d1\",\n                \"accountExternalIdCredit\": \"3d5cf3e8-9dbf-4d5e-ad21-e359c411cd64\",\n                \"accountExternalIdDebit\": \"96e17128-8f8a-4553-8da1-10b8b57848be\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"29506e86-cf0b-494f-83e7-f6747cb9b5b2\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfecdf2607c888a85be4d5\",\n                \"accountExternalIdCredit\": \"3d5cf3e8-9dbf-4d5e-ad21-e359c411cd64\",\n                \"accountExternalIdDebit\": \"96e17128-8f8a-4553-8da1-10b8b57848be\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"29506e86-cf0b-494f-83e7-f6747cb9b5b2\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfece12607c888a85be4df\",\n                \"accountExternalIdCredit\": \"3d5cf3e8-9dbf-4d5e-ad21-e359c411cd64\",\n                \"accountExternalIdDebit\": \"96e17128-8f8a-4553-8da1-10b8b57848be\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"29506e86-cf0b-494f-83e7-f6747cb9b5b2\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfece22607c888a85be4e6\",\n                \"accountExternalIdCredit\": \"3d5cf3e8-9dbf-4d5e-ad21-e359c411cd64\",\n                \"accountExternalIdDebit\": \"96e17128-8f8a-4553-8da1-10b8b57848be\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"29506e86-cf0b-494f-83e7-f6747cb9b5b2\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfece22607c888a85be4ed\",\n                \"accountExternalIdCredit\": \"3d5cf3e8-9dbf-4d5e-ad21-e359c411cd64\",\n                \"accountExternalIdDebit\": \"96e17128-8f8a-4553-8da1-10b8b57848be\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"29506e86-cf0b-494f-83e7-f6747cb9b5b2\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfece32607c888a85be4f4\",\n                \"accountExternalIdCredit\": \"3d5cf3e8-9dbf-4d5e-ad21-e359c411cd64\",\n                \"accountExternalIdDebit\": \"96e17128-8f8a-4553-8da1-10b8b57848be\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"29506e86-cf0b-494f-83e7-f6747cb9b5b2\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfece42607c888a85be4fb\",\n                \"accountExternalIdCredit\": \"3d5cf3e8-9dbf-4d5e-ad21-e359c411cd64\",\n                \"accountExternalIdDebit\": \"96e17128-8f8a-4553-8da1-10b8b57848be\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"29506e86-cf0b-494f-83e7-f6747cb9b5b2\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfed31cbf8185ec80dbe7c\",\n                \"accountExternalIdCredit\": \"d5ab8b0d-ef51-4666-8473-b17ddb390fc5\",\n                \"accountExternalIdDebit\": \"c68173d3-5212-470a-ba76-5fa5aca356e7\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"d43a9a4a-c7c1-4fa2-9383-cb8705b054f3\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            },\n            {\n                \"_id\": \"64cfed47cbf8185ec80dbe83\",\n                \"accountExternalIdCredit\": \"d5ab8b0d-ef51-4666-8473-b17ddb390fc5\",\n                \"accountExternalIdDebit\": \"c68173d3-5212-470a-ba76-5fa5aca356e7\",\n                \"tranferTypeId\": 6,\n                \"transactionExternalId\": \"d43a9a4a-c7c1-4fa2-9383-cb8705b054f3\",\n                \"transactionStatus\": \"REJECTED\",\n                \"value\": 100\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "get types",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\n    allTypes {\n        _id\n        name\n        numericId\n        typeExternalId\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find or create a type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation findOneByNumericIdOrCreate($numericId: Float!) {\n    findOneByNumericIdOrCreate(numericId: $numericId) {\n        _id\n        name\n        numericId\n        typeExternalId\n    }\n}",
+								"variables": "{\n    \"numericId\": 5\n}"
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

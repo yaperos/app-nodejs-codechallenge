@@ -10,7 +10,7 @@ import { TypeService } from './type.service';
 import { KAFKA_INSTANCE_NAME } from '@api/constant/kafka.constant';
 import { CreateTransactionDto } from '@api/dto';
 import { MessageUpdateDTO } from '@api/dto/message-update.dto';
-import { Transaction } from '@api/entity';
+import { Transaction, TransactionStatusGraphQL } from '@api/entity';
 import { TransactionRepository, TypeRepository } from '@api/repository';
 import { round } from 'lodash';
 import { EventPatternEnum } from 'src/enum/event-pattern.enum';
@@ -80,6 +80,15 @@ export class TransactionService {
 
 	findAll() {
 		return this.transacRepo.find();
+	}
+
+	async findByStatusEntity(status: TransactionStatusGraphQL) {
+		const type = await this.typeService.findByName(status.transactionType.name);
+		if (!type) {
+			Logger.log(`[${TransactionService.name}] - Type not found`, TransactionService.name);
+			return new BadRequestException('Type not found');
+		}
+		return this.transacRepo.findOneByStatusEntity(status, type.numericId);
 	}
 
 	async remove(transactionId: string): Promise<boolean> {

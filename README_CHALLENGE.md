@@ -1,58 +1,12 @@
-# Hello :wave: !!
-In this repository you will find the code challenge for the NodeJS Developer position at Yape.
-
-This works as follows:
-- Transaction microservice creates a transaction and sends a transaction created event.
-- Anti-fraud microservice receives a transaction created event, validates it and sends a transaction status updated event.
-- Transaction microservice receives a transaction status updated event and updates the transaction status. (as a event handler)
-- Transaction microservice exposes a REST API to create and retrieve transactions.
-- Transaction also exposes a GraphQL API to create and retrieve transactions.
-
-in the `docker-compose.yml` file you will find the services that you need to run the project.
-
-To run the project you need to run the following command:
-
-```bash
-bash start.sh
-```
-
-This will run the following services:
-- Kafka
-- Zookeeper
-- MongoDB
-- Transaction microservice
-- Anti-fraud microservice
-- GraphQL API (transaction microservice)
-- REST API (transaction microservice)
-
-There is a postman collection in the `postman` folder that you can use to test the REST API and the GraphQL API.
-
-
-
-### NOTE:
-- Since you execute ```bash start.sh``` the first time, you will need to wait a few seconds for the services to start.
-
-- #### start.sh file has some checks to wait for the services to be ready.
-
-### NOTE 2:
-- if endpoints are not working, try to restart the services with ```bash start.sh``` again.
-
-
-
----
-
-
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
-- [Yape Code Challenge :rocket:](#yape-code-challenge-rocket)
 - [Problem](#problem)
-- [Tech Stack](#tech-stack)
-  - [Optional](#optional)
-- [Send us your challenge](#send-us-your-challenge)
+- [Tech Stack](#tech_stack)
+- [Send us your challenge](#send_us_your_challenge)
 
 # Problem
 

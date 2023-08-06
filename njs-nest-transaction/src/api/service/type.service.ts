@@ -14,4 +14,12 @@ export class TypeService {
 	findOneByNumericIdOrCreate(numericId: number) {
 		return this.typeRepository.findOneByNumericIdOrCreate(numericId);
 	}
+
+	findOneById(id: string) {
+		return this.typeRepository.findOneById(id);
+	}
+
+	findByName(name: string) {
+		return this.typeRepository.findByName(name);
+	}
 }
