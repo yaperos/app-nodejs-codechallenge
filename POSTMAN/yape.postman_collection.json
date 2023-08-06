@@ -206,7 +206,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query findTransaction($details: TransactionStatusGraphQL!){\n    findTransaction (details: $details) {\n        _id\n        value\n        accountExternalIdCredit\n        tranferTypeId\n        type {\n            name\n            numericId\n        }\n    }\n}",
+								"query": "query findTransaction($details: TransactionStatusGraphQL!){\n    findTransaction (details: $details) {\n        _id\n        value\n        accountExternalIdCredit\n        accountExternalIdDebit\n        transactionExternalId\n        tranferTypeId\n        type {\n            name\n            numericId\n        }\n    }\n}",
 								"variables": "{\n    \"details\": {\n    \"value\": 100000,\n    \"transactionId\": \"64cfe371a5d2d62c8bb3ed58\",\n    \"transactionStatus\": {\n      \"name\": \"APPROVED\"\n    },\n    \"transactionType\": {\n      \"name\": \"Type 6\"\n    },\n    \"createdAt\": \"2023-08-06T14:16:17.187-04:00\"\n  }\n}"
 							}
 						},

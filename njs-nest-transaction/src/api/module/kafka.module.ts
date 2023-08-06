@@ -14,13 +14,11 @@ export const TransactionKafkaClientModule = ClientsModule.registerAsync([
 	{
 		name: KAFKA_INSTANCE_NAME,
 		useFactory: (configService: ConfigService): ClientProvider => {
-			const kafkaHost = configService.get<string>('kafka.host');
-			const kafkaPort = configService.get<string>('kafka.port');
+			const kafkaBrokers = configService.get<string>('kafka.brokers');
 
-			Logger.log(`Kafka host: ${kafkaHost}`, 'TransactionKafkaClientModule');
-			Logger.log(`Kafka port: ${kafkaPort}`, 'TransactionKafkaClientModule');
+			Logger.log(`Kafka brokers: ${kafkaBrokers}`);
 
-			const brokers = [`${kafkaHost}:${kafkaPort}`];
+			const brokers = kafkaBrokers.split(',');
 
 			return {
 				transport: Transport.KAFKA,
