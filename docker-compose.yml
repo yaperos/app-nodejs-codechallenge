@@ -1,25 +1,100 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
+  njs-nest-antifraud:
+    build:
+      context: ./njs-nest-antifraud
+      dockerfile: Dockerfile
+    container_name: njs-nest-antifraud
+    restart: always
+    networks:
+      - kafka-net
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB=test
+      - KAFKA_BROKER_HOST=kafka
+      - KAFKA_BROKER_PORT=9092
+      - KAFKAJS_NO_PARTITIONER_WARNING=1
+      - PORT=5000
+    depends_on:
+      kafka:
+        condition: service_started
+    env_file:
+      - ./njs-nest-antifraud/env/properties.env
+  njs-nest-transaction:
+    build:
+      context: ./njs-nest-transaction
+      dockerfile: Dockerfile
+    container_name: njs-nest-transaction
+    restart: always
+    ports:
+      - 4000:4000
+    networks:
+      - kafka-net
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB=test
+      - KAFKA_BROKER_HOST=kafka
+      - KAFKA_BROKER_PORT=9092
+      - KAFKAJS_NO_PARTITIONER_WARNING=1
+      - PORT=4000
+    depends_on:
+      kafka:
+        condition: service_started
+      mongodb:
+        condition: service_started
+    env_file:
+      - ./njs-nest-transaction/env/properties.env
+
+  mongodb:
+    image: mongo:4.2.8
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    expose:
+      - 27017
+    networks:
+      - kafka-net
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 2181:2181
+    networks:
+      - kafka-net
   kafka:
+    container_name: kafka
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    restart: always
+    depends_on:
+      zookeeper:
+        condition: service_started
+    networks:
+      - kafka-net
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+volumes:
+  mongodb:
+networks:
+  kafka-net:
+
+     

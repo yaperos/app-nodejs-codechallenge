@@ -1,0 +1,7 @@
+env/*.env
+yarn.lock
+
+
+# ignore all files in folder env
+env/*
+
