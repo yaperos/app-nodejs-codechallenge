@@ -260,13 +260,11 @@ $RECYCLE.BIN/
 # dist
 /dist
 
+# yarn.lock
+package-loc
 
 # node_modules
 node_modules
-
-# yarn.lock
-yarn.lock
-package-lock.json
 
 # .env
 .env
