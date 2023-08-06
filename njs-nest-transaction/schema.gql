@@ -1,0 +1,41 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type EmbeddedDocumentWithNameGraphQL {
+  _id: ID!
+  name: String!
+}
+
+enum MessageStatusEnum {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+type Mutation {
+  findOneByNumericIdOrCreate(numericId: Float!): TypeGraphQL!
+}
+
+type Query {
+  allTransactions: [TransactionGraphQL!]!
+  allTypes: [TypeGraphQL!]!
+}
+
+type TransactionGraphQL {
+  _id: ID!
+  accountExternalIdCredit: String!
+  accountExternalIdDebit: String!
+  tranferTypeId: Int!
+  transactionExternalId: String!
+  transactionStatus: MessageStatusEnum!
+  type: TypeGraphQL!
+  value: Float!
+}
+
+type TypeGraphQL {
+  _id: ID!
+  name: String!
+  numericId: Int!
+  typeExternalId: String!
+}
