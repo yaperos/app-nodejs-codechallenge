@@ -1,7 +1,7 @@
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 
 @Schema({ timestamps: true, versionKey: false })
 export class Type extends Document {

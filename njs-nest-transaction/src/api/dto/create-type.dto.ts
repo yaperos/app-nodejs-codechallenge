@@ -1,8 +1,6 @@
-// CreateTransactionDto;
-// with this one from njs-nest-transaction/src/api/dto/create-transaction.dto.ts:
+import { Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
-import { InputType, Field } from '@nestjs/graphql';
 
 export class CreateTypeDto {
 	@ApiProperty()

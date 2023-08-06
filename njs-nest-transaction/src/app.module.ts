@@ -15,10 +15,9 @@ import kafkaConfig from './config/kafka.config';
 import { HealthController, TransactionController } from '@api/controller';
 import { KafkaModule, TransactionKafkaClientModule } from '@api/module/kafka.module';
 import { TransactionMongooseModule } from '@api/module/mongo.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DevtoolsModule } from "@nestjs/devtools-integration";
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'lodash';
 
 dotenv.config({ path: dotEnvOptions.path });
 

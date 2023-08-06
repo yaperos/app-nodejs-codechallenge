@@ -2,9 +2,10 @@ import { CreateTransactionDto } from '@api/dto';
 import { Transaction, TransactionStatusGraphQL } from '@api/entity';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import dayjs from 'dayjs';
+import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
 import { MessageStatusEnum } from 'src/enum/message-status.enum';
-import { ObjectId } from 'mongodb';
 
 export enum PdfCartolasGenerationKind {
 	GENERATE = 'generated',
@@ -34,7 +35,7 @@ export class TransactionRepository {
 
 		transactionFound.set(transaction.toObject());
 
-		const updatedTransaction = await this.model.updateOne({ _id: transactionId }, transactionFound);
+		await this.model.updateOne({ _id: transactionId }, transactionFound);
 
 		return transactionFound;
 	}
@@ -79,8 +80,8 @@ export class TransactionRepository {
 			_id: new ObjectId(transactionId),
 			value,
 			createdAt: {
-				$gte: new Date(createdAt),
-				$lte: new Date(createdAt),
+				// A date-time string at UTC, such as  "2023-08-06T18:16:17.187Z", compliant with the date-time format.
+				$eq: dayjs(createdAt).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
 			},
 		}
 

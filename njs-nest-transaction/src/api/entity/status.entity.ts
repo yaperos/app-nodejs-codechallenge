@@ -1,4 +1,4 @@
-import { ObjectType, ID, Field, Int, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -27,10 +27,6 @@ export class TransactionStatus extends Document {
 
 export const TransactionStatusSchema = SchemaFactory.createForClass(TransactionStatus);
 
-
-// import { ObjectType, Field, ID } from '@nestjs/graphql';
-// @Schema()
-// @ObjectType()
 @InputType()
 export class EmbeddedDocumentWithNameGraphQL {@Prop({ required: true })
   @Field()
@@ -40,8 +36,6 @@ export class EmbeddedDocumentWithNameGraphQL {@Prop({ required: true })
 export type EmbeddedDocumentWithNameGraphQLDocument = EmbeddedDocumentWithNameGraphQL & Document;
 export const EmbeddedDocumentWithNameGraphQLSchema = SchemaFactory.createForClass(EmbeddedDocumentWithNameGraphQL);
 
-// @Schema()
-// @ObjectType()
 @InputType()
 export class TransactionStatusGraphQL {@Prop({ required: true })
 	@Field(() => ID, { nullable: true, defaultValue: null })
@@ -59,8 +53,7 @@ export class TransactionStatusGraphQL {@Prop({ required: true })
 	@Field(() => Int)
 	value: number;
 
-	// @Prop({ default: new Date() })
-	@Field({ nullable: true })
+	@Field(() => Date, { nullable: true, defaultValue: null })
 	createdAt: Date;
 }
 

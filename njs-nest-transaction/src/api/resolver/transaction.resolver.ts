@@ -1,11 +1,11 @@
-import { Args, Mutation, Query, Resolver, Parent, ResolveField } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { TransactionGraphQL } from "@api/entity/transaction.entity";
-import { TransactionService, TypeService } from '@api/service';
-import { TypeGraphQL } from '@api/entity/type.entity';
 import { CreateTransactionGrqphQL } from '@api/dto';
-import { Logger } from '@nestjs/common';
 import { TransactionStatusGraphQL } from '@api/entity';
+import { TransactionGraphQL } from "@api/entity/transaction.entity";
+import { TypeGraphQL } from '@api/entity/type.entity';
+import { TransactionService, TypeService } from '@api/service';
+import { Logger } from '@nestjs/common';
 
 @Resolver(of => TransactionGraphQL)
 export class TransactionResolver {
@@ -19,11 +19,6 @@ export class TransactionResolver {
 		return this.transactionService.findAll();
 	}
 
-	// @Mutation(returns => TransactionGraphQL)
-	// async findOneByNumericIdOrCreate(@Args('numericId') numericId: number) {
-	// 	return this.typeService.findOneByNumericIdOrCreate(numericId);
-	// }
-
 	@Mutation(returns => TransactionGraphQL)
 	async createTransaction(@Args('transaction') transaction: CreateTransactionGrqphQL) {
 		Logger.log('transaction', transaction);
@@ -31,7 +26,7 @@ export class TransactionResolver {
 	}
 
 	@Query(returns => TransactionGraphQL, { nullable: true })
-	async findOne(@Args('details') details: TransactionStatusGraphQL) {
+	async findTransaction(@Args('details') details: TransactionStatusGraphQL) {
 		return this.transactionService.findByStatusEntity(details);
 	}
 

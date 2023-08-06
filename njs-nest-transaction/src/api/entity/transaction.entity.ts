@@ -1,8 +1,8 @@
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { MessageStatusEnum } from 'src/enum/message-status.enum';
 import { v4 as uuidv4 } from 'uuid';
-import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 
 @Schema({ timestamps: true, versionKey: false })
 export class Transaction extends Document {
@@ -23,6 +23,8 @@ export class Transaction extends Document {
 
 	@Prop({ required: true })
 	value: number;
+
+	createdAt: Date;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
@@ -57,6 +59,9 @@ export class TransactionGraphQL {
 	@Prop({ required: true })
 	@Field(() => Int)
 	value: number;
+
+	@Field(() => Date, { nullable: true, defaultValue: null })
+	createdAt: Date;
 }
 
 export type TransactionGraphQLDocument = TransactionGraphQL & Document;
