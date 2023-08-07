@@ -1,5 +1,5 @@
 import { registerAs } from "@nestjs/config";
 
 export default registerAs("kafka", () => ({
-  brokers: process.env.KAFKA_BROKERS || "kafka:9092,kafka:9093kafka:9094",
+  brokers: process.env.KAFKA_BROKERS || "kafka1:9092,kafka2:9092,kafka3:9092",
 }));

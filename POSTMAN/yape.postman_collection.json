@@ -206,8 +206,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query findTransaction($details: TransactionStatusGraphQL!){\n    findTransaction (details: $details) {\n        _id\n        value\n        accountExternalIdCredit\n        accountExternalIdDebit\n        transactionExternalId\n        tranferTypeId\n        type {\n            name\n            numericId\n        }\n    }\n}",
-								"variables": "{\n    \"details\": {\n    \"value\": 100000,\n    \"transactionId\": \"64cfe371a5d2d62c8bb3ed58\",\n    \"transactionStatus\": {\n      \"name\": \"APPROVED\"\n    },\n    \"transactionType\": {\n      \"name\": \"Type 6\"\n    },\n    \"createdAt\": \"2023-08-06T14:16:17.187-04:00\"\n  }\n}"
+								"query": "query findTransaction($details: TransactionStatusGraphQL!){\n    findTransaction (details: $details) {\n        _id\n        value\n        accountExternalIdCredit\n        accountExternalIdDebit\n        transactionExternalId\n        tranferTypeId\n        type {\n            name\n            numericId\n        }\n        transactionStatus\n    }\n}",
+								"variables": "{\n    \"details\": {\n    \"value\": 100,\n    \"transactionId\": \"64d079cbedb24f49913ec461\",\n    \"transactionStatus\": {\n      \"name\": \"REJECTED\"\n    },\n    \"transactionType\": {\n      \"name\": \"Type 6\"\n    },\n    \"createdAt\": \"2023-08-07T04:57:47.061Z\"\n  }\n}"
 							}
 						},
 						"url": {
@@ -288,6 +288,73 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"data\": {\n        \"findTransaction\": {\n            \"_id\": \"64cfe371a5d2d62c8bb3ed58\",\n            \"value\": 100000,\n            \"accountExternalIdCredit\": \"51eb0edb-dfa9-470b-ab25-e3af262d43fb\",\n            \"tranferTypeId\": 6,\n            \"type\": {\n                \"name\": \"Type 6\",\n                \"numericId\": 6\n            }\n        }\n    }\n}"
+						},
+						{
+							"name": "get one transac [REJECTED]",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query findTransaction($details: TransactionStatusGraphQL!){\n    findTransaction (details: $details) {\n        _id\n        value\n        accountExternalIdCredit\n        accountExternalIdDebit\n        transactionExternalId\n        tranferTypeId\n        type {\n            name\n            numericId\n        }\n        transactionStatus\n    }\n}",
+										"variables": "{\n    \"details\": {\n    \"value\": 100,\n    \"transactionId\": \"64d079cbedb24f49913ec461\",\n    \"transactionStatus\": {\n      \"name\": \"REJECTED\"\n    },\n    \"transactionType\": {\n      \"name\": \"Type 6\"\n    },\n    \"createdAt\": \"2023-08-07T04:57:47.061Z\"\n  }\n}"
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/graphql",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "cache-control",
+									"value": "no-store"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "356"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"164-Uf/bQBpzbvy/rjBZjAWNs+qpON0\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 07 Aug 2023 04:59:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"findTransaction\": {\n            \"_id\": \"64d079cbedb24f49913ec461\",\n            \"value\": 100,\n            \"accountExternalIdCredit\": \"01b3805d-9692-4463-8cf1-81383cc992f6\",\n            \"accountExternalIdDebit\": \"dd794051-cfcb-49e9-bbc6-63dc27de5dc8\",\n            \"transactionExternalId\": \"71121845-6059-455d-99f7-cbab78867044\",\n            \"tranferTypeId\": 6,\n            \"type\": {\n                \"name\": \"Type 6\",\n                \"numericId\": 6\n            },\n            \"transactionStatus\": \"REJECTED\"\n        }\n    }\n}"
 						}
 					]
 				},

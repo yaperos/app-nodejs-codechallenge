@@ -13,24 +13,27 @@
     "incremental": true,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
-		"esModuleInterop": true,
-		"typeRoots": [
-			"node_modules/@types",
-			"src/api/shared/types"
-		],
-		"paths": {
-			"@api/*": [
-				"src/api/*"
-			],
+    "esModuleInterop": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "src/api/shared/types"
+    ],
+    "paths": {
+      "@api/*": [
+        "src/api/*"
+      ],
       "@config/*": [
         "src/config/*"
       ],
       "@constant/*": [
         "src/constant/*"
       ],
-			"@cclatest/*": [
-				"test/*"
-			]
-		}
+      "@cclatest/*": [
+        "test/*"
+      ],
+      "@source/*": [
+        "src/*"
+      ],
+    }
   }
 }

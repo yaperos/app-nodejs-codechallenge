@@ -9,7 +9,12 @@ export default async (): Promise<Config.InitialOptions> => {
 		// add module folder resolver
 		moduleNameMapper: {
 			'^@ccla/(.*)$': '<rootDir>/src/$1',
-		},
+			"^@api/(.*)$": "<rootDir>/src/api/$1",
+			"^@config/(.*)$": "<rootDir>/src/config/$1",
+			"^@constant/(.*)$": "<rootDir>/src/constant/$1",
+			"^@cclatest/(.*)$": "<rootDir>/test/$1",
+			"^@source/(.*)$": "<rootDir>/src/$1",
+    },
 		transform: {
 			'^.+\\.(t|j)s$': 'ts-jest',
 		},

@@ -2,8 +2,8 @@ import { KAFKA_INSTANCE_NAME } from '@api/constant/kafka.constant';
 import { MessageUpdateDTO } from '@api/dto';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { EventPatternEnum } from 'src/enum/event-pattern.enum';
-import { MessageStatusEnum } from 'src/enum/message-status.enum';
+import { EventPatternEnum } from '@source/enum/event-pattern.enum';
+import { MessageStatusEnum } from '@source/enum/message-status.enum';
 
 @Injectable()
 export class AntiFraudService {
@@ -22,17 +22,16 @@ export class AntiFraudService {
       'AntiFraudService',
     );
     const transactionResponse = {
-      id: event.id,
-      status:
-        Number(event.value) > 1000
-          ? MessageStatusEnum.APPROVED
-          : MessageStatusEnum.REJECTED,
-      value: event.value,
+      id: event?.id || undefined,
+      status: event?.value && Number(event.value) >= 1000 ? MessageStatusEnum.APPROVED : MessageStatusEnum.REJECTED,
+      value: event?.value || undefined,
     };
 
     this.clientKafka.emit(
       EventPatternEnum.TransactionUpdate,
       JSON.stringify(transactionResponse),
     );
+
+    return transactionResponse;
   }
 }
