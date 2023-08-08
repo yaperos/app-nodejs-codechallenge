@@ -1,13 +1,3 @@
-# Yape Code Challenge :rocket:
-
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
 # Problem
 
 Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
@@ -31,52 +21,115 @@ Every transaction with a value greater than 1000 should be rejected.
 ```
 
 # Tech Stack
+**Docker + Node.js + TypeScript + NestJS + TypeORM + TypeGraphQL + TSLint + PotgresSQL + Kafka**.
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+Next release: Jest 
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
 
-You must have two resources:
+### Requirements
 
-1. Resource to create a transaction that must containt:
+```
+$ Git --version
+>= v2.32.1
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+$ Docker --version
+>= v20.10.25
+
+$ Docker Compose --version
+>= v1.29.2
+
+$ node --version
+>= v18.16.1
+
+$ NPM --version
+>= v9.5.1
+
 ```
 
-2. Resource to retrieve a transaction
+### How to run
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+From the terminal, enter the folder where you want to keep the project and perform the following steps:
 ```
 
-## Optional
+In this section we initialize the database and kafka
+$ git clone https://github.com/CristianHR/app-nodejs-codechallenge.git
+$ cd app-nodejs-codechallenge
+$ cp .env.example .env
+$ docker-compose up
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+Open another terminal to start the transaction microservice
+$ cd app-nodejs-codechallenge
+$ npm install
+$ npm start ms-transaction
 
-You can use Graphql;
+Open another terminal to start the anti-fraud microservice
+$ cd app-nodejs-codechallenge
+$ npm start ms-antifraud
+```
 
-# Send us your challenge
+### Test the operation of the app
+Open Playground of GraphQL in your browser http://localhost:3002/graphql and we continue to execute the following steps:
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+1. First we create the states of the transactions in the database, this is necessary, otherwise the app will not work:
 
-If you have any questions, please let us know.
+```
+$ mutation{
+  createTransactionStatus(createTransactionStatusInput:{
+    name: "pending"
+  }){ id, name }
+}
+
+$ mutation{
+  createTransactionStatus(createTransactionStatusInput:{
+    name: "approved"
+  }){ id, name  }
+}
+
+$ mutation{
+  createTransactionStatus(createTransactionStatusInput:{
+    name: "rejected"
+  }){ id, name }
+}
+
+$ mutation{
+  createTransactionType(createTransactionTypeInput:{
+     name: "PENDING"
+  }){id,name}
+}
+
+$ mutation{
+  createTransactionType(createTransactionTypeInput:{
+     name: "APPROVED"
+  }){id,name}
+}
+
+$ mutation{
+  createTransactionType(createTransactionTypeInput:{
+     name: "REJECTED"
+  }){id,name}
+}
+
+```
+
+2. Finally we create the transactions that we want with the parameters established below:
+
+```
+mutation{
+  createTransaction(createTransactionInput:{
+    accountExternalIdDebit: "Guid",
+    accountExternalIdCredit: "Guid",
+    tranferTypeId: 1,
+    value: 120
+  }){
+    transactionExternalId,
+    transactionType{
+    	name
+    },
+    transactionStatus{
+      name
+    },
+    value,
+    createdAt
+  }
+}
+```

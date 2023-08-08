@@ -1,0 +1,70 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionStatus {
+  id: Int!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  transactions: [Transaction!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type TransactionType {
+  id: Int!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  transactions: [Transaction!]
+}
+
+type Transaction {
+  id: Int!
+  accountExternalIdDebit: String!
+  statusId: Int!
+  status: TransactionStatus!
+  typeId: Int!
+  type: TransactionType!
+  accountExternalIdCredit: String!
+  tranferTypeId: Float!
+  value: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  transactionStatus: TransactionStatus!
+  transactionType: TransactionStatus!
+}
+
+type Query {
+  transactions: [Transaction!]!
+  transactionFindOne(id: Int!): Transaction!
+  transactionsStatus: [TransactionStatus!]!
+  transactionStatusFindOne(id: Int!): TransactionStatus!
+  transactionsType: [TransactionType!]!
+  transactionTypeFindOne(id: Int!): TransactionType!
+}
+
+type Mutation {
+  createTransaction(createTransactionInput: CreateTransactionDto!): Transaction!
+  createTransactionStatus(createTransactionStatusInput: CreateTransactionStatusDto!): TransactionStatus!
+  createTransactionType(createTransactionTypeInput: CreateTransactionTypeDto!): TransactionType!
+}
+
+input CreateTransactionDto {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Float!
+  value: Float!
+}
+
+input CreateTransactionStatusDto {
+  name: String!
+}
+
+input CreateTransactionTypeDto {
+  name: String!
+}

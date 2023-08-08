@@ -2,17 +2,37 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    restart: always
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgresdb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=postgresdb
+    volumes:
+      - /var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgAdmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@nestjs.com
+      PGADMIN_DEFAULT_PASSWORD: my-weak-password
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 8080:80
+    volumes:
+      - /var/lib/pgadmin
+    depends_on:
+      - postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    restart: always
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    restart: always
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
