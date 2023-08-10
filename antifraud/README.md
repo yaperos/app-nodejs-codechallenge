@@ -1,73 +1,35 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+<h2>Instalación 🚀</h2>
+<p>Para comenzar, necesitas instalar las dependencias de la aplicación. Abre tu terminal y ejecuta el siguiente comando:</p>
+<pre><code>$ npm install</code></pre>
+<p>Este comando descargará y configurará todas las bibliotecas y paquetes necesarios para que tu aplicación funcione sin problemas.</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h2>Ejecutar la Aplicación 🏃</h2>
+<p>Una vez instaladas las dependencias, es hora de ejecutar la aplicación. Hay tres modos disponibles que puedes usar según tus necesidades:</p>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<h3>Modo de Desarrollo</h3>
+<p>Este modo es perfecto cuando estás trabajando en la aplicación y deseas ver los cambios en tiempo real. Ejecuta este comando:</p>
+<pre><code>$ npm run start</code></pre>
 
-## Description
+<h3>Modo de Observación</h3>
+<p>En este modo, la aplicación se ejecuta en estado de observación. Esto significa que cualquier cambio que realices en el código se reflejará automáticamente en la aplicación. Para iniciar el modo de observación, utiliza este comando:</p>
+<pre><code>$ npm run start:dev</code></pre>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<h3>Modo de Producción</h3>
+<p>Cuando tu aplicación esté lista para su implementación, el modo de producción es lo que necesitas. Garantiza una eficiencia y rendimiento máximos. Ejecuta:</p>
+<pre><code>$ npm run start:prod</code></pre>
 
-## Installation
+<h2>Pruebas ✅</h2>
+<p>Las pruebas son fundamentales para asegurarte de que tu aplicación funcione correctamente. Aquí tienes algunas opciones para ejecutar pruebas:</p>
 
-```bash
-$ npm install
-```
+<h3>Pruebas Unitarias</h3>
+<p>Las pruebas unitarias se centran en probar componentes individuales de tu aplicación. Utiliza este comando para ejecutarlas:</p>
+<pre><code>$ npm run test</code></pre>
 
-## Running the app
+<h3>Pruebas de Extremo a Extremo (E2E)</h3>
+<p>Las pruebas E2E simulan la interacción del usuario con toda la aplicación. Ejecuta estas pruebas con:</p>
+<pre><code>$ npm run test:e2e</code></pre>
 
-```bash
-# development
-$ npm run start
+<h3>Cobertura de Pruebas</h3>
+<p>La cobertura de pruebas proporciona información sobre cuánto de tu código está siendo probado. Puedes obtener esta información usando:</p>
+<pre><code>$ npm run test:cov</code></pre>
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
