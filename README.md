@@ -1,82 +1,17 @@
-# Yape Code Challenge :rocket:
+Configuración Inicial
+En el directorio principal, encontrarás un archivo llamado docker-compose.yml. Simplemente ejecuta docker-compose up para iniciar los contenedores Docker necesarios.
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Luego, ve a la carpeta antifraud y ejecuta yarn install para instalar las dependencias necesarias.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+En la misma carpeta, usa yarn start:dev para iniciar el servidor. Esto hará que tu aplicación esté lista para funcionar.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Haz lo mismo en el directorio transaction (ejecuta yarn install y yarn start:dev) para el otro componente de la aplicación.
 
-# Problem
+Si deseas personalizar las variables de entorno, ve al directorio ms-transaction y modifica el archivo .env.stage.dev.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Documentación de la API
+Abre tu navegador y dirígete a http://localhost:3000/docs. Aquí encontrarás la documentación completa de la API. Esta es una guía que te muestra cómo interactuar con la aplicación.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+Para crear una transacción, utiliza POST /transactions y proporciona los detalles requeridos.
 
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
-
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+Si deseas obtener detalles de una transacción específica, utiliza GET /transactions/{transactionExternalId}. Esto te dará información detallada sobre la transacción.
