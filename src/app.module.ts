@@ -24,7 +24,6 @@ import { TransactionsService } from './transactions/services/transactions.servic
     TransactionsModule,
     KafkaModule
   ],
-  providers: [TestConsumer,TransactionsService]
-  
+  providers: [TestConsumer,TransactionsService],  
 })
 export class AppModule {}

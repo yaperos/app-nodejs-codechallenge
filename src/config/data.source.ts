@@ -19,7 +19,7 @@ export const DataSourceConfig: DataSourceOptions = {
   // entities: ['/../**/**/*.entity{.ts,.js}'],
 
   // migrations: [__dirname + '/./src/migrations/*{.ts,.js}'],
-  migrations: ['src/migrations/*.ts'],  
+  migrations: ['src/migrations/*.ts'],  // src/migrations/*.ts
   synchronize: false,
   migrationsRun: true,
   logging: false,

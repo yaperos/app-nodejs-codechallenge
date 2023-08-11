@@ -1,12 +1,28 @@
+# Comandos para las Migraciones
+
+  * 1er paso:
+    - npm run m:gen:dev -- ./migrations/init 
+  * 2do paso:
+    - Es necesario mover la carpeta migrations dentro de src y correr comando
+    - npm run m:run:dev
+  * 3er paso:
+    - npm run start:dev 
+
+* Es necesario mover la carpeta migrations en la raiz principal
+  (incompatibilidades de la version)
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
+- [Comandos para las Migraciones](#comandos-para-las-migraciones)
+- [Yape Code Challenge :rocket:](#yape-code-challenge-rocket)
 - [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+- [Tech Stack](#tech-stack)
+  - [Optional](#optional)
+- [Send us your challenge](#send-us-your-challenge)
 
 # Problem
 
