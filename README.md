@@ -1,3 +1,9 @@
+Steps:
+1. Run service-transaction
+2. Run service-anti-fraud
+
+If you have any problems or questions, feel free to contact me.
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 

@@ -1,16 +1,29 @@
 version: "3.7"
+
+networks:
+  backend:
+    driver: "bridge"
+
 services:
   postgres:
     image: postgres:14
     ports:
       - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - backend
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - backend
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,3 +36,78 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--list", "--zookeeper", "zookeeper:2181"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    networks:
+      - backend
+
+  kafka-setup:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    hostname: kafka-setup
+    container_name: kafka-setup
+    depends_on:
+      kafka:
+        condition: service_healthy
+    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+                kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic transaction-created && \
+                kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic transaction-rejected && \
+                kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic transaction-approved'"
+    environment:
+      KAFKA_BROKER_ID: ignored
+      KAFKA_ZOOKEEPER_CONNECT: ignored
+    networks:
+      - backend
+      
+  service-transaction:
+    container_name: service-transaction
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        - app=service-transaction
+        - migrate=true
+    ports:
+      - "3000:3000"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APP_STAGE: production
+      APP_PORT: 3000
+      APP_NAME: service-transaction
+      LOG_LEVEL: debug
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: service-transaction
+      DB_SYNC: true
+      DB_LOGGING: false
+      QUEUE_CLIENT_ID: service-transaction
+      QUEUE_BROKERS: kafka:29092
+      QUEUE_GROUP_ID: service-transaction
+    networks:
+      - backend
+  
+  service-anti-fraud:
+    container_name: service-anti-fraud
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        - app=service-anti-fraud
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APP_STAGE: production
+      APP_NAME: service-anti-fraud
+      LOG_LEVEL: debug
+      QUEUE_CLIENT_ID: service-anti-fraud
+      QUEUE_BROKERS: kafka:29092
+      QUEUE_GROUP_ID: service-anti-fraud
+    networks:
+      - backend
