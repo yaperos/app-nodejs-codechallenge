@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "builder-pattern": "^2.2.0"
+  }
+}
