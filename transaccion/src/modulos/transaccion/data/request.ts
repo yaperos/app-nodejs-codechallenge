@@ -49,3 +49,14 @@ export class CrearTransaccionRequestDto{
         )
     }
 }
+
+export class ActuallizarTransaccionRequestDto{
+    @IsString()
+    @IsNotEmpty()
+    readonly id: number;
+  
+    @IsNumber()
+    @IsPositive()
+    @IsNotEmpty()
+    readonly estado: string;
+}

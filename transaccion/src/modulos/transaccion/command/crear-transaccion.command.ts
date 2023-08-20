@@ -26,7 +26,8 @@ export class CrearTransaccionCommandHandler implements ICommandHandler<CrearTran
             accountExternalIdDebit:command.accountExternalIdDebit,
             accountExternalIdCredit:command.accountExternalIdCredit,
             tranferTypeId:command.tranferTypeId,
-            value:command.value
+            value:command.value,
+            estado:"PENDIENTE"
         }
         
         const primaResponse=await this.prisma.transaccion.create({data:prismaTransaccionInput})
@@ -38,7 +39,7 @@ export class CrearTransaccionCommandHandler implements ICommandHandler<CrearTran
             }),
           );
         console.log("primaResponse",primaResponse)
-        return CrearTransaccionResponse.fromPostgre()
+        return CrearTransaccionResponse.desdePostgre(primaResponse)
     }
 
 }

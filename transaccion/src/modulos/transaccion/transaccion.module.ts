@@ -4,7 +4,8 @@ import { CqrsModule } from "@nestjs/cqrs";
 import { CrearTransaccionCommandHandler } from "./command/crear-transaccion.command";
 import { PrismaModule } from "../../app/baseDatos/prisma.module";
 import { ClientsModule, Transport } from "@nestjs/microservices";
-const commands=[CrearTransaccionCommandHandler]
+import { ActualizarTransaccionCommandHandler } from "./command/actualizar-transaccion.command";
+const commands=[CrearTransaccionCommandHandler,ActualizarTransaccionCommandHandler]
  @Module({
     imports:[CqrsModule,PrismaModule, ClientsModule.register([
       {

@@ -17,3 +17,8 @@ export interface MensajeMetaData{
 export enum TypeError{
     error="error", warn="warn", invalid="invalid", fatal="fatal", info="info"
 }
+export enum TransactionEstado {
+    PENDIENTE = 'PENDIENTE',
+    APROVADO = 'APROVADO',
+    RECHAZADO = 'RECHAZADO',    
+}
