@@ -9,11 +9,16 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
+enum TransaccionEstado {
+  PENDIENTE
+  APROVADO
+  RECHAZADO
+}
 model Transaccion {
   id    Int     @default(autoincrement()) @id
   accountExternalIdDebit String  
   accountExternalIdCredit  String?
   tranferTypeId Int
   value Int
+  estado TransaccionEstado @default(PENDIENTE)
 }
