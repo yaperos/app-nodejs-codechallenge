@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TransaccionModule } from './modulos/transaccion/transaccion.module';
 import { APP_FILTER } from '@nestjs/core';
 import { ValidationPipe } from './utils/validation.pipe';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [TransaccionModule],
