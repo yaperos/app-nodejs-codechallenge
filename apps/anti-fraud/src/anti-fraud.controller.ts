@@ -15,7 +15,7 @@ export class AntiFraudController {
 
     let resultStateId = STATE_REJECTED;
 
-    if (transaction?.value > 0 && transaction.value < 1000) {
+    if (transaction?.value > 0 && transaction.value <= 1000) {
       resultStateId = STATE_APPROVED;
     }
 
