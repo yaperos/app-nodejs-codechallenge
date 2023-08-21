@@ -1,82 +1,47 @@
-# Yape Code Challenge :rocket:
+# Code Challenge Solved
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Installation
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+The solution requires latest version of [Docker](https://www.docker.com/) for the enviroment.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Deploy enviroment:
 
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```sh
+docker-compose up -d
 ```
 
-# Tech Stack
+Configure the DB for master and read replicas, need to run all commands which is the path:
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```sh
+docker/config_postgres.sh
 ```
 
-2. Resource to retrieve a transaction
+Install dependencies:
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+```sh
+npm i
 ```
 
-## Optional
+To deploy anti-fraud microservice, execute the command:
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+```sh
+npm run start:anti-fraud
+```
 
-You can use Graphql;
+To deploy yape application and create tables in DB, execute the command:
 
-# Send us your challenge
+```sh
+npm run start:yape
+```
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+Run the queries to create transaction types and transaction states:
 
-If you have any questions, please let us know.
+```sh
+database/insert.sql
+```
+
+**To test the services need to open the url http://localhost:8050/graphql where is the documentation and interact with the playground**
+
+## License
+
+MIT
