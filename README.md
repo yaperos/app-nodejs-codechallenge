@@ -1,21 +1,22 @@
 ## NOTA
 
-- HE SUBIDO LOS PROYECTOS CON EL NODE-MODULES PARA QUE NO TENGAMOS PROBLEMAS DE COMPATIBILIDAD en caso
-  sea necesario eliminarlo e instalar nuevamente.
-
-- Mi docker-compoe se encuentra en challenge-transactions-ms.
+- He subido los proyectos con el node-modules integrado en caso sea necesario, caso contrario, puede eliminarlo y volver a instalar.  sea necesario eliminarlo e instalar nuevamente.
 
 - He Agregado un video mostrando la funcionalidad del reto tecnico, si desea puede descargarlo y revisarlo.
+
+## NOTA 2
 
 1. La imagen `confluentinc/cp-enterprise-kafka:5.5.3` no pudo inicializarse en mi macbook con Chip M1.
 2. Dentro de mi challenge-transactions-ms tengo un `docker-compose.yml`, en la cual
    estoy utilizando una imagen kafka distinta `image: confluentinc/cp-kafka:latest`, si me funciona.
 3. Para las pruebas puede utilizar el docker que integraron en el repositorio o el mio.
 
+
 ## RECORDAR
 
 - El nombre de la BD que estoy utilizando en el postgress es :
   - POSTGRES_DB=transacionValidationDB
+- En caso no funcione mi imagen kafka `image: confluentinc/cp-kafka:latest` utilizar el que ustedes agregaron en su docker-compose `confluentinc/cp-enterprise-kafka:5.5.3`
 
 ## DOCKER-COMPOSE que estoy utilizando, `lo puede encontrar en challenge-transactions-ms`
 
