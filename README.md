@@ -5,6 +5,8 @@
 
 - Mi docker-compoe se encuentra en challenge-transactions-ms.
 
+- He Agregado un video mostrando la funcionalidad del reto tecnico, si desea puede descargarlo y revisarlo.
+
 1. La imagen `confluentinc/cp-enterprise-kafka:5.5.3` no pudo inicializarse en mi macbook con Chip M1.
 2. Dentro de mi challenge-transactions-ms tengo un `docker-compose.yml`, en la cual
    estoy utilizando una imagen kafka distinta `image: confluentinc/cp-kafka:latest`, si me funciona.
