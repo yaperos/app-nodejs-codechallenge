@@ -1,0 +1,8 @@
+<testExecutions version="1">
+<file path="test/transaction-verify.spec.ts">
+<testCase name="TransactionVerifyController should be defined" duration="1045" />
+<testCase name="TransactionVerifyController TransactionVerifyController should execute getTransactionVerify" duration="692" />
+<testCase name="TransactionVerifyController TransactionVerifyController should execute CreateTransactionVerifyDto" duration="369" />
+<testCase name="TransactionVerifyController TransactionVerifyController should execute handleEventUpdateStatusTransactionVerify" duration="240" />
+</file>
+</testExecutions>

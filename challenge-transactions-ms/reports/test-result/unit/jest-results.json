@@ -1,0 +1,125 @@
+{
+  "numFailedTestSuites": 0,
+  "numFailedTests": 0,
+  "numPassedTestSuites": 1,
+  "numPassedTests": 4,
+  "numPendingTestSuites": 0,
+  "numPendingTests": 0,
+  "numRuntimeErrorTestSuites": 0,
+  "numTodoTests": 0,
+  "numTotalTestSuites": 1,
+  "numTotalTests": 4,
+  "openHandles": [],
+  "snapshot": {
+    "added": 0,
+    "didUpdate": false,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0
+  },
+  "startTime": 1692727535959,
+  "success": false,
+  "testResults": [
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 4,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "openHandles": [],
+      "perfStats": {
+        "end": 1692727554578,
+        "runtime": 18392,
+        "slow": true,
+        "start": 1692727536186
+      },
+      "skipped": false,
+      "snapshot": {
+        "added": 0,
+        "fileDeleted": false,
+        "matched": 0,
+        "unchecked": 0,
+        "uncheckedKeys": [],
+        "unmatched": 0,
+        "updated": 0
+      },
+      "testFilePath": "/Users/kevinsalazar/Desktop/challenge/challenge-yape/challenge-transactions-ms/test/transaction-verify.spec.ts",
+      "testResults": [
+        {
+          "ancestorTitles": [
+            "TransactionVerifyController"
+          ],
+          "duration": 1045,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "TransactionVerifyController should be defined",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should be defined"
+        },
+        {
+          "ancestorTitles": [
+            "TransactionVerifyController",
+            "TransactionVerifyController"
+          ],
+          "duration": 692,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "TransactionVerifyController TransactionVerifyController should execute getTransactionVerify",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should execute getTransactionVerify"
+        },
+        {
+          "ancestorTitles": [
+            "TransactionVerifyController",
+            "TransactionVerifyController"
+          ],
+          "duration": 369,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "TransactionVerifyController TransactionVerifyController should execute CreateTransactionVerifyDto",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should execute CreateTransactionVerifyDto"
+        },
+        {
+          "ancestorTitles": [
+            "TransactionVerifyController",
+            "TransactionVerifyController"
+          ],
+          "duration": 240,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "TransactionVerifyController TransactionVerifyController should execute handleEventUpdateStatusTransactionVerify",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should execute handleEventUpdateStatusTransactionVerify"
+        }
+      ],
+      "failureMessage": null
+    }
+  ],
+  "wasInterrupted": false
+}

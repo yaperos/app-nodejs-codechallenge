@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'Montserrat-Regular';
+  src: url('assets/fonts/Montserrat-Regular.ttf')
+}
+
+@font-face {
+  font-family: 'Montserrat-Medium';
+  src: url('assets/fonts/Montserrat-Medium.ttf')
+}
+
+@font-face {
+  font-family: 'Montserrat-Semibold';
+  src: url('assets/fonts/Montserrat-SemiBold.ttf')
+}
+
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: url('assets/fonts/Montserrat-Bold.ttf')
+}
+
+body {
+  font-family: 'Montserrat-Medium' !important;
+}
+
+.App {
+  background: "red";
+  height: 100vh;
+}

@@ -1,0 +1,18 @@
+export { default as capitalize } from '@mui/material/utils/capitalize';
+export { default as createChainedFunction } from '@mui/material/utils/createChainedFunction';
+export { default as createSvgIcon } from '@mui/material/utils/createSvgIcon';
+export { default as debounce } from '@mui/material/utils/debounce';
+export { default as deprecatedPropType } from '@mui/material/utils/deprecatedPropType';
+export { default as isMuiElement } from '@mui/material/utils/isMuiElement';
+export { default as ownerDocument } from '@mui/material/utils/ownerDocument';
+export { default as ownerWindow } from '@mui/material/utils/ownerWindow';
+export { default as requirePropFactory } from '@mui/material/utils/requirePropFactory';
+export { default as setRef } from '@mui/material/utils/setRef';
+export { default as unstable_useEnhancedEffect } from '@mui/material/utils/useEnhancedEffect';
+export { default as unstable_useId } from '@mui/material/utils/useId';
+export { default as unsupportedProp } from '@mui/material/utils/unsupportedProp';
+export { default as useControlled } from '@mui/material/utils/useControlled';
+export { default as useEventCallback } from '@mui/material/utils/useEventCallback';
+export { default as useForkRef } from '@mui/material/utils/useForkRef';
+export { default as useIsFocusVisible } from '@mui/material/utils/useIsFocusVisible';
+export { unstable_ClassNameGenerator } from '@mui/base/className';

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="18.697">
+  <testsuite name="TransactionVerifyController" errors="0" failures="0" skipped="0" timestamp="2023-08-22T18:05:36" time="18.392" tests="4">
+    <testcase classname="TransactionVerifyController should be defined" name="TransactionVerifyController should be defined" time="1.045">
+    </testcase>
+    <testcase classname="TransactionVerifyController TransactionVerifyController should execute getTransactionVerify" name="TransactionVerifyController TransactionVerifyController should execute getTransactionVerify" time="0.692">
+    </testcase>
+    <testcase classname="TransactionVerifyController TransactionVerifyController should execute CreateTransactionVerifyDto" name="TransactionVerifyController TransactionVerifyController should execute CreateTransactionVerifyDto" time="0.369">
+    </testcase>
+    <testcase classname="TransactionVerifyController TransactionVerifyController should execute handleEventUpdateStatusTransactionVerify" name="TransactionVerifyController TransactionVerifyController should execute handleEventUpdateStatusTransactionVerify" time="0.24">
+    </testcase>
+  </testsuite>
+</testsuites>

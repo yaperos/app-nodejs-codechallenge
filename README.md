@@ -1,82 +1,42 @@
-# Yape Code Challenge :rocket:
+## NOTA
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+- HE SUBIDO LOS PROYECTOS CON EL NODE-MODULES PARA QUE NO TENGAMOS PROBLEMAS DE COMPATIBILIDAD en caso
+  sea necesario eliminarlo e instalar nuevamente.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+- Mi docker-compoe se encuentra en challenge-transactions-ms.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+1. La imagen `confluentinc/cp-enterprise-kafka:5.5.3` no pudo inicializarse en mi macbook con Chip M1.
+2. Dentro de mi challenge-transactions-ms tengo un `docker-compose.yml`, en la cual
+   estoy utilizando una imagen kafka distinta `image: confluentinc/cp-kafka:latest`, si me funciona.
+3. Para las pruebas puede utilizar el docker que integraron en el repositorio o el mio.
 
-# Problem
+## RECORDAR
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+- El nombre de la BD que estoy utilizando en el postgress es :
+  - POSTGRES_DB=transacionValidationDB
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+## DOCKER-COMPOSE que estoy utilizando, `lo puede encontrar en challenge-transactions-ms`
 
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
-
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+version: '3.7'
+services:
+postgres:
+image: postgres:14
+ports: - '5432:5432'
+environment: - POSTGRES_USER=postgres - POSTGRES_PASSWORD=postgres - POSTGRES_DB=transacionValidationDB
+zookeeper:
+image: confluentinc/cp-zookeeper:5.5.3
+environment:
+ZOOKEEPER_CLIENT_PORT: 2181
+kafka-broker-1:
+image: confluentinc/cp-kafka:latest
+container_name: kafka-broker-1
+depends_on: - zookeeper
+environment:
+KAFKA_BROKER_ID: 1
+KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+ports: - '9092:9092'

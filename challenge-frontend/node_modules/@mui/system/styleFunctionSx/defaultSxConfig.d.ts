@@ -1,0 +1,20 @@
+import { StyleFunction } from '@mui/system/Box';
+import { TransformFunction } from '@mui/system/style';
+
+type SimpleStyleFunction<PropKey extends keyof any> = StyleFunction<Partial<Record<PropKey, any>>>;
+
+export interface SxConfigRecord {
+  cssProperty?: keyof React.CSSProperties | false;
+  /**
+   * dot access in `Theme`
+   */
+  themeKey?: string;
+  transform?: TransformFunction;
+  style?: SimpleStyleFunction<any>;
+}
+
+export type SxConfig = Record<string, SxConfigRecord>;
+
+declare const defaultSxConfig: SxConfig;
+
+export default defaultSxConfig;

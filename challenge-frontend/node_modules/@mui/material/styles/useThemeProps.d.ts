@@ -1,0 +1,18 @@
+import { Theme } from '@mui/material/styles/createTheme';
+import { Components } from '@mui/material/styles/components';
+
+export interface ThemeWithProps {
+  components?: Components<Omit<Theme, 'components'>>;
+}
+
+export type ThemedProps<Theme, Name extends keyof any> = Theme extends {
+  components: Record<Name, { defaultProps: infer Props }>;
+}
+  ? Props
+  : {};
+
+export default function useThemeProps<
+  Theme extends ThemeWithProps,
+  Props,
+  Name extends keyof any,
+>(params: { props: Props; name: Name }): Props & ThemedProps<Theme, Name>;

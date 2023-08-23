@@ -1,0 +1,93 @@
+{
+  "numFailedTestSuites": 0,
+  "numFailedTests": 0,
+  "numPassedTestSuites": 1,
+  "numPassedTests": 2,
+  "numPendingTestSuites": 0,
+  "numPendingTests": 0,
+  "numRuntimeErrorTestSuites": 0,
+  "numTodoTests": 0,
+  "numTotalTestSuites": 1,
+  "numTotalTests": 2,
+  "openHandles": [],
+  "snapshot": {
+    "added": 0,
+    "didUpdate": false,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0
+  },
+  "startTime": 1692727540156,
+  "success": false,
+  "testResults": [
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 2,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "openHandles": [],
+      "perfStats": {
+        "end": 1692727553978,
+        "runtime": 13616,
+        "slow": true,
+        "start": 1692727540362
+      },
+      "skipped": false,
+      "snapshot": {
+        "added": 0,
+        "fileDeleted": false,
+        "matched": 0,
+        "unchecked": 0,
+        "uncheckedKeys": [],
+        "unmatched": 0,
+        "updated": 0
+      },
+      "testFilePath": "/Users/kevinsalazar/Desktop/challenge/challenge-yape/challenge-anti-fraud-ms/test/anti-fraud-validation.spec.ts",
+      "testResults": [
+        {
+          "ancestorTitles": [
+            "AntiFraudValidationController"
+          ],
+          "duration": 1144,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "AntiFraudValidationController should be defined",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should be defined"
+        },
+        {
+          "ancestorTitles": [
+            "AntiFraudValidationController",
+            "handleEventValidateTransaction"
+          ],
+          "duration": 395,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "AntiFraudValidationController handleEventValidateTransaction should execute GetAntiFraudValidationEventCommand",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 0,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should execute GetAntiFraudValidationEventCommand"
+        }
+      ],
+      "failureMessage": null
+    }
+  ],
+  "wasInterrupted": false
+}

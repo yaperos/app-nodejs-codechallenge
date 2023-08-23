@@ -1,0 +1,15 @@
+{
+  "traceId": "b77c4dd6-6615-467a-99b9-2995ac1f6064",
+  "results": {
+    "featureFlags": {
+      "projectName": "app",
+      "featureName": "feature2",
+      "flags": [
+        { "clinicId": 17, "specialtyId": 64, "enabled": true },
+        { "clinicId": 16, "specialtyId": 64, "enabled": true }
+      ]
+    },
+    "status": "OK",
+    "message": "Succesful operation."
+  }
+}

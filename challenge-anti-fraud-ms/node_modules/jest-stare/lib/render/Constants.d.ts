@@ -1,0 +1,34 @@
+export declare class Constants {
+    static readonly PASSED_LABEL = "Passed";
+    static readonly FAILED_LABEL = "Failed";
+    static readonly PENDING_LABEL = "Pending";
+    static readonly TODO_LABEL = "Todo";
+    static readonly OBSOLETE_SNAPSHOT_TEST_LABEL = "Obsolete Test";
+    static readonly CHANGED_LABEL = "Changed";
+    static readonly ADDED_LABEL = "Added";
+    static readonly UPDATED_SNAPSHOT_TEST_LABEL = "Updated Snapshot Test";
+    static readonly REMOVED_OBSOLETE_SNAPSHOT_FILE_LABEL = "Removed Obsolete Snapshot File";
+    static readonly OBSOLETE_SNAPSHOT_FILE_LABEL = "Obsolete File";
+    static readonly TEST_STATUS_PASS = "passed";
+    static readonly TEST_STATUS_FAIL = "failed";
+    static readonly TEST_STATUS_PEND = "pending";
+    static readonly TEST_STATUS_TODO = "todo";
+    static readonly OBSOLETE_SNAPSHOT_FILE = "#f8f9fa";
+    static readonly OBSOLETE_SNAPSHOT_TEST = "#ffc107";
+    static readonly ADDED = "#007bff";
+    static readonly UPDATED_SNAPSHOT_TEST = "#17a2b8";
+    static readonly REMOVED_OBSOLETE_SNAPSHOT_FILE = "#343a40";
+    static readonly CHANGED = "#6c757d";
+    static readonly PASS_RAW = "28a745";
+    static readonly PASS: string;
+    static readonly FAIL_RAW = "dc3545";
+    static readonly FAIL: string;
+    static readonly PENDING_RAW = "ffc107";
+    static readonly PENDING: string;
+    static readonly TODO_RAW = "17a2b8";
+    static readonly TODO: string;
+    static readonly PASSED_TEST = "passed-test";
+    static readonly FAILED_TEST = "failed-test";
+    static readonly PENDING_TEST = "pending-test";
+    static readonly TODO_TEST = "todo-test";
+}

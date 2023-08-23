@@ -1,0 +1,50 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "import"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["./"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "extends": [
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:import/recommended"
+  ],
+  "root": true,
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "no-unused-vars": "error",
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "enum",
+        "format": null
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "warn",
+      {
+        "devDependencies": false,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ]
+    // "@typescript-eslint/interface-name-prefix": "off",
+    // "@typescript-eslint/explicit-function-return-type": "off",
+    // "@typescript-eslint/explicit-module-boundary-types": "off",
+    // "@typescript-eslint/no-explicit-any": "off",
+  }
+}

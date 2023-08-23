@@ -1,0 +1,93 @@
+{
+  "bail": 0,
+  "changedFilesWithAncestor": false,
+  "ci": false,
+  "collectCoverage": false,
+  "collectCoverageFrom": [
+    "src/**/*.ts"
+  ],
+  "coverageDirectory": "/Users/kevinsalazar/Desktop/challenge/challenge-yape/challenge-transactions-ms/reports/coverage-result/unit",
+  "coverageProvider": "babel",
+  "coverageReporters": [
+    "json",
+    "text",
+    "lcov",
+    "clover"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 60,
+      "functions": 60,
+      "lines": 60,
+      "statements": 60
+    }
+  },
+  "detectLeaks": false,
+  "detectOpenHandles": false,
+  "errorOnDeprecated": false,
+  "expand": false,
+  "findRelatedTests": false,
+  "forceExit": false,
+  "json": false,
+  "lastCommit": false,
+  "listTests": false,
+  "logHeapUsage": false,
+  "maxConcurrency": 5,
+  "maxWorkers": 7,
+  "noStackTrace": false,
+  "nonFlagArgs": [],
+  "notify": false,
+  "notifyMode": "failure-change",
+  "onlyChanged": false,
+  "onlyFailures": false,
+  "passWithNoTests": false,
+  "projects": [],
+  "reporters": [
+    [
+      "default",
+      {}
+    ],
+    [
+      "/Users/kevinsalazar/Desktop/challenge/challenge-yape/challenge-transactions-ms/node_modules/jest-stare/lib/index.js",
+      {
+        "log": false,
+        "resultDir": "reports/test-result/unit/",
+        "reportSummary": false,
+        "reportTitle": "Unit Testing Results",
+        "reportHeadline": "Unit Testing Results",
+        "additionalResultsProcessors": [],
+        "coverageLink": "../../coverage-result/unit/lcov-report/index.html",
+        "jestStareConfigJson": "jest-stare.json",
+        "jestGlobalConfigJson": "globalStuff.json",
+        "resultHtml": "index.html",
+        "resultJson": "jest-results.json"
+      }
+    ],
+    [
+      "/Users/kevinsalazar/Desktop/challenge/challenge-yape/challenge-transactions-ms/node_modules/jest-junit/index.js",
+      {
+        "outputDirectory": "reports/test-result/junit",
+        "outputName": "unit.xml"
+      }
+    ],
+    [
+      "/Users/kevinsalazar/Desktop/challenge/challenge-yape/challenge-transactions-ms/node_modules/jest-sonar/index.js",
+      {
+        "outputDirectory": "reports/test-result/jest-sonar",
+        "outputName": "unit.xml"
+      }
+    ]
+  ],
+  "rootDir": "/Users/kevinsalazar/Desktop/challenge/challenge-yape/challenge-transactions-ms",
+  "runTestsByPath": false,
+  "skipFilter": false,
+  "testFailureExitCode": 1,
+  "testPathPattern": "",
+  "testSequencer": "/Users/kevinsalazar/Desktop/challenge/challenge-yape/challenge-transactions-ms/node_modules/@jest/test-sequencer/build/index.js",
+  "updateSnapshot": "new",
+  "useStderr": false,
+  "verbose": true,
+  "watch": false,
+  "watchAll": false,
+  "watchman": true
+}

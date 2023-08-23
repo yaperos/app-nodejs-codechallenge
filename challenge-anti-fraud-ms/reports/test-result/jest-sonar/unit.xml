@@ -1,0 +1,6 @@
+<testExecutions version="1">
+<file path="test/anti-fraud-validation.spec.ts">
+<testCase name="AntiFraudValidationController should be defined" duration="1144" />
+<testCase name="AntiFraudValidationController handleEventValidateTransaction should execute GetAntiFraudValidationEventCommand" duration="395" />
+</file>
+</testExecutions>

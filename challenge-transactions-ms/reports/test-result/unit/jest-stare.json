@@ -1,0 +1,13 @@
+{
+  "log": false,
+  "resultDir": "reports/test-result/unit/",
+  "reportSummary": false,
+  "reportTitle": "Unit Testing Results",
+  "reportHeadline": "Unit Testing Results",
+  "additionalResultsProcessors": [],
+  "coverageLink": "../../coverage-result/unit/lcov-report/index.html",
+  "jestStareConfigJson": "jest-stare.json",
+  "jestGlobalConfigJson": "globalStuff.json",
+  "resultHtml": "index.html",
+  "resultJson": "jest-results.json"
+}
