@@ -2,8 +2,6 @@
 
 Prueba tecnica Yapero - AntiFraudMicroService
 
-- HE SUBIDO LOS PROYECTOS CON EL NODE-MODULES PARA QUE NO TENGAMOS PROBLEMAS DE COMPATIBILIDAD en caso
-  sea necesario eliminarlo e instalar nuevamente.
 
 ## Requisitos
 

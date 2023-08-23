@@ -2,9 +2,6 @@
 
 Prueba tecnica Yapero - Frontend
 
-- HE SUBIDO LOS PROYECTOS CON EL NODE-MODULES PARA QUE NO TENGAMOS PROBLEMAS DE COMPATIBILIDAD en caso
-  sea necesario eliminarlo e instalar nuevamente.
-
 ## Requisitos
 
 - Node.js (versión v18.x.x)

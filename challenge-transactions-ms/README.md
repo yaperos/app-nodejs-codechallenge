@@ -1,9 +1,6 @@
 # Card Validation
 
-Prueba tecnica Yapero
-
-- HE SUBIDO LOS PROYECTOS CON EL NODE-MODULES PARA QUE NO TENGAMOS PROBLEMAS DE COMPATIBILIDAD en caso
-  sea necesario eliminarlo e instalar nuevamente.
+Prueba tecnica Yapero Transactions
 
 ## Requisitos
 

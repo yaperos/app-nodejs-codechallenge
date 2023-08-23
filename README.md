@@ -1,7 +1,5 @@
 ## NOTA
 
-- He subido los proyectos con el node-modules integrado en caso sea necesario, caso contrario, puede eliminarlo y volver a instalar.  sea necesario eliminarlo e instalar nuevamente.
-
 - He Agregado un video mostrando la funcionalidad del reto tecnico, si desea puede descargarlo y revisarlo.
 
 ## NOTA 2
@@ -10,7 +8,6 @@
 2. Dentro de mi challenge-transactions-ms tengo un `docker-compose.yml`, en la cual
    estoy utilizando una imagen kafka distinta `image: confluentinc/cp-kafka:latest`, si me funciona.
 3. Para las pruebas puede utilizar el docker que integraron en el repositorio o el mio.
-
 
 ## RECORDAR
 
