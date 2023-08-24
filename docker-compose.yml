@@ -4,28 +4,48 @@ services:
   transaction:
     container_name: transaction
     working_dir: /home/node/app/transaction
+    depends_on:
+      - kafka
+      - postgres
     volumes:
       - ./:/home/node/app/transaction
     image: node:20.5.1
     command: bash -c "cd transaction && npm ci && npm start"
+    environment:
+      - DB_HOST=127.0.0.1
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=yape
+      - KAFKA_HOST=127.0.0.1:9092
+    network_mode: host
 
   anti-fraud:
     container_name: anti-fraud
     working_dir: /home/node/app/anti-fraud
+    depends_on:
+      - kafka
     volumes:
       - ./:/home/node/app/anti-fraud
     image: node:20.5.1
     command: bash -c "cd anti-fraud && npm ci && npm start"
+    environment:
+      - KAFKA_HOST=127.0.0.1:9092
+    network_mode: host
 
   apigateway:
     container_name: apigateway
     working_dir: /home/node/app/apigateway
+    links:
+      - kafka
     volumes:
       - ./:/home/node/app/apigateway
     image: node:20.5.1
     ports:
       - "3000:3000"
     command: bash -c "cd api-gateway && npm ci && npm start"
+    environment:
+      - KAFKA_HOST=kafka:29092
 
   postgres:
     image: postgres:14

@@ -14,7 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       options: {
         client: {
           clientId: 'anti-fraud',
-          brokers: ['localhost:9092']
+          brokers: [process.env.KAFKA_HOST]
         },
         consumer: {
           groupId: 'anti-fraud-consumer'
