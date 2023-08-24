@@ -1,27 +1,22 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'TRANSACTION_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'transaction',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'transaction-consumer'
-          }
-        }
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      buildSchemaOptions: {
+        dateScalarMode: 'timestamp',
       }
-    ])
+    }),
+    TransactionsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

@@ -7,6 +7,11 @@ import { TransactionRequest } from './transaction.dto';
 export class TransactionController {
     constructor(private readonly transactionService: TransactionService) {}
 
+    @MessagePattern('get_transactions')
+    handlerGetTransactions() {
+        return this.transactionService.handlerGetTransactions();
+    }
+
     @MessagePattern('transaction_created')
     handlerTransactionCreated(data: TransactionRequest) {
         return this.transactionService.handlerTransactionCreated(data);

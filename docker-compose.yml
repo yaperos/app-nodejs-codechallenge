@@ -1,5 +1,32 @@
 version: "3.7"
+
 services:
+  transaction:
+    container_name: transaction
+    working_dir: /home/node/app/transaction
+    volumes:
+      - ./:/home/node/app/transaction
+    image: node:20.5.1
+    command: bash -c "cd transaction && npm ci && npm start"
+
+  anti-fraud:
+    container_name: anti-fraud
+    working_dir: /home/node/app/anti-fraud
+    volumes:
+      - ./:/home/node/app/anti-fraud
+    image: node:20.5.1
+    command: bash -c "cd anti-fraud && npm ci && npm start"
+
+  apigateway:
+    container_name: apigateway
+    working_dir: /home/node/app/apigateway
+    volumes:
+      - ./:/home/node/app/apigateway
+    image: node:20.5.1
+    ports:
+      - "3000:3000"
+    command: bash -c "cd api-gateway && npm ci && npm start"
+
   postgres:
     image: postgres:14
     ports:
