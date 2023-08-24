@@ -1,3 +1,47 @@
+# Run the project
+
+You can run the project with docker `docker-compose up -d` and go to `http://127.0.0.1:3000/graphql`
+
+You can test the api: 
+
+
+```
+mutation {
+  createTransaction(
+    accountExternalIdDebit: "1234",
+    accountExternalIdCredit: "1234",
+    tranferTypeId: 1,
+    value: 100
+  ) {
+    transactionExternalId
+    transactionType {
+      name
+    }
+    transactionStatus {
+      name
+    }
+    value
+    createdAt
+  }
+}
+```
+
+```
+query {
+  getTransactions {
+    transactionExternalId
+    transactionType {
+      name
+    }
+    transactionStatus {
+      name
+    }
+    value
+    createdAt
+  }
+}
+```
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
