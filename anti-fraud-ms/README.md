@@ -1,4 +1,4 @@
-# transaction-api
+# anti-fraud-ms
 
 Kafka based microservice that verifies a transaction’s value and returns response message on whether it is rejected or approved. Purely event-based.
 
