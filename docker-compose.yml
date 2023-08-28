@@ -7,6 +7,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_HOST=127.0.0.1
+      - POSTGRES_PORT=5432
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:

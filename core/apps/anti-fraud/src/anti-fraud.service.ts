@@ -9,7 +9,7 @@ export class AntiFraudService {
   constructor(
     @InjectRepository(Transaction) private readonly transactionRepository: Repository<Transaction>) {
   }
-  
+
   async validGreater(body) {
     const transaction = await this.transactionRepository.findOne({ where: {
       id: body.id,

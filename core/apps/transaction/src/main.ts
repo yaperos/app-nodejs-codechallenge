@@ -1,16 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import {Transport} from '@nestjs/microservices';
-import { KafkaEnum } from 'apps/shared/enum/kafka-config.enum';
 
 async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
-  
+
   const config = new DocumentBuilder()
-      .setTitle('CODECHALLENGE')
-      .setDescription('The CODECHALLENGE API descricion')
+      .setTitle('ANTI-FRAUD')
+      .setDescription('CODECHALLENGE API ANTI-FRAUD')
       .setVersion('1.0')
       .addTag('code')
       .build();

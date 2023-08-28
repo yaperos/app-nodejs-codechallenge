@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "transaction",
   "version": "0.0.1",
   "description": "",
   "author": "Mario Eugenio <marioeugenio@gmail.com>",
@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/core/test/jest-e2e.json",
+    "test:e2e": "jest --config ./apps/transaction/test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "typeorm:run-migrations": "npm run typeorm migration:run -- -d apps/shared/database/typeOrm.config.ts",
     "typeorm:generate-migration": "npm run typeorm -- -d apps/shared/database/typeOrm.config.ts migration:generate apps/shared/database/migrations/$npm_config_name",
