@@ -5,6 +5,7 @@ services:
     ports:
       - "5432:5432"
     environment:
+      - POSTGRES_DB=yape_transaction
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   zookeeper:
@@ -21,5 +22,6 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKAJS_NO_PARTITIONER_WARNING: 1
     ports:
       - 9092:9092
