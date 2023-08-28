@@ -1,0 +1,30 @@
+{
+  "name": "anti-fraud-ms",
+  "version": "1.0.0",
+  "description": "Kafka Microservice for Anti-Fraud detection on transactions",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "npx jest --coverage --coverageProvider=v8 --coverageReporters=text-summary --detectOpenHandles --forceExit",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.48.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "jest": "^29.6.4",
+    "kafkajs": "^2.2.4",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.2",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testTimeout": 17000
+  }
+}
