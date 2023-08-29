@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug NestJs",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["start:debug"],
+      "console": "integratedTerminal",
+      "restart": true,
+      "autoAttachChildProcesses": true
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "restart": true,
+      "port": 9229,
+      "name": "Docker NestJS",
+      "remoteRoot": "/app",
+      "localRoot": "${workspaceFolder}",
+      "address": "0.0.0.0",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
