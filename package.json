@@ -1,0 +1,21 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "Yape code challenge Juliano Acuna",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.ts"
+  },
+  "repository": "git+https://github.com/julianoacunia/app-nodejs-codechallenge.git",
+  "author": "Juliano Acuna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/julianoacunia/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/julianoacunia/app-nodejs-codechallenge#readme",
+  "workspaces": [
+    "packages/*"
+  ],
+  "private": true
+}
