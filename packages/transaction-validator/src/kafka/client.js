@@ -1,12 +1,13 @@
 const Kafka = require("node-rdkafka");
 const producer = require("./producer");
+const Config = require("../config/constants");
 
-const listenAndUpdateStatus = () => {
+const antiFraudValidate = () => {
   const consumer = new Kafka.KafkaConsumer(
     {
-      "group.id": "my-group-one",
-      "metadata.broker.list": "localhost:9092",
-      "auto.commit.enable": false,
+      "group.id": Config.kafka.KAFKA_GROUP_ID,
+      "metadata.broker.list": Config.kafka.KAFKA_HOST,
+      "auto.commit.enable": Config.kafka.KAFKA_AUTO_COMMIT_ENABLE,
     },
     {}
   );
@@ -14,7 +15,7 @@ const listenAndUpdateStatus = () => {
   consumer.connect();
   consumer
     .on("ready", () => {
-      consumer.subscribe(["validate-data"]);
+      consumer.subscribe([Config.kafka.KAFKA_TOPIC_VALIDATE]);
       consumer.consume();
     })
     .on("data", (data) => {
@@ -35,5 +36,5 @@ const listenAndUpdateStatus = () => {
 };
 
 module.exports = {
-  listenAndUpdateStatus,
+  antiFraudValidate,
 };

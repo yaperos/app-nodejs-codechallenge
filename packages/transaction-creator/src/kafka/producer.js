@@ -1,4 +1,5 @@
 const Kafka = require("node-rdkafka");
+const Config = require("../config/constants");
 
 const sendMessage = (dataMessage) => {
   const producer = new Kafka.Producer({
@@ -10,7 +11,7 @@ const sendMessage = (dataMessage) => {
 
   producer.on("ready", () => {
     try {
-      producer.produce("validate-data", null, Buffer.from(JSON.stringify(dataMessage)), null, Date.now());
+      producer.produce(Config.kafka.KAFKA_TOPIC_VALIDATE, null, Buffer.from(JSON.stringify(dataMessage)), null, Date.now());
       console.log("Message sended");
     } catch (error) {
       console.error("A problem occurred when sending our message");

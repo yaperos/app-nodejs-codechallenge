@@ -1,8 +1,9 @@
 const express = require("express");
 const clientKafka = require("./src/kafka/client");
+const Config = require("./src/config/constants");
 const app = express();
 
-app.listen(3001, () => {
-  console.log("listen por 3001");
-  clientKafka.listenAndUpdateStatus();
+app.listen(Config.server.PORT, () => {
+  console.log(`listen por ${Config.server.PORT}`);
+  clientKafka.antiFraudValidate();
 });

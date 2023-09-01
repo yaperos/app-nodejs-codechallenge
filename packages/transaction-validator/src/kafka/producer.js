@@ -1,8 +1,9 @@
 const Kafka = require("node-rdkafka");
+const Config = require("../config/constants");
 
 const sendMessage = (dataMessage) => {
   const producer = new Kafka.Producer({
-    "metadata.broker.list": "localhost:9092",
+    "metadata.broker.list": Config.kafka.KAFKA_HOST,
     dr_cb: true,
   });
 
@@ -10,7 +11,7 @@ const sendMessage = (dataMessage) => {
 
   producer.on("ready", () => {
     try {
-      producer.produce("answer-validated", null, Buffer.from(JSON.stringify(dataMessage)), null, Date.now());
+      producer.produce(Config.kafka.KAFKA_TOPIC_VALIDATE_ANSWER, null, Buffer.from(JSON.stringify(dataMessage)), null, Date.now());
       console.log("Message sended");
     } catch (error) {
       console.error("A problem occurred when sending our message");
