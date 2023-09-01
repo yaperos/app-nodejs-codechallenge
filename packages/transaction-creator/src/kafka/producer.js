@@ -3,7 +3,7 @@ const Config = require("../config/constants");
 
 const sendMessage = (dataMessage) => {
   const producer = new Kafka.Producer({
-    "metadata.broker.list": "localhost:9092",
+    "metadata.broker.list": Config.kafka.KAFKA_HOST,
     dr_cb: true,
   });
 
