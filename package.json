@@ -17,5 +17,9 @@
   "workspaces": [
     "packages/*"
   ],
-  "private": true
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-rdkafka": "^2.17.0"
+  }
 }
