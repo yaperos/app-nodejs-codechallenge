@@ -47,7 +47,6 @@ describe("TransactionRepository", () => {
     expect(result.createdAt).toBe(new Date().toLocaleDateString());
   });
 
-  // hacer el ejemplo que retorna null
   it("should get a list of transactions", async () => {
     await pool.add("SELECT * FROM transactions", [], {
       rowCount: 1,
