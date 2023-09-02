@@ -1,5 +1,6 @@
 import Transaction from "../models/Transaction";
-
+import Event from "../models/Event";
+import { sendEvent } from "../events";
 
 async function reviewTransaction(transactionId: string) {
   const transaction = await Transaction.query().findById(transactionId);
@@ -9,9 +10,19 @@ async function reviewTransaction(transactionId: string) {
   }
 
   if (transaction.value > 1000) {
-    // TO-DO transaction rejected event
+    sendEvent({
+      type: Event.Type.TRANSACTION_REJECTED,
+      value: {
+        transactionId,
+      }
+    });
   } else {
-    // TO-DO transaction accepted event
+    sendEvent({
+      type: Event.Type.TRANSACTION_ACCEPTED,
+      value: {
+        transactionId,
+      }
+    });
   }
 }
 
