@@ -1,4 +1,4 @@
-# PruebaTocToc 🚀
+# Prueba Yape 🚀
 
 ## Introducción 📋
 Este es el desarrollo de la prueba de Yape, hecho por mi
