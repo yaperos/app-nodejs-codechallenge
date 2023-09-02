@@ -30,11 +30,13 @@ const typeDefs = `#graphql
   type Query {
     transaction(id: String!): Transaction
     transactions: [Transaction]
+    transactionsByIds(ids: [String]!): [Transaction]
   }
 
   # MUTATIONS
   type Mutation {
     createTransaction(data: TransactionInput!): Transaction
+    batchCreateTransactions(data: [TransactionInput!]!): [Transaction]
   }
 
 `

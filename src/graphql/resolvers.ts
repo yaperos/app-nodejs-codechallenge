@@ -9,10 +9,16 @@ export default {
     transactions: async () => {
       return await TransactionServices.getAllTransactions();
     },
+    transactionsByIds: async (_: any, input: { ids: string[] }) => {
+      return await TransactionServices.getTransactionsByIds({ transactionIds: input.ids} );
+    }
   },
   Mutation: {
     createTransaction: async (_: any, input: { data: Transaction.InputData }) => {
       return await TransactionServices.createTransaction({ input: input.data});
+    },
+    batchCreateTransactions: async (_: any, input: { data: Transaction.InputData[] }) => {
+      return await TransactionServices.batchCreateTransactions({ input: input.data })
     }
   }
   

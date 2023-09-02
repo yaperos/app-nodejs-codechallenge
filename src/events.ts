@@ -51,6 +51,23 @@ async function sendEvent({
 
 }
 
+async function batchSendEvents(data:  {type: Event.Type, value: Event.Data }[] ) {
+  const producer = await kafkaProducer();
+
+  const messages = data.map(d => {
+    return {
+      key: d.type,
+      value: JSON.stringify(d.value),
+    }
+  });
+
+  await producer.send({
+    topic: "transactions",
+    messages: messages,
+  })
+  
+}
+
 
 async function handleEvent(event) {
   switch (event.type) {
@@ -78,5 +95,6 @@ async function handleEvent(event) {
 export {
   kafkaConsumer,
   sendEvent,
+  batchSendEvents,
   handleEvent,
 }
