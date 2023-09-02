@@ -1,12 +1,5 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +16,64 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    volumes:
+      - ./data/kafka:/var/run/docker.sock
+  transaction-ms:
+    container_name: transaction-ms
+    build: ./transaction-ms
+    ports:
+      - 8080:8080
+    volumes:
+      - ./transaction-ms:/app
+    environment:
+      - PORT=8080
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=prueba-yape
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - KAFKA_TOPIC=transaction-creation
+      - NODE_ENV=production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: bash -c "npx sequelize db:create && npx sequelize db:migrate && npm run start || npm run start"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+  anti-fraud-ms:
+    container_name: anti-fraud-ms
+    build: ./anti-fraud-ms
+    ports:
+      - 8081:8081
+    volumes:
+      - ./anti-fraud-ms:/app
+    environment:
+      - PORT=8080
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=prueba-yape
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - KAFKA_TOPIC=transaction-creation
+      - NODE_ENV=production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: bash -c "npx sequelize db:create && npx sequelize db:migrate && npm run start || npm run start"
+  postgres:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    

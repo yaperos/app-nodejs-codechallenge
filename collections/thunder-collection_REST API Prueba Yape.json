@@ -1,0 +1,84 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "REST API Prueba Yape",
+    "dateExported": "2023-09-02T04:31:34.176Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "546e2a01-c9f8-417e-ac39-67c4e53338cd",
+            "colId": "9752d869-f3e1-4758-b710-cbdb09dd60e8",
+            "containerId": "",
+            "name": "Get one transaction",
+            "url": "localhost:8080/transactions/ec108824-54b2-4086-bf91-cda05cde01c2",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-09-02T00:30:27.772Z",
+            "modified": "2023-09-02T02:44:44.810Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "3ee84894-3ba5-43b6-9050-775fc089cf37",
+            "colId": "9752d869-f3e1-4758-b710-cbdb09dd60e8",
+            "containerId": "",
+            "name": "Get all the transactions",
+            "url": "localhost:8080/transactions",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-09-02T00:30:34.215Z",
+            "modified": "2023-09-02T00:30:34.215Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e6f6b57b-0888-420b-bada-6dbc976563f5",
+            "colId": "9752d869-f3e1-4758-b710-cbdb09dd60e8",
+            "containerId": "",
+            "name": "Create transaction",
+            "url": "localhost:8080/transactions",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-09-02T00:30:40.309Z",
+            "modified": "2023-09-02T04:29:03.976Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"accountExternalIdDebit\": \"cdbc53ea-2215-430b-aff3-c0fc7c8249c0\",\n  \"accountExternalIdCredit\": \"a57d4226-b3ee-4be8-9c98-457f3bb9c1fa\",\n  \"tranferTypeId\": 1,\n  \"value\": 1150000\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d44695b0-9d42-418f-8268-0c057c3751c5",
+            "colId": "9752d869-f3e1-4758-b710-cbdb09dd60e8",
+            "containerId": "",
+            "name": "Ping request",
+            "url": "localhost:8080/ping",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-09-02T00:30:48.145Z",
+            "modified": "2023-09-02T01:12:01.161Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f259ced6-fdac-4a52-a4b2-bf82376b2667",
+            "colId": "9752d869-f3e1-4758-b710-cbdb09dd60e8",
+            "containerId": "",
+            "name": "Delete transaction",
+            "url": "localhost:8080/transactions/986a4f17-dfbe-494c-b9ac-e58bee79026d",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2023-09-02T00:32:07.465Z",
+            "modified": "2023-09-02T00:32:34.345Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
