@@ -1,40 +1,39 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import express, { Express } from 'express';
 import { Model } from 'objection';
 import knexConfig from "./knexfile";
 import Knex from "knex";
 import dotenv from "dotenv";
-import { kafkaConsumer } from './src/events';
+import { kafkaConsumer } from "./src/events";
+import { resolvers, typeDefs } from "./src/graphql";
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
 
 dotenv.config();
 
-const app: Express = express();
-const port = process.env.PORT || 8080;
+async function app() {
+  const app = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
 
-// Initialize DB connection
-// @ts-ignore
-const env = process.env.NODE_ENV === "production" ? "production" : "development";
-const knex = Knex(knexConfig[env]);
-Model.knex(knex);
+  const { url } = await startStandaloneServer(app, {
+    listen: { port: 4000 },
+  });
 
-const corsOptions = {
-  credentials: true,
-  origin: true,
-};
+  console.log(`🚀  Server ready at: ${url}`);
 
-app.use(cors(corsOptions));
-app.use(bodyParser.json());
+  // Initialize DB connection
+  // @ts-ignore
+  const env = process.env.NODE_ENV === "production" ? "production" : "development";
+  const knex = Knex(knexConfig[env]);
+  Model.knex(knex);
 
-
-app.listen(port, () => {
-  console.log(`started on localhost:${port}`);
-});
+}
 
 
 // Set up Kafka Consumer
 try {
+  app();
   kafkaConsumer();
 } catch {
-  throw new Error("Error connecting to Kafka Consumer")
+  throw new Error("Error setting up server")
 }

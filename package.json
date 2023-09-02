@@ -5,7 +5,6 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "",
     "start": "tsc && node dist/main.js"
   },
   "keywords": [],
@@ -14,16 +13,17 @@
   "devDependencies": {
     "@tsconfig/node-lts": "^18.12.5",
     "@types/cors": "^2.8.13",
-    "@types/express": "^4.17.17",
     "@types/node": "^20.5.8",
     "eslint": "^8.48.0",
+    "graphql": "^16.8.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@apollo/server": "^4.9.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2",
+    "guid-typescript": "^1.0.9",
     "kafkajs": "^2.2.4",
     "knex": "^2.5.1",
     "objection": "^3.1.1",

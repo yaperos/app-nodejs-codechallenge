@@ -4,7 +4,7 @@ class Transaction extends BaseModel {
   id: string;
   accountExternalIdDebit: string;
   accountExternalIdCredit: string;
-  transferType: number;
+  transferTypeId: number;
   value: number;
   status: Transaction.Status;
 
@@ -20,6 +20,13 @@ namespace Transaction {
     PENDING = "PENDING",
     APPROVED = "APPROVED",
     REJECTED = "REJECTED",
+  }
+
+  export type InputData = {
+    accountExternalIdDebit: string;
+    accountExternalIdCredit: string;
+    transferTypeId: number;
+    value: number;
   }
 }
 

@@ -1,6 +1,6 @@
 import Event from "./models/Event";
 import Transaction from "./models/Transaction";
-import transaction_services from "./services/transaction_services";
+import TransactionServices from "./services/transaction_services";
 import antifraud_services from "./services/antifraud_services";
 import { Kafka, Partitioners } from "kafkajs";
 
@@ -59,13 +59,13 @@ async function handleEvent(event) {
       antifraud_services.reviewTransaction(event.value!.transactionId);
       break;
     case Event.Type.TRANSACTION_ACCEPTED:
-      transaction_services.updateTransactionStatus({
+      TransactionServices.updateTransactionStatus({
         id: event.value!.transactionId,
         status: Transaction.Status.APPROVED,
       })
       break;
     case Event.Type.TRANSACTION_REJECTED:
-      transaction_services.updateTransactionStatus({
+      TransactionServices.updateTransactionStatus({
         id: event.value!.transactionId,
         status: Transaction.Status.REJECTED,
       })

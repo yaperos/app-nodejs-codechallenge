@@ -1,23 +1,23 @@
 import Transaction from "../models/Transaction";
+import { Guid } from "guid-typescript";
 
 
-async function createTransaction({
-  accountExternalIdDebit,
-  accountExternalIdCredit,
-  transferType,
-  value,
-}: {
-  accountExternalIdDebit: string;
-  accountExternalIdCredit: string;
-  transferType: number;
-  value: number;
-}): Promise<Transaction> {
+async function getTransactionById(id: string) {
+  return await Transaction.query().findById(id);
+}
 
-  const transaction = Transaction.query().insert({
-    accountExternalIdDebit,
-    accountExternalIdCredit,
-    transferType,
-    value,
+async function getAllTransactions() {
+  return await Transaction.query();
+}
+
+async function createTransaction({ input }: { input: Transaction.InputData }): Promise<Transaction> {
+
+  const transaction = await Transaction.query().insert({
+    id: Guid.create().toString(),
+    accountExternalIdDebit: input.accountExternalIdDebit,
+    accountExternalIdCredit: input.accountExternalIdCredit,
+    transferTypeId: input!.transferTypeId,
+    value: input!.value,
     status: Transaction.Status.PENDING,
   });
 
@@ -26,11 +26,6 @@ async function createTransaction({
   return transaction;
 
 };
-
-
-async function getTransactionById(id: string) {
-  return await Transaction.query().findById(id);
-}
 
 
 async function updateTransactionStatus({
@@ -48,8 +43,9 @@ async function updateTransactionStatus({
 
 
 export default {
-  createTransaction,
   getTransactionById,
+  getAllTransactions,
+  createTransaction,
   updateTransactionStatus,
   // TO-DO batchCreateTransactions,
 }
