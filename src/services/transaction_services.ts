@@ -1,6 +1,7 @@
 import Transaction from "../models/Transaction";
 import { Guid } from "guid-typescript";
-
+import { sendEvent } from "../events";
+import Event from "../models/Event";
 
 async function getTransactionById(id: string) {
   return await Transaction.query().findById(id);
@@ -21,7 +22,12 @@ async function createTransaction({ input }: { input: Transaction.InputData }): P
     status: Transaction.Status.PENDING,
   });
 
-  // TO-DO send transaction created event, pass in transaction id
+  await sendEvent({
+    type: Event.Type.NEW_TRANSACTION,
+    value: {
+      transactionId: transaction.id,
+    }
+  })
 
   return transaction;
 

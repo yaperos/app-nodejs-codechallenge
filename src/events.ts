@@ -25,9 +25,8 @@ async function kafkaProducer() {
   const producer = kafka.producer({
     createPartitioner: Partitioners.DefaultPartitioner,
   });
-  // await producer.connect();
+  await producer.connect();
 
-  console.log("Producer ready");
   return producer;
 }
 

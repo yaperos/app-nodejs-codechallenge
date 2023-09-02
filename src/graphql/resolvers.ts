@@ -3,8 +3,8 @@ import Transaction from "src/models/Transaction";
 
 export default {
   Query: {
-    transaction: async (_: any, id: string) => {
-      return await TransactionServices.getTransactionById(id);
+    transaction: async (_: any, input: { id: string }) => {
+      return await TransactionServices.getTransactionById(input.id);
     },
     transactions: async () => {
       return await TransactionServices.getAllTransactions();
