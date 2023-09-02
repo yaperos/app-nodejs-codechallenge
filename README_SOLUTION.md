@@ -15,7 +15,7 @@ Este es el desarrollo de la prueba de Yape, hecho por mi
     ```bash
      docker compose up --build
     ```
-3. Importar las rutas de los endpoints de la carpeta collections con la extensión ThunderClient para realizar las peticiones Rest y probar la aplicación. Existen 5 rutas, 4 relacionadas con crear la transacción y 1 para probar que el servidor esta activo.
+3. Importar las rutas de los endpoints de la carpeta ```collections``` con la extensión ```ThunderClient``` para realizar las peticiones Rest y probar la aplicación. Existen 5 rutas, 4 relacionadas con crear la transacción y 1 para probar que el servidor esta activo.
 
 ## Notas importantes del desarrollador
 - Para volver a ejecutar la prueba de 0 es buena idea borrar la carpeta data con los mounts de los contenedores y ejecutar ```docker builder prune```
