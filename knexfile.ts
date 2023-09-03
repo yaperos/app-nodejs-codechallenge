@@ -1,4 +1,4 @@
-import { knexSnakeCaseMappers } from "objection";
+import { knexSnakeCaseMappers } from 'objection';
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -7,7 +7,7 @@ export default {
   development: {
     client: "pg",
     connection: {
-      host: "localhost",
+      host: "0.0.0.0",
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
     },

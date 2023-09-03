@@ -14,9 +14,9 @@ const typeDefs = `#graphql
   }
 
   enum TransactionStatus {
-    PENDING
-    APPROVED
-    REJECTED
+    pending
+    approved
+    rejected
   }
 
   input TransactionInput {

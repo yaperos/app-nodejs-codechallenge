@@ -17,9 +17,9 @@ class Transaction extends BaseModel {
 
 namespace Transaction {
   export enum Status {
-    PENDING = "PENDING",
-    APPROVED = "APPROVED",
-    REJECTED = "REJECTED",
+    PENDING = "pending",
+    APPROVED = "approved",
+    REJECTED = "rejected",
   }
 
   export type InputData = {

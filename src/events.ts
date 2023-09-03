@@ -5,7 +5,7 @@ import antifraud_services from "./services/antifraud_services";
 import { Kafka, Partitioners } from "kafkajs";
 
 const kafka = new Kafka({
-  brokers: [`localhost:9092`],
+  brokers: [`0.0.0.0:9092`],
 })
 
 async function kafkaConsumer() {
