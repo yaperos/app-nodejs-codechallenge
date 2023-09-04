@@ -20,6 +20,22 @@ const typeDefs = `#graphql
     rejected
   }
 
+  type TransactionReturn {
+    transactionExternalId: String!
+    transactionType: TypeData!
+    transactionStatus: StatusData!
+    value: Float!
+    createdAt: String!
+  }
+
+  type TypeData {
+    name: String!
+  }
+
+  type StatusData {
+    name: TransactionStatus!
+  }
+
   input TransactionInput {
     accountExternalIdCredit: String!
     accountExternalIdDebit: String!
@@ -29,9 +45,9 @@ const typeDefs = `#graphql
 
   # QUERIES
   type Query {
-    transaction(id: String!): Transaction
+    transaction(id: String!): TransactionReturn
     transactions: [Transaction]
-    transactionsByIds(ids: [String]!): [Transaction]
+    transactionsByIds(ids: [String]!): [TransactionReturn]
   }
 
   # MUTATIONS

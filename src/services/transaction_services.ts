@@ -13,6 +13,22 @@ async function getTransactionById(id: string) {
   }
 }
 
+async function getTransactionReturn(id: string) {
+  const transaction = await getTransactionById(id);
+  
+  return {
+    transactionExternalId: transaction.id,
+    transactionType: {
+      name: transaction.transferType,
+    },
+    transactionStatus: {
+      name: transaction.status,
+    },
+    value: transaction.value,
+    createdAt: transaction.createdAt,
+  }
+}
+
 async function getAllTransactions() {
   const transactions = await Transaction.query();
 
@@ -31,6 +47,24 @@ async function getTransactionsByIds({ transactionIds }: { transactionIds: string
     return {
       ...transaction,
       transferType: TransferTypes[transaction!.transferTypeId],
+    }
+  });
+}
+
+async function getTransactionsReturn({ transactionIds }: { transactionIds: string[] }) {
+  const transactions = await getTransactionsByIds({ transactionIds });
+
+  return transactions.map(transaction => {
+    return {
+      transactionExternalId: transaction.id,
+      transactionType: {
+        name: transaction.transferType,
+      },
+      transactionStatus: {
+        name: transaction.status,
+      },
+      value: transaction.value,
+      createdAt: transaction.createdAt,
     }
   });
 }
@@ -107,6 +141,8 @@ export default {
   getTransactionById,
   getAllTransactions,
   getTransactionsByIds,
+  getTransactionReturn,
+  getTransactionsReturn,
   createTransaction,
   batchCreateTransactions,
   updateTransactionStatus,

@@ -4,13 +4,13 @@ import Transaction from "src/models/Transaction";
 export default {
   Query: {
     transaction: async (_: any, input: { id: string }) => {
-      return await TransactionServices.getTransactionById(input.id);
+      return await TransactionServices.getTransactionReturn(input.id);
     },
     transactions: async () => {
       return await TransactionServices.getAllTransactions();
     },
     transactionsByIds: async (_: any, input: { ids: string[] }) => {
-      return await TransactionServices.getTransactionsByIds({ transactionIds: input.ids} );
+      return await TransactionServices.getTransactionsReturn({ transactionIds: input.ids} );
     }
   },
   Mutation: {
