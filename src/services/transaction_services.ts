@@ -2,17 +2,37 @@ import Transaction from "../models/Transaction";
 import { Guid } from "guid-typescript";
 import { batchSendEvents, sendEvent } from "../events";
 import Event from "../models/Event";
+import { TransferTypes } from "../utils";
 
 async function getTransactionById(id: string) {
-  return await Transaction.query().findById(id);
+  const transaction = await Transaction.query().findById(id);
+  
+  return {
+    ...transaction,
+    transferType: TransferTypes[transaction!.transferTypeId],
+  }
 }
 
 async function getAllTransactions() {
-  return await Transaction.query();
+  const transactions = await Transaction.query();
+
+  return transactions.map(transaction => {
+    return {
+      ...transaction,
+      transferType: TransferTypes[transaction!.transferTypeId],
+    }
+  });
 }
 
 async function getTransactionsByIds({ transactionIds }: { transactionIds: string[] }) {
-  return await Transaction.query().findByIds(transactionIds);
+  const transactions = await Transaction.query().findByIds(transactionIds);
+
+  return transactions.map(transaction => {
+    return {
+      ...transaction,
+      transferType: TransferTypes[transaction!.transferTypeId],
+    }
+  });
 }
 
 async function createTransaction({ input }: { input: Transaction.InputData }): Promise<Transaction> {

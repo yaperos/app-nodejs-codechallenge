@@ -7,6 +7,7 @@ const typeDefs = `#graphql
     accountExternalIdCredit: String!
     accountExternalIdDebit: String!
     transferTypeId: Int!
+    transferType: String!
     value: Float!
     status: TransactionStatus
     createdAt: String
