@@ -1,12 +1,13 @@
-version: "3.7"
+version: '1'
 services:
   postgres:
     image: postgres:14
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: 'yape'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -15,6 +16,7 @@ services:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
     environment:
+      WAIT_HOSTS: zookeeper:2181
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
@@ -23,3 +25,12 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - transfer_network
+networks:
+  transfer_network:

@@ -1,0 +1,55 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ResponseCreateTransactionGlqDto {
+  status: Boolean!
+  message: String!
+}
+
+type TransactionTypeResponse {
+  name: String!
+}
+
+type TransactionStatus {
+  name: String!
+}
+
+type ResponseLastTransaction {
+  transactionExternalId: String!
+  transactionType: TransactionTypeResponse!
+  transactionStatus: TransactionStatus!
+  value: Float!
+  createdAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ResponseLastTransactionGqlDto {
+  status: Boolean!
+  message: String!
+  data: ResponseLastTransaction!
+}
+
+type Query {
+  sayHello: String!
+}
+
+type Mutation {
+  getLastTransaction(input: RequestTransactionDto!): ResponseLastTransactionGqlDto!
+  createTransaction(input: CreateTransactionGqlDto!): ResponseCreateTransactionGlqDto!
+}
+
+input RequestTransactionDto {
+  transactionExternalId: String!
+}
+
+input CreateTransactionGqlDto {
+  accountExternalIdCredit: String!
+  accountExternalIdDebit: String!
+  transferTypeId: Int!
+  value: Float!
+}
