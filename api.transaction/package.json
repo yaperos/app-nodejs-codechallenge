@@ -1,0 +1,36 @@
+{
+  "name": "@yape/api.transaction",
+  "version": "0.0.1",
+  "description": "Api for transaction operation management",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node index.ts",
+    "start:dev": "ts-node-dev index.ts",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "format:check": "npm run format -- --check",
+    "format:fix": "npm run format -- --write",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "awilix": "^8.0.1",
+    "awilix-express": "^8.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "kafkajs": "^2.2.4",
+    "mongodb": "^6.0.0",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.6.0",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.49.0",
+    "prettier": "^3.0.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.2.2"
+  }
+}
