@@ -9,3 +9,8 @@ export interface BaseTransaction {
 export interface Transaction extends BaseTransaction {
   id: string;
 }
+
+export interface TypeTransaction {
+  id: number;
+  name: string;
+}
