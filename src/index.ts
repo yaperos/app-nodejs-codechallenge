@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import 'dotenv/config';
 import { transactionsRouter } from './transactions/transactions.controller';
+import { errorHandler } from './middleware/error.middleware';
 
 require('dotenv').config();
 
@@ -17,6 +18,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api', transactionsRouter);
+
+app.use(errorHandler);
 
 const start = async () => {
   try {
