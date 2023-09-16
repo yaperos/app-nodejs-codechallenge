@@ -1,5 +1,13 @@
 version: "3.7"
 services:
+  microservicio1:
+    image: microservicio1
+    ports:
+      - "3000:3000"
+  # microservicio2:
+  #   image: nestjs/microservicio2
+  #   ports:
+  #     - "4000:4000"
   postgres:
     image: postgres:14
     ports:
