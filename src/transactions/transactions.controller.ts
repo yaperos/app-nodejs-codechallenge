@@ -1,10 +1,11 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import * as TransactionService from "./transactions.service";
 import { BaseTransaction, Transaction } from "./transactions.interface";
+import HttpException from "../common/http-exception";
 
 export const transactionsRouter = express.Router();
 
-transactionsRouter.post('/', async (req: Request, res: Response) => {
+transactionsRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const transaction: BaseTransaction = req.body;
 
@@ -12,10 +13,6 @@ transactionsRouter.post('/', async (req: Request, res: Response) => {
 
     res.status(201).json(newTransaction);
   } catch (e) {
-    if (e instanceof Error) {
-      res.status(500).send(e.message);
-    } else {
-      res.status(500).send(`Unexpected error: ${e}`);
-    }
-  };
+    next(e);
+  }
 });
