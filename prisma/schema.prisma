@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  id                      String    @id @default(auto()) @map("_id") @db.ObjectId
+  accountExternalIdDebit  String
+  accountExternalIdCredit String
+  tranferTypeId           Int
+  value                   Float
+  createdAt               DateTime  @default(now())
+}
+
+model transactionType {
+  id            Int    @id @map("_id")
+  name          String
+}
+
+model transactionStatus {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          Status
+  transactionId String    @db.ObjectId
+  createdAt     DateTime  @default(now())
+}
+
+enum Status {
+  pending
+  approved
+  rejected
+}
