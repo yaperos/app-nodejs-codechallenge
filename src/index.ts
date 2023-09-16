@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import 'dotenv/config';
 import { transactionsRouter } from './transactions/transactions.controller';
 import { errorHandler } from './middleware/error.middleware';
+import { notFoundHandler } from './middleware/not-found.middleware';
 
 require('dotenv').config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api', transactionsRouter);
 
 app.use(errorHandler);
+app.use(notFoundHandler);
 
 const start = async () => {
   try {

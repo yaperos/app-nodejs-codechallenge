@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import * as TransactionService from "./transactions.service";
 import { BaseTransaction, Transaction } from "./transactions.interface";
-import HttpException from "../common/http-exception";
 
 export const transactionsRouter = express.Router();
 
