@@ -13,7 +13,7 @@ class Transactions {
     return type;
   };
   async createTransaction(transaction: any): Promise<Transaction> {
-    const created = await prisma.transaction.create(transaction)
+    const created = await prisma.transaction.create({ data: transaction })
     return created;
   }
 };
