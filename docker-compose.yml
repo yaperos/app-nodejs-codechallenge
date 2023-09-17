@@ -1,13 +1,34 @@
 version: "3.7"
+
 services:
   microservicio1:
     image: microservicio1
+    container_name: microservicio1
     ports:
       - "3000:3000"
-  # microservicio2:
-  #   image: nestjs/microservicio2
-  #   ports:
-  #     - "4000:4000"
+    env_file:
+      - ./transactional_microservice/.env
+    environment:
+      BD_HOST: mongodb
+      BD_PORT: 27018
+    extra_hosts:
+      - mongodb:172.25.144.1
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - 27018:27017
+    volumes:
+      - ./data:/data/db
+    networks:
+      - app-network
+
   postgres:
     image: postgres:14
     ports:
@@ -31,3 +52,7 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+networks:
+  app-network:
+    driver: bridge

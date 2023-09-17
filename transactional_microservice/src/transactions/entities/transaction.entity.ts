@@ -40,7 +40,7 @@ export class Transaction extends mongoose.Document {
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
 
-// Agregar un middleware pre para el evento 'updateOne'
+// Trigger al actualizar transactions
 TransactionSchema.pre('save', async function (next) {
   const document = this as Transaction;
   if (document.isModified('status')) {
