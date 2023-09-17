@@ -7,6 +7,6 @@ export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
   @Post()
   createTransaction(@Body() payload: CreateTransactionDto) {
-    return this.transactionService.createTransaction(payload);
+    return this.transactionService.runCreateTransaction(payload);
   }
 }
