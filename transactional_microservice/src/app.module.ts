@@ -9,7 +9,6 @@ import { TransactionController } from './transactions/controllers/transaction.co
 import { TransactionModule } from './transactions/modules/transaction.module';
 // Services
 import { AppService } from './app.service';
-// import { TransactionService } from './transactions/services/transaction.service';
 
 @Module({
   imports: [
