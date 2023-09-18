@@ -7,7 +7,7 @@ import { CreateTransactionDto } from '../dto/create_transaction.dto';
 // Entities
 import { Transaction } from '../entities/transaction.entity';
 
-const topic: string = 'transaction-topic';
+// const topic: string = 'transaction.create';
 @Injectable()
 export class TransactionService {
   constructor(
@@ -47,7 +47,7 @@ export class TransactionService {
       last_status: transaction.status,
     };
     try {
-      const r = await this.clientKafka.emit(topic, payloadKafka);
+      const r = this.clientKafka.emit('transaction.create', payloadKafka);
       console.log('r', r);
     } catch (error) {
       console.log('error', error);

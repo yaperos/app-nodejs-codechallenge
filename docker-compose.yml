@@ -19,6 +19,24 @@ services:
       - mongodb
     networks:
       - app-network
+  microservicio2:
+    image: microservicio2
+    container_name: microservicio2
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./antifraud_microservice/.env
+    environment:
+      BD_HOST: mongodb
+      BD_PORT: 27018
+    extra_hosts:
+      - mongodb:172.25.144.1
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -28,14 +46,6 @@ services:
       - ./data:/data/db
     networks:
       - app-network
-
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
