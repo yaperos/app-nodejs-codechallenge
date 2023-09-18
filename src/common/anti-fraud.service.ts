@@ -9,9 +9,10 @@ const KAFKA_TOPIC = process.env.KAFKA_TOPIC || 'kafka-topic';
 const kafkaClient = Kafka.getClient();
 const producer = kafkaClient.producer();
 
+// Method to generate a random response to reject a transaction
 const rejected = (max: number): boolean => (Math.floor(Math.random() * max) === 0);
 
-// Fake AntiFraud System
+// Fake AntiFraud Service
 export const antiFraudService = async(payload: EachMessagePayload): Promise<void> => {
   const { topic, partition, message } = payload;
   const value = message.value?.toString();

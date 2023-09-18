@@ -32,6 +32,31 @@ export const createTransaction = async(transaction: BaseTransaction): Promise<Tr
   return transactionCreated;
 };
 
+export const fullTransaction = async(id: string) => {
+  // Find the transaction in database
+  const transaction = await modelTransaction.getTransaction(id);
+
+  if (!transaction) throw new HttpException(404, "Transaction doesn't exists");
+
+  // Find complementary information
+  const [ type, status ] = await Promise.all([
+    modelTransaction.getType(transaction.tranferTypeId),
+    modelTransaction.getStatusTransaction(transaction.id),
+  ])
+
+  return {
+    transactionExternalId: (transaction.accountExternalIdDebit || transaction.accountExternalIdCredit),
+    transactionType: {
+      name: type.name,
+    },
+    transactionStatus: {
+      name: status?.name || 'pending',
+    },
+    value: transaction.value,
+    createdAt: transaction.createdAt,
+  };
+};
+
 export const processCallback = async(payload: CallbackPayload): Promise<StatusTransaction> => {
   const { id, name } = payload;
   const statusCreated = await modelTransaction.createStatus({

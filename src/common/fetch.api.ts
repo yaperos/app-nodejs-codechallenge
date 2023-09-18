@@ -1,13 +1,13 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-// Creating wrapper function to Axios
+// Wrapper function to Axios
 async function request<T>(
   config: AxiosRequestConfig
 ): Promise<T> {
   return await axios(config);;
 };
 
-// Creating simple API
+// Simple API (post, get)
 export default {
   get: (url: string) => 
   	request({ method: 'GET', url }),
