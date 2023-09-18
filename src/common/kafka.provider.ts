@@ -17,7 +17,7 @@ if (process.env.KAFKA_AUTH === 'SASL') {
   Object.assign(params,{
     ssl: true,
     sasl: {
-      mechanism: 'plain', // scram-sha-256 or scram-sha-512
+      mechanism: 'scram-sha-512', // scram-sha-256 or scram-sha-512
       username: KAFKA_USERNAME,
       password: KAFKA_PASSWORD,
     },
@@ -31,7 +31,7 @@ export default class Provider {
 
   public static getClient(): Kafka {
     if (!Provider.client) Provider.client = new Kafka(params);
-    
+
     return Provider.client;
   };
 };
