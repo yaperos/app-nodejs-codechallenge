@@ -18,7 +18,7 @@ async function bootstrap() {
           },
         },
         consumer: {
-          groupId: 'kafka-consumer-antif', // Should be the same thing we give in consumer
+          groupId: 'kafka-consumer',
         },
         subscribe: {
           fromBeginning: true,

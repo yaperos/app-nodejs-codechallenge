@@ -17,7 +17,7 @@ async function bootstrap() {
         },
       },
       consumer: {
-        groupId: 'kafka-consumer',
+        groupId: 'kafka-consumer-antif',
       },
       subscribe: {
         fromBeginning: true,

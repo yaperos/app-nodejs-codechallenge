@@ -8,7 +8,7 @@ export class DataupdateController {
   constructor(private readonly dataupdateService: DataupdateService) {}
 
   @MessagePattern('transaction.validate')
-  updateTransaction(@Payload() payload: EmitedUpdateTransactionDto): void {
-    this.dataupdateService.runUpdateStatusTransaction(payload);
+  updateTransaction(@Payload() payload: EmitedUpdateTransactionDto) {
+    return this.dataupdateService.runUpdateStatusTransaction(payload);
   }
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClientProxy } from '@nestjs/microservices';
@@ -7,7 +7,6 @@ import { CreateTransactionDto } from '../dto/create_transaction.dto';
 // Entities
 import { Transaction } from '../entities/transaction.entity';
 
-// const topic: string = 'transaction.create';
 @Injectable()
 export class TransactionService {
   constructor(
@@ -48,10 +47,9 @@ export class TransactionService {
       last_status: transaction.status,
     };
     try {
-      const r = this.clientKafka.emit('transaction.create', payloadKafka);
-      console.log('r', r);
+      this.clientKafka.emit('transaction.create', payloadKafka);
     } catch (error) {
-      console.log('error', error);
+      Logger.error(error);
       return false;
     }
     return true;

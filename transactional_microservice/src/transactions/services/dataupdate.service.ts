@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 // DTO
@@ -18,8 +18,8 @@ export class DataupdateService {
    */
   async runUpdateStatusTransaction(
     payloadEmited: EmitedUpdateTransactionDto,
-  ): Promise<any> {
-    console.log('> runUpdateStatusTransaction->payloadEmited', payloadEmited);
+  ): Promise<boolean> {
+    Logger.debug('> runUpdateStatusTransaction->payloadEmited', payloadEmited);
     return await this.updateStatusTransaction(payloadEmited);
   }
   /**
@@ -27,10 +27,16 @@ export class DataupdateService {
    */
   async updateStatusTransaction(
     payloadEmited: EmitedUpdateTransactionDto,
-  ): Promise<any> {
-    return await this.transactionModel.updateOne(
-      { _id: payloadEmited.transaction_id },
-      { $set: { status: payloadEmited.new_status } },
-    );
+  ): Promise<boolean> {
+    try {
+      await this.transactionModel.updateOne(
+        { _id: payloadEmited.transaction_id },
+        { $set: { status: payloadEmited.new_status } },
+      );
+      return true;
+    } catch (error) {
+      Logger.error(error);
+    }
+    return false;
   }
 }

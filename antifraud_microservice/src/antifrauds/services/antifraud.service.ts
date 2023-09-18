@@ -9,6 +9,8 @@ import { Transaction } from '../entities/transaction.entity';
 
 @Injectable()
 export class AntifraudService {
+  protected readonly maxValueAllowed: number = 1000;
+
   constructor(
     @Inject('SERVER')
     private readonly clientKafka: ClientProxy,
@@ -42,7 +44,7 @@ export class AntifraudService {
           `Transaction "${payloadEmited.transaction_id}" not found`,
         );
       }
-      isFraud = transaction.value > 100;
+      isFraud = transaction.value >= this.maxValueAllowed;
     } catch (error) {
       Logger.debug(error);
     }
@@ -61,7 +63,6 @@ export class AntifraudService {
       new_status: newStatus,
     };
     try {
-      console.log('> payloadKafka ->transaction.validate', payloadKafka);
       this.clientKafka.emit('transaction.validate', payloadKafka);
     } catch (error) {
       Logger.error(error);
