@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import * as TransactionService from "./transactions.service";
-import { BaseTransaction, Transaction } from "./transactions.interface";
+import { BaseStatusTransaction, BaseTransaction, StatusTransaction, Transaction } from "./transactions.interface";
 
 export const transactionsRouter = express.Router();
 
@@ -18,7 +18,9 @@ transactionsRouter.post('/', async (req: Request, res: Response, next: NextFunct
 
 transactionsRouter.post('/callback', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log(req.body);
+    const payload = req.body;
+
+    await TransactionService.processCallback(payload);
 
     res.sendStatus(200);
   } catch (e) {

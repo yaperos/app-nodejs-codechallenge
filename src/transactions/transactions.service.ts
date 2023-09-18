@@ -1,6 +1,11 @@
 import modelTransaction from "./transactions.model";
 import HttpException from "../common/http-exception";
-import { Transaction, TypeTransaction, BaseTransaction } from "./transactions.interface";
+import {
+  Transaction,
+  CallbackPayload,
+  TypeTransaction,
+  BaseTransaction,
+  StatusTransaction } from "./transactions.interface";
 import { producerAntiFraud } from "../common/anti-fraud.service";
 
 /**
@@ -25,4 +30,14 @@ export const createTransaction = async(transaction: BaseTransaction): Promise<Tr
   producerAntiFraud(transactionCreated);
 
   return transactionCreated;
+};
+
+export const processCallback = async(payload: CallbackPayload): Promise<StatusTransaction> => {
+  const { id, name } = payload;
+  const statusCreated = await modelTransaction.createStatus({
+    name,
+    transactionId: id,
+  });
+
+  return statusCreated;
 }
