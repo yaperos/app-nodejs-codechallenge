@@ -21,7 +21,7 @@ export const antiFraudService = async(payload: EachMessagePayload): Promise<void
     const transactionStatus = {
       id,
       // Simulating 33% rejected
-      name: rejected(3) ? 'rejected' : 'approved',
+      name: rejected(4) ? 'rejected' : 'approved',
     };
 
     // Returning response to client callback

@@ -80,3 +80,19 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Assumptions
+- `transactionExternalId` column depends on accountExternalIdDebit or accountExternalIdCredit.
+- `tranferTypeId` determine the value of transactionType, this should be a Collection.
+- The focus was changed to simulate an Anti-fraud external service, using queues and callbacks. Fine?
+- Avoid sending Anti-fraud validation for transactions over 1000.
+
+# Important notes
+- MongoDB as database but without embedded documents to be near/compatible a SQL approach.
+- Was selected a NoSQL database to improve read/write data.
+- The solution avoids "document-blocking" storing status outside of transactions.
+- Every response from anti-fraud service store a document, allowing historical records.
+- Anti-fraud service use a random method to reject 25% of transactions. Customizable.
+- Kafka client was created as singleton instance to show design patterns.
+- I use Typescript as much as possible, but it can be improved.
+- Only one example for each Pyramid Testing level: Unit test, Integration test and E2E.
