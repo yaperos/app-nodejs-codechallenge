@@ -7,7 +7,7 @@ import { ResponseGetTransactionDto } from '../dto/response_get_transaction.dto';
 import { Transaction } from '../entities/transaction.entity';
 // Utilities
 import { TransactionTypesUtility } from '../utilities/transactionTypes.utility';
-// INterfaces
+// Interfaces
 import { ResponseErrorInterface } from 'src/../start/interfaces/responseError.interface';
 
 @Injectable()
@@ -30,8 +30,8 @@ export class GettingTransactionService {
       );
       if (!transaction) {
         return {
-          status: 400,
-          details: 'transaction not found',
+          statusCode: 400,
+          message: ['transaction not found'],
         };
       }
       const responseTransaction: ResponseGetTransactionDto = {
@@ -52,8 +52,8 @@ export class GettingTransactionService {
       Logger.debug(error);
     }
     return {
-      status: 500,
-      details: 'internal error',
+      statusCode: 500,
+      message: ['internal error'],
     };
   }
 }

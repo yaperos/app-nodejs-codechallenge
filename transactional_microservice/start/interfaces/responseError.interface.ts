@@ -1,4 +1,5 @@
 export interface ResponseErrorInterface {
-  status: number;
-  details: string;
+  statusCode: number;
+  message: string[];
+  error?: string;
 }

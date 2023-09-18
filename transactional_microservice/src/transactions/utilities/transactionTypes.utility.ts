@@ -1,7 +1,15 @@
+enum transferTypesAllowed {
+  DEBIT,
+  CREDIT,
+}
 export class TransactionTypesUtility {
   private transferTypes: [string, string] = ['DEBIT', 'CREDIT'];
 
   public getTransactionTypeName(tranferTypeId: number): string {
-    return this.transferTypes[tranferTypeId - 1];
+    const transferType: string = this.transferTypes[tranferTypeId - 1];
+    if (!transferTypesAllowed[transferType]) {
+      throw new ReferenceError(`tranferTypeId "${tranferTypeId}" not allowed`);
+    }
+    return transferType;
   }
 }
