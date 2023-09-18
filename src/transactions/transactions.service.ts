@@ -1,6 +1,7 @@
 import modelTransaction from "./transactions.model";
 import HttpException from "../common/http-exception";
 import { Transaction, TypeTransaction, BaseTransaction } from "./transactions.interface";
+import { producerAntiFraud } from "../common/anti-fraud.service";
 
 /**
  * Service methods
@@ -18,5 +19,10 @@ export const createTransaction = async(transaction: BaseTransaction): Promise<Tr
   const type = await findType(tranferTypeId);
   if (!type) throw new HttpException(400, "Transaction type doesn't exists");
 
-  return modelTransaction.createTransaction(transaction);
+  const transactionCreated = modelTransaction.createTransaction(transaction);
+
+  // Sending petition to Anti-fraud service
+  producerAntiFraud(transaction);
+
+  return transactionCreated;
 }
