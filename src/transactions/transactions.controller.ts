@@ -15,3 +15,13 @@ transactionsRouter.post('/', async (req: Request, res: Response, next: NextFunct
     next(e);
   }
 });
+
+transactionsRouter.post('/callback', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    console.log(req.body);
+
+    res.sendStatus(200);
+  } catch (e) {
+    next(e);
+  }
+});

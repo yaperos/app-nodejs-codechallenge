@@ -25,14 +25,14 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/api', transactionsRouter);
+app.use('/api/v1', transactionsRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
 
 const start = async () => {
   try {
-    // Running a Kafka antiFraud consumer
+    // Running a Kafka antiFraud (fake) consumer
     await consumer.connect();
     await consumer.subscribe({ topic: KAFKA_TOPIC, fromBeginning: true });
     await consumer.run({
