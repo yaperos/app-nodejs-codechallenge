@@ -8,7 +8,7 @@ import { CreateTransactionDto } from '../dto/create_transaction.dto';
 import { Transaction } from '../entities/transaction.entity';
 
 @Injectable()
-export class TransactionService {
+export class CreationTransactionService {
   constructor(
     @Inject('SERVER')
     private readonly clientKafka: ClientProxy,
@@ -21,7 +21,8 @@ export class TransactionService {
    */
   async runCreateTransaction(payload: CreateTransactionDto): Promise<any> {
     const newTransaction = await this.createNewTransaction(payload);
-    return await this.emitKafka(newTransaction);
+    await this.emitKafka(newTransaction);
+    return newTransaction;
   }
   /**
    * Registra la transacción en la BD

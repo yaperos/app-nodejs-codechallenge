@@ -13,9 +13,10 @@ const models: ModelInterface[] = [
   },
 ];
 // Services
-import { TransactionService } from '../services/transaction.service';
+import { CreationTransactionService } from '../services/creationTransaction.service';
+import { GettingTransactionService } from '../services/gettingTransaction.service';
 import { DataupdateService } from '../services/dataupdate.service';
-
+import { TransactionTypesUtility } from '../utilities/transactionTypes.utility';
 @Module({
   imports: [
     MongooseModule.forFeature(models),
@@ -40,7 +41,17 @@ import { DataupdateService } from '../services/dataupdate.service';
       },
     ]),
   ],
-  providers: [TransactionService, DataupdateService],
-  exports: [TransactionService, DataupdateService],
+  providers: [
+    CreationTransactionService,
+    DataupdateService,
+    GettingTransactionService,
+    TransactionTypesUtility,
+  ],
+  exports: [
+    CreationTransactionService,
+    DataupdateService,
+    GettingTransactionService,
+    TransactionTypesUtility,
+  ],
 })
 export class TransactionModule {}
