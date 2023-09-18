@@ -96,3 +96,4 @@ If you have any questions, please let us know.
 - Kafka client was created as singleton instance to show design patterns.
 - I use Typescript as much as possible, but it can be improved.
 - Only one example for each Pyramid Testing level: Unit test, Integration test and E2E.
+- Minimal documentation, but it works and have a lot of comments.

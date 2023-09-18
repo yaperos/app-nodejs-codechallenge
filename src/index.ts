@@ -12,21 +12,26 @@ require('dotenv').config();
 
 if (!process.env.PORT) process.exit(1);
 
+// Retrieving environment variables
 const PORT: number = parseInt(process.env.PORT as string, 10);
 const KAFKA_TOPIC = process.env.KAFKA_TOPIC || 'kafka-topic';
 const KAFKA_GROUP_ID = process.env.KAFKA_GROUP_ID || 'group-id'
 
+// Creating Kafka client and consumer
 const kafkaClient = Kafka.getClient();
 const consumer = kafkaClient.consumer({ groupId: KAFKA_GROUP_ID });
 
 const app = express();
 
+// Adding important middlewares
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// Adding routers to server
 app.use('/api/v1', transactionsRouter);
 
+// Using error handlers
 app.use(errorHandler);
 app.use(notFoundHandler);
 

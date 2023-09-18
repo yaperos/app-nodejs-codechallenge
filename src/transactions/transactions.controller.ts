@@ -4,6 +4,12 @@ import { BaseTransaction, Transaction } from "./transactions.interface";
 
 export const transactionsRouter = express.Router();
 
+/**
+ * POST /api/v1/
+ * @summary Endpoint to create a transaction
+ * @returns {object} 201 - success response - application/json
+ * @returns {string} 400 - Bad request response
+ */
 transactionsRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const transaction: BaseTransaction = req.body;
@@ -16,6 +22,12 @@ transactionsRouter.post('/', async (req: Request, res: Response, next: NextFunct
   }
 });
 
+/**
+ * GET /api/v1/:id
+ * @summary Endpoint to retrieve a transaction
+ * @returns {object} 200 - success response - application/json
+ * @returns {string} 400 - Bad request response
+ */
 transactionsRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const transactionId = req.params.id;
@@ -28,6 +40,11 @@ transactionsRouter.get('/:id', async (req: Request, res: Response, next: NextFun
   }
 });
 
+/**
+ * POST /api/v1/callback
+ * @summary Endpoint to process an anti-fraud service response
+ * @returns 200 - success response
+ */
 transactionsRouter.post('/callback', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const payload = req.body;
