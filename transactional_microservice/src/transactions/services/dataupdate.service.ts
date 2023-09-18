@@ -16,27 +16,37 @@ export class DataupdateService {
   /**
    * INICIALIZA
    */
-  async runUpdateStatusTransaction(
+  public async runUpdateStatusTransaction(
     payloadEmited: EmitedUpdateTransactionDto,
-  ): Promise<boolean> {
-    Logger.debug('> runUpdateStatusTransaction->payloadEmited', payloadEmited);
-    return await this.updateStatusTransaction(payloadEmited);
+  ): Promise<Transaction> {
+    return await this.updateStatusTransaction(
+      payloadEmited.transaction_id,
+      payloadEmited.new_status,
+    );
   }
   /**
    * Actualiza la transacción en la BD
    */
-  async updateStatusTransaction(
-    payloadEmited: EmitedUpdateTransactionDto,
-  ): Promise<boolean> {
+  public async updateStatusTransaction(
+    transaction_id: string,
+    new_status: string,
+  ): Promise<Transaction> {
     try {
-      await this.transactionModel.updateOne(
-        { _id: payloadEmited.transaction_id },
-        { $set: { status: payloadEmited.new_status } },
+      return await this.transactionModel.findOneAndUpdate(
+        { _id: transaction_id },
+        {
+          $set: { status: new_status },
+          $push: {
+            tracking: {
+              status: new_status,
+              triggered_at: new Date(),
+            },
+          },
+        },
       );
-      return true;
     } catch (error) {
       Logger.error(error);
     }
-    return false;
+    return null;
   }
 }

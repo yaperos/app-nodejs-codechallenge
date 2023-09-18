@@ -6,6 +6,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { CreateTransactionDto } from '../dto/create_transaction.dto';
 // Entities
 import { Transaction } from '../entities/transaction.entity';
+// Services
+import { DataupdateService } from './dataupdate.service';
 
 @Injectable()
 export class CreationTransactionService {
@@ -14,12 +16,15 @@ export class CreationTransactionService {
     private readonly clientKafka: ClientProxy,
     @InjectModel(Transaction.name)
     private readonly transactionModel: Model<Transaction>,
+    private readonly dataupdateService: DataupdateService,
   ) {}
 
   /**
    * INICIALIZA
    */
-  async runCreateTransaction(payload: CreateTransactionDto): Promise<any> {
+  public async runCreateTransaction(
+    payload: CreateTransactionDto,
+  ): Promise<any> {
     const newTransaction = await this.createNewTransaction(payload);
     await this.emitKafka(newTransaction);
     return newTransaction;
@@ -27,22 +32,21 @@ export class CreationTransactionService {
   /**
    * Registra la transacción en la BD
    */
-  async createNewTransaction(
+  private async createNewTransaction(
     payload: CreateTransactionDto,
   ): Promise<Transaction> {
     const currentStatus = 'PENDING';
-    const firstTrack = { status: currentStatus, triggered_at: new Date() };
-    const defaultTransaction = Object.assign(payload, {
-      status: currentStatus,
-      tracking: [firstTrack],
-    });
-    return await this.transactionModel.create(defaultTransaction);
+    const transactionInserted = await this.transactionModel.create(payload);
+    return await this.dataupdateService.updateStatusTransaction(
+      transactionInserted._id.toString(),
+      currentStatus,
+    );
   }
 
   /**
    * Emite el evento
    */
-  async emitKafka(transaction: Transaction): Promise<boolean> {
+  private async emitKafka(transaction: Transaction): Promise<boolean> {
     const payloadKafka = {
       transaction_id: transaction._id,
       last_status: transaction.status,
