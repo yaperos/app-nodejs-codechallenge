@@ -19,10 +19,10 @@ export const createTransaction = async(transaction: BaseTransaction): Promise<Tr
   const type = await findType(tranferTypeId);
   if (!type) throw new HttpException(400, "Transaction type doesn't exists");
 
-  const transactionCreated = modelTransaction.createTransaction(transaction);
+  const transactionCreated = await modelTransaction.createTransaction(transaction);
 
   // Sending petition to Anti-fraud service
-  producerAntiFraud(transaction);
+  producerAntiFraud(transactionCreated);
 
   return transactionCreated;
 }
