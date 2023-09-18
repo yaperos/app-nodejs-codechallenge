@@ -8,7 +8,7 @@ const models: ModelInterface[] = [
   {
     name: Transaction.name,
     schema: TransactionSchema,
-    collection: 'antifrauds',
+    collection: 'transactions',
   },
 ];
 // Services
@@ -32,7 +32,7 @@ import { AntifraudService } from '../services/antifraud.service';
             },
           },
           consumer: {
-            groupId: 'kafka-consumer', // Should be the same thing we give in consumer
+            groupId: 'kafka-consumer-antif',
           },
         },
       },

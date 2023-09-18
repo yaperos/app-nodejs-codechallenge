@@ -21,7 +21,6 @@ export class TransactionService {
    * INICIALIZA
    */
   async runCreateTransaction(payload: CreateTransactionDto): Promise<any> {
-    console.log('payload', payload);
     const newTransaction = await this.createNewTransaction(payload);
     return await this.emitKafka(newTransaction);
   }
@@ -40,8 +39,10 @@ export class TransactionService {
     return await this.transactionModel.create(defaultTransaction);
   }
 
+  /**
+   * Emite el evento
+   */
   async emitKafka(transaction: Transaction): Promise<boolean> {
-    console.log('emitKafka', transaction);
     const payloadKafka = {
       transaction_id: transaction._id,
       last_status: transaction.status,

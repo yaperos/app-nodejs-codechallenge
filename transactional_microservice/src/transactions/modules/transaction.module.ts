@@ -14,6 +14,7 @@ const models: ModelInterface[] = [
 ];
 // Services
 import { TransactionService } from '../services/transaction.service';
+import { DataupdateService } from '../services/dataupdate.service';
 
 @Module({
   imports: [
@@ -32,15 +33,14 @@ import { TransactionService } from '../services/transaction.service';
               password: process.env.KAFKA_SECRET,
             },
           },
-          producerOnlyMode: true,
           consumer: {
-            groupId: 'kafka-consumer', // Should be the same thing we give in consumer
+            groupId: 'kafka-consumer',
           },
         },
       },
     ]),
   ],
-  providers: [TransactionService],
-  exports: [TransactionService],
+  providers: [TransactionService, DataupdateService],
+  exports: [TransactionService, DataupdateService],
 })
 export class TransactionModule {}

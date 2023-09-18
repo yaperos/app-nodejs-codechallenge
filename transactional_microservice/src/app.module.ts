@@ -5,6 +5,7 @@ import config from '../start/config';
 // Controllers
 import { AppController } from './app.controller';
 import { TransactionController } from './transactions/controllers/transaction.controller';
+import { DataupdateController } from './transactions/controllers/dataupdate.controller';
 // Modules
 import { TransactionModule } from './transactions/modules/transaction.module';
 // Services
@@ -20,7 +21,7 @@ import { AppService } from './app.service';
     Database,
     TransactionModule,
   ],
-  controllers: [AppController, TransactionController],
+  controllers: [AppController, TransactionController, DataupdateController],
   providers: [AppService, TransactionModule],
 })
 export class AppModule {}

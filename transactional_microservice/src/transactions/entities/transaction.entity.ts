@@ -54,7 +54,7 @@ TransactionSchema.pre('save', async function (next) {
           },
         },
       });
-      console.log('HABER', r);
+      console.log('TRIGGER', r);
       next();
     } catch (err) {
       return next(err);

@@ -39,27 +39,3 @@ export class Transaction extends mongoose.Document {
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
-
-// Trigger al actualizar antifrauds
-TransactionSchema.pre('save', async function (next) {
-  const document = this as Transaction;
-  if (document.isModified('status')) {
-    try {
-      console.log('document', document);
-      const r = await document.updateOne({
-        $push: {
-          tracking: {
-            status: document.status,
-            triggered_at: new Date(),
-          },
-        },
-      });
-      console.log('HABER', r);
-      next();
-    } catch (err) {
-      return next(err);
-    }
-  } else {
-    next();
-  }
-});
