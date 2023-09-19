@@ -2,10 +2,12 @@
   "name": "app-nodejs-codechallenge",
   "version": "1.0.0",
   "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "start": "tsc && node dist/index.js",
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

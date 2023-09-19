@@ -89,12 +89,12 @@ If you have any questions, please let us know.
 
 # Important notes
 - MongoDB as database but without embedded documents to be near/compatible a SQL approach.
-- Was selected a NoSQL database to improve read/write data.
+- Was selected a NoSQL database to improve read/write data instead PostgreSQL.
 - The solution avoids "document-blocking" storing status outside of transactions.
 - Every response from anti-fraud service store a document, allowing historical records.
 - Anti-fraud service use a random method to reject 25% of transactions. Customizable.
 - Kafka client was created as singleton instance to show design patterns.
 - I use Typescript as much as possible, but it can be improved.
-- Only one example for each Pyramid Testing level: Unit test, Integration test and E2E.
+- Only one example for each Cohn's Pyramid level: Unit test, Integration test and E2E.
 - Minimal documentation, but it works and have a lot of comments.
 - Validation of colums in requests are manual to simplify dependencies.
