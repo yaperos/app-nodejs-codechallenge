@@ -54,8 +54,6 @@ const buildUri = (): string => {
   const mongoConfig: DatabaseInterface = databaseconfig;
   let uriMongo = buildBaseUrl(mongoConfig);
   uriMongo += buildOptionsForConnectionUrl(mongoConfig);
-  console.log('uriMongo', uriMongo);
-
   return uriMongo;
 };
 

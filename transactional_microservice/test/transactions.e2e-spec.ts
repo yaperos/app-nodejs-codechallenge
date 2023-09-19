@@ -75,6 +75,7 @@ describe('TransactionController E2E Test', () => {
         .get(`/transactions/${testTransactionCreated._id}`)
         .expect(200);
     });
+
     it('should return a 400 when param transactionExternalId is not a mongoId', () => {
       return request(app.getHttpServer()).get('/transactions/123').expect(400);
     });

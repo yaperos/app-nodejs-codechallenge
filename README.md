@@ -1,61 +1,118 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+* [DETAILS OF THE PROBLEM RAISED](CHALLENGE.md)
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Solution
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+### Project
 
-# Problem
+Project structure for the challenge
+```
+app-nodejs-codechallenge/
+├── antifraud_microservice/
+│   ├── src/
+│   ├── .env
+│   └── Dockerfile
+├── transactional_microservice/
+│   ├── src/
+│   ├── test/
+│   ├── .env
+│   └── Dockerfile
+├── README.md
+├── CHALLENGE.md
+└── docker-compose.yml
+```
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### Deployment of the project
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+Do not forget to place the environment variables in their respective directories.
 
-Every transaction with a value greater than 1000 should be rejected.
+#### Using Docker
+
+**Requirements:**
+* Docker
+
+Assuming you are located in `app-nodejs-codechallenge`
+```bash
+cd transactional_microservice
+docker build -t microservicio1 .
+cd ../antifraud_microservice
+docker build -t microservicio2 .
+cd ..
+docker-compose up -d
+```
+
+#### Using only Nodejs
+
+**Requirements:**
+* Nodejs >= 16.20.0
+* MongoDB >= 4.4.0
+
+Assuming you are located in `app-nodejs-codechallenge`
+```bash
+cd transactional_microservice
+npm install
+npm run test:e2e
+npm run start
+
+cd ../antifraud_microservice
+npm install
+npm run start
+```
+
+### Transaction flow
 
 ```mermaid
   flowchart LR
+    Client -- Fire event create transaction --> Transaction
     Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
+    Transaction -- Emit transaction Created event--> Kafka
+    Kafka -- Send transaction Created event--> Anti-Fraud
+    Anti-Fraud -- Emit transaction Status Approved or Rejected event--> Kafka
+    Kafka -- Send transaction Status Approved or Rejected event--> Transaction
     Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
 ```
 
-# Tech Stack
+### Endpoints
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+Both next resources must request to microservicio1 `transactional_microservice`
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
+1. Resource to create a transaction:
 
 ```json
+POST
+
+/transactions
+
+Body
 {
   "accountExternalIdDebit": "Guid",
   "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
+  "tranferTypeId": 1, // 1: DEBIT, 2: CREDIT
   "value": 120
+}
+
+Response
+{
+    "_id": "transactionExternalId",
+    "accountExternalIdDebit": "Guid",
+    "accountExternalIdCredit": "Guid",
+    "tranferTypeId": 2,
+    "value": 120,
+    "tracking": [],
+    "created_at": "Date",
+    "updated_at": "Date",
 }
 ```
 
-2. Resource to retrieve a transaction
+2. Resource to retrieve a transaction:
 
 ```json
+GET
+
+/transactions/:transactionExternalId
+
+Response
 {
   "transactionExternalId": "Guid",
   "transactionType": {
@@ -64,19 +121,7 @@ You must have two resources:
   "transactionStatus": {
     "name": ""
   },
-  "value": 120,
+  "value": number,
   "createdAt": "Date"
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
