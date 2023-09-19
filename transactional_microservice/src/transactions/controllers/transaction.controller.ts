@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 // Services
 import { CreationTransactionService } from '../services/creationTransaction.service';
 import { GettingTransactionService } from '../services/gettingTransaction.service';
@@ -20,6 +28,7 @@ export class TransactionController {
    * Crear transacción
    */
   @Post()
+  @UsePipes(ValidationPipe)
   createTransaction(@Body() payload: CreateTransactionDto) {
     return this.creationTransactionService.runCreateTransaction(payload);
   }
@@ -28,11 +37,11 @@ export class TransactionController {
    * Obtener una transacción específica mediante id
    */
   @Get(':transactionExternalId')
+  @UsePipes(ValidationPipe)
   async getTransaction(
     @Param() params: ResquestGetTransactionDto,
   ): Promise<ResponseGetTransactionDto | ResponseErrorInterface> {
     const transactionExternalId = params.transactionExternalId;
-    console.log('transactionExternalId', transactionExternalId);
     return this.gettingTransactionService.getTransaction(transactionExternalId);
   }
 }
