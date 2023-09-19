@@ -1,25 +1,82 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Install
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+### Levantar los contenedores
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Nos ubicamos dentra de la carpeta donde esta docker-compose.yml eliminados los contenedor si los hay y luego levantamos
 
-# Problem
+Kafka
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+postgress
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+```sh
+docker-compose rm
+docker-compose up
+```
 
-Every transaction with a value greater than 1000 should be rejected.
+![Alt text](img/image-4.png)
+
+### Create topics in kafka
+
+<b>created-transaction-event</b>: Evento de creación de transacciones
+
+<b>update-status-transaction-event</b>: Evento de actualizar la transacción despues de pasar por Antifraud
+
+```sh
+docker exec -it app-nodejs-codechallenge-kafka-1 kafka-topics --create --topic created-transaction-event --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+
+docker exec -it app-nodejs-codechallenge-kafka-1 kafka-topics --create --topic update-status-transaction-event --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+```
+
+### Instalando las librerias
+
+```sh
+npm install
+```
+
+### Creando la tabla transaction
+
+```sh
+npm run migration:generate --name=CREATE_TRANSACTION
+npm run migration:run
+```
+
+## Estructura del proyecto
+
+<b>Antifraud</b>
+
+Modulo antifraud que valida el monto de la transacción menor 1000, esta atento del evento del registro de una transacción, este lo procesa y envia un evento para su actualización si fue approved o rejected
+
+<b>Transaction</b>
+
+Modulo que envia el evento de nueva transacción al modulo Antifraud ademas tambien procesa la actualización de la transacción de acuerdo al mensaje que procesa el modulo de AntiFraud, esto actualiza la data en el postgres
+
+<b>config</b>
+
+Acceso y conexion a la base de datos
+
+<b>dtos</b>
+
+Objetos de tranferencias de datos
+
+<b>entities</b>
+
+Entidades del negocio
+
+<b>kafka</b>
+
+Integra los servicios de consumer y producer de AntiFraud y Transaction
+
+<b>services</b>
+
+Contiene el proceso de la actualización del status de la transaccion
+
+
+
+## Tabla de transacciones en postgres
+
+## Flujo de datos
 
 ```mermaid
   flowchart LR
@@ -30,53 +87,58 @@ Every transaction with a value greater than 1000 should be rejected.
     Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
 ```
 
-# Tech Stack
+## Evidencias
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+Envio desde postman
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
+```sh
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit":  "e101fcf6-ab72-f520-97bd-9523b7fe55ea",
+  "accountExternalIdCredit": "w8d5g2e3-rt14-f520-5d4r-8742c8vq74al",
   "tranferTypeId": 1,
-  "value": 120
+  "value": 750
 }
 ```
 
-2. Resource to retrieve a transaction
+![Alt text](img/image.png)
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+Muestra de log
+
+![Alt text](img/image-2.png)
+
+![Alt text](img/image-1.png)
+
+Base da datos
+
+![Alt text](img/image-3.png)
+
+
+## Anexos
+
+Revisar los mensajes que se envia por cada topico
+
+```sh
+docker exec -it app-nodejs-codechallenge-kafka-1 kafka-console-consumer --topic created-transaction-event --from-beginning --bootstrap-server localhost:9092
+
+docker exec -it app-nodejs-codechallenge-kafka-1 kafka-console-consumer --topic update-status-transaction-event --from-beginning --bootstrap-server localhost:9092
 ```
 
-## Optional
+Lista de topicos
+```sh
+docker exec app-nodejs-codechallenge-kafka-1 kafka-topics \
+  --list \
+  --zookeeper zookeeper:2181
+```
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+Eliminación de mensajes por topicos
+```sh
+docker exec app-nodejs-codechallenge-kafka-1 kafka-topics \
+  --delete \
+  --zookeeper zookeeper:2181 \
+  --topic update-status-transaction-event
 
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+docker exec app-nodejs-codechallenge-kafka-1 kafka-topics \
+  --delete \
+  --zookeeper zookeeper:2181 \
+  --topic created-transaction-event
+```
