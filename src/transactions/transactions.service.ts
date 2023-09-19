@@ -32,18 +32,30 @@ export const findType = async(id: number): Promise<TypeTransaction> => modelTran
  * @returns {Transaction} - Transaction object created 
  */
 export const createTransaction = async(transaction: BaseTransaction): Promise<Transaction> => {
+  // Validating external identifier
+  const {accountExternalIdDebit, accountExternalIdCredit} = transaction;
+  if (!accountExternalIdDebit && !accountExternalIdCredit) 
+    throw new HttpException(400, "External identifier not found" );
+
   // Validating value column
   const { tranferTypeId = 0, value = 0 } = transaction;
-  if (value > 1000 || value <= 0) throw new HttpException(400, "Value must be between 1 and 1000" );
+  if (value <= 0) throw new HttpException(400, "Value must be greater or equal to 1" );
 
   // Validating if transaction type exists
   const type = await findType(tranferTypeId);
   if (!type) throw new HttpException(400, "Transaction type doesn't exists");
 
+  // Creating the transaction document
   const transactionCreated = await modelTransaction.createTransaction(transaction);
 
+  // Creating a initial status of transaction
+  modelTransaction.createStatus({
+    name: (value > 1000) ? 'rejected' : 'pending',
+    transactionId: transactionCreated.id,
+  });
+
   // Sending transaction to Anti-fraud service
-  producerAntiFraud(transactionCreated);
+  if (value <= 1000) producerAntiFraud(transactionCreated);
 
   return transactionCreated;
 };
@@ -51,7 +63,7 @@ export const createTransaction = async(transaction: BaseTransaction): Promise<Tr
 /**
  * Retrieve a full transaction (aggregation with type and status)
  * @param {string} id - Transaction identifier
- * @returns {Object} transaction - All information relative to transaction
+ * @returns {Object} - All information relative to transaction
  */
 export const fullTransaction = async(id: string) => {
   // Find the transaction in database
@@ -83,7 +95,7 @@ export const fullTransaction = async(id: string) => {
  * @param {CallbackPayload} payload - Response sent by Anti-fraud service
  * @param {string} payload.id - Transaction identifier
  * @param {string} payload.name - Enum value of status transaction: approved, rejected
- * @returns {StatusTransaction} status - Status document created
+ * @returns {StatusTransaction} - Status document created
  */
 export const processCallback = async(payload: CallbackPayload): Promise<StatusTransaction> => {
   const { id, name } = payload;

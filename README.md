@@ -85,7 +85,7 @@ If you have any questions, please let us know.
 - `transactionExternalId` column depends on accountExternalIdDebit or accountExternalIdCredit.
 - `tranferTypeId` determine the value of transactionType, this should be a Collection.
 - The focus was changed to simulate an Anti-fraud external service, using queues and callbacks. Fine?
-- Avoid sending Anti-fraud validation for transactions over 1000.
+- Microservice avoid sending Anti-fraud validation for transactions over 1000.
 
 # Important notes
 - MongoDB as database but without embedded documents to be near/compatible a SQL approach.
@@ -97,3 +97,4 @@ If you have any questions, please let us know.
 - I use Typescript as much as possible, but it can be improved.
 - Only one example for each Pyramid Testing level: Unit test, Integration test and E2E.
 - Minimal documentation, but it works and have a lot of comments.
+- Validation of colums in requests are manual to simplify dependencies.

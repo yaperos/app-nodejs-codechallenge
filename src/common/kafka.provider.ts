@@ -1,4 +1,4 @@
-import { Kafka, Producer, Consumer, KafkaConfig } from 'kafkajs';
+import { Kafka, KafkaConfig } from 'kafkajs';
 
 const {
   KAFKA_HOST = 'localhost',
@@ -29,6 +29,7 @@ export default class Provider {
 
   private constructor() {};
 
+  // Singleton instance
   public static getClient(): Kafka {
     if (!Provider.client) Provider.client = new Kafka(params);
 

@@ -1,4 +1,4 @@
-import { EachMessagePayload, ProducerRecord } from "kafkajs";
+import { EachMessagePayload, Producer } from "kafkajs";
 import { Transaction } from "../transactions/transactions.interface";
 import Kafka from './kafka.provider';
 import fetchApi from "./fetch.api";
@@ -6,8 +6,12 @@ import fetchApi from "./fetch.api";
 const URL_CALLBACK = process.env.URL_CALLBACK || 'localhost';
 const KAFKA_TOPIC = process.env.KAFKA_TOPIC || 'kafka-topic';
 
-const kafkaClient = Kafka.getClient();
-const producer = kafkaClient.producer();
+let producer: Producer;
+
+if (process.env.NODE_ENV !== 'test') {
+  const kafkaClient = Kafka.getClient();
+  producer = kafkaClient.producer();
+};
 
 // Method to generate a random response to reject a transaction
 const rejected = (max: number): boolean => (Math.floor(Math.random() * max) === 0);
