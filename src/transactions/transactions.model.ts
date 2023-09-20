@@ -1,3 +1,4 @@
+import cache from "memory-cache";
 import { StatusTransaction, Transaction, TypeTransaction } from "./transactions.interface";
 import { PrismaClient } from '@prisma/client'
 
@@ -9,7 +10,14 @@ class Transactions {
     return transaction;
   };
   async getType(id: number): Promise<TypeTransaction> {
-    const [ type ] = await prisma.transactionType.findMany({ where: { id }});
+    // Getting from cache
+    let type = cache.get(id);
+    if (!type) {
+      // Not in cache, go to the source
+      [ type ] = await prisma.transactionType.findMany({ where: { id }});
+      // Caching for 60 seconds
+      cache.put(id, type, 6000);
+    }
     return type;
   };
   async createTransaction(transaction: any): Promise<Transaction> {
