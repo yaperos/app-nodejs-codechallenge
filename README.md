@@ -88,9 +88,10 @@ If you have any questions, please let us know.
 - Microservice avoid sending Anti-fraud validation for transactions over 1000.
 
 # Important notes
-- MongoDB as database but without embedded documents to be near/compatible a SQL approach.
 - Was selected a NoSQL database to improve read/write data instead PostgreSQL.
+- MongoDB as database but without embedded documents to be near/compatible a SQL approach.
 - The solution avoids "document-blocking" storing status outside of transactions.
+- A simple cache solution is implemented to show performance techniques.
 - Every response from anti-fraud service store a document, allowing historical records.
 - Anti-fraud service use a random method to reject 25% of transactions. Customizable.
 - Kafka client was created as singleton instance to show design patterns.
