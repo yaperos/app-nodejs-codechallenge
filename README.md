@@ -98,3 +98,9 @@ If you have any questions, please let us know.
 - Only one example for each Cohn's Pyramid level: Unit test, Integration test and E2E.
 - Minimal documentation, but it works and have a lot of comments.
 - Validation of colums in requests are manual to simplify dependencies.
+
+# Prisma library and seed database considerations
+
+Prisma needs to [migrate](https://www.prisma.io/docs/concepts/components/prisma-migrate/db-push) the schema to their client, for that is necessary to run the command `npx prisma db push` for work properly.
+
+In order to populate different types of transaction, you need to run the command `npm run seed` to create (or update) this collection by Prisma library.
