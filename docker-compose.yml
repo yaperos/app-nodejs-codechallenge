@@ -2,11 +2,13 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    restart: always
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=root
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +25,8 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  web:
+    build: .
+    ports:
+      - "6969:6969"
+    command: npm start
