@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Logger, Post } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Post, UseInterceptors } from "@nestjs/common";
 import { TRANSACTION, TRANSACTION_RECEIVED } from "./constants/constants";
 import { MessagePattern } from "@nestjs/microservices";
 import TransactionService from "./transactions.service";
+import { IncomingTransaction } from "./dto/transactions.dto";
+import { DataValidationInterceptor } from "src/interceptors/dataValidationInterceptor";
 
 @Controller(TRANSACTION)
 export default class TransactionController{
@@ -16,9 +18,10 @@ export default class TransactionController{
     }
 
     @Post()
-    public createTransaction(@Body() data:any): number {
-        this.transactionService.emitValidateTransaction(data);
-        return 0
+    @UseInterceptors(DataValidationInterceptor)
+    public async createTransaction(@Body() data:IncomingTransaction): Promise<any> {
+        const response = await this.transactionService.createTransaction(data);
+        return response;
     }
 
     @MessagePattern(TRANSACTION_RECEIVED)
