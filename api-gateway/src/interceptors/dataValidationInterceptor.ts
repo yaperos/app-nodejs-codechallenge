@@ -1,6 +1,5 @@
 import { NestInterceptor, ExecutionContext, CallHandler, BadRequestException} from '@nestjs/common';
 import { Observable, map } from 'rxjs';
-import { IncomingTransaction } from 'src/transactions/dto/transactions.dto';
 
 export class DataValidationInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, handler: CallHandler): Observable<any> {
@@ -49,13 +48,6 @@ export class DataValidationInterceptor implements NestInterceptor {
                 'Type of value must be number'
                 )
         }
-
-        // const incomingTransaction: IncomingTransaction = {
-        //     accountExternalIdCredit: req.body.accountExternalIdCredit,
-        //     accountExternalIdDebit: req.body.accountExternalIdDebit,
-        //     tranferTypeId: req.body.tranferTypeId,
-        //     value: req.body.value
-        // }
 
         return handler
         .handle()

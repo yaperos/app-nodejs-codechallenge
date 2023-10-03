@@ -6,4 +6,3 @@ export const PENDING: string = "pending";
 export const APPROVED: string = "approved";
 export const REJECTED: string = "rejected";
 export const CARDSIZE: number = 16;
-export const TRANSACTION_CREATED: string = "transaction_created" 

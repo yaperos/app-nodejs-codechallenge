@@ -21,7 +21,7 @@ export default class TransactionsEntity {
     transaction_status:string;
 
     @Column({nullable:false})
-    value:number;
+    values:number;
 
     @Column({nullable:false})
     created_At:string;

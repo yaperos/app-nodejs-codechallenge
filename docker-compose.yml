@@ -23,3 +23,8 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  redis:
+    image: redis:3.2.3-alpine
+    ports:
+      - "6379:6379"
+    
