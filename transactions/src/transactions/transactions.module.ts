@@ -9,36 +9,21 @@ import TransactionRepository from "./transactions.repository";
 @Module({
     imports: [
         TypeOrmModule.forFeature([TransactionsEntity]),
-        ClientsModule.register([
-            {
-                name: 'TRANSACTION_SERVICE',
-                transport:Transport.KAFKA,
-                options:{
-                    client:{
-                        clientId: 'transaction',
-                        brokers: ['localhost:9092'],
-                    },
-                    consumer:{
-                        groupId: 'transaction-consumer'
-                    }
-                }
-            },
-        ]),
-        ClientsModule.register([
-            {
-                name: 'ANTI-FRAUD-VALIDATED',
-                transport:Transport.KAFKA,
-                options:{
-                    client:{
-                        clientId: 'ANTI-FRAUD-VALIDATED',
-                        brokers: ['localhost:9092'],
-                    },
-                    consumer:{
-                        groupId: 'anti-fraud-validated'
-                    }
-                }
-            },
-        ]),
+        // ClientsModule.register([
+        //     {
+        //         name: 'ANTI-FRAUD-VALIDATED',
+        //         transport:Transport.KAFKA,
+        //         options:{
+        //             client:{
+        //                 clientId: 'ANTI-FRAUD-VALIDATED',
+        //                 brokers: ['localhost:9092'],
+        //             },
+        //             consumer:{
+        //                 groupId: 'anti-fraud-validated'
+        //             }
+        //         }
+        //     },
+        // ]),
     ],
     controllers: [TransactionController],
     providers: [TransactionService,TransactionRepository]

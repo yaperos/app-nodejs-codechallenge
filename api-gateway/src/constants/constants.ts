@@ -1,0 +1,1 @@
+export const TRANSACTION_CREATED: string = "transaction_created" 

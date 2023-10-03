@@ -10,7 +10,7 @@ export default class TransactionService {
     private logger:Logger;
 
     constructor(
-        @Inject('TRANSACTION_SERVICE') private client: ClientKafka,
+        
         private readonly transactionRepository: TransactionsRepository){
         this.logger = new Logger(TransactionService.name)
     }
@@ -38,7 +38,6 @@ export default class TransactionService {
                 id: savedTransaction.id
             }
 
-            this.emitValidateTransaction(emitTransaction);
             return savedTransaction;
 
         } catch (e) {
@@ -47,9 +46,6 @@ export default class TransactionService {
         }
     }
 
-    public async emitValidateTransaction(data: EmitTransactionToValidation): Promise<void> {
-        this.client.emit(TRANSACTION, new ValidateTransaction(data.id, data.value, data.transaction_external_id));
-    }
 
     private async makeid(length: number): Promise<string> {
         let result = '';
