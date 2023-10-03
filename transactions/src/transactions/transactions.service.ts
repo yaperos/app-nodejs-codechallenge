@@ -1,17 +1,22 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
-import { PENDING, TRANSACTION, TRANSFER } from "./constants/constants";
+import { ClientKafka, ClientProxy } from "@nestjs/microservices";
+import { CARDSIZE, PENDING, TRANSACTION, TRANSFER } from "./constants/constants";
 import { CreateTransaction, CreatedTransaction, EmitTransactionToValidation, IncomingTransaction } from "./dto/transactions.dto";
 import TransactionsRepository from "./transactions.repository";
+import { ValidateTransaction } from "./events/transactionEvent";
 
 @Injectable()
 export default class TransactionService {
     private logger:Logger;
 
     constructor(
-        @Inject('TRANSACTION_SERVICE') private client: ClientProxy,
+        @Inject('TRANSACTION_SERVICE') private client: ClientKafka,
         private readonly transactionRepository: TransactionsRepository){
         this.logger = new Logger(TransactionService.name)
+    }
+
+    public async getAllTransactions(): Promise<CreatedTransaction[]> {
+        return await this.transactionRepository.getAll();
     }
 
     public async createTransaction(data: IncomingTransaction):Promise<any> {
@@ -23,14 +28,16 @@ export default class TransactionService {
             createTransaction.transactionType = TRANSFER;
             createTransaction.transaction_status = PENDING;
             createTransaction.value = data.value;
-            createTransaction.transaction_external_id = await this.makeid(16);
+            createTransaction.transaction_external_id = await this.makeid(CARDSIZE);
             createTransaction.modified_At = null;
+
             const savedTransaction: CreatedTransaction = await this.transactionRepository.create(createTransaction);
             const emitTransaction: EmitTransactionToValidation = {
                 value: savedTransaction.value,
                 transaction_external_id: savedTransaction.transaction_external_id,
                 id: savedTransaction.id
             }
+
             this.emitValidateTransaction(emitTransaction);
             return savedTransaction;
 
@@ -41,8 +48,7 @@ export default class TransactionService {
     }
 
     public async emitValidateTransaction(data: EmitTransactionToValidation): Promise<void> {
-        this.client.emit(TRANSACTION,data);
-        return;
+        this.client.emit(TRANSACTION, new ValidateTransaction(data.id, data.value, data.transaction_external_id));
     }
 
     private async makeid(length: number): Promise<string> {

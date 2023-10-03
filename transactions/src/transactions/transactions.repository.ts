@@ -23,7 +23,7 @@ export default class TransactionRepository {
     }
 
     public async create(createTransaction: CreateTransaction):Promise<TransactionsEntity>{
-        return this.transactionsRepository.create(createTransaction);        
+        return this.transactionsRepository.save(createTransaction);        
     }
     
     public async update(updateTransaction: UpdateTransaction):Promise<UpdateResult>{

@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Logger, Post, UseInterceptors } from "@nestjs/common";
-import { TRANSACTION, TRANSACTION_RECEIVED } from "./constants/constants";
-import { MessagePattern } from "@nestjs/microservices";
-import TransactionService from "./transactions.service";
-import { IncomingTransaction } from "./dto/transactions.dto";
+import { TRANSACTION } from "./constants/constants";
+import { EventPattern } from "@nestjs/microservices";
+import TransactionService from "./transactions.service";    
+import { CreatedTransaction, IncomingTransaction } from "./dto/transactions.dto";
 import { DataValidationInterceptor } from "src/interceptors/dataValidationInterceptor";
 
 @Controller(TRANSACTION)
@@ -13,8 +13,8 @@ export default class TransactionController{
     }
 
     @Get()
-    public getAllTransactions(): number {
-        return 0
+    public async getAllTransactions(): Promise<CreatedTransaction[]> {
+        return await this.transactionService.getAllTransactions();
     }
 
     @Post()
@@ -24,9 +24,10 @@ export default class TransactionController{
         return response;
     }
 
-    @MessagePattern(TRANSACTION_RECEIVED)
-    private async handleModifiedOrder(data: Record<string, unknown>){
+    @EventPattern(TRANSACTION) //@MessagePattern(TRANSACTION_RECEIVED)
+    private async handleModifiedOrder(data:any){
         this.logger.log(data)
+
 
     }
 

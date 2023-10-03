@@ -50,15 +50,15 @@ export class DataValidationInterceptor implements NestInterceptor {
                 )
         }
 
-        const incomingTransaction: IncomingTransaction = {
-            accountExternalIdCredit: req.body.accountExternalIdCredit,
-            accountExternalIdDebit: req.body.accountExternalIdDebit,
-            tranferTypeId: req.body.tranferTypeId,
-            value: req.body.value
-        }
+        // const incomingTransaction: IncomingTransaction = {
+        //     accountExternalIdCredit: req.body.accountExternalIdCredit,
+        //     accountExternalIdDebit: req.body.accountExternalIdDebit,
+        //     tranferTypeId: req.body.tranferTypeId,
+        //     value: req.body.value
+        // }
 
         return handler
         .handle()
-        .pipe(map((data) => ({data, incomingTransaction })));
+        .pipe(map((data) => ({data})));
     }
 }
