@@ -1,0 +1,7 @@
+export enum TRANSACTION_STATUS {
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  PENDING = 'PENDING',
+}
+
+export const MAX_AMOUNT = 1000;

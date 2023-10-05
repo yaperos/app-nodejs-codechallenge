@@ -10,17 +10,16 @@ import {
 } from 'kafkajs';
 
 @Injectable()
-export class KafkaService {
+export class KafkaConfigService {
   private kafkaInstance = kafka;
 
   public async createConsumer(
     config: ConsumerConfig,
     optionSubscribe: ConsumerSubscribeTopics,
-  ) {
+  ): Promise<Consumer> {
     const consumer = this.kafkaInstance.consumer(config);
     await consumer.connect();
     await consumer.subscribe(optionSubscribe);
-
     return consumer;
   }
 

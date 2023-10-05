@@ -1,28 +1,25 @@
-import { Controller, Get, Post, Param } from '@nestjs/common';
-import { AppService } from './app.service';
-import { KafkaService } from '@src/core/services/kafka.services';
+import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 import { TransactionModel } from '@src/transaction.model';
+import { Prisma, Transaction } from '@prisma/client';
 
 @Controller('transaction')
 export class TransactionController {
-  constructor(
-    private readonly appService: AppService,
-    private kafkaServices: KafkaService,
-    private transactionModel: TransactionModel,
-  ) {}
+  constructor(private transactionModel: TransactionModel) {}
 
   @Get('all')
-  getTransactions(): string {
-    return '';
+  transactions(): any {
+    return this.transactionModel.transactions();
   }
 
-  @Get()
-  getTransaction(@Param('id') id: string): string {
-    return id;
+  @Get(':id')
+  transaction(@Param('id') id: string) {
+    return this.transactionModel.transaction(id);
   }
 
   @Post()
-  getHello(): string {
-    return this.appService.getHello();
+  async createTransaction(
+    @Body() transactionData: Prisma.TransactionCreateInput,
+  ): Promise<Transaction> {
+    return this.transactionModel.createTransaction(transactionData);
   }
 }

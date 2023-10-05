@@ -2,7 +2,7 @@
   "name": "ms-fraud",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Jose Navarro",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "kafkajs": "^2.2.4",
