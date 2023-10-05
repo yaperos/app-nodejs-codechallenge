@@ -7,7 +7,7 @@ export class TransactionController {
   constructor(private transactionModel: TransactionModel) {}
 
   @Get('all')
-  transactions(): any {
+  transactions() {
     return this.transactionModel.transactions();
   }
 

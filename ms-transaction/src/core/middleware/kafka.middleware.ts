@@ -10,7 +10,7 @@ export class KafkaMiddleware implements OnModuleInit {
     private prisma: PrismaService,
   ) {}
 
-  private updateTransaction({ id, status }: any) {
+  private updateTransaction({ id, status }) {
     return this.prisma.transaction.update({
       where: { id },
       data: { status },
