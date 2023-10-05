@@ -49,6 +49,11 @@ export default class TransactionService {
         this.antiFraudClient.emit(topic, data)
     }
 
+
+    /**
+     * 
+     * This is only a way to generate some random value
+     */
     private async makeid(length: number): Promise<string> {
         let result = '';
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
