@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "5cc41982-0e6b-43ae-a2e9-310745d78e64",
+		"name": "Yape Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29639128"
+	},
+	"item": [
+		{
+			"name": "createTransaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountExternalIdDebit\": \"15a76392-defa-4539-9343-c3f954758097\",\r\n  \"accountExternalIdCredit\": \"08326547-8f5f-4eaa-9549-9d9e918fa458\",\r\n  \"tranferTypeId\": 1,\r\n  \"value\": 111\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/v1/transactions",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
