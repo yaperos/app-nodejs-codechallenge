@@ -15,6 +15,7 @@ export default class TransactionController{
     
     @EventPattern(TRANSACTION_CREATED)
     private async handleModifiedOrder(data: IncomingTransaction){
+        return data
         const savedTransaction: EmitTransactionToValidation = await this.transactionService.createTransaction(data);
         this.transactionService.emitEventToKafkaTopic(ANTI_FRAUD_VALIDATION, savedTransaction);
         this.logger.log(data)

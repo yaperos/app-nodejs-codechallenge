@@ -7,7 +7,7 @@ export class DataValidationInterceptor implements NestInterceptor {
         if (!req.body.accountExternalIdCredit || 
             !req.body.accountExternalIdDebit || 
             !req.body.tranferTypeId || 
-            !req.body.value ) {
+            !req.body.values ) {
             throw new BadRequestException(
             'You did not send all the parameters',
             );
@@ -36,16 +36,16 @@ export class DataValidationInterceptor implements NestInterceptor {
                 )
         }
 
-        if(req.body.value < INVALID_TRANSACTION_AMOUNT || 
-            req.body.value == INVALID_TRANSACTION_AMOUNT){
+        if(req.body.values < INVALID_TRANSACTION_AMOUNT || 
+            req.body.values == INVALID_TRANSACTION_AMOUNT){
             throw new BadRequestException(
                 'You can not send 0 or negative amounts of money',
                 )
         }
 
-        if(typeof req.body.value !== "number" ){
+        if(typeof req.body.values !== "number" ){
             throw new BadRequestException(
-                'Type of value must be number'
+                'Type of values must be number'
                 )
         }
 
