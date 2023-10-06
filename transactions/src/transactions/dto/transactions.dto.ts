@@ -42,6 +42,7 @@ export class UpdateTransaction {
     public transaction_external_id:string
     public modified_At:string;
     public transaction_status:string;
+    public values:number;
 }
 
 export class EmitTransactionToValidation {

@@ -33,21 +33,6 @@ import configuration from './configuration/configuration';
         }
       }
     }])
-    // ClientsModule.register([
-    //   {
-    //     name: 'TRANSACTIONS-SERVICE',
-    //     transport: Transport.KAFKA,
-    //     options: {
-    //       client: {
-    //         clientId: 'transactions',
-    //         brokers: ['localhost:9092'],
-    //       },
-    //       consumer: {
-    //         groupId: 'transactions-consumer',
-    //       },
-    //     },
-    //   },
-    // ]),
   ],
   controllers: [AppController],
   providers: [AppService],

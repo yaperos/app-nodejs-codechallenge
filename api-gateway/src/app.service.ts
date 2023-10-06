@@ -9,12 +9,6 @@ export class AppService {
   constructor(@Inject(`TRANSACTIONS-SERVICE`) private readonly transactionClient: ClientKafka){}
 
   createTransaction(createTransaction: CreateTransaction){
-    this.transactionClient.emit(TRANSACTION_CREATED, 
-      new TransactionCreated(
-        createTransaction.accountExternalIdDebit,
-        createTransaction.accountExternalIdCredit,
-        createTransaction.tranferTypeId,
-        createTransaction.values
-        ))
+    this.transactionClient.emit(TRANSACTION_CREATED, createTransaction)
   }
 }

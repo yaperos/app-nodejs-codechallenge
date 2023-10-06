@@ -8,11 +8,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
+    image: confluentinc/cp-enterprise-kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -22,7 +22,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 8001:9092
+      - "9092:9092"
   redis:
     image: redis:3.2.3-alpine
     ports:

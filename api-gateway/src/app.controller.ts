@@ -14,7 +14,7 @@ export class AppController {
 
   @Post()
   @UseInterceptors(DataValidationInterceptor)
-  createTransaction(@Body() createTransaction: CreateTransaction ) {
+  createTransaction(@Body() createTransaction: CreateTransaction ) {response
     this.appService.createTransaction(createTransaction);
   }
 }

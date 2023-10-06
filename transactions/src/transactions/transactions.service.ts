@@ -1,8 +1,10 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { CARDSIZE, PENDING, TRANSFER } from "./constants/constants";
-import { CreateTransaction, CreatedTransaction, EmitTransactionToValidation, IncomingTransaction } from "./dto/transactions.dto";
+import { CreateTransaction, CreatedTransaction, EmitTransactionToValidation, IncomingTransaction, UpdateTransaction } from "./dto/transactions.dto";
 import TransactionsRepository from "./transactions.repository";
 import { ClientKafka } from "@nestjs/microservices";
+import { ValidatedTransaction } from "./dto/validatedTransaction.dto";
+import { UpdateResult } from "typeorm";
 
 @Injectable()
 export default class TransactionService {
@@ -36,6 +38,8 @@ export default class TransactionService {
                 transaction_external_id: savedTransaction.transaction_external_id,
                 id: savedTransaction.id
             }
+            this.logger.log(`SAVING OBJECT...`);
+            this.logger.log(JSON.stringify(savedTransaction))
 
             return emitTransaction;
 
@@ -43,6 +47,18 @@ export default class TransactionService {
             this.logger.error(e)
             return e
         }
+    }
+
+    public async handleValidatedOrder(data: ValidatedTransaction): Promise<UpdateTransaction> {
+        const updateObj: UpdateTransaction = new UpdateTransaction();
+        updateObj.modified_At = data.modified_At
+        updateObj.transaction_external_id = data.transactionExternalId
+        updateObj.transaction_status = data.transactionStatus
+        updateObj.values = data.values
+        await this.transactionRepository.update(updateObj);
+
+
+        return updateObj;
     }
 
     public emitEventToKafkaTopic(topic: string, data: any){

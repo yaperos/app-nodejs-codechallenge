@@ -11,26 +11,45 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     imports: [
         TypeOrmModule.forFeature([TransactionsEntity]),
         ClientsModule.registerAsync([{
-            imports:[ConfigModule],
-            inject:[ConfigService],
-            name: 'ANTI-FRAUD-VALIDATED',
-            useFactory: (configService:ConfigService) => {
-              return {
-                transport:Transport.KAFKA,
-                options: {
-                  client: {
-                    clientId: 'ANTI-FRAUD-VALIDATED',
-                    brokers: [`${configService.get("server.dns")}:${configService.get("kafka.port")}`]
-                  },
-                  consumer: {
-                    groupId: 'anti-fraud-validated'
-                  }
+          imports:[ConfigModule],
+          inject:[ConfigService],
+          name: 'ANTI-FRAUD-VALIDATED',
+          useFactory: (configService:ConfigService) => {
+            return {
+              transport:Transport.KAFKA,
+              options: {
+                client: {
+                  clientId: 'ANTI-FRAUD-VALIDATED',
+                  brokers: [`${configService.get("server.dns")}:${configService.get("kafka.port")}`]
+                },
+                consumer: {
+                  groupId: 'anti-fraud-validated'
                 }
               }
             }
-          }])
+          }
+        }])
     ],
     controllers: [TransactionController],
     providers: [TransactionService,TransactionRepository]
 })
 export default class TransactionModule {}
+
+
+
+
+
+
+
+
+
+// ClientsModule.register([{
+//   name:'ANTI-FRAUD-VALIDATED',
+//   transport: Transport.KAFKA,
+//   options: {
+//     client: {
+//       clientId: 'ANTI-FRAUD-VALIDATED',
+//       brokers: ["localhost:9092"]
+//     }
+//   }
+// }])

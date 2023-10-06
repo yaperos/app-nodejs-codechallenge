@@ -24,16 +24,18 @@ async getData(id: string): Promise<TransactionToValidate> {
 async delData(id: string) {
     return await this.store.del(id)
 }
+
 async storedKeys() {
     return await this.store.keys();
 }
+
 async delAllData() {
     const keys: string[] = await this.storedKeys()
     for(const key of keys){
         await this.store.del(key);
     }
-    return
 }
+
 async getAllData() {
     const keys: string[] = await this.storedKeys();
     const allData: Array<TransactionToValidate> = []
