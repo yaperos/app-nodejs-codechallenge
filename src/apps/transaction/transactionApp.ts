@@ -6,6 +6,9 @@ export class TransactionApp {
 	async start(): Promise<void> {
 		const port = process.env.PORT ?? '6000';
 		this.server = new Server(port);
+
+    // await this.configureEventBus();
+
 		return this.server.listen();
 	}
 

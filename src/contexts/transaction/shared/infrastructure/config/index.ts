@@ -36,7 +36,7 @@ const transactionConfig = convict({
 			doc: 'The database name',
 			format: String,
 			env: 'TYPEORM_DATABASE',
-			default: 'transaction-dev'
+			default: 'postgres'
 		}
 	},
 	kafka: {

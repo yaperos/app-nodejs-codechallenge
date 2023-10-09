@@ -6,6 +6,7 @@ import Router from 'express-promise-router';
 import helmet from 'helmet';
 import * as http from 'http';
 import httpStatus from 'http-status';
+import { registerRoutes } from './routes';
 
 
 export class Server {
@@ -26,6 +27,8 @@ export class Server {
 		const router = Router();
 		router.use(errorHandler());
 		this.express.use(router);
+
+    registerRoutes(router);
 
 		router.use((err: Error, req: Request, res: Response, _next: () => void) => {
 			console.log(err);
