@@ -1,0 +1,48 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "NodeJS code challenge with Kafka, TypeORM, Pg, GraphQL.",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsnd --respawn src/main.ts",
+    "build": "tsc --build tsconfig.json",
+    "build:watch": "tsc --build tsconfig.json --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaperos/app-nodejs-codechallenge.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "Kafka",
+    "TypeORM",
+    "PostgreSQL",
+    "GraphQL"
+  ],
+  "author": "ITAFUR <ITAFUR@GMAIL.COM>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yaperos/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/yaperos/app-nodejs-codechallenge#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "joi": "^17.11.0",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.17"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.3",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.18",
+    "@types/kafkajs": "^1.9.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.2.2"
+  }
+}
