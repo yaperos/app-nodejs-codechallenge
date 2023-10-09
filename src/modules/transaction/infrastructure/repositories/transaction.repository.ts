@@ -6,6 +6,7 @@ import { Transaction } from "../../domain/entities/transaction.entity";
 import { TransferType } from "../../domain/entities/transfer-type.entity";
 import { CustomError } from "../../../../helpers/domain/entities/custom-error";
 import { HttpCode } from "../../../../helpers/domain/enums/http-code.enum";
+import { TransactionStatusEnum } from "../../domain/enums/transaction-status.enum";
 
 export class TransactionRepository implements ITransactionRepository {
     private transactionRepository: Repository<TransactionEntity>;
@@ -50,6 +51,12 @@ export class TransactionRepository implements ITransactionRepository {
             transactionEntity.account_external_id_debit = data.getAccountExternalIdDebit();
             transactionEntity.value = data.getValue();
             transactionEntity.transfer_type = transferTypeEntity;
+            if (data.getId()) {
+                transactionEntity.id = data.getId() as number;
+            }
+            if (data.getStatus()) {
+                transactionEntity.status = data.getStatus() as TransactionStatusEnum;
+            }
 
             await this.transactionRepository.save(transactionEntity);
             data.setId(transactionEntity.id);

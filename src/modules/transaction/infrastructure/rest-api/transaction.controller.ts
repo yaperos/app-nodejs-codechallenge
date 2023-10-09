@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { HttpCode } from "../../../helpers/domain/enums/http-code.enum";
-import { TransactionUsecase } from "../application/transaction.usecase";
-import { CreateTransactionRequestDto } from "../domain/interfaces/dtos/transaction-request.dto";
+import { HttpCode } from "../../../../helpers/domain/enums/http-code.enum";
+import { TransactionUsecase } from "../../application/transaction.usecase";
+import { CreateTransactionRequestDto } from "../../domain/interfaces/dtos/transaction-request.dto";
 
 export class TransactionController {
     

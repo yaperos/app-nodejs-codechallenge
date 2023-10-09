@@ -21,7 +21,6 @@ export class TransactionEntity extends BaseEntity {
     @Column({
         type: "enum",
         enum: TransactionStatusEnum,
-        default: TransactionStatusEnum.CREATED,
         nullable: false
     })
     status: TransactionStatusEnum;

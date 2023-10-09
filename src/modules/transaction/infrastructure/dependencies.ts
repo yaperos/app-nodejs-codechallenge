@@ -7,7 +7,6 @@ import { ITransferTypeRepository } from "../domain/interfaces/repositories/trans
 import { KafkaRepository } from "./repositories/kafka.repository";
 import { TransactionRepository } from "./repositories/transaction.repository";
 import { TransferTypeRepository } from "./repositories/transfer-type.repository";
-import { TransactionController } from "./transaction.controller";
 
 /**
  * Instances of repositories
@@ -19,15 +18,10 @@ const kafkaRepository: INotificationRepository = new KafkaRepository();
 /**
  * Instances of use cases
  */
-const transactionUsecase = new TransactionUsecase(
+export const transactionUsecase = TransactionUsecase.getInstance(
     transactionRepository,
     transferTypeRepository,
     kafkaRepository,
     new TransactionCreationMapper(),
     new TransactionInfoMapper(),
 );
-
-/**
- * Instances of controllers
- */
-export const transactionController = new TransactionController(transactionUsecase);

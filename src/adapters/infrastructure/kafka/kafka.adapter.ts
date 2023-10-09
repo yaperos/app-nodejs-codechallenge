@@ -44,9 +44,6 @@ class KafkaAdapter {
             await this.consumer.run({
                 eachMessage:async ({ topic, partition, message }) => {
                     const value = message.value;
-                    console.log("************************************");
-                    console.log("........", topic, ".......", value);
-                    console.log("************************************");
                     callback(topic, value)
                 }
             })

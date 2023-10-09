@@ -40,7 +40,7 @@ export class AntiFraudApp {
         kafkaAdapter.consume(
             [NotificationTopic.WHEN_IT_IS_CREATED_AN_TRANSACTION],
             (topic: string, value: any) => {
-                console.log("[ANTI-FRAUD-APP] [KAFKA] - Mensaje created", value);
+                console.log("[ANTI-FRAUD-APP] [KAFKA] - Mensaje created");
                 const transactionInfo = JSON.parse(value) as ITransactionInfo;
                 const antiFraudUsecase = AntiFraudUsecase.getInstance();
                 antiFraudUsecase.validate(transactionInfo);

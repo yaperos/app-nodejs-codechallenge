@@ -6,6 +6,7 @@ dotEnvConfig();
 
 export class AntiFraudUsecase {
     private static instance: AntiFraudUsecase;
+    private static MAXIMUM_VALUE_ALLOWED_FOR_A_TRANSACTION = 1000;
 
     constructor() {}
 
@@ -18,7 +19,9 @@ export class AntiFraudUsecase {
     }
 
     public async validate(transactionInfo: ITransactionInfo): Promise<void> {
-        const topic = transactionInfo.value > 1000 ? NotificationTopic.WHEN_IT_IS_REJECTED_AN_TRANSACTION : NotificationTopic.WHEN_IT_IS_APPROVED_AN_TRANSACTION;
+        const topic = transactionInfo.value > AntiFraudUsecase.MAXIMUM_VALUE_ALLOWED_FOR_A_TRANSACTION ? 
+            NotificationTopic.WHEN_IT_IS_REJECTED_AN_TRANSACTION : 
+            NotificationTopic.WHEN_IT_IS_APPROVED_AN_TRANSACTION;
         const kafkaAdapter = KafkaAdapter.getInstance(process.env.ANTIFRAUD_APP_KAFKA_GROUP ?? "test-group-02");        
         const message = [
             {

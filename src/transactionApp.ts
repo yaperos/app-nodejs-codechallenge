@@ -1,12 +1,16 @@
 import "reflect-metadata";
 import bodyParser from "body-parser";
 import express, { Application } from "express";
+import { graphqlHTTP } from "express-graphql";
 import { TransactionsDataSource } from "./adapters/infrastructure/db";
 import KafkaAdapter from "./adapters/infrastructure/kafka/kafka.adapter";
 import { NotificationTopic } from "./helpers/domain/enums/notification-topic.enum";
-import { transactionRouter } from "./modules/transaction/infrastructure/transaction.router";
+import { transactionRouter } from "./modules/transaction/infrastructure/rest-api/transaction.router";
+import { graphQLSchema } from "./modules/transaction/infrastructure/graphql/schemas";
 import { config as dotEnvConfig } from "dotenv";
 import { errorHandler } from "./helpers/infrastructure/middlewares/error-handler";
+import { ITransactionInfo } from "./modules/transaction/domain/interfaces/transaction-info.interface";
+import { transactionUsecase } from "./modules/transaction/infrastructure/dependencies";
 dotEnvConfig();
 
 export class TransactionApp {
@@ -27,6 +31,10 @@ export class TransactionApp {
     private registerEndpoints() {
         /** Routers */
         this.app.use("/transaction", transactionRouter);
+        this.app.use("/graphql", graphqlHTTP({
+            graphiql: true,
+            schema: graphQLSchema
+        }));
     }
 
     public async run() {
@@ -55,11 +63,9 @@ export class TransactionApp {
         kafkaAdapter.consume(
             [NotificationTopic.WHEN_IT_IS_APPROVED_AN_TRANSACTION, NotificationTopic.WHEN_IT_IS_REJECTED_AN_TRANSACTION],
             (topic: string, value: any) => {
-                if (topic === NotificationTopic.WHEN_IT_IS_APPROVED_AN_TRANSACTION) {
-                    console.log("[KAFKA] - Mensaje approved", value);
-                } else if (topic === NotificationTopic.WHEN_IT_IS_REJECTED_AN_TRANSACTION) {
-                    console.log("[KAFKA] - Mensaje rejected", value);
-                }
+                console.log("[APP] [KAFKA]", topic);
+                const transactionInfo = JSON.parse(value) as ITransactionInfo;
+                transactionUsecase.updateTransaction(topic as NotificationTopic, transactionInfo);
             });
     }
 }
