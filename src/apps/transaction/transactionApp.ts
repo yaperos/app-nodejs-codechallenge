@@ -1,6 +1,6 @@
 import { Server } from './server';
 
-export class TransationApp {
+export class TransactionApp {
 	server?: Server;
 
 	async start(): Promise<void> {

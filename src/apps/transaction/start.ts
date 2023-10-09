@@ -1,7 +1,7 @@
-import { TransationApp } from './transactionApp';
+import { TransactionApp } from './transactionApp';
 
 try {
-	void new TransationApp().start();
+	void new TransactionApp().start();
 } catch (e) {
 	console.log(e);
 	process.exit(1);
