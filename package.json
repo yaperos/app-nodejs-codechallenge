@@ -1,0 +1,20 @@
+{
+  "name": "yape-codechallenge",
+  "version": "1.0.0",
+  "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luigilizares/app-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luigilizares/app-nodejs/issues"
+  },
+  "homepage": "https://github.com/luigilizares/app-nodejs#readme"
+}
