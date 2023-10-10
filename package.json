@@ -10,6 +10,7 @@
     "prod:transaction:api": "NODE_ENV=production node ./dist/src/apps/transaction/start",
     "lint": "eslint --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
+    "test": "npm run test:unit && npm run test:features",
     "test:unit": "NODE_ENV=test jest",
     "test:features": "npm run test:transaction:features",
     "test:transaction:features": "NODE_ENV=test cucumber-js -p transaction",
