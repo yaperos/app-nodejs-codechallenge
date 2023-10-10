@@ -19,7 +19,7 @@ export class CreateTransactionCommandHandler implements CommandHandler<CreateTra
 	}
 
 	async handle(command: CreateTransactionCommand): Promise<void> {
-		const id = TransactionId.random();
+		const id = new TransactionId(command.id);
 		const accountExternalIdCredit = new TransactionAccountExternalIdCredit(
 			command.accountExternalIdCredit
 		);

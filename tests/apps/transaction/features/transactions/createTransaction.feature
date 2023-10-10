@@ -4,7 +4,7 @@ Feature: Create a new transaction
   I want to create a new transaction
 
   Scenario: A valid non existing transaction
-    Given I send a POST request to "/transactions" with body:
+    Given I send a PUT request to "/transactions/e43e0ad1-f403-4275-b961-b3d0d56717cc" with body:
     """
     {
       "accountExternalIdDebit": "14d444bc-a29e-4200-a31c-59875bcb9e51",
@@ -13,11 +13,11 @@ Feature: Create a new transaction
       "value": 500
     }
     """
-    Then the response status code should be 200
+    Then the response status code should be 201
     And the response should be empty
 
  Scenario: An invalid  transaction
-    Given I send a POST request to "/transactions" with body:
+    Given I send a PUT request to "/transactions/e43e0ad1-f403-4275-b961-b3d0d56717cc" with body:
     """
     {
       "accountExternalIdDebit": "14d444bc-a29e-4200-a31c-59875bcb9e51",

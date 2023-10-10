@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { Response, Router } from 'express';
 import { body, param } from 'express-validator';
 
 import { CommandHandlers } from '../../../contexts/shared/infrastructure/commandBus/commandHandlers';
@@ -19,7 +19,7 @@ import {
 	FindTransactionRequest,
 	TransactionGetController
 } from '../controllers/transactionsGetController';
-import { TransactionsPostController } from '../controllers/transactionsPostController';
+import { CreateTransactionRequest, TransactionsPutController } from '../controllers/transactionsPutController';
 import { validateReqSchema } from '.';
 
 export const register = async (router: Router) => {
@@ -36,17 +36,18 @@ export const register = async (router: Router) => {
 		new CreateTransactionCommandHandler(transactionCreator)
 	]);
 	const commandBus = new InMemoryCommandBus(commandHandlers);
-	const transactionPostController = new TransactionsPostController(commandBus);
-	router.post(
-		'/transactions',
+	const transactionsPutController = new TransactionsPutController(commandBus);
+	router.put(
+		'/transactions/:id',
 		[
+      param('id').exists().isUUID(),
 			body('accountExternalIdDebit').exists().isUUID(),
 			body('accountExternalIdCredit').exists().isUUID(),
 			body('tranferTypeId').exists().isNumeric(),
 			body('value').exists().isNumeric()
 		],
 		validateReqSchema,
-		(req: Request, res: Response) => transactionPostController.run(req, res)
+		(req: CreateTransactionRequest, res: Response) => transactionsPutController.run(req, res)
 	);
 
 	const transactionFinder = new TransactionFinder(transactionRepository);
