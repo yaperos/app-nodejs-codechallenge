@@ -5,12 +5,18 @@
   "main": "index.js",
   "scripts": {
     "dev:antifraud:consumer": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/antifraud/start",
-    "dev:transaction:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/transaction/start",
+    "dev:transaction:api": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/transaction/start",
+    "prod:antifraud:consumer": "NODE_ENV=production node ./dist/src/apps/antifraud/start",
+    "prod:transaction:api": "NODE_ENV=production node ./dist/src/apps/transaction/start",
     "lint": "eslint --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "test:unit": "NODE_ENV=test jest",
     "test:features": "npm run test:transaction:features",
-    "test:transaction:features": "NODE_ENV=test cucumber-js -p transaction"
+    "test:transaction:features": "NODE_ENV=test cucumber-js -p transaction",
+    "build": "npm run build:clean && npm run build:tsc && npm run build:di",
+    "build:tsc": "tsc -p tsconfig.prod.json",
+    "build:di": "copy 'src/**/*.json' dist/src",
+    "build:clean": "rm -r dist; exit 0"
   },
   "repository": {
     "type": "git",
@@ -27,6 +33,7 @@
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
     "convict": "^6.2.4",
+    "copy": "^0.3.2",
     "errorhandler": "^1.5.1",
     "express": "^4.18.2",
     "express-promise-router": "^4.1.1",
