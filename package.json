@@ -4,6 +4,7 @@
   "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
   "main": "index.js",
   "scripts": {
+    "dev:antifraud:consumer": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/antifraud/start",
     "dev:transaction:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/transaction/start",
     "lint": "eslint --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix"
