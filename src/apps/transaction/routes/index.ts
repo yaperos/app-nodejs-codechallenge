@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { ValidationError, validationResult } from 'express-validator';
+import { validationResult } from 'express-validator';
 import glob from 'glob';
 
 export function registerRoutes(router: Router): void {
@@ -8,9 +8,8 @@ export function registerRoutes(router: Router): void {
 }
 
 async function register(routePath: string, router: Router) {
-	// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 	const { register } = require(routePath) as { register: (router: Router) => void };
-	await register(router);
+	register(router);
 }
 
 export function validateReqSchema(req: Request, res: Response, next: NextFunction): any {
@@ -20,8 +19,7 @@ export function validateReqSchema(req: Request, res: Response, next: NextFunctio
 
 		return;
 	}
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const errors = validationErrors.array().map((err: ValidationError) => ({ [err.param]: err.msg }));
+	const errors = validationErrors.array({ onlyFirstError: true }).map((err: any) => ({ [err.path]: err.msg }));
 
 	return res.status(422).json({
 		errors
