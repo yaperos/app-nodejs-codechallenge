@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Consumer, KafkaClient, Message, Producer } from 'kafka-node';
 
 import { ConnectionSettings } from './connectionSettings';
@@ -58,19 +56,6 @@ export class KafkaConnection {
 			this.consumer.on('message', message => {
 				onMessage(message);
 				resolve(message);
-			});
-		});
-	}
-
-	async close() {
-		return new Promise((resolve, reject) => {
-			if (!this.producer) {
-				reject();
-
-				return;
-			}
-			this.producer.close(() => {
-				resolve(true);
 			});
 		});
 	}

@@ -20,10 +20,6 @@ export class AntiFraudApp {
 
 
 	async stop(): Promise<void> {
-		const config = KafkaConfigFactory.createConfig();
-		const connection = new KafkaConnection(config);
-		await connection.close();
-
     return this.server?.stop();
 	}
 
