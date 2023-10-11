@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/fintran/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/fintran/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/fintran",
+  "projects": {
+    "fintran": {
+      "type": "application",
+      "root": "apps/fintran",
+      "entryFile": "main",
+      "sourceRoot": "apps/fintran/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/fintran/tsconfig.app.json"
+      }
+    },
+    "transactions": {
+      "type": "application",
+      "root": "apps/transactions",
+      "entryFile": "main",
+      "sourceRoot": "apps/transactions/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transactions/tsconfig.app.json"
+      }
+    },
+    "antifraud": {
+      "type": "application",
+      "root": "apps/antifraud",
+      "entryFile": "main",
+      "sourceRoot": "apps/antifraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/antifraud/tsconfig.app.json"
+      }
+    }
+  }
+}
