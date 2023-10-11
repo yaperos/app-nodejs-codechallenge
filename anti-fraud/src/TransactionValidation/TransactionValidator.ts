@@ -6,7 +6,7 @@ export function validationResponse(accountExternalIdDebit, accountExternalIdCred
     //1 - debit
     //2 - credit
     const limit = 1000;
-    const status = value >= limit ? 'rejected' : 'approved';
+    const status = value >= limit ? 'rejected' : 'pending';
     const date = new Date();
 
     const dataToHash = JSON.stringify({ accountExternalIdDebit, accountExternalIdCredit, tranferTypeId, status, date });

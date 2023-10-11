@@ -23,7 +23,7 @@ export class AppService {
       const validateTransaction =
         new GetAntifraudRequest(validation.uuid, '', '', null, validation.transferType, validation.status, getAntifraudRequest.value, validation.date)
 
-      this.logger.log('Transaction validated.', JSON.stringify(validateTransaction));
+      this.logger.log(`Transaction ${validation.uuid} validated.`);
 
       return validateTransaction.toString()
 
