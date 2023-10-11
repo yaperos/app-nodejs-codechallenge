@@ -11,7 +11,9 @@ describe('TransactionsController', () => {
       providers: [TransactionsService],
     }).compile();
 
-    transactionsController = app.get<TransactionsController>(TransactionsController);
+    transactionsController = app.get<TransactionsController>(
+      TransactionsController,
+    );
   });
 
   describe('root', () => {
