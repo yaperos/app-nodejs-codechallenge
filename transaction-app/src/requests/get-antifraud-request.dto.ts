@@ -1,13 +1,17 @@
 export class GetAntifraudRequest {
     constructor(
+        public readonly accountExternalIdDebit: string,
+        public readonly accountExternalIdCredit: string,
+        public readonly tranferTypeId: number,
         public readonly value: number,
-        public readonly transactionStatus: string
     ) { }
 
     toString() {
         return JSON.stringify({
+            accountExternalIdDebit: this.accountExternalIdDebit,
+            accountExternalIdCredit: this.accountExternalIdCredit,
+            tranferTypeId: this.tranferTypeId,
             value: this.value,
-            transactionStatus: this.transactionStatus
         })
     }
 }

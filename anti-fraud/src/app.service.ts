@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { GetAntifraudRequest } from './requests/get-antifraud-request.dto';
+import { validationResponse } from './TransactionValidation/TransactionValidator';
 
 
 @Injectable()
 export class AppService {
+  private logger: Logger;
 
+  constructor() {
+    this.logger = new Logger(AppService.name);
+  }
 
   getHello(): string {
     return 'Hello World!';
   }
 
   validateTransaction(getAntifraudRequest: GetAntifraudRequest) {
+    try {
+      const validation =
+        validationResponse(getAntifraudRequest.accountExternalIdDebit, getAntifraudRequest.accountExternalIdCredit, getAntifraudRequest.tranferTypeId, getAntifraudRequest.value)
 
-    let status: string = ''
-    let limit: number = 1000
+      const validateTransaction =
+        new GetAntifraudRequest(validation.uuid, '', '', null, validation.transferType, validation.status, getAntifraudRequest.value, validation.date)
 
-    if (getAntifraudRequest.value >= 1000) {
-      status = 'rejected'
-    } else {
-      status = 'approved'
+      this.logger.log('Transaction validated.', JSON.stringify(validateTransaction));
+
+      return validateTransaction.toString()
+
+    } catch (error) {
+      this.logger.error('Error during validation', error);
     }
-    const validateTransaction = new GetAntifraudRequest(getAntifraudRequest.value, status)
-    return validateTransaction.toString()
   }
+
 }
