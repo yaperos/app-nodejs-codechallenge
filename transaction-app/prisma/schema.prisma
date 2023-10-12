@@ -10,10 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TransactionType {
+  DEBIT
+  CREDIT
+}
+
+enum TransactionStatus {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
 model Transaction {
-  transactionExternalId String   @id
+  transactionExternalId String            @id
   value                 Int
   createdAt             DateTime
-  transactionType       String
-  transactionStatus     String
+  transactionType       TransactionType
+  transactionStatus     TransactionStatus
 }
