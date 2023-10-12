@@ -21,8 +21,6 @@ export class TransactionsService {
         .send('validate-transaction', validateTransaction.toString())
         .toPromise();
 
-      this.handleValidationSuccess(response);
-
       const transactionDto = {
         transactionExternalId: response.transactionExternalId,
         transactionType: PrismaTransactionType[response.transactionType.name],
@@ -30,14 +28,24 @@ export class TransactionsService {
         value: response.value,
         createdAt: new Date(response.createdAt),
       };
-
-      const createdTransaction = await this.prisma.transaction.create({
-        data: transactionDto,
+      const currentData = await this.prisma.transaction.findFirst({
+        where: {
+          createdAt: transactionDto.createdAt,
+        },
       });
 
-      return createdTransaction;
-    } catch (error) {
-      this.handleValidationError(error);
+      if (!currentData) {
+        this.handleValidationSuccess(response);
+        const createdTransaction = await this.prisma.transaction.create({
+          data: transactionDto,
+        });
+        return createdTransaction;
+      } else {
+        return this.handleConcurrencyConflict();
+      }
+    }
+    catch (error) {
+      return this.handleValidationError(error);
     }
   }
 
@@ -73,6 +81,8 @@ export class TransactionsService {
   private handleValidationError(error) {
     this.logger.error('Error during Transaction', error);
   }
-
+  handleConcurrencyConflict() {
+    this.logger.error('Concurrency conflict: Another transaction modified the data concurrently.');
+  }
 
 }

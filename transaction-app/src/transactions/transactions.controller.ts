@@ -22,14 +22,15 @@ export class TransactionsController implements OnModuleInit {
   @EventPattern('transaction-created')
   handleTransactionCreateds(createTransactionRequest: CreateTransactionRequest) {
 
-    this.transactionsService.handleTransactionCreated(createTransactionRequest)
+    return this.transactionsService.handleTransactionCreated(createTransactionRequest)
+
   }
 
-  @Cron(CronExpression.EVERY_6_HOURS)
+  @Cron(CronExpression.EVERY_12_HOURS)
   handleCron() {
     try {
       this.transactionsService.updatePendingTransactions();
-      this.logger.log('Updating pending transactions every 6 hours...');
+      this.logger.log('Updating pending transactions every 12 hours.');
     } catch (error) {
       this.logger.error('Error during Transaction', error);
     }
