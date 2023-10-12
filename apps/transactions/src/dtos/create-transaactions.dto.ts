@@ -1,4 +1,4 @@
 export class CreateTransactionDTO {
-  value: number;
+  amount: number;
   status: string;
 }

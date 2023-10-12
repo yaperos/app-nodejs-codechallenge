@@ -4,6 +4,7 @@ import { TransactionsController } from './transactions.controller';
 import { TransactionsService } from './transactions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './transactions.entity';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -22,6 +23,21 @@ import { Transaction } from './transactions.entity';
       autoLoadEntities: true,
     }),
     TypeOrmModule.forFeature([Transaction]),
+    ClientsModule.register([
+      {
+        name: 'TRANSACTION_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'antifraud',
+            brokers: ['0.0.0.0:9092'],
+          },
+          consumer: {
+            groupId: 'antifraud-consumer',
+          },
+        },
+      },
+    ]),
   ],
   controllers: [TransactionsController],
   providers: [TransactionsService],

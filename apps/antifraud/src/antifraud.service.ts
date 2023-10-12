@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AntifraudService {
-  getHello(): string {
-    return 'Hello World!';
+  handleTransactionCreated(transactionCreatedEvent) {
+    console.log('hola', transactionCreatedEvent);
   }
 }

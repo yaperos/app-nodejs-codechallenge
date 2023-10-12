@@ -10,15 +10,6 @@
   "monorepo": true,
   "root": "apps/fintran",
   "projects": {
-    "fintran": {
-      "type": "application",
-      "root": "apps/fintran",
-      "entryFile": "main",
-      "sourceRoot": "apps/fintran/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/fintran/tsconfig.app.json"
-      }
-    },
     "transactions": {
       "type": "application",
       "root": "apps/transactions",
