@@ -26,11 +26,11 @@ export class TransactionsController implements OnModuleInit {
 
   }
 
-  @Cron(CronExpression.EVERY_12_HOURS)
+  @Cron(CronExpression.EVERY_2_HOURS)
   handleCron() {
     try {
       this.transactionsService.updatePendingTransactions();
-      this.logger.log('Updating pending transactions every 12 hours.');
+      this.logger.log('Updating pending transactions batch every 2 hours.');
     } catch (error) {
       this.logger.error('Error during Transaction', error);
     }

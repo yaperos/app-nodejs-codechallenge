@@ -50,6 +50,7 @@ export class TransactionsService {
   }
 
   async updatePendingTransactions() {
+    const batchSize = 100
     const twelveHoursAgo = new Date();
     twelveHoursAgo.setHours(twelveHoursAgo.getHours() - 12);
 
@@ -62,7 +63,14 @@ export class TransactionsService {
       },
     });
 
-    for (const transaction of pendingTransactions) {
+    for (let i = 0; i < batchSize; i += batchSize) {
+      const batch = pendingTransactions.slice(i, i + batchSize);
+      await this.processBatch(batch);
+    }
+  }
+
+  private async processBatch(batch) {
+    for (const transaction of batch) {
       await this.prisma.transaction.update({
         where: {
           transactionExternalId: transaction.transactionExternalId,
