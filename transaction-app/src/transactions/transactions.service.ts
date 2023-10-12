@@ -1,11 +1,8 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { TransactionCreatedEvent } from '../events/transaction-created.event';
-import { ClientKafka, RpcException } from '@nestjs/microservices';
+import { ClientKafka } from '@nestjs/microservices';
 import { GetAntifraudRequest } from '../requests/get-antifraud-request.dto';
-import { AppService } from 'src/app.service';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionType as PrismaTransactionType, TransactionStatus as PrismaTransactionStatus } from '@prisma/client';
 
 @Injectable()
@@ -13,8 +10,9 @@ export class TransactionsService {
   private logger: Logger;
 
   constructor(@Inject('ANTIFRAUD_SERVICE') private readonly antifraudClient: ClientKafka, private prisma: PrismaService) {
-    this.logger = new Logger(AppService.name);
+    this.logger = new Logger(TransactionsService.name);
   }
+
   async handleTransactionCreated({ accountExternalIdDebit, accountExternalIdCredit, tranferTypeId, value }: TransactionCreatedEvent) {
     const validateTransaction = new GetAntifraudRequest(accountExternalIdDebit, accountExternalIdCredit, tranferTypeId, value);
 
@@ -43,6 +41,31 @@ export class TransactionsService {
     }
   }
 
+  async updatePendingTransactions() {
+    const twelveHoursAgo = new Date();
+    twelveHoursAgo.setHours(twelveHoursAgo.getHours() - 12);
+
+    const pendingTransactions = await this.prisma.transaction.findMany({
+      where: {
+        createdAt: {
+          gte: twelveHoursAgo,
+        },
+        transactionStatus: 'PENDING',
+      },
+    });
+
+    for (const transaction of pendingTransactions) {
+      await this.prisma.transaction.update({
+        where: {
+          transactionExternalId: transaction.transactionExternalId,
+        },
+        data: {
+          transactionStatus: 'APPROVED',
+        },
+      });
+    }
+  }
+
   private handleValidationSuccess(response) {
     this.logger.log('Transaction validated.', response);
   }
@@ -51,19 +74,5 @@ export class TransactionsService {
     this.logger.error('Error during Transaction', error);
   }
 
-  findAll() {
-    return `This action returns all transactions`;
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
-  }
-
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
-  }
 }

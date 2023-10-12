@@ -25,6 +25,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^10.2.7",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/schedule": "^3.0.4",
     "@nestjs/swagger": "^7.1.13",
     "@prisma/client": "^5.4.2",
     "kafkajs": "^2.2.4",

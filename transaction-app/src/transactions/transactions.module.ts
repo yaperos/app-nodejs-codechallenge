@@ -3,6 +3,7 @@ import { TransactionsService } from './transactions.service';
 import { TransactionsController } from './transactions.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { PrismaModule } from 'src/prisma/prisma.module';
         }
       }
     ]),
-    PrismaModule
+    PrismaModule,
+    ScheduleModule.forRoot()
   ],
   controllers: [TransactionsController],
   providers: [TransactionsService],
