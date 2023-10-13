@@ -67,7 +67,7 @@ Make sure you have the following prerequisites installed on your system:
 
 #### Start the Server
 
-1. **Start the backend server for each application with the following command:**
+4. **Start the backend server for each application with the following command:**
 
    - For the `api-gateway` app:
      ```bash
