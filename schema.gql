@@ -1,0 +1,53 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionType {
+  """Category code to register"""
+  name: String!
+}
+
+type TransactionStatus {
+  """Category code to register"""
+  name: String!
+}
+
+type TransactionResponse {
+  """Category code to register"""
+  transactionExternalId: String!
+  transactionType: TransactionType!
+  transactionStatus: TransactionStatus!
+
+  """Category code to register"""
+  value: Float!
+
+  """Category code to register"""
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  """"""
+  getTransaction: TransactionResponse!
+}
+
+type Mutation {
+  """description"""
+  createTransaction(
+    """Category code to register"""
+    accountExternalIdDebit: String!
+
+    """Category code to register"""
+    accountExternalIdCredit: String!
+
+    """Category code to register"""
+    tranferTypeId: Float!
+
+    """Category code to register"""
+    value: Float!
+  ): TransactionResponse!
+}
