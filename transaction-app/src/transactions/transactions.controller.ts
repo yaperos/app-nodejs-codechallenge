@@ -32,7 +32,7 @@ export class TransactionsController implements OnModuleInit {
       this.transactionsService.updatePendingTransactions();
       this.logger.log('Updating pending transactions batch every 2 hours.');
     } catch (error) {
-      this.logger.error('Error during Transaction', error);
+      this.logger.error('Error during update', error);
     }
   }
 

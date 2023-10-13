@@ -50,18 +50,19 @@ export class TransactionsService {
   }
 
   async updatePendingTransactions() {
-    const batchSize = 100
-    const twelveHoursAgo = new Date();
-    twelveHoursAgo.setHours(twelveHoursAgo.getHours() - 12);
+    const hoursAgo = new Date();
+    hoursAgo.setHours(hoursAgo.getHours() - 12);
 
     const pendingTransactions = await this.prisma.transaction.findMany({
       where: {
         createdAt: {
-          gte: twelveHoursAgo,
+          gte: hoursAgo,
         },
         transactionStatus: 'PENDING',
       },
     });
+    const batchSize = Math.ceil(pendingTransactions.length / 6);
+    this.logger.log(`Batch size : ${batchSize}.`);
 
     for (let i = 0; i < batchSize; i += batchSize) {
       const batch = pendingTransactions.slice(i, i + batchSize);
