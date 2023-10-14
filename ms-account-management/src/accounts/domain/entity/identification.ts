@@ -1,4 +1,4 @@
-export const enum DocumentType {
+export enum DocumentType {
   DNI = 'DNI',
   PASAPORTE = 'PASAPORTE',
   CARNET_EXT = 'CARNET_EXT',

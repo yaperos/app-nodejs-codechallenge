@@ -8,6 +8,8 @@ import { GenericResponseDto } from 'src/accounts/domain/dto/generic-response.dto
 import { Account } from 'src/accounts/domain/entity/account';
 import { AccountRepository } from 'src/accounts/domain/repository/account-repository';
 import { CreateAccount } from 'src/accounts/domain/use-case/create-account';
+import { PasswordEncoder } from 'src/common/util/password-encoder';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class CreateAccountImpl implements CreateAccount {
@@ -21,9 +23,10 @@ export class CreateAccountImpl implements CreateAccount {
   ): Promise<GenericResponseDto> {
     try {
       const account: Partial<Account> = {
+        userId: uuidv4(),
         email: dto.email,
         phone: dto.phone,
-        password: dto.password,
+        password: PasswordEncoder.encode(dto.password),
         identification: {
           firstName: dto.firstName,
           lastName: dto.lastName,

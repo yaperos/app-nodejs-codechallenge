@@ -17,6 +17,7 @@ export class UpdateAccountImpl implements UpdateAccount {
   ) {}
 
   public async execute(
+    userId: string,
     dto: UpdateAccountRequestDto,
   ): Promise<GenericResponseDto> {
     try {
@@ -31,7 +32,7 @@ export class UpdateAccountImpl implements UpdateAccount {
         },
         status: dto.status,
       };
-      await this.accountRepository.updateAccount(account);
+      await this.accountRepository.updateAccount(userId, account);
 
       return GenericResponseDto.builder()
         .message('Account updated successfully')

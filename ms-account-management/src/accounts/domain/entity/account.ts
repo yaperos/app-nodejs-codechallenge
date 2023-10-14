@@ -1,6 +1,6 @@
 import { Identification } from './identification';
 
-export const enum AccountStatus {
+export enum AccountStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
