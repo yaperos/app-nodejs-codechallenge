@@ -13,40 +13,40 @@ import { DocumentType } from 'src/accounts/domain/entity/identification';
 export class UpdateAccountRequestDto implements IUpdateAccountRequestDto {
   @IsOptional()
   @IsString()
-  email: string;
+  email?: string;
 
   @IsOptional()
   @IsNumberString()
-  phone: string;
+  phone?: string;
 
   @IsOptional()
   @IsNumberString()
   @MinLength(6)
   @MaxLength(6)
-  password: string;
+  password?: string;
 
   @IsOptional()
   @IsString()
   @MinLength(3)
   @MaxLength(50)
-  firstName: string;
+  firstName?: string;
 
   @IsOptional()
   @MinLength(3)
   @MaxLength(50)
-  lastName: string;
+  lastName?: string;
 
   @IsOptional()
   @IsEnum(DocumentType)
-  documentType: DocumentType;
+  documentType?: DocumentType;
 
   @IsOptional()
   @IsNumberString()
   @MinLength(6)
   @MaxLength(10)
-  documentNumber: string;
+  documentNumber?: string;
 
   @IsOptional()
   @IsEnum(AccountStatus)
-  status: AccountStatus;
+  status?: AccountStatus;
 }
