@@ -1,4 +1,6 @@
 export class CreateTransactionDTO {
   amount: number;
-  status: string;
+  tranferTypeId: number;
+  accountExternalIdCredit: string;
+  accountExternalIdDebit: string;
 }

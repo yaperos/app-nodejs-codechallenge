@@ -14,7 +14,6 @@ export class TransactionsController {
 
   @EventPattern('transaction_processed')
   handleTransactionCreated(data: any) {
-    console.log('termine');
     this.transactionsService.updateTransactionStatus(data.id, data.status);
   }
 }

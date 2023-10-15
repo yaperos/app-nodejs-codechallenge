@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Generated } from 'typeorm';
 
 @Entity({ name: 'transactions' })
 export class Transaction {
@@ -10,4 +10,15 @@ export class Transaction {
 
   @Column({ nullable: false })
   status: string;
+
+  @Column()
+  @Generated('uuid')
+  accountExternalIdDebit: string;
+
+  @Column()
+  @Generated('uuid')
+  accountExternalIdCredit: string;
+
+  @Column({ default: 1 })
+  tranferTypeId: number;
 }

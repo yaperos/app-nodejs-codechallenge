@@ -24,7 +24,7 @@ export class TransactionsService {
       'transaction_created',
       new TransactionCreatedEvent(
         newTransactionRepository.id,
-        newTransactionRepository.status,
+        process.env.TRANSACTION_PENDING_STATUS,
         newTransactionRepository.amount,
       ),
     );
