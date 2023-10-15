@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { isApprovedTransactionValue } from './utils';
+import { getTransactionStatus } from './utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { TransactionProcessedEvent } from './transaction-processed.event';
 
@@ -10,12 +10,10 @@ export class AntifraudService {
     private readonly antifraudClient: ClientKafka,
   ) {}
   handleTransactionCreated(transactionCreatedEvent) {
-    const isApproved = isApprovedTransactionValue(
-      transactionCreatedEvent.amount,
-    );
+    const newStatus = getTransactionStatus(transactionCreatedEvent.amount);
     this.antifraudClient.emit(
       'transaction_processed',
-      new TransactionProcessedEvent(transactionCreatedEvent.id, isApproved),
+      new TransactionProcessedEvent(transactionCreatedEvent.id, newStatus),
     );
   }
 }
