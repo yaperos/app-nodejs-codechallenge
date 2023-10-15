@@ -5,16 +5,18 @@ import { TransactionsService } from './transactions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './transactions.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '0.0.0.0',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'postgres',
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [
         join(__dirname, '..', 'model/entity/default/**/*.entity.{ts,js}'),
       ],
@@ -25,15 +27,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     TypeOrmModule.forFeature([Transaction]),
     ClientsModule.register([
       {
-        name: 'TRANSACTION_SERVICE',
+        name: process.env.KAFKA_SERVICE_NAME,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'transactions',
-            brokers: ['0.0.0.0:9092'],
+            clientId: process.env.KAFKA_TRANSACTIONS_CLIENT_ID,
+            brokers: [process.env.KAFKA_BROKER],
           },
           consumer: {
-            groupId: 'antifraud-consumer',
+            groupId: process.env.KAFKA_ANTIFRAUD_CONSUMER_GROUP_ID,
           },
         },
       },

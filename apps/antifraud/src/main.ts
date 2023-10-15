@@ -9,10 +9,10 @@ async function bootstrap() {
       transport: Transport.KAFKA,
       options: {
         client: {
-          brokers: ['localhost:9092'],
+          brokers: [process.env.KAFKA_BROKER],
         },
         consumer: {
-          groupId: 'antifraud-consumer',
+          groupId: process.env.KAFKA_ANTIFRAUD_CONSUMER_GROUP_ID,
         },
       },
     },

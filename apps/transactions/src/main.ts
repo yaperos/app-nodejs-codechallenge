@@ -8,14 +8,14 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: ['localhost:9092'],
+        brokers: [process.env.KAFKA_BROKER],
       },
       consumer: {
-        groupId: 'transactions-consumer',
+        groupId: process.env.KAFKA_TRANSACTIONS_CONSUMER_GROUP_ID,
       },
     },
   });
   await app.startAllMicroservices();
-  await app.listen(3000);
+  await app.listen(process.env.TRANSACTIONS_API_PORT);
 }
 bootstrap();
