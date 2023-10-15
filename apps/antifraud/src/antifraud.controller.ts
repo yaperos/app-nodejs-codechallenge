@@ -1,4 +1,4 @@
-import { Controller, Inject } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AntifraudService } from './antifraud.service';
 import { EventPattern } from '@nestjs/microservices';
 

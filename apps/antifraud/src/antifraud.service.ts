@@ -13,7 +13,7 @@ export class AntifraudService {
     const isApproved = isApprovedTransactionValue(
       transactionCreatedEvent.amount,
     );
-    console.log('hola');
+    console.log('holaaa');
     this.antifraudClient.emit(
       'transaction_processed',
       new TransactionProcessedEvent(transactionCreatedEvent.id, isApproved),
