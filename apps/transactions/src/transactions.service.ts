@@ -15,17 +15,27 @@ export class TransactionsService {
     private readonly transactionsClient: ClientKafka,
   ) {}
 
-  createTransaction(transaction: CreateTransactionDTO) {
+  async createTransaction(transaction: CreateTransactionDTO) {
     const newTransaction = this.transactionRepository.create(transaction);
-    this.transactionRepository.save(newTransaction);
+    const newTransactionRepository = await this.transactionRepository.save(
+      newTransaction,
+    );
     this.transactionsClient.emit(
       'transaction_created',
       new TransactionCreatedEvent(
-        newTransaction.id,
-        newTransaction.status,
-        newTransaction.amount,
+        newTransactionRepository.id,
+        newTransactionRepository.status,
+        newTransactionRepository.amount,
       ),
     );
     return transaction;
+  }
+
+  async updateTransactionStatus(transactionId: string, status: string) {
+    const transactionRepository = await this.transactionRepository.update(
+      transactionId,
+      { status: status },
+    );
+    return transactionRepository;
   }
 }

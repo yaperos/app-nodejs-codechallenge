@@ -10,11 +10,10 @@ export class TransactionsController {
   @Post()
   createTransaction(@Body() newTransaction: CreateTransactionDTO) {
     this.transactionsService.createTransaction(newTransaction);
-    console.log('aca si');
   }
 
   @EventPattern('transaction_processed')
   handleTransactionCreated(data: any) {
-    console.log('xdxd', data);
+    this.transactionsService.updateTransactionStatus(data.id, data.status);
   }
 }
