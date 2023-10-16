@@ -1,0 +1,91 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserDTO {
+  id: String!
+  name: String!
+  email: String!
+  username: String!
+  gender: String!
+  birthday: String!
+  stripeCostumerId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthType {
+  access_token: String!
+}
+
+type CardTypeDto {
+  id: String!
+  name: String!
+  resource: String!
+  description: String!
+  isActive: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserCardDto {
+  id: String!
+  stripePaymentMethodId: String!
+  brand: String!
+  last4: String!
+  funding: String!
+  exp_month: String!
+  exp_year: String!
+  isActive: String!
+  user: UserDTO
+  cardType: CardTypeDto
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type TransactionDto {
+  id: String
+  amount: Float
+  status: String
+  user: UserDTO
+  userCard: UserCardDto
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Query {
+  getUsers: [UserDTO!]!
+  getAllUserCards: [UserCardDto!]!
+  getCardsForLoginUser: [UserCardDto!]!
+  getAllCardsTypes: [CardTypeDto!]!
+}
+
+type Mutation {
+  authenticateUser(input: AuthInput!): AuthType!
+  getTransactions(input: GetTransactionInput!): [TransactionDto!]!
+  newTransaction(input: NewTransactionInput!): TransactionDto!
+}
+
+input AuthInput {
+  username: String!
+  password: String!
+}
+
+input GetTransactionInput {
+  transactionId: String
+  amount: Float
+  cardId: String
+  cardTypeName: String
+  status: String
+  createdAt: String
+}
+
+input NewTransactionInput {
+  cardId: String!
+  amount: Float!
+}

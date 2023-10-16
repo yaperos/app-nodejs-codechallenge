@@ -47,36 +47,3 @@ services:
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-
-  api-server:
-    build:
-      context: ./projects/yape-server
-      dockerfile: Dockerfile
-    env_file: .env
-    container_name: ${PROJECT_NAME_SERVER}-${JOB_BASE_NAME}
-    image: server/${PROJECT_NAME_SERVER}
-    ports:
-      - "${PORT_LOCAL_SERVER}:${PORT_LOCAL_SERVER}"
-    volumes:
-      - ./projects/yape-server/:/app
-      - /app/node_modules
-      - /app/src/auths/certs
-    depends_on:
-      - database
-      - kafka
-
-  micro-server:
-    build:
-      context: ./projects/yape-micro-server
-      dockerfile: Dockerfile
-    env_file: .env
-    container_name: ${PROJECT_NAME_MICRO_SERVER}-${JOB_BASE_NAME}
-    image: server/${PROJECT_NAME_MICRO_SERVER}
-    ports:
-      - "${PORT_LOCAL_MICRO}:${PORT_LOCAL_MICRO}"
-    volumes:
-      - ./projects/yape-micro-server/:/app
-      - /app/node_modules
-    depends_on:
-      - api-server
-      - kafka

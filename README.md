@@ -1,82 +1,229 @@
-# Yape Code Challenge :rocket:
+# Choppi api-server
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Features
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Characteristic
+* User login
+* JWT storage in NestJs
+* Generate data for DB in Faker
+* Query and Mutation in GraphQL
+* Transaction Micro-service in Kafka
+* Transaction in Stripe
+* All environments are built with docker and docker-compose
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Production environment
+* [Production environment](http://localhost:4000/graphql)
 
-# Problem
+## Testing environment
+* [Testing environment](http://localhost:4000/graphql)
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## Starting 🚀
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+*  These instructions will allow you to obtain a copy of the running project on your local machine for development and testing purposes.
 
-Every transaction with a value greater than 1000 should be rejected.
+* Look [Yape]() to know the project.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+## Usage
+
+#### Directory Structure
+```diff
+
++ ┌── app-nodejs-codechallenge
++ |  ├── projects
++ |  ├── docker-compose.debug
++ |  ├── docker-compose.yml
++ |  ├── README.md
++ └──└── env-example
+
 ```
 
-# Tech Stack
+## Prerequisites for installation with docker-compose ⚙️
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+#### Docker Engine
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+##### Docker Installation On Linux
+* [Docker For Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
-You must have two resources:
+##### Docker Installation On Windows
+* [Docker For Windows](https://docs.docker.com/docker-for-windows/install/)
 
-1. Resource to create a transaction that must containt:
+#### Docker Compose
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+##### Docker Compose Installation
+* [Docker Compose](https://docs.docker.com/compose/install/)
+
+#### Enabling Non-root Users to Run Docker Commands (Optional)
+```diff
+sudo groupadd docker
+sudo gpasswd -a $USER docker
+newgrp docker
+
++ In the case of a virtual machine, it may be necessary to restart the virtual machine for the changes to take effect.
+
 ```
 
-2. Resource to retrieve a transaction
+## Initialize (In the main directory run this /workspace)
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+```diff
+
++ Rename the file found in the root directory ./ example-env to .env
+
++ Go to directory the projects/yape-server directory and rename the file example-env to .env
++ Go to directory the projects/yape-micro-server directory and rename the file example-env to .env
+    
++ Go to directory the /app-nodejs-codechallenge and run the following commands from terminal
+    docker-compose up -d
+    docker-compose exec api-server `yarn run typeorm:generate-migration`
+    docker-compose exec api-server yarn run typeorm:run-migrations
+    docker-compose exec api-server yarn run seed
+    
++ If during the compilation (docker-compose up -d) there is an error example: 
+        ERROR: for server-yape-develop  UnixHTTPConnectionPool(host='localhost', port=None): Read timed out. (read timeout=60))
+            Please execute the following commands from the terminal:
+                export DOCKER_CLIENT_TIMEOUT=220
+                export COMPOSE_HTTP_TIMEOUT=220
+    
++ When completing the previous steps we are ready to go to the browser to start using our application go to browser to url http://localhost:3000/auths/login
+    User: joseagraz29@gmail.com
+    Password: Passw*123
 ```
 
-## Optional
+## Prerequisites for installation conventional ⚙️
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+```diff
 
-You can use Graphql;
++ Go to directory the projects directory and rename the file example-env to .env
+  ignore the docker-compose.yml file and rename the docker-compose.debug file to docker-compose.yml
+    
++ Run the following commands from 
 
-# Send us your challenge
+    1. Go to directory the /app-nodejs-codechallenge and run the following commands from terminal:
+       docker-compose up -d
+    
+    2. Go to directory the /projects/yape-server
+  
+       1. Rename the file example-conventional-env to .env
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+       2. Run the following commands from terminal:
+       
+          1. Install the dependencies:
+              yarn install
+        
+          2. Generate the certificates to sign the tokens, enter the `src/auth/certs` folder once inside, execute the following command:
+              openssl genrsa -out jwt-private.key 2048 && openssl rsa -in jwt-private.key -pubout -out jwt-public.key
+    
+          3. Compile the application:
+              yarn build
+    
+          4. Generate the migrations:
+              yarn run typeorm:generate-migration
+    
+          5. Run the migrations:
+              yarn run typeorm:run-migrations
+    
+          6. Run the seeders to create the test data:
+              yarn run seed
+          
+          7. Run the application:
+              yarn run start:dev
+          
+    3. Go to directory the /projects/yape-micro-server
 
-If you have any questions, please let us know.
+       1. Rename the file example-conventional-env to .env
+
+       2. Run the following commands from terminal:
+   
+          1. Install the dependencies:
+              yarn install
+
+          2. Compile the application:
+                yarn build
+
+          3. Run the application:
+                yarn run start:dev
+    
++ When completing the previous steps we are ready to go to the browser to start using our application go to browser to url http://localhost:4000/graphql
+    User: joseagraz29@gamil.com
+    Password: Passw*123
+```
+
+## Additional information 📖
+
+#### Crear host
+```diff
+
++ Edit your operating system's hosts file, adding the container's IP address example hostnames:
+    172.18.0.4:3000 m.yape.xyz
+
++ In the case of Linux operating system the hosts file is located in the etc directory (/etc/hosts).
+
+```
+
+#### Docker Images
+```diff
+
++ View images
+    docker images
+
++ Remove an image
+    docker rmi (imageId o el imageName)
+
++ Remove all images
+    docker rmi $(docker ps -a -q)
+
+```
+
+#### Docker Containers
+```diff
+
++ View containers running
+    docker ps
+
++ View containers stopped and running
+    docker docker ps -a
+
++ Enter a container
+    docker exec -ti (containerName o el ContainerId) /bin/sh
+
++ Stop a container
+    docker stop (containerName o el ContainerId)
+
++ Remove a container
+    docker rm (containerName o el ContainerId)
+
++ Start all containers
+    docker start $(docker ps -a -q)
+
++ Stop all containers
+    docker stop $(docker ps -a -q)
+
++ Turn off all containers
+    docker-compose down
+
++ Remove all containers
+    docker rm $(docker ps -a -q)
+
+```
+
+## Built With 🛠️
+```diff
++    NestJs
++    GraphQL
++    Apollo
++    Kafka
++    Stripe
++    Faker
++    TypeOrm
++    Moment
++    Postgres
++    Microservices
++    Docker
++    Docker Compose
+```
+
+## Developed Container ✒️
+```diff
+
++    Developed by: Jose Agraz 
++    Email: joseagraz29@gamil.com
+```
