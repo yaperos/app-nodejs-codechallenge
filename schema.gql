@@ -22,21 +22,19 @@ type TransactionResponse {
   value: Float!
 
   """Category code to register"""
-  createdAt: DateTime!
+  createdAt: String!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type Query {
-  """"""
-  getTransaction: TransactionResponse!
+  """Fetch transaction by ID"""
+  getTransaction(
+    """Transaction external id"""
+    transactionExternalId: String!
+  ): TransactionResponse!
 }
 
 type Mutation {
-  """description"""
+  """Create new transaction."""
   createTransaction(
     """Category code to register"""
     accountExternalIdDebit: String!

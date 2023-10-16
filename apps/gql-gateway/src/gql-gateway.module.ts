@@ -1,8 +1,8 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { graphqlUploadExpress } from 'graphql-upload';
+import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TransactionModule } from './modules/transactions/transaction.module';
+import { LoggerModule } from 'modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -11,17 +11,12 @@ import { TransactionModule } from './modules/transactions/transaction.module';
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
       installSubscriptionHandlers: true,
-      path: `${process.env.GQL_BASE_PATH}/graphql`,
+      path: `/graphql`,
       introspection: false,
     }),
+    LoggerModule.forRoot('GQL Gateway Module'),
   ],
   providers: [],
   exports: [],
 })
-export class GqlGatewayModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(graphqlUploadExpress())
-      .forRoutes(`${process.env.GQL_BASE_PATH}/graphql`);
-  }
-}
+export class GqlGatewayModule {}

@@ -1,11 +1,18 @@
-import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { AntifraudService } from './modules/antifraud/antifraud.service';
-import { AntifraudController } from './modules/antifraud/antifraud.controller';
+import { LoggerModule } from 'modules/logger/logger.module';
+import { AntifraudModule } from './modules/antifraud/antifraud.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [HttpModule],
-  controllers: [AntifraudController],
-  providers: [AntifraudService],
+  imports: [
+    AntifraudModule,
+    ConfigModule.forRoot({
+      ignoreEnvFile: true,
+      isGlobal: true,
+    }),
+    LoggerModule.forRoot('Antifraud Module'),
+  ],
+  controllers: [],
+  providers: [],
 })
-export class AntifraudModule {}
+export class AntifraudServiceModule {}

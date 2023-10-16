@@ -1,5 +1,5 @@
 import { ArgsType, Field, ObjectType } from '@nestjs/graphql';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString, IsUUID } from 'class-validator';
 
 @ObjectType()
 export class TransactionType {
@@ -43,7 +43,7 @@ export class TransactionResponse {
   @Field({
     description: 'Category code to register',
   })
-  createdAt: Date;
+  createdAt: string;
 }
 
 @ArgsType()
@@ -71,4 +71,13 @@ export class TransactionRequest {
     description: 'Category code to register',
   })
   value: number;
+}
+
+@ArgsType()
+export class SearchTransactionRequest {
+  @IsUUID()
+  @Field({
+    description: 'Transaction external id',
+  })
+  transactionExternalId: string;
 }

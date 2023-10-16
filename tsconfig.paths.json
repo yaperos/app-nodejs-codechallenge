@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@logger/*": ["modules/logger/*"],
+      "constants": ["/constants/*"],
+    }
+  }
+}
