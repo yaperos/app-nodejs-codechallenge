@@ -9,7 +9,10 @@ import { BalanceTransactionRepository } from 'src/balance/domain/repository/bala
 import { CreateBalanceTransaction } from 'src/balance/domain/use-case/create-balance-transaction';
 import { selectStrategy } from './select-strategy';
 import { BalanceTransactionContext } from './balance-transaction.context';
-import { BalanceTransaction } from 'src/balance/domain/entity/balance-transaction';
+import {
+  BalanceTransaction,
+  TransactionType,
+} from 'src/balance/domain/entity/balance-transaction';
 import { UpdateAccountBalance } from 'src/balance/domain/use-case/update-account-balance';
 import { FindAccountBalance } from 'src/balance/domain/use-case/find-account-balance';
 
@@ -29,6 +32,17 @@ export class CreateBalanceTransactionImpl implements CreateBalanceTransaction {
     dto: CreateBalanceTransactionRequestDto,
   ): Promise<GenericResponseDto> {
     try {
+      const accountBalance = await this.findAccountBalance.execute(dto.userId);
+
+      if (
+        dto.transactionType === TransactionType.DEBIT &&
+        accountBalance.amount < dto.amount
+      ) {
+        throw new InternalServerErrorException(
+          'Insufficient funds to complete the transaction',
+        );
+      }
+
       const balanceTransaction: Partial<BalanceTransaction> = {
         accountBalanceId: dto.accountBalanceId,
         transactionType: dto.transactionType,
@@ -38,10 +52,6 @@ export class CreateBalanceTransactionImpl implements CreateBalanceTransaction {
 
       await this.balanceTransactionRepository.createBalanceTransaction(
         balanceTransaction,
-      );
-
-      const accountBalance = await this.findAccountBalance.execute(
-        dto.accountBalanceId,
       );
 
       const strategy = selectStrategy(dto.transactionType);

@@ -3,9 +3,7 @@ import { BalanceTransactionStrategy } from './strategy/balance-transaction.strat
 
 @Injectable()
 export class BalanceTransactionContext {
-  public constructor(
-    private balanceTransactionStrategy: BalanceTransactionStrategy,
-  ) {}
+  private balanceTransactionStrategy: BalanceTransactionStrategy;
 
   public setStrategy(
     balanceTransactionStrategy: BalanceTransactionStrategy,

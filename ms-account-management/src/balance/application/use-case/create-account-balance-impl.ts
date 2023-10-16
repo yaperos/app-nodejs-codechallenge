@@ -1,4 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateAccountBalanceRequestDto } from 'src/balance/domain/dto/create-account-balance-request.dto';
 import { GenericResponseDto } from 'src/balance/domain/dto/generic-response.dto';
 import { AccountBalanceRepository } from 'src/balance/domain/repository/account-balance.repository';
@@ -14,10 +18,14 @@ export class CreateAccountBalanceImpl implements CreateAccountBalance {
   public async execute(
     dto: CreateAccountBalanceRequestDto,
   ): Promise<GenericResponseDto> {
-    await this.accountBalanceRepository.createAccountBalance(dto.userId);
+    try {
+      await this.accountBalanceRepository.createAccountBalance(dto.userId);
 
-    return GenericResponseDto.builder()
-      .message('Account balance created successfully')
-      .build();
+      return GenericResponseDto.builder()
+        .message('Account balance created successfully')
+        .build();
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

@@ -4,6 +4,6 @@ export class CreditBalanceTransactionStrategy
   implements BalanceTransactionStrategy
 {
   public execute(currentBalance: number, newAmount: number): number {
-    return currentBalance + newAmount;
+    return Number(currentBalance) + Number(newAmount);
   }
 }
