@@ -1,0 +1,51 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionType {
+  """Category code to register"""
+  name: String!
+}
+
+type TransactionStatus {
+  """Category code to register"""
+  name: String!
+}
+
+type TransactionResponse {
+  """Category code to register"""
+  transactionExternalId: String!
+  transactionType: TransactionType!
+  transactionStatus: TransactionStatus!
+
+  """Category code to register"""
+  value: Float!
+
+  """Category code to register"""
+  createdAt: String!
+}
+
+type Query {
+  """Fetch transaction by ID"""
+  getTransaction(
+    """Transaction external id"""
+    transactionExternalId: String!
+  ): TransactionResponse!
+}
+
+type Mutation {
+  """Create new transaction."""
+  createTransaction(
+    """Category code to register"""
+    accountExternalIdDebit: String!
+
+    """Category code to register"""
+    accountExternalIdCredit: String!
+
+    """Category code to register"""
+    tranferTypeId: Float!
+
+    """Category code to register"""
+    value: Float!
+  ): TransactionResponse!
+}
