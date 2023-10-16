@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "ecfed403-984f-4a33-8b22-b81407629620",
+		"name": "yape-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3105332"
+	},
+	"item": [
+		{
+			"name": "Graphql",
+			"item": [
+				{
+					"name": "CreateTransaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateTransaction ($accountExternalIdDebit: String!, \r\n$accountExternalIdCredit: String!, \r\n$tranferTypeId: Float!, \r\n$value: Float!) {\r\n    createTransaction(\r\n        accountExternalIdDebit: $accountExternalIdDebit,\r\n        accountExternalIdCredit: $accountExternalIdCredit,\r\n        tranferTypeId: $tranferTypeId,\r\n        value: $value\r\n        ) {\r\n            transactionExternalId\r\n            transactionType {\r\n                name\r\n            }\r\n            transactionStatus {\r\n                name\r\n            }\r\n            value\r\n            createdAt\r\n        }\r\n}",
+								"variables": "{\r\n  \"accountExternalIdDebit\": \"353de19a-e8b9-4ebe-9ece-dd7e0286198f\",\r\n  \"accountExternalIdCredit\": \"353de19a-e8b9-4ebe-9ece-dd7e0286198a\",\r\n  \"tranferTypeId\": 1,\r\n  \"value\": 4500\r\n}"
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTransaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetTransaction($transactionExternalId: String!) {\r\n    getTransaction(transactionExternalId: $transactionExternalId) {\r\n         transactionExternalId\r\n            transactionType {\r\n                name\r\n            }\r\n            transactionStatus {\r\n                name\r\n            }\r\n            value\r\n            createdAt\r\n    }\r\n}",
+								"variables": "{\r\n    \"transactionExternalId\": \"b071eb59-391d-4b99-a0a3-f2ea693aa456\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction Service",
+			"item": [
+				{
+					"name": "POST - Transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"accountExternalIdDebit\": \"353de19a-e8b9-4ebe-9ece-dd7e0286198f\",\r\n  \"accountExternalIdCredit\": \"353de19a-e8b9-4ebe-9ece-dd7e0286198a\",\r\n  \"tranferTypeId\": 2,\r\n  \"value\": 1001\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/transaction",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Transaction",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/transaction/ebfa2e6a-7426-4523-bdbd-debf659d4038",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"transaction",
+								"ebfa2e6a-7426-4523-bdbd-debf659d4038"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
