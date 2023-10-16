@@ -33,9 +33,9 @@ export class TransactionService {
       this._transactionRepository.createQueryBuilder('transaction');
 
     queryBuilder
-      .leftJoin('transaction.user', 'user')
-      .leftJoin('transaction.userCard', 'userCard')
-      .leftJoin('userCard.cardType', 'cardType');
+      .leftJoinAndSelect('transaction.user', 'user')
+      .leftJoinAndSelect('transaction.userCard', 'userCard')
+      .leftJoinAndSelect('userCard.cardType', 'cardType');
 
     if (data.transactionId) {
       queryBuilder.where('transaction.id = :transactionId', {
