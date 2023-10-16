@@ -2,7 +2,6 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { setupSwagger } from './common/utils/setup-swagger';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { config } from 'dotenv';
 import { ConfigService } from '@nestjs/config';
@@ -27,7 +26,6 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: false }));
-  setupSwagger(app);
 
   await app.startAllMicroservices();
   await app.listen(4000);
