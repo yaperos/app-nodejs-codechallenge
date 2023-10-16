@@ -4,6 +4,8 @@ import {
   IsNumber,
   IsString,
   IsUUID,
+  Max,
+  Min,
 } from 'class-validator';
 import { CreateBalanceTransactionRequestDto as ICreateBalanceTransactionRequestDto } from 'src/balance/domain/dto/create-balance-transaction-request.dto';
 import { TransactionType } from 'src/balance/domain/entity/balance-transaction';
@@ -29,5 +31,7 @@ export class CreateBalanceTransactionRequestDto
 
   @IsNotEmpty()
   @IsNumber()
+  @Min(0.1)
+  @Max(10000)
   public amount: number;
 }
