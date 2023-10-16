@@ -1,0 +1,19 @@
+{
+  "name": "producer",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "node producer.js"
+  },
+  "dependencies": {
+    "avsc": "5.3.1",
+    "body-parser": "1.18.3",
+    "express": "4.16.3",
+    "express-promise-router": "3.0.2",
+    "kafka-node": "2.6.1",
+    "pg": "7.4.3",
+    "underscore": "1.9.1"
+  }
+}

@@ -1,25 +1,99 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  #Inicio Wilmer
+  #postgres:
+  #  image: postgres:14
+  #  ports:
+  #    - "5432:5432"
+  #  environment:
+  #    - POSTGRES_USER= ${POSTGRES_USER}
+  #    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #Fin Wilmer
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+    #Inicio Wilmer
+    #image: confluentinc/cp-zookeeper:5.5.3
+    image: wurstmeister/zookeeper:3.4.6
+    #Fin Wilmer
+    #Inicio Wilmer
+    #environment:
+    #  ZOOKEEPER_CLIENT_PORT: 2181
+    container_name: app-nodejs-codechallenge-wilmer-zookeeper
+    ports:
+      - 2181:2181
+    #Fin Wilmer
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    #Inicio Wilmer
+    #image: confluentinc/cp-enterprise-kafka:5.5.3
+    image: wurstmeister/kafka:2.11-1.1.0
+    #Fin Wilmer
+    #Inicio Wilmer
+    container_name: app-nodejs-codechallenge-wilmer-kafka
+    #Fin Wilmer 
+    #Inicio Wilmer   
+    #depends_on: [zookeeper]
+    depends_on:
+      - zookeeper
+    #Fin Wilmer
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+    #Inicio Wilmer
+      #KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      #KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      #KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      #KAFKA_BROKER_ID: 1
+      #KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      #KAFKA_JMX_PORT: 9991
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_CREATE_TOPICS: antifraude-topic:1:1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    #Fin Wilmer  
     ports:
       - 9092:9092
+    #Inicio Wilmer  
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  database:
+    image: postgres:10.4-alpine
+    container_name: app-nodejs-codechallenge-wilmer-database
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 8000:5432
+    volumes:
+      - ./services/database/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      - ./services/database/seed.sql:/docker-entrypoint-initdb.d/2-seed.sql
+  producer:
+    build: ./services/producer
+    container_name: app-nodejs-codechallenge-wilmer-producer
+    command: sh -c "dockerize -wait tcp://zookeeper:2181 -wait tcp://kafka:9092 -wait tcp://database:5432 npm start"
+    depends_on:
+      - zookeeper
+      - kafka
+      - database
+    environment:
+      PGHOST: database
+      PGPORT: 5432
+      PGUSER: ${POSTGRES_USER}
+      PGDATABASE: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PRODUCER_PORT: ${PRODUCER_PORT}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    ports:
+      - ${PRODUCER_PORT}:${PRODUCER_PORT}
+  consumer:
+    build: ./services/consumer
+    container_name: kafka-nodejs-example-consumer
+    command: sh -c "dockerize -wait tcp://zookeeper:2181 -wait tcp://kafka:9092 -wait tcp://database:5432 npm start"
+    depends_on:
+      - zookeeper
+      - kafka
+      - database
+    environment:
+      PGHOST: database
+      PGPORT: 5432
+      PGUSER: ${POSTGRES_USER}
+      PGDATABASE: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181      
+  #Fin Wilmer
+

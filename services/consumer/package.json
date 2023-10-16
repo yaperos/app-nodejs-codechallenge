@@ -1,0 +1,17 @@
+{
+  "name": "consumer",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "node consumer.js"
+  },
+  "dependencies": {
+    "avsc": "5.3.1",
+    "kafka-node": "2.6.1",
+    "moment": "2.22.2",
+    "pg": "7.4.3",
+    "uuid": "3.3.2"
+  }
+}
