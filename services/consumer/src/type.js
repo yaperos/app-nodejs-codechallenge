@@ -1,7 +1,7 @@
 const avro = require('avsc');
 
 const avroSchema = {
-  name: 'SaleType',
+  name: 'TransactionType',
   type: 'record',
   fields: [
     {

@@ -31,8 +31,6 @@ const type = require('./type');
     const decodedMessage = type.fromBuffer(messageBuffer.slice(0));
     console.log('Decoded Message:', typeof decodedMessage, decodedMessage);
 
-    //const saleDateISO8601 = 1.0;
-    //moment(decodedMessage.saleDate).toISOString();
     const transactionStatus = 1;
     const insertResponse = await pgClient.query({
       text: 'INSERT INTO antifraude(uuid, transactionValue, transactionStatus) VALUES($1, $2, $3)',
