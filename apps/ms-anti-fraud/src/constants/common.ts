@@ -1,0 +1,1 @@
+export const VALUE_MAX_TRANSACTION = 1000;

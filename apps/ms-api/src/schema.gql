@@ -1,0 +1,59 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionResponse {
+  """Request Id of the transaction"""
+  requestId: String!
+}
+
+type TransactionStatus {
+  """name status of transaction"""
+  name: String!
+}
+
+type TransactionType {
+  """name type of transaction"""
+  name: String!
+}
+
+type StatusResponse {
+  """Transaction External Id of the transaction"""
+  transactionExternalId: String!
+
+  """Type of transaction"""
+  transactionType: TransactionType!
+
+  """Status of transaction"""
+  transactionStatus: TransactionStatus!
+
+  """value of the transaction"""
+  value: Float!
+
+  """Date of the transaction"""
+  createdAt: String!
+}
+
+type Query {
+  transactionStatus(
+    """Request Id of the transaction"""
+    requestId: String!
+  ): StatusResponse!
+}
+
+type Mutation {
+  """Create a transaction"""
+  createTransaction(
+    """account external debit Id of the transaction"""
+    accountExternalIdDebit: String!
+
+    """account external credit Id of the transaction"""
+    accountExternalIdCredit: String!
+
+    """transaction type of the transaction"""
+    tranferTypeId: Float!
+
+    """value of the transaction"""
+    value: Float!
+  ): TransactionResponse!
+}
