@@ -2,9 +2,9 @@ version: "3.7"
 services:
   transactions:
     build:
-      context: ./src
-      dockerfile: ./apps/ms-transactions/Dockerfile
-    command: yarn run start:dev transactions
+      context: ./src/apps/ms-transactions
+      dockerfile: Dockerfile
+    command: yarn run start:dev ms-transactions
     networks:
       - local-network
     ports:
@@ -13,9 +13,9 @@ services:
       - ./src:/usr/src/app
   anti-fraud:
     build:
-      context: ./src
-      dockerfile: ./apps/ms-anti-fraud/Dockerfile
-    command: yarn run start:dev anti-fraud
+      context: ./src/apps/ms-anti-fraud
+      dockerfile: Dockerfile
+    command: yarn run start:dev ms-anti-fraud
     networks:
       - local-network
     ports:

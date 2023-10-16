@@ -1,9 +1,7 @@
-import { TransactionStatus } from '../ms-transactions.constants'
 import { Types } from 'mongoose'
 
 export class TransactionCreatedEvent {
-  status: TransactionStatus
-  transactionId: Types.ObjectId
+  transactionExternalId: Types.ObjectId
 
   constructor(data?: Partial<TransactionCreatedEvent>) {
     if (data) {
@@ -13,8 +11,7 @@ export class TransactionCreatedEvent {
 
   toString() {
     return JSON.stringify({
-      status: this.status,
-      transactionId: this.transactionId
+      transactionExternalId: this.transactionExternalId
     })
   }
 }

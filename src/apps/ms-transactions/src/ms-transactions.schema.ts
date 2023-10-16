@@ -1,9 +1,9 @@
-import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose"
-import { AbstractDocument } from "@app/common"
-import { TransactionStatus } from './ms-transactions.constants'
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose'
+import { AbstractDocument } from '@app/common'
 import { SchemaTypes, Types } from 'mongoose'
+import { TransactionStatus } from './ms-transactions.constants'
 
-@Schema({versionKey: false})
+@Schema({ versionKey: false })
 export class TransactionDocument extends AbstractDocument {
     @Prop()
     accountExternalIdDebit: string

@@ -1,5 +1,5 @@
-import {FilterQuery, Model, Types, UpdateQuery} from "mongoose"
-import { AbstractDocument } from "@app/common/database/abstract.schema"
+import { FilterQuery, Model, Types, UpdateQuery } from 'mongoose'
+import { AbstractDocument } from '@app/common/database/abstract.schema'
 
 export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     constructor(protected readonly model: Model<TDocument>) {}
@@ -29,10 +29,6 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
         updateQuery: UpdateQuery<TDocument>
     ): Promise<TDocument> {
         return this.model.findOneAndUpdate(filterQuery, updateQuery,);
-    }
-
-    async findOneAndDelete(filterQuery: FilterQuery<TDocument>) {
-        return this.model.findOneAndDelete(filterQuery, {lean: true})
     }
 
     async deleteMany() {

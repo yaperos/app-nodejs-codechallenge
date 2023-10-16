@@ -8,7 +8,6 @@ export class AntiFraudController {
 
   @EventPattern('transaction_created')
   transactionReceived(payload: any) {
-    console.log(`Event received ${payload.value}`)
-    this.antiFraudService.processTransaction(payload.value)
+    this.antiFraudService.processTransaction(payload)
   }
 }

@@ -1,82 +1,91 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Implementation for the code challenge. Two apps were implemented to match the requirements of the 
+challenge: `ms-transactions` and `ms-anti-fraud` microservices.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+# Running the application
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+1. Before running the application a `.env` file must be created inside the `src` folder.
 
-# Problem
+```
+DB_URL=mongodb://my_root:my_password@mongodb:27017
+DB_NAME=challenge
+TRANSACTION_APP_PORT=3000
+ANTI_FRAUD__APP_PORT=3001
+KAFKA_BROKER_URL=kafka:29092
+KAFKA_CLIENT_ID=kafka_client
+KAFKA_TRANSACTION_CONSUMER_ID=transaction_consumer
+KAFKA_ANTI_FRAUD_CLIENT_ID=antifraud_client
+KAFKA_ANTI_FRAUD_CONSUMER_ID=anti_fraud_consumer
+```
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+2. Each app is configured on the `docker-compose.yml`. A recommended way to run the application could be:
+   - The `zookeeper` service should be run first. This is due the service sometimes takes some time to be ready and
+   the `kafka` service fails if it is not completely ready.
+   ```
+   docker-compose up zookeeper
+   ```
+   - The `mongodb`, `kafka` can be run at the same time.
+   ```
+   docker-compose up mongodb kafka
+   ```
+   - Lastly the `transactions` and `anti-fraud` services can be run at the same time or independently.
+   ```
+   docker-compose up transaction
+   docker-compose up anti-fraud
+   ```
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+# API Documentation
 
-Every transaction with a value greater than 1000 should be rejected.
+Two endpoints were implemented:
+- **Create a transaction**
+```http request
+POST http://localhost:3000/transactions
+Content-Type: application/json
+{
+  "accountExternalIdDebit": "652cdc41774fa79c0dd31486",
+  "accountExternalIdCredit": "652cd6570ac46440d6b9e1a5",
+  "transferTypeId": 1,
+  "value": 1234
+}
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+Response
+{
+    "transactionExternalId": "652cdc41774fa79c0dd31485",
+    "transactionType": {
+        "name": 1
+    },
+    "transactionStatus": {
+        "name": "pending"
+    },
+    "value": 1234,
+    "createdAt": "2023-10-16T16:46:25.236Z"
+}
+```
+- **Retrieve a transaction**
+```http request
+GET http://localhost:3000/transactions/<transactionExternalId>
+
+Response
+{
+    "transactionExternalId": "652cdc41774fa79c0dd31485",
+    "transactionType": {
+        "name": 1
+    },
+    "transactionStatus": {
+        "name": "rejected"
+    },
+    "value": 1234,
+    "createdAt": "2023-10-16T16:46:25.236Z"
+}
 ```
 
 # Tech Stack
 
 <ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
+  <li> NestJS </li>
+  <li> MongoDB </li>
+  <li> Kafka </li>
+  <li> Kafdrop </li>
+  <li> Docker </li>
 </ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.

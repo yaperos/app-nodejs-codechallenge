@@ -1,47 +1,44 @@
 import {Inject, Injectable} from '@nestjs/common'
 import { ClientKafka } from "@nestjs/microservices"
-import { Types } from 'mongoose'
 import { TransactionRepository } from './ms-transactions.repository'
-import { TransactionStatus } from './ms-transactions.constants'
 import { TransactionDocument } from "./ms-transactions.schema"
 import { CreateTransactionDto } from './dto/create-transaction.dto'
-import { UpdateTransactionDto } from './dto/update-transaction.dto'
+import { RetrieveTransactionDto } from './dto/retrieve-transaction.dto'
 import { TransactionCreatedEvent } from './events/transaction-created.event'
 
 @Injectable()
 export class TransactionService {
   constructor(
     private readonly transactionRepository: TransactionRepository,
-    @Inject('transaction-service')
+    @Inject('KAFKA_TRANSACTION_SERVICE')
     private readonly kafkaClient: ClientKafka,
   ) {}
 
   async create(createTransactionDto: CreateTransactionDto) {
-    const transaction: TransactionDocument = await this.transactionRepository.create({
-      ...createTransactionDto,
-      createdAt: new Date(),
-      transactionExternalId: new Types.ObjectId(),
-      status: TransactionStatus.PENDING
-    })
+    const transaction: TransactionDocument = await this.transactionRepository.create(createTransactionDto)
 
     const payload: TransactionCreatedEvent = new TransactionCreatedEvent(
-      { transactionId: transaction.transactionExternalId, status: transaction.status }
+      { transactionExternalId: transaction.transactionExternalId }
     )
-    console.log(`Sending event ${payload}`)
     this.kafkaClient.emit('transaction_created', payload)
+    console.log(`Emitting event transaction_created: ${payload}`)
 
-    return transaction
+    return new RetrieveTransactionDto({ ...transaction })
   }
 
-  update(updateTransactionDto: UpdateTransactionDto) {
-    const { transactionId, status } = updateTransactionDto
-    return this.transactionRepository.findOneAndUpdate(
-      {transactionId}, {status}
+  async update(payload: any) {
+    const { transactionExternalId, status } = payload
+    console.log(`Transaction ${transactionExternalId} status updated: ${status}`)
+    await this.transactionRepository.findOneAndUpdate(
+      { transactionExternalId }, { status }
     )
   }
 
-  findOne(transactionId: string) {
-    return this.transactionRepository.findOne({transactionId})
+  async findOne(transactionExternalId: string) {
+    const retrievedDocument: TransactionDocument = await this.transactionRepository.findOne(
+      { transactionExternalId }
+    )
+    return new RetrieveTransactionDto({ ...retrievedDocument })
   }
 
   findAll() {
