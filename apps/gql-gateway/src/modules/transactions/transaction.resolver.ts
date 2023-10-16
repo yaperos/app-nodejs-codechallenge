@@ -5,7 +5,7 @@ import {
   TransactionRequest,
   TransactionResponse,
 } from './transaction.schema';
-import { Logger } from 'modules/logger/logger.service';
+import { Logger } from '@logger/logger.service';
 
 @Resolver()
 export class TransactionResolver {
