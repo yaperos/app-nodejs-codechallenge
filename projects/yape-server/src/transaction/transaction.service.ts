@@ -132,10 +132,9 @@ export class TransactionService {
       if (transaction) {
         if (data.status == 'succeeded') {
           transaction.status = StatusTransaction.APPROVED;
-        } else {
+        } else if(data.status == StatusTransaction.REJECTED) {
           transaction.status = StatusTransaction.REJECTED;
         }
-
         await this._transactionRepository.save(transaction);
       }
     } catch (err) {
