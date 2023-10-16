@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { LoggerModule } from 'modules/logger/logger.module';
+import { LoggerModule } from '@logger/logger.module';
 import { AntifraudModule } from './modules/antifraud/antifraud.module';
 import { ConfigModule } from '@nestjs/config';
 

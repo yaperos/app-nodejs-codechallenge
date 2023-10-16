@@ -2,7 +2,7 @@ import 'config/env/env.config';
 import { NestFactory } from '@nestjs/core';
 import { AntifraudServiceModule } from './antifraud-service.module';
 import { ValidationPipe } from '@nestjs/common';
-import { Logger } from 'modules/logger/logger.service';
+import { Logger } from '@logger/logger.service';
 import { KAFKA_CLIENT_CONFIG } from './config/kafka';
 
 const logger = new Logger('Antifraud Service');

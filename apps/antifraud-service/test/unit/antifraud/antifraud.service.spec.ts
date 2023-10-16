@@ -1,43 +1,42 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AntifraudService } from './antifraud.service';
-import { ClientKafka } from '@nestjs/microservices';
+import { AntifraudService } from '../../../src/modules/antifraud/antifraud.service';
+import { UPDATE_TRANSACTION_STATUS } from 'constants/kafka-topics';
+const mockEmit = jest.fn();
 
 describe('AntifraudService', () => {
-  let antifraudService: AntifraudService;
-  let kafkaClient: Partial<ClientKafka>;
+  let testingModule: TestingModule;
+  let service: AntifraudService;
 
   beforeEach(async () => {
-    kafkaClient = {
-      emit: jest.fn(),
-    };
-
-    const module: TestingModule = await Test.createTestingModule({
+    testingModule = await Test.createTestingModule({
       providers: [
         AntifraudService,
         {
           provide: 'KAFKA_CLIENT',
-          useValue: kafkaClient,
+          useFactory: () => ({
+            emit: mockEmit,
+          }),
         },
       ],
     }).compile();
 
-    antifraudService = module.get<AntifraudService>(AntifraudService);
+    service = testingModule.get<AntifraudService>(AntifraudService);
   });
 
   describe('validateTransaction', () => {
     it('should validate a transaction with a value over 1000', () => {
-      antifraudService.validateTransaction('transactionId1', 1500);
-      expect(kafkaClient.emit).toHaveBeenCalledWith(
-        'UPDATE_TRANSACTION_STATUS',
-        JSON.stringify({ transactionId: 'transactionId1', status: 'REJECTED' }),
+      service.validateTransaction('transactionId1', 1500);
+      expect(mockEmit).toHaveBeenCalledWith(
+        UPDATE_TRANSACTION_STATUS,
+        JSON.stringify({ transactionId: 'transactionId1', status: 3 }),
       );
     });
 
     it('should validate a transaction with a value of 1000 or less', () => {
-      antifraudService.validateTransaction('transactionId2', 900);
-      expect(kafkaClient.emit).toHaveBeenCalledWith(
-        'UPDATE_TRANSACTION_STATUS',
-        JSON.stringify({ transactionId: 'transactionId2', status: 'APPROVED' }),
+      service.validateTransaction('transactionId2', 900);
+      expect(mockEmit).toHaveBeenCalledWith(
+        UPDATE_TRANSACTION_STATUS,
+        JSON.stringify({ transactionId: 'transactionId2', status: 2 }),
       );
     });
   });

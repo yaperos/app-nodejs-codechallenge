@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TransactionModule } from './modules/transaction/transaction.module';
 import { ConfigModule } from '@nestjs/config';
-import { LoggerModule } from 'modules/logger/logger.module';
+import { LoggerModule } from '@logger/logger.module';
 
 @Module({
   imports: [

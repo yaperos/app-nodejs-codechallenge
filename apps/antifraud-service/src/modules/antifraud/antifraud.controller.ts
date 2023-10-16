@@ -1,7 +1,7 @@
 import { Controller, ValidationPipe } from '@nestjs/common';
 import { AntifraudService } from './antifraud.service';
 import { AntifraudRequestDto } from './dto/antifraud.dto';
-import { Logger } from 'modules/logger/logger.service';
+import { Logger } from '@logger/logger.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { VALIDATE_TRANSACTION_AMOUNT } from 'constants/kafka-topics';
 
