@@ -5,14 +5,14 @@ import { CreateTransactionEmitter } from "../emitter/create-transaction.emitter"
 import { Status } from "../enums/status.enum";
 import { TransactionType } from "../enums/transaction-type.enum";
 import { Repository } from "typeorm";
-import { Transaction as TransactionEntity } from "src/entities/transaction.entity";
+import { Transaction as TransactionEntity } from "../entities/transaction.entity";
 import { Transaction as TransactionObject } from "../objects/transaction";
 
-import { ExceptionCodes } from "src/enums/exception-code.enum";
-import { TransactionNotFoundException } from "src/configuration/filters/exceptions/transaction-not-found.exception";
-import { TransactionTruncatedException } from "src/configuration/filters/exceptions/transaction-truncated.exception";
-import { CreateTransactionInput } from "src/objects/inputs/create-transaction.input";
-import { OrmTransactionException } from "src/configuration/filters/exceptions/orm-transaction.exception";
+import { ExceptionCodes } from "../enums/exception-code.enum";
+import { TransactionNotFoundException } from "../configuration/filters/exceptions/transaction-not-found.exception";
+import { TransactionTruncatedException } from "../configuration/filters/exceptions/transaction-truncated.exception";
+import { CreateTransactionInput } from "../objects/inputs/create-transaction.input";
+import { OrmTransactionException } from "../configuration/filters/exceptions/orm-transaction.exception";
 
 @Injectable()
 export class TransactionService {
@@ -33,7 +33,7 @@ export class TransactionService {
       catchError((err) => {
         throw new OrmTransactionException({
           id,
-          message: err.message || `Something went wrong with transaction`,
+          message: err?.message || `Something went wrong with the operation`,
           status: HttpStatus.CONFLICT,
         });
       }),
@@ -79,9 +79,10 @@ export class TransactionService {
       })
     ).pipe(
       catchError((err) => {
-        console.error(err);
         throw new TransactionTruncatedException({
-          message: `Something went wrong during the creation of the transaction`,
+          message:
+            err?.message ||
+            `Something went wrong during the creation of the transaction`,
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           code: ExceptionCodes.TX_NOT_SAVED,
         });
@@ -119,10 +120,11 @@ export class TransactionService {
     ).pipe(
       tap((result) => {
         if (!result) {
-          throw new TransactionTruncatedException({
+          throw new TransactionNotFoundException({
             id,
             message: `Transaction ${id} was not found`,
-            code: ExceptionCodes.TX_NOT_UPDATED,
+            code: ExceptionCodes.TX_NOT_FOUND,
+            status: HttpStatus.NOT_FOUND,
           });
         }
       }),

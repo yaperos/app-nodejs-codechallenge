@@ -1,5 +1,5 @@
 import { ConfigService } from "@nestjs/config";
-import { Transaction } from "src/entities/transaction.entity";
+import { Transaction } from "../../entities/transaction.entity";
 import { DataSource } from "typeorm";
 export const databaseProviders = [
   {
