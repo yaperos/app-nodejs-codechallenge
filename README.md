@@ -15,7 +15,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd api-transaction
+  cd app-nodejs-codechallenge
 ```
 
 Install Docker Images
