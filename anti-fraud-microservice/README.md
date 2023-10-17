@@ -1,5 +1,5 @@
 ## Description
-Anti-Fraud Microservice built with javascript Nestjs, Postgres, TypeOrm, Graphql, Kafka and docker technologies.
+Anti-Fraud Microservice built Nestjs, Postgres, TypeOrm, Graphql, Kafka and docker technologies.
 
 ## Installation
 

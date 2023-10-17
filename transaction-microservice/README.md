@@ -1,5 +1,5 @@
 ## Description
-Transaction Microservice built with javascript Nestjs, Postgres, TypeOrm, Graphql, Kafka and docker technologies.
+Transaction Microservice built with Nestjs, Postgres, TypeOrm, Graphql, Kafka and docker technologies.
 
 ## Installation
 
