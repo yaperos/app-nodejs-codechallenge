@@ -123,7 +123,6 @@ export class CreateTransactionImpl implements CreateTransaction {
         .message('Transaction created successfully')
         .build();
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException(error.message);
     }
   }
