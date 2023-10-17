@@ -7,4 +7,7 @@ export interface TransactionRepository {
     transactionId: string,
     transaction: Partial<Transaction>,
   ): Promise<Transaction>;
+  findLastTransactionByAccountExternalIdDebit(
+    accountExternalIdDebit: string,
+  ): Promise<Transaction>;
 }
