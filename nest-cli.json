@@ -5,20 +5,11 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/app-nodejs-codechallenge/tsconfig.app.json"
+    "tsConfigPath": "apps/transaction/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/app-nodejs-codechallenge",
+  "root": "apps/transaction",
   "projects": {
-    "app-nodejs-codechallenge": {
-      "type": "application",
-      "root": "apps/app-nodejs-codechallenge",
-      "entryFile": "main",
-      "sourceRoot": "apps/app-nodejs-codechallenge/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/app-nodejs-codechallenge/tsconfig.app.json"
-      }
-    },
     "transaction": {
       "type": "application",
       "root": "apps/transaction",
