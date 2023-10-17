@@ -1,0 +1,68 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TranferType {
+  id: Int!
+  name: String!
+  transactions: [Transaction!]
+}
+
+type TransactionStatus {
+  id: Int!
+  name: String!
+  transactions: [Transaction!]
+}
+
+type Transaction {
+  id: Int!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  value: Int!
+  tranferTypeId: Int!
+  transactionStatusId: Int!
+  tranferType: TranferType!
+  transactionStatus: TransactionStatus!
+}
+
+type Query {
+  getAllTransacion: [Transaction!]!
+  getOneTransacion(id: Int!): Transaction!
+  tranferTypes: [TranferType!]!
+  tranferType(id: Int!): TranferType!
+  transactionStatuss: [TransactionStatus!]!
+  transactionStatusbyId(id: Int!): TransactionStatus!
+  transactionStatusbyName(name: String!): TransactionStatus!
+}
+
+type Mutation {
+  createTransacion(createTransactionInput: CreateTransactionInput!): Transaction!
+  updateTransaction(updateTransactionInput: UpdateTransactionInput!): Transaction!
+  createTranferType(createTranferTypeInput: CreateTranferTypeInput!): TranferType!
+  createTransactionStatus(createTransactionStatusInput: CreateTransactionStatusInput!): TransactionStatus!
+}
+
+input CreateTransactionInput {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  value: Int!
+  transactionStatusId: Int!
+  tranferTypeId: Int!
+}
+
+input UpdateTransactionInput {
+  id: Int!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  value: Int!
+  transactionStatusId: Int!
+  tranferTypeId: Int!
+}
+
+input CreateTranferTypeInput {
+  name: String!
+}
+
+input CreateTransactionStatusInput {
+  name: String!
+}

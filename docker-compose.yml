@@ -1,25 +1,66 @@
-version: "3.7"
+version: '3.8'
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:6.1.1
+    ports:
+      - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+    image: confluentinc/cp-kafka:6.1.1    
+    depends_on:
+      - zookeeper
     ports:
-      - 9092:9092
+      - '9092:9092'
+    expose:
+      - '29092'
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://172.17.0.1:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
+      KAFKA_MIN_INSYNC_REPLICAS: '1'    
+    volumes:
+      - ./data/kafka:/var/lib/kafka/data
+    user: root
+  postgres:
+    container_name: postgres    
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+  anti-fraud-microservice:
+    container_name: anti-fraud-microservice
+    build: ./anti-fraud-microservice
+    ports:
+      - 3000:3000
+    volumes:
+      - ./anti-fraud-microservice:/app
+    environment:
+      - KAFKA_HOST=${KAFKA_HOST} 
+    depends_on:
+      - kafka
+  transaction-microservice:
+    container_name: transaction-microservice
+    build: ./transaction-microservice
+    ports:
+      - 3001:3001 
+    volumes:
+      - ./transaction-microservice:/app
+    environment: 
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - KAFKA_HOST=${KAFKA_HOST}
+          
+    depends_on:
+      - kafka
+      - postgres

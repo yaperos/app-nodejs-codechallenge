@@ -1,0 +1,1 @@
+SELECT 'CREATE DATABASE postgresdb'
