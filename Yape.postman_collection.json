@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "5ed3b755-6a5c-4214-a33c-c09ea8df54a0",
+		"name": "Yape",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7144879",
+		"_collection_link": "https://solar-rocket-393947.postman.co/workspace/My-Workspace~25b79d74-032a-4457-86ee-367f2b48a15b/collection/7144879-5ed3b755-6a5c-4214-a33c-c09ea8df54a0?action=share&source=collection_link&creator=7144879"
+	},
+	"item": [
+		{
+			"name": "ms-account-management",
+			"item": [
+				{
+					"name": "accounts",
+					"item": [
+						{
+							"name": "Create Account",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"juan.perez@gmail.com\",\r\n    \"phone\": \"912345678\",\r\n    \"password\": \"123456\",\r\n    \"firstName\": \"Juan\",\r\n    \"lastName\": \"Perez\",\r\n    \"documentType\": \"DNI\",\r\n    \"documentNumber\": \"87654321\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3010/api/v1/accounts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3010",
+									"path": [
+										"api",
+										"v1",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Account",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3010/api/v1/accounts/c1395aa6-68bb-4d65-9e99-1847b9de291b",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3010",
+									"path": [
+										"api",
+										"v1",
+										"accounts",
+										"c1395aa6-68bb-4d65-9e99-1847b9de291b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Account",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"Bryan Edmundo\",\r\n    \"lastName\": \"Zavala Valdivia\",\r\n    \"status\": \"ACTIVE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3010/api/v1/accounts/c1395aa6-68bb-4d65-9e99-1847b9de291b",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3010",
+									"path": [
+										"api",
+										"v1",
+										"accounts",
+										"c1395aa6-68bb-4d65-9e99-1847b9de291b"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "balance",
+					"item": [
+						{
+							"name": "Create Account Balance",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": \"df104e81-0c12-461a-9399-958e5ff90fe8\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3010/api/v1/balance/account-balance",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3010",
+									"path": [
+										"api",
+										"v1",
+										"balance",
+										"account-balance"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Account Balance",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3010/api/v1/balance/account-balance/bf3f74a5-1d8b-4f2d-b117-ba71098530f7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3010",
+									"path": [
+										"api",
+										"v1",
+										"balance",
+										"account-balance",
+										"bf3f74a5-1d8b-4f2d-b117-ba71098530f7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Account Balance By User Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3010/api/v1/balance/account-balance/user/c1395aa6-68bb-4d65-9e99-1847b9de291b",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3010",
+									"path": [
+										"api",
+										"v1",
+										"balance",
+										"account-balance",
+										"user",
+										"c1395aa6-68bb-4d65-9e99-1847b9de291b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Balance Transaction",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accountBalanceId\": \"bf3f74a5-1d8b-4f2d-b117-ba71098530f7\",\r\n    \"userId\": \"df104e81-0c12-461a-9399-958e5ff90fe8\",\r\n    \"transactionType\": \"CREDIT\",\r\n    \"description\": \"Yape transaction\",\r\n    \"amount\": 1000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3010/api/v1/balance/balance-transaction",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3010",
+									"path": [
+										"api",
+										"v1",
+										"balance",
+										"balance-transaction"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ms-transactional",
+			"item": [
+				{
+					"name": "transactions",
+					"item": [
+						{
+							"name": "Create Transaction",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"accountExternalIdDebit\": \"bf3f74a5-1d8b-4f2d-b117-ba71098530f7\",\r\n  \"accountExternalIdCredit\": \"dca4afb3-4191-41cc-9a85-eed6f7e89fec\",\r\n  \"channel\": \"APP\",\r\n  \"transferType\": \"DEFAULT\",\r\n  \"value\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3009/api/v1/transactions",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3009",
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find Transaction",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3009/api/v1/transactions/08a468f1-e37c-47ca-b520-b1e0d1924971",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3009",
+									"path": [
+										"api",
+										"v1",
+										"transactions",
+										"08a468f1-e37c-47ca-b520-b1e0d1924971"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
