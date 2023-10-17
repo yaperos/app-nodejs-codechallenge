@@ -14,7 +14,7 @@ import {
   TransactionType,
 } from 'src/balance/domain/entity/balance-transaction';
 import { UpdateAccountBalance } from 'src/balance/domain/use-case/update-account-balance';
-import { FindAccountBalance } from 'src/balance/domain/use-case/find-account-balance';
+import { FindAccountBalanceByUser } from 'src/balance/domain/use-case/find-account-balance-by-user';
 
 @Injectable()
 export class CreateBalanceTransactionImpl implements CreateBalanceTransaction {
@@ -22,8 +22,8 @@ export class CreateBalanceTransactionImpl implements CreateBalanceTransaction {
     @Inject('BALANCE_TRANSACTION_REPOSITORY')
     private readonly balanceTransactionRepository: BalanceTransactionRepository,
     private readonly context: BalanceTransactionContext,
-    @Inject('FIND_ACCOUNT_BALANCE')
-    private readonly findAccountBalance: FindAccountBalance,
+    @Inject('FIND_ACCOUNT_BALANCE_BY_USER')
+    private readonly findAccountBalanceByUser: FindAccountBalanceByUser,
     @Inject('UPDATE_ACCOUNT_BALANCE')
     private readonly updateAccountBalance: UpdateAccountBalance,
   ) {}
@@ -32,7 +32,9 @@ export class CreateBalanceTransactionImpl implements CreateBalanceTransaction {
     dto: CreateBalanceTransactionRequestDto,
   ): Promise<GenericResponseDto> {
     try {
-      const accountBalance = await this.findAccountBalance.execute(dto.userId);
+      const accountBalance = await this.findAccountBalanceByUser.execute(
+        dto.userId,
+      );
 
       if (
         dto.transactionType === TransactionType.DEBIT &&

@@ -1,3 +1,4 @@
+import { HttpService } from '@nestjs/axios';
 import {
   Inject,
   Injectable,
@@ -13,6 +14,7 @@ import { TransactionRepository } from 'src/transactions/domain/repository/transa
 import { CreateTransaction } from 'src/transactions/domain/use-case/create-transation';
 import { ProcessRiskLevel } from 'src/transactions/domain/use-case/process-risk-level';
 import { v4 as uuidv4 } from 'uuid';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class CreateTransactionImpl implements CreateTransaction {
@@ -21,6 +23,7 @@ export class CreateTransactionImpl implements CreateTransaction {
     private readonly transactionRepository: TransactionRepository,
     @Inject('PROCESS_RISK_LEVEL')
     private readonly processRiskLevel: ProcessRiskLevel,
+    private readonly httpService: HttpService,
   ) {}
 
   public async execute(
@@ -48,6 +51,42 @@ export class CreateTransactionImpl implements CreateTransaction {
             status: TransactionStatus.APPROVED,
           },
         );
+
+        const debitAccountResponse = await firstValueFrom(
+          this.httpService.get(
+            `api/v1/balance/account-balance/${dto.accountExternalIdDebit}`,
+          ),
+        );
+
+        if (debitAccountResponse.status === 200) {
+          await firstValueFrom(
+            this.httpService.post('api/v1/balance/balance-transaction', {
+              accountBalanceId: transaction.accountExternalIdDebit,
+              userId: debitAccountResponse.data.userId,
+              transactionType: 'DEBIT',
+              description: `Transaction from ${dto.channel} channel and ${dto.transferType} transfer type`,
+              amount: transaction.amount,
+            }),
+          );
+        }
+
+        const creditAccountResponse = await firstValueFrom(
+          this.httpService.get(
+            `api/v1/balance/account-balance/${dto.accountExternalIdCredit}`,
+          ),
+        );
+
+        if (creditAccountResponse.status === 200) {
+          await firstValueFrom(
+            this.httpService.post('api/v1/balance/balance-transaction', {
+              accountBalanceId: transaction.accountExternalIdCredit,
+              userId: creditAccountResponse.data.userId,
+              transactionType: 'CREDIT',
+              description: `Transaction from ${dto.channel} channel and ${dto.transferType} transfer type`,
+              amount: transaction.amount,
+            }),
+          );
+        }
       }
 
       if (riskLevel >= 0.3 && riskLevel <= 0.8) {
@@ -84,6 +123,7 @@ export class CreateTransactionImpl implements CreateTransaction {
         .message('Transaction created successfully')
         .build();
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(error.message);
     }
   }

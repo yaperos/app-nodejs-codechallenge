@@ -19,6 +19,12 @@ export class PostgreAccountBalanceRepository
   }
 
   public async findAccountBalance(
+    accountBalanceId: string,
+  ): Promise<AccountBalance | null> {
+    return this.accountBalanceRepository.findOneBy({ accountBalanceId });
+  }
+
+  public async findAccountBalanceByUser(
     userId: string,
   ): Promise<AccountBalance | null> {
     return this.accountBalanceRepository.findOneBy({ userId });

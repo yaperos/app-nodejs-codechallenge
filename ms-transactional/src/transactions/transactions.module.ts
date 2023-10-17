@@ -10,9 +10,18 @@ import { ProcessRiskLevelImpl } from './application/use-case/process-risk-level-
 import { CreateTransactionImpl } from './application/use-case/create-transaction-impl';
 import { FindTransactionImpl } from './application/use-case/find-transaction-impl';
 import { FindTransactionController } from './infrastructure/rest/find-transaction.controller';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    HttpModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        baseURL: config.get<string>('ACCOUNT_MANAGEMENT_API_URL'),
+      }),
+    }),
     MongooseModule.forFeature([
       { name: MongoTransaction.name, schema: MongoTransactionSchema },
     ]),

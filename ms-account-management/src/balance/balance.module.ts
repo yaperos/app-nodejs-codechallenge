@@ -8,9 +8,11 @@ import { PostgreAccountBalanceRepository } from './infrastructure/repository/pos
 import { CreateBalanceTransactionController } from './infrastructure/rest/create-balance-transaction.controller';
 import { PostgreBalanceTransactionRepository } from './infrastructure/repository/postgre-balance-transaction.repository';
 import { CreateBalanceTransactionImpl } from './application/use-case/create-balance-transaction/create-balance-transaction-impl';
-import { FindAccountBalanceImpl } from './application/use-case/find-account-balance-impl';
+import { FindAccountBalanceByUserImpl } from './application/use-case/find-account-balance-by-user-impl';
 import { UpdateAccountBalanceImpl } from './application/use-case/update-account-balance-impl';
 import { BalanceTransactionContext } from './application/use-case/create-balance-transaction/balance-transaction.context';
+import { FindAccountBalanceByUserController } from './infrastructure/rest/find-account-balance-by-user.controller';
+import { FindAccountBalanceImpl } from './application/use-case/find-account-balance-impl';
 import { FindAccountBalanceController } from './infrastructure/rest/find-account-balance.controller';
 
 @Module({
@@ -24,6 +26,7 @@ import { FindAccountBalanceController } from './infrastructure/rest/find-account
     CreateAccountBalanceController,
     CreateBalanceTransactionController,
     FindAccountBalanceController,
+    FindAccountBalanceByUserController,
   ],
   providers: [
     BalanceTransactionContext,
@@ -46,6 +49,10 @@ import { FindAccountBalanceController } from './infrastructure/rest/find-account
     {
       provide: 'FIND_ACCOUNT_BALANCE',
       useClass: FindAccountBalanceImpl,
+    },
+    {
+      provide: 'FIND_ACCOUNT_BALANCE_BY_USER',
+      useClass: FindAccountBalanceByUserImpl,
     },
     {
       provide: 'UPDATE_ACCOUNT_BALANCE',

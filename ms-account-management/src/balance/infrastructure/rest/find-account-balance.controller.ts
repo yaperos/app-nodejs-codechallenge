@@ -9,10 +9,10 @@ export class FindAccountBalanceController {
     private readonly findAccountBalance: FindAccountBalance,
   ) {}
 
-  @Get('/user/:userId')
+  @Get(':accountBalanceId')
   public async execute(
-    @Param('userId') userId: string,
+    @Param('accountBalanceId') accountBalanceId: string,
   ): Promise<AccountBalanceDto> {
-    return await this.findAccountBalance.execute(userId);
+    return await this.findAccountBalance.execute(accountBalanceId);
   }
 }

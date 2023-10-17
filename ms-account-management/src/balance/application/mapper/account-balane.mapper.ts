@@ -5,6 +5,7 @@ export abstract class AccountBalanceMapper {
   public static toDto(accountBalance: AccountBalance): AccountBalanceDto {
     return AccountBalanceDto.builder()
       .accountBalanceId(accountBalance.accountBalanceId)
+      .userId(accountBalance.userId)
       .amount(accountBalance.amount)
       .build();
   }

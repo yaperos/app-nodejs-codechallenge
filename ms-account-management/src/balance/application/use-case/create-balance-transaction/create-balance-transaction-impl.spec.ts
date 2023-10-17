@@ -5,7 +5,7 @@ import { BalanceTransactionContext } from './balance-transaction.context';
 import { CreateBalanceTransactionRequestDto } from 'src/balance/infrastructure/dto/create-balance-transaction-request.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { TransactionType } from 'src/balance/domain/entity/balance-transaction';
-import { FindAccountBalance } from 'src/balance/domain/use-case/find-account-balance';
+import { FindAccountBalanceByUser } from 'src/balance/domain/use-case/find-account-balance-by-user';
 import { UpdateAccountBalance } from 'src/balance/domain/use-case/update-account-balance';
 import { AccountBalance } from 'src/balance/domain/entity/account-balance';
 import { GenericResponseDto } from 'src/accounts/domain/dto/generic-response.dto';
@@ -14,7 +14,7 @@ import { InternalServerErrorException } from '@nestjs/common';
 describe('CreateBalanceTransactionImpl', () => {
   let service: CreateBalanceTransactionImpl;
   let repository: BalanceTransactionRepository;
-  let findAccountBalance: FindAccountBalance;
+  let findAccountBalanceByUser: FindAccountBalanceByUser;
   let updateAccountBalance: UpdateAccountBalance;
 
   beforeEach(async () => {
@@ -29,7 +29,7 @@ describe('CreateBalanceTransactionImpl', () => {
           },
         },
         {
-          provide: 'FIND_ACCOUNT_BALANCE',
+          provide: 'FIND_ACCOUNT_BALANCE_BY_USER',
           useValue: {
             execute: jest.fn(),
           },
@@ -49,7 +49,9 @@ describe('CreateBalanceTransactionImpl', () => {
     repository = module.get<BalanceTransactionRepository>(
       'BALANCE_TRANSACTION_REPOSITORY',
     );
-    findAccountBalance = module.get<FindAccountBalance>('FIND_ACCOUNT_BALANCE');
+    findAccountBalanceByUser = module.get<FindAccountBalanceByUser>(
+      'FIND_ACCOUNT_BALANCE_BY_USER',
+    );
     updateAccountBalance = module.get<UpdateAccountBalance>(
       'UPDATE_ACCOUNT_BALANCE',
     );
@@ -65,7 +67,7 @@ describe('CreateBalanceTransactionImpl', () => {
         updatedAt: new Date(),
       };
 
-      (findAccountBalance.execute as jest.Mock).mockResolvedValueOnce(
+      (findAccountBalanceByUser.execute as jest.Mock).mockResolvedValueOnce(
         accountBalanceFound,
       );
 
@@ -111,7 +113,7 @@ describe('CreateBalanceTransactionImpl', () => {
         updatedAt: new Date(),
       };
 
-      (findAccountBalance.execute as jest.Mock).mockResolvedValueOnce(
+      (findAccountBalanceByUser.execute as jest.Mock).mockResolvedValueOnce(
         accountBalanceFound,
       );
 
