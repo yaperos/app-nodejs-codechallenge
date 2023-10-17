@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, Generated } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Generated,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'transactions' })
 export class Transaction {
@@ -8,7 +14,7 @@ export class Transaction {
   @Column()
   amount: number;
 
-  @Column({ nullable: false })
+  @Column({ default: 'pending' })
   status: string;
 
   @Column()
@@ -21,4 +27,7 @@ export class Transaction {
 
   @Column({ default: 1 })
   tranferTypeId: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

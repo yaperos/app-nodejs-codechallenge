@@ -5,6 +5,11 @@ import { CreateTransactionDTO } from './dtos/create-transaactions.dto';
 import { Repository } from 'typeorm';
 import { ClientKafka } from '@nestjs/microservices';
 import { TransactionCreatedEvent } from './transaction-created.event';
+import {
+  RetrievedTransactionDTO,
+  TransactionStatusDTO,
+  TransactionTypeDTO,
+} from './dtos/retrive-transaction.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -29,6 +34,31 @@ export class TransactionsService {
       ),
     );
     return transaction;
+  }
+
+  async fetchTransactions() {
+    return this.transactionRepository.find({});
+  }
+
+  async getTransactionById(id: string) {
+    const retrievedTransaction = await this.transactionRepository.findOneBy({
+      id: id,
+    });
+
+    const transactionTypeDTO = new TransactionTypeDTO();
+    const transactionStatusDTO = new TransactionStatusDTO();
+    const retrievedTransactionDTO = new RetrievedTransactionDTO();
+
+    transactionTypeDTO.name = String(retrievedTransaction.tranferTypeId);
+    transactionStatusDTO.name = retrievedTransaction.status;
+
+    retrievedTransactionDTO.transactionExternalId = retrievedTransaction.id;
+    retrievedTransactionDTO.amount = retrievedTransaction.amount;
+    retrievedTransactionDTO.createdAt = retrievedTransaction.createdAt;
+    retrievedTransactionDTO.transactionType = transactionTypeDTO;
+    retrievedTransactionDTO.transactionStatus = transactionStatusDTO;
+
+    return retrievedTransactionDTO;
   }
 
   async updateTransactionStatus(transactionId: string, status: string) {
