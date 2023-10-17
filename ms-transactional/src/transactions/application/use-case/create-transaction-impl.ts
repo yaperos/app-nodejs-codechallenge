@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { CreateTransactionRequestDto } from 'src/transactions/domain/dto/create-transaction-request.dto';
+import { GenericResponseDto } from 'src/transactions/domain/dto/generic-response.dto';
 import {
   Transaction,
   TransactionStatus,
@@ -11,6 +12,7 @@ import {
 import { TransactionRepository } from 'src/transactions/domain/repository/transaction.repository';
 import { CreateTransaction } from 'src/transactions/domain/use-case/create-transation';
 import { ProcessRiskLevel } from 'src/transactions/domain/use-case/process-risk-level';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class CreateTransactionImpl implements CreateTransaction {
@@ -21,14 +23,26 @@ export class CreateTransactionImpl implements CreateTransaction {
     private readonly processRiskLevel: ProcessRiskLevel,
   ) {}
 
-  public async excute(dto: CreateTransactionRequestDto): Promise<Transaction> {
+  public async execute(
+    dto: CreateTransactionRequestDto,
+  ): Promise<GenericResponseDto> {
     try {
-      let transaction = await this.transactionRepository.createTransaction(dto);
+      const riskLevel = await this.processRiskLevel.execute(dto);
 
-      const riskLevel = await this.processRiskLevel.execute(transaction);
+      const transactionData: Partial<Transaction> = {
+        transactionId: uuidv4(),
+        accountExternalIdDebit: dto.accountExternalIdDebit,
+        accountExternalIdCredit: dto.accountExternalIdCredit,
+        channel: dto.channel,
+        transferType: dto.transferType,
+        amount: dto.value,
+      };
+
+      const transaction =
+        await this.transactionRepository.createTransaction(transactionData);
 
       if (riskLevel < 0.3) {
-        transaction = await this.transactionRepository.updateTransaction(
+        await this.transactionRepository.updateTransaction(
           transaction.transactionId,
           {
             status: TransactionStatus.APPROVED,
@@ -37,7 +51,7 @@ export class CreateTransactionImpl implements CreateTransaction {
       }
 
       if (riskLevel >= 0.3 && riskLevel <= 0.8) {
-        transaction = await this.transactionRepository.updateTransaction(
+        await this.transactionRepository.updateTransaction(
           transaction.transactionId,
           {
             status: TransactionStatus.REJECTED,
@@ -52,7 +66,7 @@ export class CreateTransactionImpl implements CreateTransaction {
       }
 
       if (riskLevel >= 0.9) {
-        transaction = await this.transactionRepository.updateTransaction(
+        await this.transactionRepository.updateTransaction(
           transaction.transactionId,
           {
             status: TransactionStatus.REJECTED,
@@ -66,7 +80,9 @@ export class CreateTransactionImpl implements CreateTransaction {
         );
       }
 
-      return transaction;
+      return GenericResponseDto.builder()
+        .message('Transaction created successfully')
+        .build();
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

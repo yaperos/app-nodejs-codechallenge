@@ -1,5 +1,5 @@
-import { Transaction } from '../entity/transaction';
+import { CreateTransactionRequestDto } from '../dto/create-transaction-request.dto';
 
 export interface ProcessRiskLevel {
-  execute(transaction: Transaction): Promise<number>;
+  execute(transaction: CreateTransactionRequestDto): Promise<number>;
 }

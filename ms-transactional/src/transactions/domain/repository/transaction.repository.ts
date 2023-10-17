@@ -9,5 +9,5 @@ export interface TransactionRepository {
   ): Promise<Transaction>;
   findLastTransactionByAccountExternalIdDebit(
     accountExternalIdDebit: string,
-  ): Promise<Transaction>;
+  ): Promise<Transaction | null>;
 }

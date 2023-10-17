@@ -1,6 +1,6 @@
 import { CreateTransactionRequestDto } from '../dto/create-transaction-request.dto';
-import { Transaction } from '../entity/transaction';
+import { GenericResponseDto } from '../dto/generic-response.dto';
 
 export interface CreateTransaction {
-  excute(dto: CreateTransactionRequestDto): Promise<Transaction>;
+  execute(dto: CreateTransactionRequestDto): Promise<GenericResponseDto>;
 }
