@@ -58,7 +58,7 @@ KAFKA_TRANSACTIONS_CONSUMER_GROUP_ID='transactions-consumer'
 
 ```
 http request
-POST http://localhost:3000/transactions
+POST http://localhost:3000
 Content-Type: application/json
 {
   "accountExternalIdDebit": uuid,
