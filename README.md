@@ -69,14 +69,52 @@ You must have two resources:
 }
 ```
 
-## Optional
+# Solution proposal
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+The solution consists of an bff (Backend for frontend) and two microservices. The bff has the responsability of receiving the requests:
+- Transaction creation
+- Search transaction by transactionExternalId
+- List all transactions
 
-You can use Graphql;
+The transaction microservice creates the transaction with the initial state in PENDING, then validates the transaction created with the anti-fraud microservice which receives the value of the transaction created and if it exceeds the value of 1000 it's detected as fraud and the state change to REJECTED. In opposite case is detected as valid and the state change to APPROVED.
 
-# Send us your challenge
+## Requirements
+- Node 16
+- Docker cli
+- Docker compose cli
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## Installation
+First use docker compose to up database and kafka service in your local machine.
+```
+docker-compose -c docker-compose.yml up
+```
 
-If you have any questions, please let us know.
+### transaction-ms
+In a new console window (`cd transaction-ms`)
+```
+npm i
+cp .env.example .env
+npm run start
+```
+
+### fraud-detection-ms
+In a new console window (`cd fraud-detection-ms`)
+```
+npm i
+npm start
+```
+
+### bff
+In a new console window (`cd bff`)
+```
+npm i
+npm start
+npm run start
+```
+The project will be ready when in `bff` console windows show the following message
+![Bff screenshot](resources/console-bff-ready.jpg) 
+
+## Usage
+After installation steps to use the project you can use the swagger implementation to create, get and get all transactions. 
+
+Enter to [Bff host](http://localhost:3000)

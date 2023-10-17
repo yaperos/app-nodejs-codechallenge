@@ -5,6 +5,7 @@ services:
     ports:
       - "5432:5432"
     environment:
+      - POSTGRES_DB=transaction-db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   zookeeper:
