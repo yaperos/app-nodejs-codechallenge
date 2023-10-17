@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/api-transaction/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/api-transaction/tsconfig.app.json",
+    "plugins": ["@nestjs/swagger/plugin"] 
+  },
+  "monorepo": true,
+  "root": "apps/api-transaction",
+  "projects": {
+    "api-transaction": {
+      "type": "application",
+      "root": "apps/api-transaction",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-transaction/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-transaction/tsconfig.app.json"
+      }
+    },
+    "ms-transaction": {
+      "type": "application",
+      "root": "apps/ms-transaction",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-transaction/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-transaction/tsconfig.app.json"
+      }
+    },
+    "ms-anti-fraud": {
+      "type": "application",
+      "root": "apps/ms-anti-fraud",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-anti-fraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-anti-fraud/tsconfig.app.json"
+      }
+    },
+    "core-library": {
+      "type": "library",
+      "root": "libs/core-library",
+      "entryFile": "index",
+      "sourceRoot": "libs/core-library/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/core-library/tsconfig.lib.json"
+      }
+    }
+  }
+}

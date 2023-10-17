@@ -1,82 +1,82 @@
-# Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# Yape Code Challenge 🚀
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Follow the next steps for test locally the project, you could use visual studio code, and import the curls with postman.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
 
-# Problem
+## Run Locally
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Clone the project
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```bash
+  git clone https://github.com/migelbaez/app-nodejs-codechallenge.git
 ```
 
-# Tech Stack
+Go to the project directory
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```bash
+  cd api-transaction
 ```
 
-2. Resource to retrieve a transaction
+Install Docker Images
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+```bash
+  docker-compose up
 ```
 
-## Optional
+Install dependencies
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+```bash
+  npm install
+```
 
-You can use Graphql;
+Create DataBase
 
-# Send us your challenge
+```bash
+  nest build -c nest-cli.migrations.json
+  npx typeorm migration:run -d dist/out/apps/api-transaction/src/typeorm-cli.config
+```
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+Start api-transaction
 
-If you have any questions, please let us know.
+```bash
+  nest start
+```
+
+Start ms-transaction
+
+```bash
+  nest start ms-transaction
+```
+
+Start ms-anti-fraud
+
+```bash
+  nest start ms-anti-fraud
+```
+
+Test Api Create Transaction
+
+```bash
+  curl --location 'http://localhost:3000/transaction' \
+       --header 'Content-Type: application/json' \
+       --data '{
+               "accountExternalIdDebit": "80d9c31d-2068-44e5-a48f-4621545f6782",
+               "accountExternalIdCredit": "0ff63a47-1275-436a-89fa-25d1a9d4bb11",
+               "tranferTypeId": 1,
+               "value": 10000
+               }'
+
+```
+
+Test Api Get Transaction
+
+```bash
+  curl --location 'http://localhost:3000/transaction/2090a663-b6e7-4c60-b323-54ac442f2994'
+
+```
+## Authors
+
+- [github@migelbaez](https://www.github.com/migelbaez)
+- [linkedin@migelbaez](https://www.linkedin.com/in/miguel-b-aa530a225)
+
