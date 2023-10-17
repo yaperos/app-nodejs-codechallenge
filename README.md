@@ -64,7 +64,7 @@ Content-Type: application/json
   "accountExternalIdDebit": uuid,
   "accountExternalIdCredit": uuid,
   "transferTypeId": number,
-  "amount": number
+  "value": number
 }
 ```
 

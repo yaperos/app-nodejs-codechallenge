@@ -12,7 +12,7 @@ export class Transaction {
   id: string;
 
   @Column()
-  amount: number;
+  value: number;
 
   @Column({ default: 'pending' })
   status: string;

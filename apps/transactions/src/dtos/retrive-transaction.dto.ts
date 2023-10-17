@@ -10,6 +10,6 @@ export class RetrievedTransactionDTO {
   transactionExternalId: string;
   transactionType: TransactionTypeDTO;
   transactionStatus: TransactionStatusDTO;
-  amount: number;
+  value: number;
   createdAt: Date;
 }

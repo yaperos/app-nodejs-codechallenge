@@ -10,7 +10,7 @@ export class AntifraudService {
     private readonly antifraudClient: ClientKafka,
   ) {}
   handleTransactionCreated(transactionCreatedEvent) {
-    const newStatus = getTransactionStatus(transactionCreatedEvent.amount);
+    const newStatus = getTransactionStatus(transactionCreatedEvent.value);
     this.antifraudClient.emit(
       'transaction_processed',
       new TransactionProcessedEvent(transactionCreatedEvent.id, newStatus),

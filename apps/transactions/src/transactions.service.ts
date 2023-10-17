@@ -30,7 +30,7 @@ export class TransactionsService {
       new TransactionCreatedEvent(
         newTransactionRepository.id,
         process.env.TRANSACTION_PENDING_STATUS,
-        newTransactionRepository.amount,
+        newTransactionRepository.value,
       ),
     );
     return transaction;
@@ -53,7 +53,7 @@ export class TransactionsService {
     transactionStatusDTO.name = retrievedTransaction.status;
 
     retrievedTransactionDTO.transactionExternalId = retrievedTransaction.id;
-    retrievedTransactionDTO.amount = retrievedTransaction.amount;
+    retrievedTransactionDTO.value = retrievedTransaction.value;
     retrievedTransactionDTO.createdAt = retrievedTransaction.createdAt;
     retrievedTransactionDTO.transactionType = transactionTypeDTO;
     retrievedTransactionDTO.transactionStatus = transactionStatusDTO;
