@@ -1,3 +1,3 @@
 INSERT INTO antifraude
 (uuid, transactionValue, transactionStatus, created_at)
-VALUES('6ea54037-29fc-468c-96d0-47fb8e36ad5b', 10.66, 1, now());
+VALUES('675867b9-e318-44be-8560-774e59601340', 10.67, 1, now());
