@@ -1,73 +1,89 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Fintran API:
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Transaction app implemented with the following stack:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<ul>
+  <li> NestJS </li>
+  <li> PostgresSQL </li>
+  <li> Kafka </li>
+  <li> Kafdrop </li>
+  <li> Docker </li>
+</ul>
 
-## Description
+We used a microservices arquitecture.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## How to run the app?
 
-## Installation
+1. Create your .env:
 
-```bash
-$ npm install
+```
+TRANSACTION_PENDING_STATUS='pending'
+TRANSACTION_REJECTED_STATUS='rejected'
+TRANSACTION_SUCCESS_STATUS='success'
+
+TRANSACTIONS_API_PORT=3000
+
+DB_PORT=5432
+DB_HOST='0.0.0.0'
+DB_TYPE='postgres'
+DB_NAME='postgres'
+DB_USERNAME='postgres'
+DB_PASSWORD='postgres'
+
+KAFKA_SERVICE_NAME='TRANSACTION_SERVICE'
+KAFKA_BROKER='localhost:9092'
+KAFKA_TRANSACTIONS_CLIENT_ID='transactions'
+KAFKA_ANTIFRAUD_CONSUMER_GROUP_ID='antifraud-consumer'
+KAFKA_TRANSACTIONS_CONSUMER_GROUP_ID='transactions-consumer'
+
 ```
 
-## Running the app
+2. Initialize docker compose:
 
-```bash
-# development
-$ npm run start
+   ```
+   docker-compose up
+   ```
 
-# watch mode
-$ npm run start:dev
+3. Running the microservices in your local:
+   ```
+    nest start antifraud --watch
+   ```
+   ```
+   nest start transactions --watch
+   ```
 
-# production mode
-$ npm run start:prod
+## API
+
+**Create a transaction**
+
+```
+http request
+POST http://localhost:3000/transactions
+Content-Type: application/json
+{
+  "accountExternalIdDebit": uuid,
+  "accountExternalIdCredit": uuid,
+  "transferTypeId": number,
+  "amount": number
+}
 ```
 
-## Test
+**Retrieve a transaction**
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
+http request
+GET http://localhost:3000/<transactionId>
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Response
+{
+   "transactionExternalId": string,
+   "transactionType": {
+       "name": number
+   },
+   "transactionStatus": {
+       "name": string
+   },
+   "value": number,
+   "createdAt": date
+}
+```
