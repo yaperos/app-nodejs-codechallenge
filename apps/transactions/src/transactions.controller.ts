@@ -9,7 +9,7 @@ export class TransactionsController {
 
   @Post()
   createTransaction(@Body() newTransaction: CreateTransactionDTO) {
-    this.transactionsService.createTransaction(newTransaction);
+    return this.transactionsService.createTransaction(newTransaction);
   }
 
   @Get('/:id')
