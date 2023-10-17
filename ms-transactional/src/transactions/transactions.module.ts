@@ -12,9 +12,21 @@ import { FindTransactionImpl } from './application/use-case/find-transaction-imp
 import { FindTransactionController } from './infrastructure/rest/find-transaction.controller';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
+    ClientsModule.register([
+      {
+        name: 'KAFKA',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: ['localhost:9092'],
+          },
+        },
+      },
+    ]),
     HttpModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

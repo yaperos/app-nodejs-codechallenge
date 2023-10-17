@@ -15,6 +15,7 @@ import { CreateTransaction } from 'src/transactions/domain/use-case/create-trans
 import { ProcessRiskLevel } from 'src/transactions/domain/use-case/process-risk-level';
 import { v4 as uuidv4 } from 'uuid';
 import { firstValueFrom } from 'rxjs';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class CreateTransactionImpl implements CreateTransaction {
@@ -24,6 +25,8 @@ export class CreateTransactionImpl implements CreateTransaction {
     @Inject('PROCESS_RISK_LEVEL')
     private readonly processRiskLevel: ProcessRiskLevel,
     private readonly httpService: HttpService,
+    @Inject('KAFKA')
+    private readonly client: ClientProxy,
   ) {}
 
   public async execute(
@@ -113,7 +116,9 @@ export class CreateTransactionImpl implements CreateTransaction {
         );
         // TODO: Send notification to user (Kakfa)
         // TODO: Send notification to anti-fraud team (Kakfa)
-        // TODO: Block user account (Kakfa)
+        this.client.emit('block.account', {
+          accountExternalId: dto.accountExternalIdDebit,
+        });
         throw new InternalServerErrorException(
           'Transaction rejected and account blocked, please contact support',
         );
