@@ -1,5 +1,14 @@
 version: "3.7"
 services:
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: transactions_db
+      TZ: America/Lima
   postgres:
     image: postgres:14
     ports:
@@ -8,7 +17,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=transactions_db
-      - TZ=America/Lima
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:

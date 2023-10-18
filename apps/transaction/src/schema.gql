@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Transaction {
+type TransactionEntity {
   """ID field (uuid)"""
   id: String!
 
@@ -13,7 +13,7 @@ type Transaction {
   accountExternalIdCredit: String!
 
   """Tranfer type ID field (int)"""
-  tranferTypeId: Int!
+  transferTypeId: Int!
 
   """Status field (string)"""
   status: String!
@@ -38,7 +38,7 @@ type TransacTypeStatusName {
   name: String!
 }
 
-type GetTransactionOutput {
+type GetTransactionDto {
   """Transaction external ID field (string)"""
   transactionExternalId: String!
 
@@ -56,14 +56,14 @@ type GetTransactionOutput {
 }
 
 type Query {
-  transaction(id: String!): GetTransactionOutput!
+  transaction(id: String!): GetTransactionDto!
 }
 
 type Mutation {
-  createTransaction(createTransactionInput: CreateTransactionInput!): Transaction!
+  createTransaction(createTransactionInput: CreateTransactionDto!): TransactionEntity!
 }
 
-input CreateTransactionInput {
+input CreateTransactionDto {
   """External debit account ID field (uuid)"""
   accountExternalIdDebit: String!
 
@@ -71,7 +71,7 @@ input CreateTransactionInput {
   accountExternalIdCredit: String!
 
   """Tranfer type ID field (int)"""
-  tranferTypeId: Int!
+  transferTypeId: Int!
 
   """Value field (int)"""
   value: Int!

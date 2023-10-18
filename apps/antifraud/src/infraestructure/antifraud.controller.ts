@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, Payload } from '@nestjs/microservices';
 import { MessageBrokerDto } from 'apps/shared/message-broker.dto';
 import { AntifraudService } from '../application/antifraud.service';
 
@@ -7,8 +7,8 @@ import { AntifraudService } from '../application/antifraud.service';
 export class AntifraudController {
   constructor(private readonly antifraudService: AntifraudService) { }
 
-  @MessagePattern('transaction.created')
-  handleTransactionCreated(@Payload() message: MessageBrokerDto<number>) {
-    this.antifraudService.validateStatus(message);
+  @EventPattern('transaction.created')
+  handleTransactionCreated(@Payload() message: MessageBrokerDto<any>) {
+    this.antifraudService.validateStatus(message.content);
   }
 }

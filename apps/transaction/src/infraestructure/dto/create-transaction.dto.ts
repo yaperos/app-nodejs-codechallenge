@@ -3,7 +3,7 @@ import { IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 import { TransactionTypeId } from '../../domain/enums/transaction-type.enum';
 
 @InputType()
-export class CreateTransactionInput {
+export class CreateTransactionDto {
   @IsUUID()
   @IsNotEmpty()
   @Field({ description: 'External debit account ID field (uuid)' })
@@ -19,7 +19,7 @@ export class CreateTransactionInput {
     message: 'Invalid transaction type',
   })
   @Field(() => Int, { description: 'Tranfer type ID field (int)' })
-  tranferTypeId: number;
+  transferTypeId: number;
 
   @IsNumber()
   @IsNotEmpty()

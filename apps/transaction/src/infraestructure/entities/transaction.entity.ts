@@ -4,7 +4,7 @@ import { TransactionStatus } from '../../domain/enums/transaction-status.enum';
 
 @Entity('transactions')
 @ObjectType()
-export class Transaction {
+export class TransactionEntity {
   @PrimaryGeneratedColumn('uuid')
   @Field({ description: 'ID field (uuid)' })
   id: string;
@@ -19,7 +19,7 @@ export class Transaction {
 
   @Column({ nullable: false })
   @Field(() => Int, { description: 'Tranfer type ID field (int)' })
-  tranferTypeId: number;
+  transferTypeId: number;
 
   @Column({ nullable: false, default: TransactionStatus.PENDING })
   @Field({ description: 'Status field (string)' })

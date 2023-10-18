@@ -7,7 +7,7 @@ export class TransacTypeStatusName {
 }
 
 @ObjectType()
-export class GetTransactionOutput {
+export class GetTransactionDto {
   @Field({ description: 'Transaction external ID field (string)' })
   transactionExternalId: string;
 

@@ -12,17 +12,19 @@ export class AntifraudService {
     await this.clientKafka.connect();
   }
 
-  validateStatus(message: MessageBrokerDto<number>) {
-    const isValid = message.data <= Number(process.env.LIMIT_TRANSACTION);
-    this.clientKafka.emit('transaction.validated', this.buildMessageOutput(message.idTransaction, isValid));
+  validateStatus(content: any) {
+    const isValid = content.value <= Number(process.env.LIMIT_TRANSACTION);
+    this.clientKafka.emit('transaction.validated', this.buildMessageOutput(content.id, isValid));
   }
 
-  private buildMessageOutput(id: string, isValid: Boolean): MessageBrokerDto<Boolean> {
+  private buildMessageOutput(id: string, isValid: Boolean): MessageBrokerDto<Object> {
     return {
-      idTransaction: id,
       type: 'transaction_validated',
       date: new Date(),
-      data: isValid,
+      content: {
+        id,
+        isValid,
+      }
     };
   }
 }

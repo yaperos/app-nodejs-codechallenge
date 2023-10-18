@@ -6,21 +6,27 @@ import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisCache } from 'apollo-server-cache-redis';
 import { join } from 'path';
 import { CreateTransactionHandler } from './application/handlers/create-transaction.handler';
 import { GetTransactionHandler } from './application/handlers/get-transaction.handler';
 import { TransactionEventHandler } from './application/handlers/transaction-event.handler';
-import { TransactionRepository } from './domain/transaction.repository';
-import { Transaction } from './infraestructure/entities/transaction.entity';
+import { TransactionMongooseRepository, TransactionTypeOrmRepository } from './domain/repositories/transaction.repository';
+import { MongooseRepository } from './infraestructure/repository/mongoose.repository';
+import { TransactionEntity } from './infraestructure/entities/transaction.entity';
 import { TransactionResolver } from './infraestructure/transaction.resolver';
-import { TypeOrmRepository } from './infraestructure/type-orm.repository';
+import { Transaction, TransactionSchema } from './infraestructure/schemas/transaction.schema';
+import { TypeOrmRepository } from './infraestructure/repository/type-orm.repository';
 
 @Module({
   imports: [
+    MongooseModule.forFeature([
+      { name: Transaction.name, schema: TransactionSchema }
+    ]),
     ConfigModule.forRoot({ expandVariables: true }),
-    TypeOrmModule.forFeature([Transaction]),
+    TypeOrmModule.forFeature([TransactionEntity]),
     ClientsModule.registerAsync([
       {
         name: 'KAFKA_CLIENT',
@@ -62,15 +68,23 @@ import { TypeOrmRepository } from './infraestructure/type-orm.repository';
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        entities: [Transaction],
+        entities: [TransactionEntity],
         synchronize: true // Esto crea las tablas automáticamente (NO usar en producción)
       }),
     }),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: process.env.MONGO_URI,
+      }),
+    })
   ],
   providers: [TransactionResolver, CreateTransactionHandler, GetTransactionHandler, TransactionEventHandler,
     {
-      provide: TransactionRepository,
+      provide: TransactionTypeOrmRepository,
       useClass: TypeOrmRepository,
+    }, {
+      provide: TransactionMongooseRepository,
+      useClass: MongooseRepository,
     }],
   controllers: [TransactionResolver]
 })

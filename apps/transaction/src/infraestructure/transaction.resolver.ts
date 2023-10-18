@@ -1,37 +1,48 @@
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { MessagePattern, Payload } from "@nestjs/microservices";
-import { CreateTransactionCommand } from '../application/create-transaction.command';
-import { GetTransactionQuery } from '../application/get-transaction.query';
+import { EventPattern, Payload } from "@nestjs/microservices";
+import { MessageBrokerDto } from 'apps/shared/message-broker.dto';
+import { CreateTransactionCommand } from '../application/commands/create-transaction.command';
 import { TransactionEventHandler } from '../application/handlers/transaction-event.handler';
-import { CreateTransactionInput } from './dto/create-transaction.input';
-import { GetTransactionOutput } from './dto/get-transaction.output';
-import { Transaction } from './entities/transaction.entity';
+import { GetTransactionQuery } from '../application/queries/get-transaction.query';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { GetTransactionDto } from './dto/get-transaction.dto';
+import { TransactionEntity } from './entities/transaction.entity';
 
 @Controller()
-@Resolver(() => { Transaction })
+@Resolver(() => { TransactionEntity })
 export class TransactionResolver {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
     private readonly transactionEventHandler: TransactionEventHandler) { }
 
-  @Mutation(() => Transaction)
+  @Mutation(() => TransactionEntity)
   createTransaction(
     @Args('createTransactionInput')
-    createTransactionInput: CreateTransactionInput
+    createTransactionDto: CreateTransactionDto
   ) {
-    return this.commandBus.execute(new CreateTransactionCommand(createTransactionInput));
+    return this.commandBus.execute(new CreateTransactionCommand(createTransactionDto));
   }
 
-  @Query(() => GetTransactionOutput, { name: 'transaction' })
+  @Query(() => GetTransactionDto, { name: 'transaction' })
   async findOne(@Args('id') id: string) {
     return this.queryBus.execute(new GetTransactionQuery(id));
   }
 
-  @MessagePattern('transaction.validated')
-  handleTransactionValidated(@Payload() message: any) {
-    this.transactionEventHandler.handleTransactionValidated(message);
+  @EventPattern('transaction.validated')
+  updateTransactionWriteDB(@Payload() message: MessageBrokerDto<Object>) {
+    this.transactionEventHandler.updateTransactionWriteDB(message.content);
+  }
+
+  @EventPattern('transaction.validated')
+  updateTransactionReadDB(@Payload() message: MessageBrokerDto<Object>) {
+    this.transactionEventHandler.updateTransactionReadDB(message.content);
+  }
+
+  @EventPattern('transaction.created')
+  createTransactionReadDB(@Payload() message: MessageBrokerDto<any>) {
+    this.transactionEventHandler.createTransactionReadDB(message.content);
   }
 }
