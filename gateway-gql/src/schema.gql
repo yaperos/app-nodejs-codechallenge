@@ -1,0 +1,52 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type transactionTypeEntity {
+  transactionExternalIdType: Int!
+  name: String!
+  key: String!
+  description: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ITransactionStatus {
+  transactionExternalIdStatus: Int!
+  key: String!
+  name: String!
+  description: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type TransactionEntity {
+  transactionExternalId: String!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  transactionTypeId: Int!
+  transactionType: transactionTypeEntity!
+  value: Float!
+  transactionStatusId: Int!
+  transactionStatus: ITransactionStatus!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Query {
+  findOne(transactionExternalId: String!): TransactionEntity
+}
+
+type Mutation {
+  createTransaction(createTransactionInput: CreateTransactionInput!): TransactionEntity!
+}
+
+input CreateTransactionInput {
+  """Is uuid"""
+  accountExternalIdDebit: String!
+
+  """Is uuid"""
+  accountExternalIdCredit: String!
+  transactionTypeId: Int!
+  value: Float!
+}

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="72c1f643-80bf-4554-bc73-d6b34b8fc882" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/.prettierrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/jest.config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/nest-cli.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/anti-fraud/anti-fraud.controller.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/anti-fraud/anti-fraud.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/anti-fraud/anti-fraud.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/app.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/shared/config/DataSourceEnum.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/shared/event/Consumer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/shared/event/EventModule.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/shared/event/Producer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/shared/logger/logger.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/shared/logger/logger.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/src/shared/repository/BaseDB.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/test/anti-fraud/anti-fraud.controller.e2e-spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/test/jest-e2e.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/test/mocks/bdMock.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/test/mocks/providersMock.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/test/setup.test-config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/tsconfig.build.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/diagrama.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/server-success.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/.prettierrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/nest-cli.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/app.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/schema.gql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/CaseMapper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/ITransaction.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/dto/create-transaction.input.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/dto/get-transaction.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/transaction-microservice.repository.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/transaction.entity.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/transaction.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/transaction.resolver.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/src/transactions/transaction.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/test/app.e2e-spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/test/jest-e2e.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/tsconfig.build.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway-gql/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/script.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/src/events/EventInterface.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/src/events/EventsEnum.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/src/events/TransactionApprovedEvent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/src/events/TransactionRejectedEvent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/src/events/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/src/events/transaction-created.event.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-library-challenge/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/.prettierrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/api-transaction.postman_collection.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/jest.config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/nest-cli.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/app.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/shared/HttpExceptionFilter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/shared/config/DataSourceEnum.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/shared/event/Consumer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/shared/event/EventModule.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/shared/event/Producer.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/shared/logger/logger.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/shared/logger/logger.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/shared/repository/BaseDB.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction-status/constants/transaction-status-ids.enum.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction-status/constants/transaction-status.constant.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction-status/entities/transaction-status.entity.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction-type/constants/transaction-type.constant.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction-type/constants/transaction-types-ids.enum.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction-type/entities/transaction-type.entity.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/dto/create-transaction-v2.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/dto/create-transaction.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/dto/get-transaction.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/entities/transaction.entity.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/repositories/create-transaction-repository.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/repositories/transaction.repository.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/transaction.controller.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/transaction.controller.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/transaction.http.controller.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/transaction.http.controller.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/transaction.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/transaction.service.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/src/transaction/transaction.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/test/jest-e2e.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/test/mocks/bdMock.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/test/mocks/providersMock.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/test/setup.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/test/transaction/transaction.controller.e2e-spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/test/transaction/transaction.http.controller.e2e-spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/tsconfig.build.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transactions/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2WvCLK1PbT9gntUGWVx4tZQNKse" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/app-nodejs-codechallenge",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\app-nodejs-codechallenge" />
+      <recent name="D:\app-nodejs-codechallenge\gateway-gql" />
+      <recent name="D:\app-nodejs-codechallenge\antifraud" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="72c1f643-80bf-4554-bc73-d6b34b8fc882" name="Changes" comment="" />
+      <created>1697603609835</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1697603609835</updated>
+      <workItem from="1697603610981" duration="290000" />
+      <workItem from="1697603921305" duration="546000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
