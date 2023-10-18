@@ -20,7 +20,7 @@ export class TypeOrmRepository implements TransactionRepository {
   }
 
   async updateStatus(id: string, status: TransactionStatus): Promise<void> {
-    await this.repository.update(id, { status });
+    await this.repository.update({ id }, { status });
   }
 
   async findOne(id: string): Promise<TransactionModel> {
