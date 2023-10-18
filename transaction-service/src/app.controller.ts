@@ -16,4 +16,9 @@ export class AppController {
   handleTransactionCreated(data: TransactionCreatedEvent) {
     this.appService.handleTransactionCreated(data);
   }
+
+  @EventPattern('transaction_updated')
+  handleTransactionUpdated(data: TransactionCreatedEvent) {
+    this.appService.handleTransactionUpdated(data)
+  }
 }

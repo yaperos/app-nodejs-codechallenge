@@ -17,4 +17,8 @@ export class AppService {
     console.log(transactionCreatedEvent)
     this.antifraudClient.emit('transaction_pending', JSON.stringify(transactionCreatedEvent))
   }
+
+  handleTransactionUpdated(transactionUpdatedEvent: TransactionCreatedEvent){
+    console.log(transactionUpdatedEvent)
+  }
 }
