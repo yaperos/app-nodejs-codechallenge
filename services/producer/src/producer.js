@@ -26,7 +26,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.post('/antifraude', (req, res) => {
   const { transactionValue } = req.body;
   const parsedValue = Number(transactionValue);
-
+  console.log(parsedValue);
   if (_.isNaN(parsedValue)) {
     res.status(400);
     res.json({ error: 'Ensure transactionValue is a valid number.' });

@@ -37,19 +37,20 @@ const type = require('./type');
       text: 'INSERT INTO antifraude(uuid, transactionValue, transactionStatus) VALUES($1, $2, $3)',
       values: [serial, decodedMessage.transactionValue, transactionStatus],
     });
-    
-    const updateResponse = await pgClient.query({
-      text: 'UPDATE antifraude SET transactionStatus=3 where uuid=$1 and transactionValue<1000',
-      values: [serial],
-    });
 
-    const refusedResponse = await pgClient.query({
-      text: 'UPDATE antifraude SET transactionStatus=2 where uuid=$1 and transactionValue>1000',
+    console.log('Insert Response:', insertResponse);
+
+    const updateResponseAproved = await pgClient.query({
+      text: 'UPDATE antifraude SET transactionStatus=2 where uuid=$1 and transactionValue<1000',
       values: [serial],
     });
-    console.log('Insert Response:', insertResponse);
-    console.log('Aproved Response:', updateResponse);
-    console.log('Refused Response:', refusedResponse);
+    console.log('Update Response Aproved:', updateResponseAproved);
+
+    const updateResponseReject = await pgClient.query({
+      text: 'UPDATE antifraude SET transactionStatus=3 where uuid=$1 and transactionValue>1000',
+      values: [serial],
+    });
+    console.log('Update Response Aproved:', updateResponseReject);
   });
   
   kafkaClient.on('error', (error) => console.error('Kafka client error:', error));

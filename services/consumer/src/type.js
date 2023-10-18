@@ -1,4 +1,4 @@
-const avro = require('avcsc');
+const avro = require('avsc');
 
 const avroSchema = {
   name: 'TransactionType',
