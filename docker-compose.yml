@@ -1,16 +1,5 @@
 version: "3.7"
 services:
-  postgres:
-    container_name: postgres
-    image: postgres:latest
-    ports:
-      - '5432:5432'
-    volumes:
-      - /var/folders/postgres:/data/postgres
-    env_file:
-      - docker.env
-    networks:
-      - postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
