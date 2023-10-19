@@ -43,7 +43,7 @@ import { TransactionResolver } from './infraestructure/transaction.resolver';
     CqrsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'apps/transaction/src/schema.gql'),
+      autoSchemaFile: join(process.cwd(), 'apps/write-transaction/src/schema.gql'),
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({

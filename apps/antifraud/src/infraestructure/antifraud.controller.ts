@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { MessageBrokerDto } from 'apps/shared/message-broker.dto';
 import { AntifraudService } from '../application/antifraud.service';
+import { MessageBrokerDto } from './dto/message-broker.dto';
 
 @Controller()
 export class AntifraudController {

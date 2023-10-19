@@ -2,10 +2,10 @@ import { Controller } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { EventPattern, Payload } from "@nestjs/microservices";
-import { MessageBrokerDto } from 'apps/shared/message-broker.dto';
 import { CreateTransactionCommand } from '../application/commands/create-transaction.command';
 import { TransactionEventHandler } from '../application/handlers/transaction-event.handler';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { MessageBrokerDto } from './dto/message-broker.dto';
 import { TransactionEntity } from './entities/transaction.entity';
 
 @Controller()

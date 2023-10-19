@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { MessageBrokerDto } from 'apps/shared/message-broker.dto';
+import { MessageBrokerDto } from '../infraestructure/dto/message-broker.dto';
 
 @Injectable()
 export class AntifraudService {

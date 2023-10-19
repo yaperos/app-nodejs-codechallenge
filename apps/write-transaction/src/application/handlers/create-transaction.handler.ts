@@ -1,10 +1,10 @@
 import { Inject, Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ClientKafka } from '@nestjs/microservices';
-import { MessageBrokerDto } from 'apps/shared/message-broker.dto';
 import { plainToInstance } from 'class-transformer';
 import { TransactionModel } from '../../domain/models/transaction.model';
 import { TransactionRepository } from '../../domain/repositories/transaction.repository';
+import { MessageBrokerDto } from '../../infraestructure/dto/message-broker.dto';
 import { CreateTransactionCommand } from "../commands/create-transaction.command";
 
 @CommandHandler(CreateTransactionCommand)

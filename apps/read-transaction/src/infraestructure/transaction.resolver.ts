@@ -2,11 +2,11 @@ import { Controller } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { EventPattern, Payload } from "@nestjs/microservices";
-import { MessageBrokerDto } from 'apps/shared/message-broker.dto';
+import { TransactionEventHandler } from '../application/handlers/transaction-event.handler';
 import { GetTransactionQuery } from '../application/queries/get-transaction.query';
 import { GetTransactionDto } from './dto/get-transaction.dto';
+import { MessageBrokerDto } from './dto/message-broker.dto';
 import { TransactionEntity } from './entities/transaction.entity';
-import { TransactionEventHandler } from '../application/handlers/transaction-event.handler';
 
 @Controller()
 @Resolver(() => { TransactionEntity })
