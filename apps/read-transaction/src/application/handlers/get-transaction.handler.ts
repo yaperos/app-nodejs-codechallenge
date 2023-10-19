@@ -23,8 +23,10 @@ export class GetTransactionHandler implements IQueryHandler<GetTransactionQuery>
     switch (transaction.transferTypeId) {
       case TransactionTypeId.DEBIT:
         transactionName = TransactionTypeName.DEBIT;
+        break;
       case TransactionTypeId.CREDIT:
         transactionName = TransactionTypeName.CREDIT;
+        break;
     }
 
     return {

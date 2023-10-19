@@ -13,14 +13,14 @@ This is a monorepo that contains 3 applications (write-transaction, read-transac
 
 ### Tools🛠
 
-[▪️ Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-[▪️ GraphQL](https://graphql.org/) query language for APIs.
-[▪️ TypeORM](https://typeorm.io/) an ORM (Object-Relational Mapping).
-[▪️ Docker](https://www.docker.com/) platform for developing, packaging, and running applications in portable, isolated containers.
-[▪️ Kafka](https://kafka.apache.org/) open-source distributed event streaming platform.
-[▪️ PostgreSQL](https://www.postgresql.org/) open source object-relational database system.
-[▪️ MongoDB](https://www.mongodb.com/) NoSQL database that stores data in flexible, JSON-like documents.
-[▪️ Redis](https://redis.io/) The open source, in-memory data store.
+- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [GraphQL](https://graphql.org/) query language for APIs.
+- [TypeORM](https://typeorm.io/) an ORM (Object-Relational Mapping).
+- [Docker](https://www.docker.com/) platform for developing, packaging, and running applications in portable, isolated containers.
+- [Kafka](https://kafka.apache.org/) open-source distributed event streaming platform.
+- [PostgreSQL](https://www.postgresql.org/) open source object-relational database system.
+- [MongoDB](https://www.mongodb.com/) NoSQL database that stores data in flexible, JSON-like documents.
+- [Redis](https://redis.io/) The open source, in-memory data store.
 
 ### Previous requirements 👀
 
@@ -59,6 +59,13 @@ Make sure you have the following tools installed: [Node](https://nodejs.org/es/d
   ```
 
 6. *Once all services are up, you can now create new transactions from: <http://localhost:3000/graphql>, and you can query by id from: <http://localhost:3001/graphql>*
+
+#### TRANSACTION CREATION EXAMPLE
+![Transaction Creation](assets/TransactionCreation.png)
+
+#### TRANSACTION OBTAINING EXAMPLE
+![Transaction Obtaining](assets/TransactionObtaining.png)
+
 
 ### Note💡:
 - You can use the following tools to view data storage: [Redis Insight](https://redis.com/redis-enterprise/redis-insight/), [Studio 3T](https://robomongo.org/), [pgAdmin](https://www.pgadmin.org/download/)
