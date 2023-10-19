@@ -1,17 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { TransactionStatus } from '../../domain/enums/transaction-status.enum';
-import { TransactionMongooseRepository, TransactionRepository, TransactionTypeOrmRepository } from '../../domain/repositories/transaction.repository';
+import { TransactionMongooseRepository, TransactionRepository } from '../../domain/repositories/transaction.repository';
 
 @Injectable()
 export class TransactionEventHandler {
   constructor(
-    @Inject(TransactionMongooseRepository) private readonly transactionMongooseRepo: TransactionRepository,
-    @Inject(TransactionTypeOrmRepository) private readonly transactionTypeOrmRepo: TransactionRepository) { }
-
-  async updateTransactionWriteDB(content: any) {
-    const status = this.setStatus(content.isValid);
-    await this.transactionTypeOrmRepo.updateStatus(content.id, status);
-  }
+    @Inject(TransactionMongooseRepository) private readonly transactionMongooseRepo: TransactionRepository) { }
 
   async updateTransactionReadDB(content: any) {
     const status = this.setStatus(content.isValid);

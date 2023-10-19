@@ -1,30 +1,20 @@
-import responseCachePlugin from '@apollo/server-plugin-response-cache';
-import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RedisCache } from 'apollo-server-cache-redis';
 import { join } from 'path';
 import { CreateTransactionHandler } from './application/handlers/create-transaction.handler';
-import { GetTransactionHandler } from './application/handlers/get-transaction.handler';
 import { TransactionEventHandler } from './application/handlers/transaction-event.handler';
-import { TransactionMongooseRepository, TransactionTypeOrmRepository } from './domain/repositories/transaction.repository';
-import { MongooseRepository } from './infraestructure/repository/mongoose.repository';
+import { TransactionRepository } from './domain/repositories/transaction.repository';
 import { TransactionEntity } from './infraestructure/entities/transaction.entity';
-import { TransactionResolver } from './infraestructure/transaction.resolver';
-import { Transaction, TransactionSchema } from './infraestructure/schemas/transaction.schema';
 import { TypeOrmRepository } from './infraestructure/repository/type-orm.repository';
+import { TransactionResolver } from './infraestructure/transaction.resolver';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Transaction.name, schema: TransactionSchema }
-    ]),
     ConfigModule.forRoot({ expandVariables: true }),
     TypeOrmModule.forFeature([TransactionEntity]),
     ClientsModule.registerAsync([
@@ -44,7 +34,7 @@ import { TypeOrmRepository } from './infraestructure/repository/type-orm.reposit
               }
             },
             consumer: {
-              groupId: process.env.GROUP_TRANSACTION
+              groupId: process.env.GROUP_WRITE_TRANSACTION
             }
           }
         }),
@@ -53,11 +43,6 @@ import { TypeOrmRepository } from './infraestructure/repository/type-orm.reposit
     CqrsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      cache: new RedisCache({ host: process.env.HOST, port: Number(process.env.REDIS_PORT) }),
-      plugins: [
-        ApolloServerPluginCacheControl({ defaultMaxAge: 30 }),
-        responseCachePlugin()
-      ],
       autoSchemaFile: join(process.cwd(), 'apps/transaction/src/schema.gql'),
     }),
     TypeOrmModule.forRootAsync({
@@ -71,21 +56,13 @@ import { TypeOrmRepository } from './infraestructure/repository/type-orm.reposit
         entities: [TransactionEntity],
         synchronize: true // Esto crea las tablas automáticamente (NO usar en producción)
       }),
-    }),
-    MongooseModule.forRootAsync({
-      useFactory: () => ({
-        uri: process.env.MONGO_URI,
-      }),
     })
   ],
-  providers: [TransactionResolver, CreateTransactionHandler, GetTransactionHandler, TransactionEventHandler,
+  providers: [TransactionResolver, CreateTransactionHandler, TransactionEventHandler,
     {
-      provide: TransactionTypeOrmRepository,
+      provide: TransactionRepository,
       useClass: TypeOrmRepository,
-    }, {
-      provide: TransactionMongooseRepository,
-      useClass: MongooseRepository,
     }],
   controllers: [TransactionResolver]
 })
-export class TransactionModule { }
+export class WriteTransactionModule { }

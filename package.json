@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
-    "start:both": "concurrently \"nest start transaction\" \"nest start antifraud\"",
+    "start:all": "concurrently \"nest start write-transaction\" \"nest start read-transaction\" \"nest start antifraud\"",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/app-nodejs-codechallenge/main",

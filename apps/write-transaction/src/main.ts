@@ -1,10 +1,10 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { TransactionModule } from './transaction.module';
+import { WriteTransactionModule } from './write-transaction.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(TransactionModule);
+  const app = await NestFactory.create(WriteTransactionModule);
 
   app.connectMicroservice({
     transport: Transport.KAFKA,
@@ -14,16 +14,16 @@ async function bootstrap() {
         brokers: [process.env.BROKER],
       },
       consumer: {
-        groupId: process.env.GROUP_TRANSACTION
+        groupId: process.env.GROUP_WRITE_TRANSACTION
       }
     }
   } as MicroserviceOptions);
 
   app.useGlobalPipes(new ValidationPipe());
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.WRITE_PORT || 3000;
   await app.startAllMicroservices();
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/graphql`);
+  Logger.log(`🚀 App Write-Transaction is running on: http://localhost:${port}/graphql`);
 }
 bootstrap();

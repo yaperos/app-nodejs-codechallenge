@@ -4,14 +4,14 @@ import { ClientKafka } from '@nestjs/microservices';
 import { MessageBrokerDto } from 'apps/shared/message-broker.dto';
 import { plainToInstance } from 'class-transformer';
 import { TransactionModel } from '../../domain/models/transaction.model';
-import { TransactionRepository, TransactionTypeOrmRepository } from '../../domain/repositories/transaction.repository';
+import { TransactionRepository } from '../../domain/repositories/transaction.repository';
 import { CreateTransactionCommand } from "../commands/create-transaction.command";
 
 @CommandHandler(CreateTransactionCommand)
 export class CreateTransactionHandler implements ICommandHandler<CreateTransactionCommand> {
 
   constructor(
-    @Inject(TransactionTypeOrmRepository) private readonly transactionTypeOrmRepo: TransactionRepository,
+    @Inject(TransactionRepository) private readonly transactionRepository: TransactionRepository,
     @Inject('KAFKA_CLIENT') private readonly clientKafka: ClientKafka) { }
 
   async onModuleInit() {
@@ -21,7 +21,7 @@ export class CreateTransactionHandler implements ICommandHandler<CreateTransacti
 
   async execute(command: CreateTransactionCommand): Promise<TransactionModel> {
     try {
-      const transactionCreated = await this.transactionTypeOrmRepo.save(command.createTransactionDto);
+      const transactionCreated = await this.transactionRepository.save(command.createTransactionDto);
       const transactionModelInstance = plainToInstance(TransactionModel, transactionCreated)
       this.clientKafka.emit('transaction.created', this.buildMessageInput(transactionModelInstance));
       return transactionCreated;
