@@ -40,19 +40,25 @@ Make sure you have the following tools installed: [Node](https://nodejs.org/es/d
     $ cd app-nodejs-codechallenge
   ```
 
-3. *Run all necessary services*
+3. *Rename the .env.example file to .env so you can use the environment variables, and if necessary, modify the values according to your own environment*
+
+  ```bash
+    $ mv .env.example .env
+  ```
+
+4. *Run all necessary services*
 
   ```bash
     $ docker-compose up -d
   ```
 
-4. *Next run the command*
+5. *Next run the command*
 
   ```bash
     $ npm run start:all
   ```
 
-5. *Once all services are up, you can now create new transactions from: <http://localhost:3000/graphql>, and you can query by id from: <http://localhost:3001/graphql>*
+6. *Once all services are up, you can now create new transactions from: <http://localhost:3000/graphql>, and you can query by id from: <http://localhost:3001/graphql>*
 
 ### Note💡:
 - You can use the following tools to view data storage: [Redis Insight](https://redis.com/redis-enterprise/redis-insight/), [Studio 3T](https://robomongo.org/), [pgAdmin](https://www.pgadmin.org/download/)
