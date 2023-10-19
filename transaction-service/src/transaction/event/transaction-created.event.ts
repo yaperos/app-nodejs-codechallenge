@@ -4,7 +4,8 @@ export class TransactionCreatedEvent {
         public readonly accountExternalIdCredit: string,
         public readonly tranferTypeId: string,
         public readonly value:number,
-        public readonly status:string = 'pending',
+        public readonly status:string,
+        public readonly id:number,
     ) {}
 
     toString() {
@@ -14,6 +15,7 @@ export class TransactionCreatedEvent {
             tranferTypeId: this.tranferTypeId,
             value: this.value,
             status: this.status,
+            id: this.id,
         })
     }
 }

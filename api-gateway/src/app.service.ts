@@ -5,6 +5,8 @@ import { ClientKafka } from '@nestjs/microservices';
 @Injectable()
 export class AppService {
   
+  private STATUS_PENDING: string = 'pending';
+
   constructor(
     @Inject('TRANSACTION_SERVICE') private readonly transactionClient: ClientKafka,
   ) {}
@@ -14,6 +16,7 @@ export class AppService {
   }
 
   createTransaction(createTransactionRequest: CreateTransactionRequest) {
+    createTransactionRequest.status = this.STATUS_PENDING;
     this.transactionClient.emit('transaction_created', JSON.stringify(createTransactionRequest))
   }
 }

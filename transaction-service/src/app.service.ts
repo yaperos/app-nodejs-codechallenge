@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { TransactionCreatedEvent } from './event/transaction-created.event';
+import { TransactionCreatedEvent } from './transaction/event/transaction-created.event';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()

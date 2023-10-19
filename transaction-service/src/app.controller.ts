@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { EventPattern } from '@nestjs/microservices';
-import { TransactionCreatedEvent } from './event/transaction-created.event';
+import { TransactionCreatedEvent } from './transaction/event/transaction-created.event';
 
 @Controller()
 export class AppController {

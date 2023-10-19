@@ -3,4 +3,5 @@ export class CreateTransactionRequest {
     accountExternalIdCredit: string;
     tranferTypeId: string;
     value: number;
+    status?: string;
 }
