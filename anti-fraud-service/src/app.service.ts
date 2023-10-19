@@ -19,8 +19,9 @@ export class AppService {
   handleTransactionPending(data: TransactionCreatedEvent) {
     const { id, value } = data;
     let status = 'approved';
-    if (value > this.MAX_VALUE)
+    if (value > this.MAX_VALUE) {
       status = 'rejected';
+    }
     this.transactionClient.emit('transaction_updated', JSON.stringify({ id, status }))
   }
 }

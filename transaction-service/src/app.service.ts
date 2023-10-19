@@ -13,12 +13,4 @@ export class AppService {
     return 'Hello World!';
   }
 
-  handleTransactionCreated(transactionCreatedEvent: TransactionCreatedEvent){
-    console.log(transactionCreatedEvent)
-    this.antifraudClient.emit('transaction_pending', JSON.stringify(transactionCreatedEvent))
-  }
-
-  handleTransactionUpdated(transactionUpdatedEvent: TransactionCreatedEvent){
-    console.log(transactionUpdatedEvent)
-  }
 }
