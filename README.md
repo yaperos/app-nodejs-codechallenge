@@ -1,82 +1,76 @@
-# Yape Code Challenge :rocket:
+# <p align="center"> TRANSACTIONS MONOREPO 🏦</p>
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+<p align="center">
+</p>
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+This is a monorepo that contains 3 applications (write-transaction, read-transaction and antifraud) that will run simultaneously to create, validate and obtain a transaction. All of this was developed following good practices and under the hexagonal architecture, to address high-volume writing and reading scenarios, following the CQRS pattern with event sourcing and cache. I attach a reference image so that you can see in more detail the design of both processes, as well as the technologies used and the steps to follow for their execution.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+#### Creation Diagram
+![Writing flow design](assets/WritingDiagram.jpg)
 
-# Problem
+#### Obtaining Diagram
+![Reading flow design](assets/ReadingDiagram.jpg)
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### Tools🛠
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+[▪️ Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[▪️ GraphQL](https://graphql.org/) query language for APIs.
+[▪️ TypeORM](https://typeorm.io/) an ORM (Object-Relational Mapping).
+[▪️ Docker](https://www.docker.com/) platform for developing, packaging, and running applications in portable, isolated containers.
+[▪️ Kafka](https://kafka.apache.org/) open-source distributed event streaming platform.
+[▪️ PostgreSQL](https://www.postgresql.org/) open source object-relational database system.
+[▪️ MongoDB](https://www.mongodb.com/) NoSQL database that stores data in flexible, JSON-like documents.
+[▪️ Redis](https://redis.io/) The open source, in-memory data store.
 
-Every transaction with a value greater than 1000 should be rejected.
+### Previous requirements 👀
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+Make sure you have the following tools installed: [Node](https://nodejs.org/es/download), [Git](https://git-scm.com/downloads) and [Docker](https://www.docker.com/products/docker-desktop/) (in this case, it should also be running)
+
+### Installation and Execution 💻
+
+1. *Clone the Repository:*
+
+  ```bash
+    $ git clone https://github.com/Rsmj99/app-nodejs-codechallenge.git
+  ```
+
+2. *Locate yourself in the project directory*
+
+  ```bash
+    $ cd app-nodejs-codechallenge
+  ```
+
+3. *Run all necessary services*
+
+  ```bash
+    $ docker-compose up -d
+  ```
+
+4. *Next run the command*
+
+  ```bash
+    $ npm run start:all
+  ```
+
+5. *Once all services are up, you can now create new transactions from: <http://localhost:3000/graphql>, and you can query by id from: <http://localhost:3001/graphql>*
+
+### Note💡:
+- You can use the following tools to view data storage: [Redis Insight](https://redis.com/redis-enterprise/redis-insight/), [Studio 3T](https://robomongo.org/), [pgAdmin](https://www.pgadmin.org/download/)
+
+### Stop and Clean🧹
+
+To stop and delete created containers:
+
+  ```bash
+    $ docker-compose down
+  ```
+
+If you want to remove the containers and downloaded images, run the following instead of the above:
+
+```bash
+  $ docker-compose down --rmi all
 ```
 
-# Tech Stack
+### License📄
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+Nest is [MIT licensed](LICENSE).
