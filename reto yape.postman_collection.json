@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "93e8f850-2473-4c28-8bee-3cfb25c7c4c5",
+		"name": "reto yape",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24730757"
+	},
+	"item": [
+		{
+			"name": "all transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\r\n    transaction{\r\n        transactionExternalId\r\n        accountExternalIdDebit\r\n        accountExternalIdCredit\r\n        value\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transaction by id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\r\n    transactionById(\r\n        transactionExternalId: \"7916e31d-6bd8-4d1b-ab5b-852bbbfbd9e9\"){\r\n        transactionExternalId\r\n        transactionType{\r\n            name\r\n        }\r\n        transactionStatus{\r\n            name\r\n        }\r\n        value\r\n        createdAt\r\n        updatedAt\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\r\n    saveTransaction(ReqTransaction: {\r\n        accountExternalIdDebit: \"27c27f1e-e071-48ac-ab8a-33e40dc997fb\",\r\n        accountExternalIdCredit: \"566711cc-d4ed-4766-bce6-88518de38110\",\r\n        tranferTypeId: 2,\r\n        value: 700\r\n    })\r\n    {\r\n        transactionExternalId\r\n        accountExternalIdDebit\r\n        accountExternalIdCredit\r\n        transactionType{\r\n            name\r\n        }\r\n        transactionStatus{\r\n            name\r\n        }\r\n        value\r\n        createdAt\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
