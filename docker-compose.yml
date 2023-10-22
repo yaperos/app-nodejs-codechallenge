@@ -1,25 +1,69 @@
 version: "3.7"
 services:
-  postgres:
+  postgres-yape:
     image: postgres:14
+    container_name: postgres-yape
     ports:
       - "5432:5432"
     environment:
+      - POSTGRES_DB=transaction
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  zookeeper:
+    volumes:
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - network-yape
+
+  zookeeper-yape:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: zookeeper-yape
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-  kafka:
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 2181:2181
+    networks:
+      - network-yape
+      
+  kafka-yape:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    container_name: kafka-yape
+    depends_on: [zookeeper-yape]
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper-yape:2181"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-yape:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - network-yape
+    
+  ms-transaction-app:
+    build:
+      context: ./reto-yape
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3001:3000"
+    depends_on:
+      - kafka-yape
+      - postgres-yape
+    networks:
+      - network-yape
+
+  ms-antifraude-app:
+    build:
+      context: ./anti-fraud-yape
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3002:3000"
+    depends_on:
+      - kafka-yape
+    networks:
+      - network-yape
+      
+networks:
+  network-yape:
+    driver: bridge

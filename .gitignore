@@ -102,3 +102,10 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+# compiled output
+anti-fraud-yape/dist
+reto-yape/dist
+anti-fraud-yape/node_modules
+reto-yape/node_modules
