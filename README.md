@@ -1,12 +1,10 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge Solution :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+This is my solution to the Yape Code Challenge. I used NestJS, Prisma, PostgreSQL, GraphQL and KafkaJS.
+It contains two microservices (anti-fraud-ms and transaction-ms) that will run simultaneously.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+* The anti-fraud-ms will listen to the transaction-created event and will emit a transaction-approved or transaction-rejected event.
+* The transaction-ms will listen to the transaction-approved and transaction-rejected events and will update the transaction status in the database.
 
 # Problem
 
