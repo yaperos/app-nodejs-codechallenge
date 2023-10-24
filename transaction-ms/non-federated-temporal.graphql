@@ -1,0 +1,256 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Enumeration for status field in mutation payload"""
+enum CommonMutationStatus {
+  FAILURE
+  SUCCESS
+}
+
+type CommonProblem {
+  message: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input EnumTransactionStatusFieldUpdateOperationsInput {
+  set: TransactionStatusEnum
+}
+
+input EnumTransactionStatusFilter {
+  equals: TransactionStatusEnum
+  in: [TransactionStatusEnum!]
+  not: NestedEnumTransactionStatusFilter
+  notIn: [TransactionStatusEnum!]
+}
+
+input FloatFieldUpdateOperationsInput {
+  decrement: Float
+  divide: Float
+  increment: Float
+  multiply: Float
+  set: Float
+}
+
+input FloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: NestedFloatFilter
+  notIn: [Float!]
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
+type Mutation {
+  createTransaction(data: TransactionCreateInput!): TransactionMutationPayload!
+  createTransactionType(data: TransactionTypeCreateInput!): TransactionTypeMutationPayload!
+  removeTransaction(where: TransactionWhereUniqueInput!): TransactionMutationPayload!
+  removeTransactionType(where: TransactionTypeWhereUniqueInput!): TransactionTypeMutationPayload!
+  updateTransaction(data: TransactionUpdateInput!, where: TransactionWhereUniqueInput!): TransactionMutationPayload!
+}
+
+input NestedEnumTransactionStatusFilter {
+  equals: TransactionStatusEnum
+  in: [TransactionStatusEnum!]
+  not: NestedEnumTransactionStatusFilter
+  notIn: [TransactionStatusEnum!]
+}
+
+input NestedFloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: NestedFloatFilter
+  notIn: [Float!]
+}
+
+input NestedIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input NestedStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+type Query {
+  transactionTypes(cursor: TransactionTypeWhereUniqueInput, skip: Int, take: Int, where: TransactionTypeWhereInput): [TransactionType!]!
+  transactions(cursor: TransactionWhereUniqueInput, skip: Int, take: Int, where: TransactionWhereInput): [Transaction!]!
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringUUIDFieldUpdateOperationsInput {
+  set: UUIDScalar
+}
+
+type Transaction {
+  accountExternalIdCredit: UUIDScalar!
+  accountExternalIdDebit: UUIDScalar!
+  createdAt: DateTime!
+  id: ID!
+  transactionExternalId: String
+  transactionStatus: TransactionStatusType!
+  transactionType: TransactionType!
+  transactionTypeId: Int!
+  updatedAt: DateTime!
+  value: Float!
+}
+
+input TransactionCreateInput {
+  accountExternalIdCredit: UUIDScalar!
+  accountExternalIdDebit: UUIDScalar!
+  transferTypeId: Int!
+  value: Float!
+}
+
+type TransactionMutationPayload {
+  errors: [CommonProblem!]
+
+  """Can be null if there are errors"""
+  record: Transaction
+
+  """Can be null if there are errors"""
+  recordId: ID
+  status: CommonMutationStatus
+}
+
+enum TransactionStatusEnum {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+type TransactionStatusType {
+  name: TransactionStatusEnum!
+}
+
+type TransactionType {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  transactions: [Transaction!]
+  updatedAt: DateTime!
+}
+
+input TransactionTypeCreateInput {
+  name: String!
+}
+
+type TransactionTypeMutationPayload {
+  errors: [CommonProblem!]
+
+  """Can be null if there are errors"""
+  record: TransactionType
+
+  """Can be null if there are errors"""
+  recordId: ID
+  status: CommonMutationStatus
+}
+
+input TransactionTypeWhereInput {
+  AND: [TransactionTypeWhereInput!]
+  NOT: [TransactionTypeWhereInput!]
+  OR: [TransactionTypeWhereInput!]
+  id: IntFilter
+  name: StringFilter
+}
+
+input TransactionTypeWhereUniqueInput {
+  AND: [TransactionTypeWhereInput!]
+  NOT: [TransactionTypeWhereInput!]
+  OR: [TransactionTypeWhereInput!]
+  id: Int
+  name: String
+}
+
+input TransactionUpdateInput {
+  accountExternalIdCredit: StringUUIDFieldUpdateOperationsInput
+  accountExternalIdDebit: StringUUIDFieldUpdateOperationsInput
+  transactionStatus: EnumTransactionStatusFieldUpdateOperationsInput
+  transferTypeId: Int
+  value: FloatFieldUpdateOperationsInput
+}
+
+input TransactionWhereInput {
+  AND: [TransactionWhereInput!]
+  NOT: [TransactionWhereInput!]
+  OR: [TransactionWhereInput!]
+  accountExternalIdCredit: StringFilter
+  accountExternalIdDebit: StringFilter
+  id: StringFilter
+  transactionStatus: EnumTransactionStatusFilter
+  transactionTypeId: IntFilter
+  value: FloatFilter
+}
+
+input TransactionWhereUniqueInput {
+  AND: [TransactionWhereInput!]
+  NOT: [TransactionWhereInput!]
+  OR: [TransactionWhereInput!]
+  accountExternalIdCredit: StringFilter
+  accountExternalIdDebit: StringFilter
+  id: String
+  transactionStatus: EnumTransactionStatusFilter
+  transactionTypeId: IntFilter
+  value: FloatFilter
+}
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar UUIDScalar

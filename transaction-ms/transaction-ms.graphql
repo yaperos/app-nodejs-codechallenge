@@ -1,0 +1,255 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@composeDirective", "@extends", "@external", "@inaccessible", "@interfaceObject", "@key", "@override", "@provides", "@requires", "@shareable", "@tag"])
+
+type CommonProblem
+  @shareable
+{
+  message: String!
+}
+
+type TransactionStatusType {
+  name: TransactionStatusEnum!
+}
+
+enum TransactionStatusEnum {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+type Transaction {
+  id: ID!
+  accountExternalIdDebit: UUIDScalar!
+  accountExternalIdCredit: UUIDScalar!
+  transactionTypeId: Int!
+  value: Float!
+  transactionStatus: TransactionStatusType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  transactionType: TransactionType!
+  transactionExternalId: String
+}
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar UUIDScalar
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type TransactionType {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  transactions: [Transaction!]
+}
+
+type TransactionTypeMutationPayload {
+  """Can be null if there are errors"""
+  recordId: ID
+
+  """Can be null if there are errors"""
+  record: TransactionType
+  status: CommonMutationStatus
+  errors: [CommonProblem!]
+}
+
+"""Enumeration for status field in mutation payload"""
+enum CommonMutationStatus {
+  FAILURE
+  SUCCESS
+}
+
+type TransactionMutationPayload {
+  """Can be null if there are errors"""
+  recordId: ID
+
+  """Can be null if there are errors"""
+  record: Transaction
+  status: CommonMutationStatus
+  errors: [CommonProblem!]
+}
+
+type Query {
+  transactions(where: TransactionWhereInput, cursor: TransactionWhereUniqueInput, take: Int, skip: Int): [Transaction!]!
+  transactionTypes(where: TransactionTypeWhereInput, cursor: TransactionTypeWhereUniqueInput, take: Int, skip: Int): [TransactionType!]!
+}
+
+input TransactionWhereInput {
+  AND: [TransactionWhereInput!]
+  OR: [TransactionWhereInput!]
+  NOT: [TransactionWhereInput!]
+  id: StringFilter
+  accountExternalIdDebit: StringFilter
+  accountExternalIdCredit: StringFilter
+  transactionTypeId: IntFilter
+  value: FloatFilter
+  transactionStatus: EnumTransactionStatusFilter
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntFilter
+}
+
+input NestedIntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntFilter
+}
+
+input FloatFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: NestedFloatFilter
+}
+
+input NestedFloatFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: NestedFloatFilter
+}
+
+input EnumTransactionStatusFilter {
+  equals: TransactionStatusEnum
+  in: [TransactionStatusEnum!]
+  notIn: [TransactionStatusEnum!]
+  not: NestedEnumTransactionStatusFilter
+}
+
+input NestedEnumTransactionStatusFilter {
+  equals: TransactionStatusEnum
+  in: [TransactionStatusEnum!]
+  notIn: [TransactionStatusEnum!]
+  not: NestedEnumTransactionStatusFilter
+}
+
+input TransactionWhereUniqueInput {
+  id: String
+  AND: [TransactionWhereInput!]
+  OR: [TransactionWhereInput!]
+  NOT: [TransactionWhereInput!]
+  accountExternalIdDebit: StringFilter
+  accountExternalIdCredit: StringFilter
+  transactionTypeId: IntFilter
+  value: FloatFilter
+  transactionStatus: EnumTransactionStatusFilter
+}
+
+input TransactionTypeWhereInput {
+  AND: [TransactionTypeWhereInput!]
+  OR: [TransactionTypeWhereInput!]
+  NOT: [TransactionTypeWhereInput!]
+  id: IntFilter
+  name: StringFilter
+}
+
+input TransactionTypeWhereUniqueInput {
+  id: Int
+  name: String
+  AND: [TransactionTypeWhereInput!]
+  OR: [TransactionTypeWhereInput!]
+  NOT: [TransactionTypeWhereInput!]
+}
+
+type Mutation {
+  createTransaction(data: TransactionCreateInput!): TransactionMutationPayload!
+  updateTransaction(data: TransactionUpdateInput!, where: TransactionWhereUniqueInput!): TransactionMutationPayload!
+  removeTransaction(where: TransactionWhereUniqueInput!): TransactionMutationPayload!
+  createTransactionType(data: TransactionTypeCreateInput!): TransactionTypeMutationPayload!
+  removeTransactionType(where: TransactionTypeWhereUniqueInput!): TransactionTypeMutationPayload!
+}
+
+input TransactionCreateInput {
+  accountExternalIdDebit: UUIDScalar!
+  accountExternalIdCredit: UUIDScalar!
+  value: Float!
+  transferTypeId: Int!
+}
+
+input TransactionUpdateInput {
+  accountExternalIdDebit: StringUUIDFieldUpdateOperationsInput
+  accountExternalIdCredit: StringUUIDFieldUpdateOperationsInput
+  value: FloatFieldUpdateOperationsInput
+  transactionStatus: EnumTransactionStatusFieldUpdateOperationsInput
+  transferTypeId: Int
+}
+
+input StringUUIDFieldUpdateOperationsInput {
+  set: UUIDScalar
+}
+
+input FloatFieldUpdateOperationsInput {
+  set: Float
+  increment: Float
+  decrement: Float
+  multiply: Float
+  divide: Float
+}
+
+input EnumTransactionStatusFieldUpdateOperationsInput {
+  set: TransactionStatusEnum
+}
+
+input TransactionTypeCreateInput {
+  name: String!
+}
