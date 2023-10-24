@@ -67,10 +67,6 @@ export class TransactionService {
             createOneTransactionArgs.data.value,
         );
 
-        if (deleteIdFromEnd) {
-            delete response.record.id;
-        }
-
         this.clientKafka.emit('transaction.created', new MessageBrokerDto(
             'transaction_created',
             new Date(),

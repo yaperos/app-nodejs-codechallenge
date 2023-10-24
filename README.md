@@ -6,75 +6,158 @@ It contains two microservices (anti-fraud-ms and transaction-ms) that will run s
 * The anti-fraud-ms will listen to the transaction-created event and will emit a transaction-approved or transaction-rejected event.
 * The transaction-ms will listen to the transaction-approved and transaction-rejected events and will update the transaction status in the database.
 
-# Problem
+## App Diagram
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+![App flow design](assets/app-flow-diagram.png)
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+### Tools🛠
 
-Every transaction with a value greater than 1000 should be rejected.
+- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [GraphQL](https://graphql.org/) query language for APIs.
+- [Prisma](https://prisma.io/) a next-generation ORM.
+- [Docker](https://www.docker.com/) platform for developing, packaging, and running applications in portable, isolated containers.
+- [Kafka](https://kafka.apache.org/) open-source distributed event streaming platform.
+- [PostgreSQL](https://www.postgresql.org/) open source object-relational database system.
+- [Apollo Federation](https://www.apollographql.com/docs/federation/) a set of open-source tools for building a distributed graph of GraphQL schemas.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+
+## Previous requirements 👀
+
+Make sure you have the following tools installed: [Node](https://nodejs.org/es/download), [Git](https://git-scm.com/downloads) and [Docker](https://www.docker.com/products/docker-desktop/) (in this case, it should also be running) Linux preferred 👀
+
+## Installation and Execution 🖥️
+
+1. *Clone the Repository:*
+
+  ```bash
+    $ git clone https://github.com/jhosdev/app-nodejs-codechallenge
+  ```
+
+2. *Move to the the project directory*
+
+  ```bash
+    $ cd app-nodejs-codechallenge
+  ```
+
+3. *Rename the .env.example files to .env on both directories so you can use the environment variables, and if necessary, modify the values according to your own environment*
+
+  ```bash
+    $ mv transaction-ms/.env.example transaction-ms/.env
+    # and
+    $ mv anti-fraud-ms/.env.example anti-fraud-ms/.env
+  ```
+
+4. *Run all necessary services* 
+
+  ```bash
+    # inside this docker-compose.yml file there will be also created the database schema automatically
+    $ docker compose up -d
+  ```
+
+5. *Next run the command*
+
+  ```bash
+    $ cd transaction-ms && yarn prisma migrate dev --name init && npm run start:dev
+    # and from another terminal
+    $ cd anti-fraud-ms && npm run start:dev
+  ```
+
+6. *Once all services are up, you can now create new transactions from: <http://localhost:3000/graphql>
+
+7. Go to [Apollo Explorer](https://studio.apollographql.com/sandbox/explorer), paste the link <http://localhost:3000/graphql> and start testing the queries and mutations.
+
+> Some examples:
+
+### You need to first add a new transaction type
+
+![Transaction Type Creation](assets/transaction-type-creation.png)
+
+```graphql
+  mutation CreateTransactionType($data: TransactionTypeCreateInput!) {
+  createTransactionType(data: $data) {
+    record {
+      id
+      name
+      createdAt
+    }
+  }
+}
 ```
-
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
 ```json
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+  "data": {
+    "name": "CREDIT"
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
+### Then you can create a new transaction
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+![Transaction Creation](assets/transaction-creation.png)
+
+
+```graphql
+mutation CreateTransaction($data: TransactionCreateInput!) {
+  createTransaction(data: $data) {
+    record {
+      id
+      transactionExternalId
+      transactionType {
+        name
+      }
+      value
+      createdAt
+      transactionStatus {
+        name
+      }
+    }
+  }
 }
 ```
 
-## Optional
+>Valid input:
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+```json
+{
+  "data": {
+    "value": 900,
+    "transferTypeId": 1,
+    "accountExternalIdDebit": "7e226607-4cab-4f1a-abf8-8be8ab874bbe",
+    "accountExternalIdCredit": "7e226607-4cab-4f1a-abf8-8be8ab874bbe"
+  }
+}
+```
 
-You can use Graphql;
+>Invalid input: (value is greater than the restriction)
 
-# Send us your challenge
+```json
+{
+  "data": {
+    "value": 2000,
+    "transferTypeId": 1,
+    "accountExternalIdDebit": "7e226607-4cab-4f1a-abf8-8be8ab874bbe",
+    "accountExternalIdCredit": "7e226607-4cab-4f1a-abf8-8be8ab874bbe"
+  }
+}
+```
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+### Clean up after you're done 🧹
 
-If you have any questions, please let us know.
+To stop and delete created containers:
+
+  ```bash
+    $ docker compose down
+  ```
+
+If you want to remove the containers and downloaded images, run the following instead of the above:
+
+```bash
+  $ docker compose down --rmi all
+```
+
+## Some notes and improvements
+
+This app was designed to be scalable, so it can be improved in many ways, for example:
+* The schema generated in transaction-ms was designed to be used in a federated schema, so it can be used in a bigger app, having microservices with Apollo Federation.
+* Redis can be used to cache the responses of the queries and mutations, improving the performance of the app.
+* We can have another microservice and database for the queries, so we can have a database (NoSQL) for reading and another one for writing (SQL), improving the performance of the app.
