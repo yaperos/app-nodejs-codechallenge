@@ -5,7 +5,7 @@
     "version": "0.0.1",
     "scripts": {
         "prebuild": "rimraf dist",
-        "build": "concurrently \"nest build write-transaction\" \"nest build transaction\read \" \"nest build antifraud\"",
+        "build": "concurrently \"nest build transaction\"write \" \"nest build transaction\"read \" \"nest build antifraud\"",
         "format": "prettier --write \"context/**/*.ts\" \"libs/**/*.ts\"",
         "start": "nest start",
         "start:all": "concurrently \"nest start transaction\"write\" \"nest start transaction\"read \"nest start antifraud\"",

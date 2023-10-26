@@ -5,27 +5,27 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/write-transaction/tsconfig.app.json"
+    "tsConfigPath": "apps/write/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/write-transaction",
+  "root": "apps/write",
   "projects": {
-    "write-transaction": {
+    "write": {
       "type": "application",
-      "root": "apps/write-transaction",
+      "root": "apps/write",
       "entryFile": "main",
-      "sourceRoot": "apps/write-transaction/src",
+      "sourceRoot": "apps/write/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/write-transaction/tsconfig.app.json"
+        "tsConfigPath": "apps/write/tsconfig.app.json"
       }
     },
-    "read-transaction": {
+    "read": {
       "type": "application",
-      "root": "apps/read-transaction",
+      "root": "apps/read",
       "entryFile": "main",
-      "sourceRoot": "apps/read-transaction/src",
+      "sourceRoot": "apps/read/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/read-transaction/tsconfig.app.json"
+        "tsConfigPath": "apps/read/tsconfig.app.json"
       }
     },
     "antifraud": {
