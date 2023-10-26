@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionEntity {
+  """ID field (uuid)"""
+  id: String!
+
+  """External debit account ID field (uuid)"""
+  accountExternalIdDebit: String!
+
+  """External credit account ID field (uuid)"""
+  accountExternalIdCredit: String!
+
+  """Tranfer type ID field (int)"""
+  transferTypeId: Int!
+
+  """Status field (string)"""
+  status: String!
+
+  """Value field (number)"""
+  value: Int!
+
+  """Field created at (Date)"""
+  createdAt: DateTime!
+
+  """Field update at (Date)"""
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  sayHello: String!
+}
+
+type Mutation {
+  createTransaction(createTransactionInput: CreateTransactionDto!): TransactionEntity!
+}
+
+input CreateTransactionDto {
+  """External debit account ID field (uuid)"""
+  accountExternalIdDebit: String!
+
+  """External credit account ID field (uuid)"""
+  accountExternalIdCredit: String!
+
+  """Tranfer type ID field (int)"""
+  transferTypeId: Int!
+
+  """Value field (int)"""
+  value: Int!
+}
