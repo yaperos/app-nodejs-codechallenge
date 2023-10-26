@@ -42,7 +42,7 @@ import { ReadTransactionResolver } from "./infrastructure/transaction.resolver";
       ],
       autoSchemaFile: join(
         process.cwd(),
-        "apps/read/src/schema.gql",
+        "context/read/src/schema.gql",
       ),
     }),
   ],

@@ -45,7 +45,7 @@ import { join } from "path";
       driver: ApolloDriver,
       autoSchemaFile: join(
         process.cwd(),
-        "apps/write/src/schema.gql",
+        "context/write/src/schema.gql",
       ),
     }),
     TypeOrmModule.forRootAsync({

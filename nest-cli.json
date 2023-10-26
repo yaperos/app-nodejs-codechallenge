@@ -1,40 +1,40 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/app-nodejs-codechallenge/src",
+  "sourceRoot": "context/app-nodejs-codechallenge/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/write/tsconfig.app.json"
+    "tsConfigPath": "context/write/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/write",
+  "root": "context/write",
   "projects": {
     "write": {
       "type": "application",
-      "root": "apps/write",
+      "root": "context/write",
       "entryFile": "main",
-      "sourceRoot": "apps/write/src",
+      "sourceRoot": "context/write/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/write/tsconfig.app.json"
+        "tsConfigPath": "context/write/tsconfig.app.json"
       }
     },
     "read": {
       "type": "application",
-      "root": "apps/read",
+      "root": "context/read",
       "entryFile": "main",
-      "sourceRoot": "apps/read/src",
+      "sourceRoot": "context/read/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/read/tsconfig.app.json"
+        "tsConfigPath": "context/read/tsconfig.app.json"
       }
     },
     "antifraud": {
       "type": "application",
-      "root": "apps/antifraud",
+      "root": "context/antifraud",
       "entryFile": "main",
-      "sourceRoot": "apps/antifraud/src",
+      "sourceRoot": "context/antifraud/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/antifraud/tsconfig.app.json"
+        "tsConfigPath": "context/antifraud/tsconfig.app.json"
       }
     }
   }
