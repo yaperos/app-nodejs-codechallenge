@@ -86,7 +86,7 @@ export class DatabaseTransactionRepository implements TransactionRepository {
       `
       SELECT 
         *, transactionType.* 
-      FROM ONLY transaction WHERE externalId IN $externalId;
+      FROM ONLY transaction WHERE externalId = $externalId;
     `,
       { externalId },
     );

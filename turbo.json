@@ -7,6 +7,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "test": {},
+    "test:coverage": {},
     "lint": {},
     "dev": {
       "cache": false,
