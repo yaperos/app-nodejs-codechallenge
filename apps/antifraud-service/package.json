@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "ts-node -r dotenv/config src/index.ts",
     "test": "vitest --run",
-    "test:coverage": "vitest --coverage",
+    "test:coverage": "vitest --coverage --run",
     "lint": "eslint . --fix"
   },
   "keywords": [],
