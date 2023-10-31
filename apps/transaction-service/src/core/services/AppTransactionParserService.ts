@@ -2,7 +2,7 @@ import {
   Transaction,
   TransactionOutput,
   TransactionParserService,
-} from '../../../core/domain';
+} from '../domain';
 
 export class AppTransactionParserService implements TransactionParserService {
   parse(transaction: Transaction): TransactionOutput {

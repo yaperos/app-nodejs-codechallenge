@@ -2,13 +2,13 @@ import Kafka from 'node-rdkafka';
 import { Surreal } from 'surrealdb.js';
 import winston, { format } from 'winston';
 
+import { AppTransactionParserService } from '../core/services';
 import {
   CreateTransactionUseCase,
   RetrieveTransactionUseCase,
   UpdateTransactionUseCase,
 } from '../core/usecases';
 import {
-  AppTransactionParserService,
   DatabaseTransactionRepository,
   DatabaseTransactionTypeRepository,
   KafkaEventEmitter,
