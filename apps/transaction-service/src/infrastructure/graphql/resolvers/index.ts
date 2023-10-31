@@ -10,14 +10,17 @@ export const serviceResolvers = {
   DateTime: DateTimeResolver,
   Mutation: {
     createTransaction: (
-      _: any,
+      _: unknown,
       { input }: { input: CreateTransactionUseCaseInput },
     ) => {
       return createTransactionUseCase.execute(input);
     },
   },
   Query: {
-    retrieveTransaction: (_: any, params: RetrieveTransactionUseCaseInput) => {
+    retrieveTransaction: (
+      _: unknown,
+      params: RetrieveTransactionUseCaseInput,
+    ) => {
       return retrieveTransactionUseCase.execute({
         externalId: params.externalId,
       });

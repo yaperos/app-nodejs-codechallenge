@@ -1,5 +1,4 @@
 import {
-  RealTimeEventEmitter,
   TransactionParserService,
   TransactionRepository,
   TransactionStatusValues,
@@ -10,22 +9,18 @@ import {
 type UpdateTransactionUseCaseParams = {
   transactionRepository: TransactionRepository;
   parserService: TransactionParserService;
-  realTimeEventEmitter: RealTimeEventEmitter;
 };
 
 export class UpdateTransactionUseCase {
   private readonly transactionRepository: TransactionRepository;
   private readonly parserService: TransactionParserService;
-  private readonly realTimeEventEmitter: RealTimeEventEmitter;
 
   constructor({
     parserService,
-    realTimeEventEmitter,
     transactionRepository,
   }: UpdateTransactionUseCaseParams) {
     this.transactionRepository = transactionRepository;
     this.parserService = parserService;
-    this.realTimeEventEmitter = realTimeEventEmitter;
   }
 
   private validate(port: UpdateTransactionUseCaseInput): void {
@@ -48,10 +43,6 @@ export class UpdateTransactionUseCase {
       status: port.status,
     });
 
-    const parsedTransaction = this.parserService.parse(transaction);
-
-    this.realTimeEventEmitter.transactionUpdatedEvent(parsedTransaction);
-
-    return parsedTransaction;
+    return this.parserService.parse(transaction);
   }
 }

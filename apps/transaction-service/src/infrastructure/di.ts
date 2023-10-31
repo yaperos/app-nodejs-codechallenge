@@ -12,7 +12,6 @@ import {
   DatabaseTransactionRepository,
   DatabaseTransactionTypeRepository,
   KafkaEventEmitter,
-  SocketRealTimeEventEmitter,
 } from './adapters';
 import { KAFKA_BROKERS, TRANSACTION_CREATED_EVENT_TOPIC } from './environment';
 
@@ -45,7 +44,6 @@ export const surrealDb = new Surreal();
 const eventEmitter = new KafkaEventEmitter(kafkaProducer, {
   transactionCreatedTopic: TRANSACTION_CREATED_EVENT_TOPIC,
 });
-const realTimeEventEmitter = new SocketRealTimeEventEmitter();
 
 const transactionRepository = new DatabaseTransactionRepository(
   surrealDb,
@@ -66,7 +64,6 @@ const createTransactionUseCase = new CreateTransactionUseCase({
 });
 const updateTransactionUseCase = new UpdateTransactionUseCase({
   parserService: transactionParserService,
-  realTimeEventEmitter,
   transactionRepository,
 });
 const retrieveTransactionUseCase = new RetrieveTransactionUseCase({
