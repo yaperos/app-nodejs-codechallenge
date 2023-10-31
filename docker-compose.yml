@@ -1,19 +1,30 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
+  surreal_db:
+    image: surrealdb/surrealdb:1.0.0
+    container_name: surreal_db
+    restart: always
+    user: root
+    command: start --auth --user root --pass root file:/data/database.db
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - 8000:8000
+    volumes:
+      - surrealdb_data:/data
+  surreal_db_migration:
+    image: surrealdb/surrealdb:1.0.0
+    container_name: surreal_db_migration
+    depends_on: [surreal_db]
+    user: root
+    command: import --conn http://surreal_db:8000 --user root --pass root --ns bank --db bank_core /database/schema.surql
+    volumes:
+      - "./database:/database"
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: [ zookeeper ]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -23,3 +34,23 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  kafka-setup:
+    image: confluentinc/cp-kafka:5.5.3
+    depends_on:
+      - kafka
+    volumes:
+      - ./events/init-kafka.sh:/init-kafka.sh
+    command: ["bash", "/init-kafka.sh"]
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+volumes:
+  surrealdb_data:
