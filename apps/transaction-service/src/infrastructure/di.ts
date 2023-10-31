@@ -4,6 +4,7 @@ import winston, { format } from 'winston';
 
 import {
   CreateTransactionUseCase,
+  RetrieveTransactionUseCase,
   UpdateTransactionUseCase,
 } from '../core/usecases';
 import {
@@ -68,5 +69,13 @@ const updateTransactionUseCase = new UpdateTransactionUseCase({
   realTimeEventEmitter,
   transactionRepository,
 });
+const retrieveTransactionUseCase = new RetrieveTransactionUseCase({
+  parserService: transactionParserService,
+  transactionRepository,
+});
 
-export { createTransactionUseCase, updateTransactionUseCase };
+export {
+  createTransactionUseCase,
+  updateTransactionUseCase,
+  retrieveTransactionUseCase,
+};

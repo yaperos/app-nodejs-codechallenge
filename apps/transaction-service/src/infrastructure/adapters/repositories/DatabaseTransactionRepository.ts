@@ -24,7 +24,7 @@ export class DatabaseTransactionRepository implements TransactionRepository {
       data: {
         accountExternalIdCredit: data.accountExternalIdCredit,
         accountExternalIdDebit: data.accountExternalIdDebit,
-        externalId: randomUUID(),
+        externalId: randomUUID().replaceAll('-', ''),
         status: TransactionStatus.PENDING,
         transactionType: data.transactionType.id,
         value: data.value,
@@ -52,7 +52,7 @@ export class DatabaseTransactionRepository implements TransactionRepository {
         ${data.annotations ? ', annotations = $annotations' : ''};
       
       SELECT 
-        *, (select id, name from only $transaction.transactionType) as transactionType 
+        *, transactionType.* as transactionType 
       FROM ONLY $transaction;
       `,
       { annotations: data.annotations, id, status: data.status },
@@ -76,6 +76,23 @@ export class DatabaseTransactionRepository implements TransactionRepository {
 
     if (!result) {
       throw new Error('ERROR_UPDATING_TRANSACTION');
+    }
+
+    return result;
+  }
+
+  async get(externalId: string): Promise<Transaction> {
+    const [{ result, status }] = await this.client.query<[Transaction]>(
+      `
+      SELECT 
+        *, transactionType.* 
+      FROM ONLY transaction WHERE externalId IN $externalId;
+    `,
+      { externalId },
+    );
+
+    if (status === 'ERR' || !result) {
+      throw new Error('TRANSACTION_NOT_FOUND');
     }
 
     return result;

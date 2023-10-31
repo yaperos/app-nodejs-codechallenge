@@ -27,7 +27,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    hello: String!
+    retrieveTransaction(externalId: String!): TransactionOutput!
   }
 
   type Mutation {
