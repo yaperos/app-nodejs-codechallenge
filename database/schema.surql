@@ -4,6 +4,7 @@
 
 DEFINE TABLE transaction SCHEMAFULL PERMISSIONS NONE;
 
+DEFINE FIELD value ON transaction TYPE number;
 DEFINE FIELD externalId ON transaction TYPE string;
 DEFINE FIELD accountExternalIdDebit ON transaction TYPE string;
 DEFINE FIELD accountExternalIdCredit ON transaction TYPE string;
