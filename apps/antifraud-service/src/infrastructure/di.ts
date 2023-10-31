@@ -1,7 +1,7 @@
 import Kafka from 'node-rdkafka';
 import winston, { format } from 'winston';
 
-import { ValidateTransactionUseCase } from '../core/usecases/ValidateTransactionUseCase';
+import { ValidateTransactionUseCase } from '../core/usecases';
 import { KafkaEventEmitter } from './adapters';
 import {
   KAFKA_BROKERS,

@@ -3,6 +3,10 @@ import { kafkaConsumer, kafkaProducer, logger } from './di';
 export const initProducer = () => {
   kafkaProducer.connect();
   logger.info('KAFKA_PRODUCER_READY');
+
+  setInterval(() => {
+    kafkaProducer.poll();
+  }, 5000);
 };
 
 export const closeConnections = () => {
