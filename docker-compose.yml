@@ -52,5 +52,23 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+  transaction-service:
+    image: challenge-davp-transaction-service
+    env_file:
+      - ./apps/transaction-service/.env.docker
+    build:
+      context: .
+      dockerfile: ./apps/transaction-service/Dockerfile
+      target: prod
+    ports:
+      - "3001:3001"
+  antifraud-service:
+    image: challenge-davp-antifraud-service
+    env_file:
+      - ./apps/antifraud-service/.env.docker
+    build:
+      context: .
+      dockerfile: ./apps/antifraud-service/Dockerfile
+      target: prod
 volumes:
   surrealdb_data:
