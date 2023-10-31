@@ -37,6 +37,60 @@ Before running the solution locally, ensure that you've met the requirements for
   pnpm run test:coverage
 ```
 
+# Queries Example
+
+``` graphql
+# Create Transaction
+mutation Mutation($input: CreateTransactionUseCaseInput!) {
+  createTransaction(input: $input) {
+    transactionExternalId
+    transactionStatus {
+      name
+    }
+    transactionType {
+      name
+    }
+    value
+    createdAt
+  }
+}
+
+# Retreive Transaction
+query RetrieveTransaction($externalId: String!) {
+  retrieveTransaction(externalId: $externalId) {
+    transactionExternalId
+    transactionStatus {
+      name
+    }
+    transactionType {
+      name
+    }
+    value
+    createdAt
+  }
+}
+```
+
+### Data Example
+Create Transaction
+```json
+{
+    "input": {
+        "accountExternalIdCredit": "0e153aae-bf3c-4293-9bdb-f117102e58b1",
+        "accountExternalIdDebit": "0e153aae-bf3c-4293-9bdb-f117102e58b1",
+        "tranferTypeId": 3,
+        "value": 12
+    }
+}
+```
+
+Retreive Transaction
+```json
+{
+  "externalId": "f9df46066be6459bba27ab9b3928b622"
+}
+```
+
 
 # CHALLENGE
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
