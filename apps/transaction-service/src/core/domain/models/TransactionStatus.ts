@@ -4,4 +4,5 @@ export enum TransactionStatus {
   REJECTED = 'REJECTED',
 }
 
-export const TransactionStatusValues = Object.values(TransactionStatus);
+export const TransactionStatusValues: string[] =
+  Object.values(TransactionStatus);

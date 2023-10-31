@@ -1,5 +1,5 @@
 import { kafkaProducer } from '../di';
 
-export const initKafka = async () => {
+export const initKafka = () => {
   kafkaProducer.connect();
 };

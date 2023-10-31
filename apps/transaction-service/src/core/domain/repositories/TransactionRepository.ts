@@ -7,6 +7,12 @@ export type TransactionInsertData = {
   value: number;
 };
 
+export type TransactionUpdateData = {
+  status: string;
+  annotations?: string;
+};
+
 export interface TransactionRepository {
   insert(data: TransactionInsertData): Promise<Transaction>;
+  update(id: string, data: TransactionUpdateData): Promise<Transaction>;
 }

@@ -11,6 +11,8 @@ DEFINE FIELD accountExternalIdCredit ON transaction TYPE string;
 DEFINE FIELD transactionType ON transaction TYPE record<transaction_type>;
 DEFINE FIELD status ON transaction TYPE string;
 
+DEFINE FIELD annotations ON transaction TYPE option<string>;
+
 DEFINE FIELD createdAt ON transaction TYPE datetime DEFAULT time::now()
 VALUE $before OR time::now();
 DEFINE FIELD updatedAt ON transaction TYPE datetime DEFAULT time::now() VALUE time::now();

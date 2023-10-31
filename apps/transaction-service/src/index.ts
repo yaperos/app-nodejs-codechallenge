@@ -1,4 +1,6 @@
 import { logger } from './infrastructure/di';
+import { closeConnections } from './infrastructure/event-handlers';
+import { initEventWatcher } from './infrastructure/event-watcher';
 import {
   initDatabase,
   initKafka,
@@ -8,7 +10,8 @@ import {
 const main = async () => {
   try {
     await initDatabase();
-    await initKafka();
+    initKafka();
+    initEventWatcher();
 
     await initServer();
   } catch (error) {
@@ -18,3 +21,6 @@ const main = async () => {
 };
 
 main();
+
+process.on('SIGINT', closeConnections);
+process.on('SIGTERM', closeConnections);
