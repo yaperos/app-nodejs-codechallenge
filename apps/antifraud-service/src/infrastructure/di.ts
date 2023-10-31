@@ -30,7 +30,9 @@ export const kafkaConsumer = new Kafka.KafkaConsumer(
     'group.id': 'antifraud-service',
     'metadata.broker.list': KAFKA_BROKERS,
   },
-  {},
+  {
+    'auto.offset.reset': 'earliest',
+  },
 );
 
 const eventEmitter = new KafkaEventEmitter(kafkaProducer, {

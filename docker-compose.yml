@@ -56,6 +56,9 @@ services:
     image: challenge-davp-transaction-service
     env_file:
       - ./apps/transaction-service/.env.docker
+    depends_on:
+      - kafka
+      - zookeeper
     build:
       context: .
       dockerfile: ./apps/transaction-service/Dockerfile
@@ -66,6 +69,9 @@ services:
     image: challenge-davp-antifraud-service
     env_file:
       - ./apps/antifraud-service/.env.docker
+    depends_on:
+      - kafka
+      - zookeeper
     build:
       context: .
       dockerfile: ./apps/antifraud-service/Dockerfile

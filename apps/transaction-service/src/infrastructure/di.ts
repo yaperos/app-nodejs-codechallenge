@@ -36,7 +36,9 @@ export const kafkaConsumer = new Kafka.KafkaConsumer(
     'group.id': 'transaction-service',
     'metadata.broker.list': KAFKA_BROKERS,
   },
-  {},
+  {
+    'auto.offset.reset': 'earliest',
+  },
 );
 
 export const surrealDb = new Surreal();
