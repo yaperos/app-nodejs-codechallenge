@@ -17,7 +17,7 @@ export class KafkaEventEmitter implements EventEmitter {
     this.kafkaProducer.produce(
       this.topics.approvedTransactionTopic,
       null,
-      Buffer.from(JSON.stringify(transaction)),
+      Buffer.from(JSON.stringify({ id: transaction.id })),
       `approved_transaction:${transaction.id}`,
       Date.now(),
     );
@@ -30,7 +30,7 @@ export class KafkaEventEmitter implements EventEmitter {
     this.kafkaProducer.produce(
       this.topics.rejectedTransactionTopic,
       null,
-      Buffer.from(JSON.stringify({ ...transaction, errorMessage })),
+      Buffer.from(JSON.stringify({ errorMessage, id: transaction.id })),
       `rejected_transaction:${transaction.id}`,
       Date.now(),
     );
