@@ -1,5 +1,44 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge Solution :rocket:
 
+# Run Solution With Docker
+To run the solution using Docker, use the following command:
+```bash
+   docker compose up -d
+```
+### Note:
+The first time after building the images, the transaction.rejected topic may take a while to rebalance. This topic is configured to read all unread events as soon as it connects.
+
+If you'd rather not wait for this rebalancing process to complete, you can quickly start using the following command:
+
+```bash
+   docker compose down && docker compose up -d
+```
+
+# Run Solution Locally
+### Set Up Environment Variables
+Configure the environment variables based on the examples provided in the .env.example files for each microservice located in /apps.
+
+### Install node-rdkafka Requirements
+Before running the solution locally, ensure that you've met the requirements for node-rdkafka. You can find detailed installation instructions and requirements in the [node-rdkafka](https://github.com/Blizzard/node-rdkafka#readme) documentation.
+
+### Run
+```bash
+ pnpm install
+ pnpm run dev
+```
+
+### Run Test
+```bash 
+  pnpm run test
+```
+
+### Run Test With coverage
+```bash 
+  pnpm run test:coverage
+```
+
+
+# CHALLENGE
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
