@@ -17,6 +17,13 @@
     "@types/node": "^20.8.9",
     "@vitest/coverage-v8": "^0.34.6",
     "dotenv": "^16.3.1",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
     "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "node-rdkafka": "^2.18.0",
+    "surrealdb.js": "^0.10.1",
+    "winston": "^3.11.0"
   }
 }
