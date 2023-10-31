@@ -1,13 +1,44 @@
 # Yape Code Challenge :rocket:
-## Hey there, i'm Marlon. I'm a software engineer with more than 5 years of experience. I could not finished the project, i have been feeling so sick this week But i have been trying to do the bests Please, check the code quality, division ... and more, an let me know the feedback For stating the project just have to run "docker compose up"
+# Welcome to My Project!
 
-The project were build under a microservice architecture, i created two server types,
-1 -> With apollo server (transaction-service) that is running in PORT 4000 and working with Graphql at: http://localhost:4000/graphqlhttp://localhost:4000/graphql
-2 -> With express (antifraud-service) running at port 4001 but is not exposed by security policies
-3 -> i used many service as container at this project, services like redis, postgres, pgadmin, zookeper, kafka and kafkadrop. But just someone of these are exposed
-KadkaDrop -> http://localhost:9000
-PgAmdin -> http://localhost:8888
----------------------------------------------------------------------------
+Hello! I'm Marlon, a passionate software engineer with over 5 years of experience. I've put a lot of effort into this project, but unfortunately, I couldn't finish it completely due to being unwell this week. Nevertheless, I've tried my best to deliver a high-quality codebase.
+
+## Project Description
+
+This project is built using a microservices architecture. Here's a brief overview of the server types and services I've implemented:
+
+1. **Transaction Service (Apollo Server)**
+   - Running on PORT 4000
+   - Utilizing GraphQL
+   - Access the GraphQL endpoint at: [http://localhost:4000/graphql](http://localhost:4000/graphql)
+
+2. **Antifraud Service (Express)**
+   - Running on PORT 4001 (Note: Not exposed due to security policies)
+
+## Services and Tools Used
+
+I've utilized various services and containers to enhance the functionality of the project:
+
+- **Databases:**
+  - Redis
+  - Postgres
+  - PgAdmin
+
+- **Messaging Systems:**
+  - Zookeeper
+  - Kafka
+
+- **Management Tools:**
+  - KafkaDrop (Access at: [http://localhost:9000](http://localhost:9000))
+  - PgAdmin (Access at: [http://localhost:8888](http://localhost:8888))
+
+## Getting Started
+
+To get the project up and running, simply execute the following command:
+
+```bash
+docker-compose up
+```
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
