@@ -1,9 +1,12 @@
+import { TransactionType } from './TransactionType';
+
 export type Transaction = {
   id: string;
   externalId: string;
+  value: number;
   accountExternalIdDebit: string;
   accountExternalIdCredit: string;
-  transactionType: string;
+  transactionType: TransactionType;
   status: string;
   createdAt: Date;
   updatedAt: Date;

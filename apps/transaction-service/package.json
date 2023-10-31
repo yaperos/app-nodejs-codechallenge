@@ -22,6 +22,12 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
-    "surrealdb.js": "^0.10.1"
+    "@apollo/server": "^4.9.5",
+    "graphql": "^16.8.1",
+    "graphql-scalars": "^1.22.4",
+    "graphql-tag": "^2.12.6",
+    "node-rdkafka": "^2.18.0",
+    "surrealdb.js": "^0.10.1",
+    "winston": "^3.11.0"
   }
 }
