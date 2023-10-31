@@ -1,0 +1,27 @@
+{
+  "name": "transaction-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node -r dotenv/config src/index.ts",
+    "test": "vitest --run",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint . --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.8.9",
+    "@vitest/coverage-v8": "^0.34.6",
+    "dotenv": "^16.3.1",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "surrealdb.js": "^0.10.1"
+  }
+}
