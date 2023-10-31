@@ -1,0 +1,24 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": "standard-with-typescript",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "ignorePatterns": ["**/*.js"],
+    "rules": {
+        "indent": ["error", 2],
+        "quotes": ["error", "single"],
+        "eqeqeq": "error",
+        "no-unused-vars": "error",
+        "no-undef": "error",
+        "no-trailing-spaces": "error",
+        "object-curly-spacing": ["error", "always"],
+        "block-spacing": ["error", "always"],
+        "import/order": "error"
+    }
+}

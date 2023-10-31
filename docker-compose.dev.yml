@@ -40,7 +40,7 @@ services:
     container_name: transactions-service
     build:
       context: .
-      dockerfile: packages/transactions-service/Dockerfile
+      dockerfile: packages/transactions-service/Dockerfile.dev
     ports:
       - 4000:4000
     restart: always
@@ -54,7 +54,8 @@ services:
       DB_NAME: "challenge"
       DB_USER: root
       DB_PASSWORD: challenge1mA!
-      PORT: 4000
+    volumes:
+      - "./:/app"
     networks:
       - backend
 
@@ -62,7 +63,7 @@ services:
     container_name: antifraud-service
     build:
       context: .
-      dockerfile: packages/antifraud-service/Dockerfile
+      dockerfile: packages/antifraud-service/Dockerfile.dev
     restart: always
     depends_on:
       - postgres
@@ -70,7 +71,8 @@ services:
       KAFKA_BROKER: "kafka:9092"
       TRANSACTION_KAFKA_GROUP_ID: "transaction-group"
       TRANSACTION_KAFKA_TOPIC: "transactions.v1"
-      PORT: 4001
+    volumes:
+      - "./:/app"
     networks:
       - backend
 

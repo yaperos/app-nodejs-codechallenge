@@ -1,0 +1,42 @@
+{
+  "name": "shared-module",
+  "version": "1.0.0",
+  "description": "Shared module for shared functionalities",
+  "keywords": [
+    "shared"
+  ],
+  "author": "Marlon Yepes <myepes82@misena.edu.co>",
+  "homepage": "https://github.com/yaperos/app-nodejs-codechallenge#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaperos/app-nodejs-codechallenge.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/shared-module.test.js",
+    "local:dev": "concurrently \"tsc --watch\" \"node --watch lib/index.js\"",
+    "build": "tsc"
+  },
+  "bugs": {
+    "url": "https://github.com/yaperos/app-nodejs-codechallenge/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.52.0",
+    "eslint-config-standard-with-typescript": "^39.1.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-n": "^16.2.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.2.2"
+  }
+}

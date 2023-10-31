@@ -1,0 +1,43 @@
+{
+  "name": "antifraud-service",
+  "version": "1.0.0",
+  "description": "Antifraud service for technical challenge",
+  "author": "Marlon Yepes <myepes82@misena.edu.co>",
+  "homepage": "https://github.com/yaperos/app-nodejs-codechallenge#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaperos/app-nodejs-codechallenge.git"
+  },
+  "scripts": {
+    "dev": "concurrently \"tsc --watch\" \"node --watch lib/index.js\"",
+    "build": "tsc",
+    "start": "node ./lib/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/yaperos/app-nodejs-codechallenge/issues"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "kafkajs": "^2.2.4",
+    "shared-module": "^1.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "eslint": "^8.52.0",
+    "eslint-config-standard-with-typescript": "^39.1.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-n": "^16.2.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.2.2"
+  }
+}
