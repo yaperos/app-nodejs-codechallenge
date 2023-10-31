@@ -54,6 +54,7 @@ services:
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
   transaction-service:
     image: challenge-davp-transaction-service
+    restart: always
     env_file:
       - ./apps/transaction-service/.env.docker
     depends_on:
@@ -67,6 +68,7 @@ services:
       - "3001:3001"
   antifraud-service:
     image: challenge-davp-antifraud-service
+    restart: always
     env_file:
       - ./apps/antifraud-service/.env.docker
     depends_on:
