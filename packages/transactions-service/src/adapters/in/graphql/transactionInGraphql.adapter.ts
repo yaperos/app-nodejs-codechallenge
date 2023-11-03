@@ -2,6 +2,7 @@ import { TransactionTypeEnum } from '../../../app/entities/enums/transactionType
 import TransactionEntity from '../../../app/entities/transaction.entity'
 import type ITransactionsService from '../../../app/services/transactions.service'
 import TransactionsImplementationService from '../../../core/services/transactionImpl.service'
+import { databaseInstance, transactionMessageManagerInstance } from '../../../globals'
 import { logger } from '../../../shared/imports'
 import transactionCreationValidation from '../../../shared/validators/transactionCreation.validator'
 import TransactionOutDbAdapter from '../../out/db/transactionOutDb.adapter'
@@ -15,8 +16,8 @@ class TransactionInGraphqlAdapter {
 
   constructor () {
     this.transactionsService = new TransactionsImplementationService(
-      new TransactionOutDbAdapter(),
-      new TransactionsKafkaProducerAdapter()
+      new TransactionOutDbAdapter(databaseInstance),
+      new TransactionsKafkaProducerAdapter(transactionMessageManagerInstance)
     )
   }
 

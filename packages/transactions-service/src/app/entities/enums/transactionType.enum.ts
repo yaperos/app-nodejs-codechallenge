@@ -1,5 +1,5 @@
-import ResourceNotFoundException from '../../errors/exceptions/resourceNotFound.exception'
 import ErrorMessages from '../../../shared/constants/errorMessages.constants'
+import BadRequestException from '../../errors/exceptions/badRequest.exception'
 
 export enum TransactionTypeEnum {
   CREDIT = 'CREDIT',
@@ -11,5 +11,5 @@ export function getTransactionTypeEnumFromValue (value?: string): TransactionTyp
   if (parsedValue === 'CREDIT' || parsedValue === 'DEBIT') {
     return parsedValue as unknown as TransactionTypeEnum
   }
-  throw new ResourceNotFoundException(ErrorMessages.TRANSACTIONS.INVALID.TRANSACTION_TYPE)
+  throw new BadRequestException(ErrorMessages.TRANSACTIONS.INVALID.TRANSACTION_TYPE)
 }

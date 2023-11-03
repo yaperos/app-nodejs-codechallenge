@@ -9,4 +9,5 @@ async function main (): Promise<void> {
   await databaseInstance.start()
 }
 
+console.log('iniciando')
 void main()

@@ -1,4 +1,3 @@
-import type TransactionOutDbAdapter from '../../adapters/out/db/transactionOutDb.adapter'
 import { TransactionStatusEnum } from '../../app/entities/enums/transactionStatus.enum'
 import type TransactionEntity from '../../app/entities/transaction.entity'
 import BadRequestException from '../../app/errors/exceptions/badRequest.exception'
@@ -15,7 +14,7 @@ export default class TransactionsImplementationService implements ITransactionsS
   private readonly _transactionsPersistenceRepository: TransactionPersistenceRepository
 
   constructor (
-    transactionsPersistenceRepository: TransactionOutDbAdapter,
+    transactionsPersistenceRepository: TransactionPersistenceRepository,
     transactionsEventMessageRepository: TransactionEventMessageRepository
   ) {
     this._transactionsPersistenceRepository = transactionsPersistenceRepository
@@ -45,5 +44,17 @@ export default class TransactionsImplementationService implements ITransactionsS
       throw new ResourceNotFoundException(ErrorMessagesConstants.TRANSACTIONS.NOT_FOUND.BY_EXTERNAL_ID)
     }
     return result
+  }
+
+  async updateStatus (externalTransactionId: string, newStatus: TransactionStatusEnum): Promise<TransactionEntity> {
+    const transactionFound = await this._transactionsPersistenceRepository.findOneByExternalId(externalTransactionId)
+    if (transactionFound === null) {
+      throw new ResourceNotFoundException(ErrorMessagesConstants.TRANSACTIONS.NOT_FOUND.BY_EXTERNAL_ID)
+    }
+    if (transactionFound.transactionStatus === newStatus) {
+      logger.logDebug('There is no new status to update')
+      return transactionFound
+    }
+    return await this._transactionsPersistenceRepository.updateTransactionStatus(transactionFound.withStatus(newStatus))
   }
 }

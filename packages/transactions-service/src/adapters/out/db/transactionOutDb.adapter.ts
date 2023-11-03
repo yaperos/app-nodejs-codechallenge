@@ -1,12 +1,18 @@
+import { type DataSource } from 'typeorm'
 import type TransactionEntity from '../../../app/entities/transaction.entity'
 import type TransactionPersistenceRepository from '../../../app/repositories/out/transactionPersistence.repository'
+import { type Database } from '../../../core/db/database'
 import TransactionModel from '../../../core/db/models/typeorm/transactionModel.model'
-import { databaseInstance } from '../../../globals'
 import { logger } from '../../../shared/imports'
 
-class TransactionOutDbAdapter implements TransactionPersistenceRepository {
+export default class TransactionOutDbAdapter implements TransactionPersistenceRepository {
   private readonly _location: string = 'TransactionOutDbAdapter.ts'
-  private readonly _repository = databaseInstance.getDataSource().getRepository(TransactionModel)
+  private readonly _repository
+
+  constructor (databaseInstance: Database<DataSource>) {
+    this._repository = databaseInstance.getDataSource().getRepository(TransactionModel)
+  }
+
   async findOneByExternalId (externalId: string): Promise<TransactionEntity | null> {
     try {
       logger.logDebug(`Looking for transaction with id: ${externalId}`)
@@ -42,6 +48,24 @@ class TransactionOutDbAdapter implements TransactionPersistenceRepository {
       throw error
     }
   }
-}
 
-export default TransactionOutDbAdapter
+  async updateTransactionStatus (entity: TransactionEntity): Promise<TransactionEntity> {
+    try {
+      const { transactionExternalId, transactionStatus } = entity
+      logger.logDebug(`Updating transaction identified by externalTransactionId: ${transactionExternalId}`, this._location)
+      logger.logDebug(`Transaction: ${transactionExternalId} new status ${transactionStatus}`)
+      const result = await this._repository
+        .createQueryBuilder()
+        .update()
+        .set({ transaction_status: transactionStatus })
+        .where('transaction_external_id = :transactionExternalId', { transactionExternalId })
+        .returning('updated_at')
+        .execute()
+      logger.logDebug('Transaction record updated', this._location)
+      return entity.withUpdatedAt(result.raw[0].updated_at)
+    } catch (error) {
+      logger.logError(error, this._location)
+      throw error
+    }
+  }
+}
