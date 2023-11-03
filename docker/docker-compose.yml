@@ -1,16 +1,22 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
+  mysql_yape:
+    platform: linux/x86_64
+    image: mysql:5.7
+    container_name: mysql_yape
+    restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 3307:3306
+    expose:
+      - 3307
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,3 +29,20 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+  transactions-api:
+    container_name: transactions-api
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.prod
+    ports:
+      - 3309:3309
+    depends_on:
+      - mysql_yape
+      - kafka
+    command: sh -c "/wait && npm run start"
+    environment:
+      - WAIT_HOSTS=mysql_yape:3306
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
