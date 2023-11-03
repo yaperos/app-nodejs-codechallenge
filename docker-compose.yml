@@ -22,4 +22,18 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - "9092:9092"
+  kafka_ui:
+    image: provectuslabs/kafka-ui
+    hostname: kafka_ui
+    container_name: kafka_ui
+    restart: always
+    ports:
+      - '7000:8080'
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_BROKERCONNECT: kafka:29092
+    depends_on:
+      - kafka
+      - zookeeper
