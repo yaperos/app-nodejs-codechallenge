@@ -1,4 +1,4 @@
-import { type Consumer, Kafka, type Producer } from 'kafkajs'
+import { type Consumer, Kafka, type Producer, type IHeaders, type KafkaMessage } from 'kafkajs'
 import { MessageManager } from '../messageManager'
 import { type EventMessage } from '../../../shared/interfaces/eventMessage.interface'
 import { logger } from '../../../shared/imports'
@@ -39,7 +39,8 @@ export class KafkaMessageManagerInstance extends MessageManager {
           key: message.key,
           value,
           headers: { 'client-id': this._clientId }
-        }]
+        }],
+        acks: -1
       })
       logger.logDebug('Message sent', this._location)
     } catch (error) {
@@ -49,20 +50,33 @@ export class KafkaMessageManagerInstance extends MessageManager {
     }
   }
 
+  private async validateClientId ({ topic, partition, message }: { topic: string, partition: number, message: KafkaMessage }): Promise<boolean> {
+    const headers: IHeaders | undefined = message.headers
+    if (message.headers !== null) {
+      const clientId = headers !== undefined ? headers['client-id']?.toString() : null
+      if (clientId !== null && clientId === this._clientId) {
+        return true
+      }
+      return false
+    }
+    return false
+  }
+
   public async consume (it: (message: any) => Promise<void>): Promise<void> {
     try {
       await this._consumer.connect()
       await this._consumer.subscribe({ topic: super.topic, fromBeginning: true })
       await this._consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
-          logger.logError('Esta monda entra aqui')
           try {
-            logger.logError(message)
-            const data: EventMessageContent<any> = JSON.parse(message.value?.toString() ?? '')
-            if (!this._allowedEventsToProcess.includes(data.name)) {
-              throw Error('Event type unable to process')
+            const messageFromSelf = await this.validateClientId({ topic, partition, message })
+            if (!messageFromSelf) {
+              const data: EventMessageContent<any> = JSON.parse(message.value?.toString() ?? '')
+              if (!this._allowedEventsToProcess.includes(data.name)) {
+                throw Error('Event type unable to process')
+              }
+              await it(data)
             }
-            await it(data)
           } catch (error) {
             logger.logError(error, this._location)
           }

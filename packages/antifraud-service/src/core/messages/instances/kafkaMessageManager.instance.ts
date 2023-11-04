@@ -71,6 +71,7 @@ export class KafkaMessageManagerInstance extends MessageManager {
       await this._consumer.subscribe({ topic: super.topic, fromBeginning: true })
       await this._consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
+          await this._consumer.commitOffsets([{ topic, partition, offset: message.offset }])
           const messageFromSelf = await this.validateClientId({ topic, partition, message })
           try {
             if (!messageFromSelf) {
@@ -83,7 +84,6 @@ export class KafkaMessageManagerInstance extends MessageManager {
           } catch (error) {
             logger.logError(error, this._location)
           }
-          await this._consumer.commitOffsets([{ topic, partition, offset: message.offset }])
         }
       })
     } catch (error) {

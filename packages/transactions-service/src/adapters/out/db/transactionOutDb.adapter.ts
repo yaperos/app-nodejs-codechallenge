@@ -53,7 +53,7 @@ export default class TransactionOutDbAdapter implements TransactionPersistenceRe
     try {
       const { transactionExternalId, transactionStatus } = entity
       logger.logDebug(`Updating transaction identified by externalTransactionId: ${transactionExternalId}`, this._location)
-      logger.logDebug(`Transaction: ${transactionExternalId} new status ${transactionStatus}`)
+      logger.logDebug(`Transaction: ${transactionExternalId} new status ${transactionStatus}`, this._location)
       const result = await this._repository
         .createQueryBuilder()
         .update()

@@ -48,7 +48,7 @@ services:
       - postgres
     environment:
       KAFKA_BROKER: "kafka:9092"
-      TRANSACTION_KAFKA_GROUP_ID: "transaction-group"
+      TRANSACTION_KAFKA_GROUP_ID: "transaction-service-group-id"
       TRANSACTION_KAFKA_TOPIC: "transactions.v1"
       DB_HOST: "postgres"
       DB_NAME: "challenge"
@@ -68,7 +68,7 @@ services:
       - postgres
     environment:
       KAFKA_BROKER: "kafka:9092"
-      TRANSACTION_KAFKA_GROUP_ID: "transaction-group"
+      TRANSACTION_KAFKA_GROUP_ID: "antifraud-service-group-id"
       TRANSACTION_KAFKA_TOPIC: "transactions.v1"
       PORT: 4001
     networks:
