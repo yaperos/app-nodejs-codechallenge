@@ -9,7 +9,6 @@ COPY lerna.json ./
 RUN mkdir packages
 WORKDIR /packages
 
-RUN mkdir shared-module
 RUN mkdir transactions-service
 WORKDIR /app
 
@@ -19,10 +18,6 @@ WORKDIR /app/logs
 RUN touch transactions-service-output.log
 RUN touch transactions-service-error.log
 
-WORKDIR /app
-COPY ./packages/shared-module/ /app/packages/shared-module
-WORKDIR /app/packages/shared-module
-RUN npm run build
 WORKDIR /app
 COPY ./packages/transactions-service/ /app/packages/transactions-service
 RUN npm install

@@ -8,7 +8,7 @@ async function main (): Promise<void> {
   const port: string | number = PORT ?? 4000
   await startApolloServer(port)
   await databaseInstance.start()
-  await transactionMessageManagerInstance.consume(eventHandler)
 }
-
-void main()
+main().then(async () => {
+  await transactionMessageManagerInstance.consume(eventHandler)
+}).catch(e => { console.log(e) })

@@ -43,7 +43,7 @@ async function startServer (port: string | number, postRun?: (...params: any) =>
     const server = createApolloServer(httpServer)
     await server.start()
     server.applyMiddleware({ app: app as any })
-    await new Promise<void>((resolve) => httpServer.listen({ port }, resolve))
+    await new Promise<void>((resolve) => httpServer.listen(port, resolve))
     logger.logDebug(`🚀 Server ready at http://localhost:${port}/graphql`, location)
   } catch (error: any) {
     logger.logError(`An error has ocurred while startup ${error}`, location)

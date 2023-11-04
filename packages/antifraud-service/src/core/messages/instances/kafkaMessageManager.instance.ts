@@ -36,7 +36,13 @@ export class KafkaMessageManagerInstance extends MessageManager {
       await this._producer.connect()
       await this._producer.send({
         topic: super.topic,
-        messages: [{ key: message.key, value, headers: { 'client-id': this._clientId } }]
+        messages: [
+          {
+            key: message.key,
+            value,
+            headers: { 'client-id': this._clientId }
+          }
+        ]
       })
 
       logger.logDebug('Message sent', this._location)

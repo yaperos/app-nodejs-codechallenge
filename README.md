@@ -1,7 +1,7 @@
 # Yape Code Challenge :rocket:
 # Welcome to My Project!
 
-Hello! I'm Marlon, a passionate software engineer with over 5 years of experience. I've put a lot of effort into this project, but unfortunately, I couldn't finish it completely due to being unwell this week. Nevertheless, I've tried my best to deliver a high-quality codebase.
+Hello! I'm Marlon, a passionate software engineer with over 5 years of experience. I've put a lot of effort into this project, but unfortunately, I couldn't finish it completely. Nevertheless, I've tried my best to deliver a high-quality codebase.
 
 ## Project Description
 

@@ -12,10 +12,12 @@ export class KafkaMessageManagerInstance extends MessageManager {
   private readonly _consumer: Consumer
   private readonly _allowedEventsToProcess: string[]
 
-  constructor (groupId: string, topic: string, producerTopic: string, events: string[]) {
+  constructor (groupId: string, topic: string, events: string[]) {
     const { KAFKA_BROKER } = process.env
     const broker: string = KAFKA_BROKER ?? 'localhost:9092'
+
     super(groupId, topic)
+
     this._configuration = new Kafka({
       clientId: this._clientId,
       brokers: [broker]
@@ -27,13 +29,15 @@ export class KafkaMessageManagerInstance extends MessageManager {
 
   public async produce<T>(message: EventMessage<T>): Promise<void> {
     try {
-      logger.logDebug(`Sending message: ${message as any}}`)
+      const value = JSON.stringify(message.value)
+      logger.logDebug(`Sending message: ${value}`, this._location)
+
       await this._producer.connect()
       await this._producer.send({
         topic: super.topic,
         messages: [{
           key: message.key,
-          value: JSON.stringify(message.value),
+          value,
           headers: { 'client-id': this._clientId }
         }]
       })
@@ -53,6 +57,7 @@ export class KafkaMessageManagerInstance extends MessageManager {
         eachMessage: async ({ topic, partition, message }) => {
           logger.logError('Esta monda entra aqui')
           try {
+            logger.logError(message)
             const data: EventMessageContent<any> = JSON.parse(message.value?.toString() ?? '')
             if (!this._allowedEventsToProcess.includes(data.name)) {
               throw Error('Event type unable to process')
