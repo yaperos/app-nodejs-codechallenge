@@ -1,0 +1,37 @@
+<main class="box-login">
+    <div class="box box-style">
+        <div class="card" style="background: #ffffff00;border-color: #ffffff00;">
+            <div class="card-body">
+                <form (submit)="login()">
+                    <div class="box">
+                        <img class="log-yape" src="../../../assets/logos/logo tpdelivery.png" alt="logo">
+                    </div>
+                    <div class="mt-4 box card">
+                        <div class="card-body">
+                            <h1 style="text-align: center;color: #077df3;">
+                                Login Yape
+                            </h1>
+                            <p>
+                                <mat-form-field style="width: 100%;">
+                                    <mat-label>Email:</mat-label>
+                                    <input matInput #inputName type="email" placeholder="email" name="email"
+                                        [(ngModel)]="email" required autocomplete="off">
+                                </mat-form-field>
+                            </p>
+                            <p>
+                                <mat-form-field style="width: 100%;">
+                                    <mat-label>Pass:</mat-label>
+                                    <input matInput #inputPass type="password" placeholder="password" name="pass"
+                                        [(ngModel)]="pass" required autocomplete="off">
+                                </mat-form-field>
+                            </p>
+                            <div class="d-flex flex-row flex-row-reverse">
+                                <button class="btn btn-primary btn-ingresar">Ingresar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

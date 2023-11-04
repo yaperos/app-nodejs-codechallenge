@@ -1,0 +1,15 @@
+.box-footer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+img{
+    width: 4% !important;
+    margin: 0 2%;
+}
+
+@media screen and (max-width:700px) {
+    img {
+        width: 20% !important;
+    }
+}

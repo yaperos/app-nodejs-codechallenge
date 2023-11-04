@@ -1,0 +1,41 @@
+img {
+    width: 100%;
+}
+
+.container-fluid {
+    justify-content: center !important;
+}
+
+.box-name {
+    text-transform: uppercase;
+    color: #d60088;
+}
+.box-name h5{
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (min-width:700px) {
+    .mobile {
+        display: none;
+    }
+
+    .navbar-collapse {
+        flex-grow: 0 !important;
+    }
+}
+
+@media screen and (max-width:700px) {
+    .mobile {
+        position: relative;
+        left: 150px;
+        bottom: 34px;
+    }
+}
+
+.active {
+    border-bottom: 1px #d60088 solid;
+    font-size: 2em;
+    font-weight: 800;
+}

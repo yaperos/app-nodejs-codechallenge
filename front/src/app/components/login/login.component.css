@@ -1,0 +1,55 @@
+.box {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.box-style {
+    padding-top: 8%;
+}
+
+img {
+    width: 100%;
+}
+
+.tk-login-title {
+    color: #077df3;
+    font-size: 1.4em;
+}
+
+.tk-login-inputs {
+    color: white;
+    font-size: 1.2em;
+}
+
+
+.tk-login-logo {
+    background-color: #F5F7FB;
+}
+
+.btn-ingresar {
+    width: 100%;
+    background: #077df3;
+    border-color: #077df3;
+}
+
+.box-login {
+    background-image: url('../../../assets/logos/fondo.png');
+    background-size: 100% auto;
+    height: 100vh;
+}
+.log-yape{
+    width: 40%;
+}
+
+@media screen and (max-width:800px) {
+    .tk-login {
+        width: 60%;
+        margin: 0 auto;
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
+    .box {
+        width: 100% !important;
+    }
+}

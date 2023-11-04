@@ -1,0 +1,46 @@
+<app-header></app-header>
+<main class="content">
+    <section class="fondo">
+        <div class="box-home">
+            <h1 class="title custom">Yape</h1>
+            <section class="card mt-4">
+                <section class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <h1 class="title">Transactions</h1>
+                            <form action="">
+                                <!-- [(ngModel)]="putDataParams.idccmsPo" -->
+                                <section class="mt-4">
+                                    <input class="form-control" placeholder="Number Tel" type="number" name="Tel"
+                                        id="Tel" [(ngModel)]="putDataParams.tel">
+                                </section>
+                                <section class="mt-4">
+                                    <input class="form-control" placeholder="Cash" type="number" name="cash" id="cash"
+                                        [(ngModel)]="putDataParams.cash">
+                                </section>
+                                <section class="mt-4">
+                                    <button class="btn btn-danger">Clean</button>
+                                </section>
+                                <section class="mt-4">
+                                    <button class="btn btn-primary" [disabled]="disabledButtonSend"
+                                        (click)="putData()">Send</button>
+                                </section>
+                            </form>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <img src="../../../assets/home/header-banner-03.jpg" alt="fondo">
+                        </div>
+                        <div class="card mt-2">
+                            <div class="card-body">
+                                <p><span>account External IdCredit: </span><span> {{infoTransaction.accountExternalIdCredit}}</span></p>
+                                <p><span>account External IdDebit: </span><span> {{infoTransaction.accountExternalIdDebit}}</span></p>
+                                <p><span>Value: </span><span> {{infoTransaction.valuetranfer}}</span></p>
+                                <p><span>State: </span><span> {{infoTransaction.name}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </section>
+</main>

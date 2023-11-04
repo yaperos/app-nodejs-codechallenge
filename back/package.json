@@ -1,0 +1,41 @@
+{
+  "name": "globalinstance",
+  "version": "1.1.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "BriamLeyton",
+  "license": "ISC",
+  "dependencies": {
+    "@types/crypto-js": "^4.1.1",
+    "axios": "^0.27.2",
+    "connect-multiparty": "^2.2.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "express-jwt": "^7.7.5",
+    "find-up": "^6.3.0",
+    "form-data": "^4.0.0",
+    "helmet": "^6.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
+    "node-fetch": "^3.2.10",
+    "nodemailer": "^6.8.0",
+    "npm-check-updates": "^16.3.2",
+    "path": "^0.12.7",
+    "request": "^2.88.2",
+    "request-ip": "^3.3.0",
+    "semver-utils": "^1.1.4",
+    "tedious": "^15.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.16",
+    "nodemon": "^2.0.19"
+  }
+}

@@ -1,0 +1,47 @@
+<header>
+    <nav class="navbar navbar-expand-lg bg-light" style="padding: 0;height: 80px;">
+        <div class="container-fluid">
+            <div class="tk-logo-brand">
+                <a class="navbar-brand" href="/home">
+                    <img style="width:20%;" src="../../../assets/logos/logo tpdelivery.png" alt="logo" />
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <div class="box-name">
+                            <h5>Welcome {{name}}</h5>
+                        </div>
+                    </li>
+                </ul>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-logout" [matMenuTriggerFor]="logoutMenu">
+                        <span class="material-icons MuiIcon-root" aria-hidden="true">settings</span>
+                    </button>
+                    <mat-menu #logoutMenu="matMenu">
+                        <button mat-menu-item (click)="cerrarSesion()">
+                            <span class="material-icons" style="position: relative;top: 6px;">
+                                logout
+                            </span>
+                            Salir
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+            <div fxShow="true" fxHide.gt-sm="true" class="mobile">
+                <button class="navbar-toggler" mat-button style="font-size:100%!important;" class="btn btn-settings"
+                    [matMenuTriggerFor]="fullMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <mat-menu #fullMenu="matMenu">
+                <button mat-menu-item (click)="cerrarSesion()">
+                    <span class="material-icons" style="position: relative;top: 6px;">
+                        logout
+                    </span>
+                    Salir
+                </button>
+            </mat-menu>
+        </div>
+    </nav>
+</header>
