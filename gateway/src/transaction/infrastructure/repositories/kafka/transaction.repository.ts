@@ -8,12 +8,12 @@ export class TransactionRepositoryImpl
   implements TransactionRepositoryInterface
 {
   constructor(
-    @Inject('KAFKA_CLIENT') private readonly paymentClient: ClientKafka,
+    @Inject('KAFKA_CLIENT') private readonly kafkaClient: ClientKafka,
   ) {}
 
   async create(transaction: DomainCreateTransactionDto) {
     try {
-      await this.paymentClient.emit(
+      await this.kafkaClient.emit(
         'process_transaction',
         JSON.stringify(transaction),
       );

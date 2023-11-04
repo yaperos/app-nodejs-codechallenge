@@ -4,10 +4,7 @@ import { KafkaProvider } from './infrastructure/providers/kafka.provider';
 
 @Global()
 @Module({
-  imports: [
-    KafkaProvider,
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
-  ],
+  imports: [KafkaProvider, ConfigModule.forRoot({ isGlobal: true })],
   exports: [KafkaProvider],
 })
 export class CoreModule {}

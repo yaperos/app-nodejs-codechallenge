@@ -7,10 +7,12 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,17 +25,50 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - "9092:9092"
-  kafka_ui:
-    image: provectuslabs/kafka-ui
-    hostname: kafka_ui
-    container_name: kafka_ui
-    restart: always
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
     ports:
-      - '7000:8080'
+      - "8080:8080"
     environment:
-      KAFKA_CLUSTERS_0_NAME: kafka
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-      KAFKA_BROKERCONNECT: kafka:29092
-    depends_on:
-      - kafka
-      - zookeeper
+      KAFKA_CLUSTERS_0_NAME: "local-kafka"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:29092"
+      KAFKA_CLUSTERS_0_ZOOKEEPER: "zookeeper:2181"
+      KAFKA_CLUSTERS_0_JMX_PORT: "9991"
+
+  nestjs-gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - API_KEY=555
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_GROUP_ID=gateway-yape
+      - KAFKA_CLIENT_ID=gateway
+
+  nestjs-anti-fraud2:
+    build:
+      context: ./anti-fraud
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_GROUP_ID=antifraud-yape
+      - KAFKA_CLIENT_ID=antifraud
+
+  nestjs-transactions:
+    build:
+      context: ./transactions
+      dockerfile: Dockerfile
+    depends_on: [postgres, kafka]
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_GROUP_ID=transaction-yape
+      - KAFKA_CLIENT_ID=transaction

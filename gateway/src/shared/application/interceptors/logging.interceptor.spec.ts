@@ -34,7 +34,7 @@ describe('LoggingInterceptor', () => {
     await interceptor.intercept(mockContext, mockCallHandler);
 
     // Assert
-    expect(console.log).toHaveBeenCalledWith('[KAFKA EVENT]', {
+    expect(console.log).toHaveBeenCalledWith('[HTTP]', {
       method: 'GET',
       url: '/test',
       headers: {},
