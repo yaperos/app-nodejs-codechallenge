@@ -15,7 +15,7 @@ export default class TransactionOutDbAdapter implements TransactionPersistenceRe
 
   async findOneByExternalId (externalId: string): Promise<TransactionEntity | null> {
     try {
-      logger.logDebug(`Looking for transaction with id: ${externalId}`)
+      logger.logDebug(`Looking for transaction with id: ${externalId}`, this._location)
       const result = await this._repository.findOneBy({ transaction_external_id: externalId })
       logger.logDebug(`Transaction found: ${JSON.stringify(result)}`, this._location)
       if (result == null) return null

@@ -5,8 +5,8 @@ module.exports = {
       script: './lib/index.js',
       watch: false,
       autorestart: true,
-      ouput: './logs/transactions-service-output.log',
-      error: './logs/transactions-service-error.log',
+      output: '/app/logs/transactions-service-output.log',
+      error: '/app/logs/transactions-service-error.log',
     }
   ]
 }

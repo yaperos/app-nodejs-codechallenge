@@ -1,10 +1,11 @@
-import { type Consumer, Kafka, type Producer } from 'kafkajs'
+import { type Consumer, Kafka, type Producer, type KafkaMessage, type IHeaders } from 'kafkajs'
 import { MessageManager } from '../messageManager'
 import { type EventMessage } from '../../../shared/interfaces/eventMessage.interface'
 import { logger } from '../../../shared/imports'
 import { type EventMessageContent } from '../../../shared/interfaces/eventMessageContent.interface'
 
 export class KafkaMessageManagerInstance extends MessageManager {
+  private readonly _clientId: string = 'antifraud-service'
   private readonly _location: string = 'KafkaMessageManagerInstance.ts'
   private readonly _configuration: Kafka
   private readonly _producer: Producer
@@ -12,19 +13,18 @@ export class KafkaMessageManagerInstance extends MessageManager {
   private readonly _allowedEventsToProcess: string[]
 
   constructor (groupId: string, topic: string, events: string[]) {
-    const { KAFKA_BROKER, KAFKA_MAX_RETRIES } = process.env
+    const { KAFKA_BROKER } = process.env
     const broker: string = KAFKA_BROKER ?? 'localhost:9092'
-    const maxRetries: number = parseInt(KAFKA_MAX_RETRIES ?? '3')
 
     super(groupId, topic)
 
     this._configuration = new Kafka({
-      clientId: 'antifraud-service',
+      clientId: this._clientId,
       brokers: [broker]
     })
 
     this._producer = this._configuration.producer()
-    this._consumer = this._configuration.consumer({ groupId, maxInFlightRequests: maxRetries })
+    this._consumer = this._configuration.consumer({ groupId })
     this._allowedEventsToProcess = events
   }
 
@@ -36,7 +36,7 @@ export class KafkaMessageManagerInstance extends MessageManager {
       await this._producer.connect()
       await this._producer.send({
         topic: super.topic,
-        messages: [{ key: message.key, value }]
+        messages: [{ key: message.key, value, headers: { 'client-id': this._clientId } }]
       })
 
       logger.logDebug('Message sent', this._location)
@@ -47,18 +47,33 @@ export class KafkaMessageManagerInstance extends MessageManager {
     }
   }
 
+  private async validateClientId ({ topic, partition, message }: { topic: string, partition: number, message: KafkaMessage }): Promise<boolean> {
+    const headers: IHeaders | undefined = message.headers
+    if (message.headers !== null) {
+      const clientId = headers !== undefined ? headers['client-id']?.toString() : null
+      if (clientId !== null && clientId === this._clientId) {
+        return true
+      }
+      return false
+    }
+    return false
+  }
+
   public async consume (it: (message: any) => Promise<void>): Promise<void> {
     try {
       await this._consumer.connect()
       await this._consumer.subscribe({ topic: super.topic, fromBeginning: true })
       await this._consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
-          const data: EventMessageContent<any> = JSON.parse(message.value?.toString() ?? '')
+          const messageFromSelf = await this.validateClientId({ topic, partition, message })
           try {
-            if (!this._allowedEventsToProcess.includes(data.name)) {
-              await this._consumer.commitOffsets([{ topic, partition, offset: message.offset }])
+            if (!messageFromSelf) {
+              const data: EventMessageContent<any> = JSON.parse(message.value?.toString() ?? '')
+              if (!this._allowedEventsToProcess.includes(data.name)) {
+                throw Error('Event type unable to process')
+              }
+              await it(data)
             }
-            await it(data)
           } catch (error) {
             logger.logError(error, this._location)
           }

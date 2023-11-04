@@ -13,5 +13,5 @@ export abstract class MessageManager {
 
   get groupId (): string { return this._groupId }
   public abstract produce <T> (message: EventMessage<T>): Promise<void>
-  public abstract consume (it: () => Promise<void>): Promise<void>
+  public abstract consume (method: (message: any) => Promise<void>): Promise<void>
 }
