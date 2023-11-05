@@ -36,4 +36,12 @@ export class TransactionRepositoryImpl
       throw new HttpException({ error: 'Falló kafka' }, 500);
     }
   }
+
+  async getById(id: number): Promise<Transaction> {
+    const data = await this.repository.findOneBy({ id });
+    if (!data) {
+      throw new Error('No existe el recurso');
+    }
+    return data;
+  }
 }

@@ -7,4 +7,6 @@ export interface TransactionRepositoryInterface {
   sendCreated(transaction: Transaction);
 
   updateStatus(id: number, status: StatusesEnum): Promise<Transaction>;
+
+  getById(id: number): Promise<Transaction>;
 }

@@ -32,4 +32,8 @@ export class TransactionServiceImpl implements TransactionServiceInterface {
     );
     return updated;
   }
+
+  async getById(id: number): Promise<Transaction> {
+    return await this.repository.getById(id);
+  }
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTransactionDto } from '../dto/transaction.create.dto';
 import { DomainCreateTransactionDto } from 'src/transaction/domain/dto/transaction.create.dto';
+import { TransactionDto } from '../dto/transaction.dto';
+import { Transaction } from 'src/transaction/domain/entities/transaction.type';
 
 @Injectable()
 export class TransactionMapper {
@@ -18,6 +20,29 @@ export class TransactionMapper {
       accountExternalIdCredit,
       tranferTypeId,
       value,
+    };
+  }
+
+  toDto(transaction: Transaction): TransactionDto {
+    const {
+      id,
+      accountExternalIdDebit,
+      tranferTypeId,
+      value,
+      status,
+      createdAt,
+    } = transaction;
+    return {
+      id,
+      transactionExternalId: accountExternalIdDebit,
+      transactionType: {
+        name: tranferTypeId + '',
+      },
+      transactionStatus: {
+        name: status,
+      },
+      value,
+      createdAt,
     };
   }
 }

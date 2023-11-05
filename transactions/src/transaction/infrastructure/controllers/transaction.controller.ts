@@ -1,4 +1,4 @@
-import { Controller, Inject } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { TransactionServiceInterface } from '../../domain/interfaces/transaction.service.interface';
 import { TransactionMapper } from '../../application/mapper/transaction.mapper';
 import { BaseController } from 'src/shared/infrastructure/controllers/base.controller';
@@ -18,11 +18,15 @@ export class TransactionController extends BaseController {
     this.mapper = new TransactionMapper();
   }
 
-  @MessagePattern('process_transaction')
-  async create(
-    @Payload() message: CreateTransactionDto,
-  ): Promise<TransactionDto> {
-    const data = await this.service.create(this.mapper.toDomainCreate(message));
+  @Get(':id')
+  async getById(@Param('id') id: number): Promise<TransactionDto> {
+    const data = await this.service.getById(id);
+    return this.mapper.toDto(data);
+  }
+
+  @Post()
+  async create(@Body() dataC: CreateTransactionDto): Promise<TransactionDto> {
+    const data = await this.service.create(this.mapper.toDomainCreate(dataC));
     return this.mapper.toDto(data);
   }
 
