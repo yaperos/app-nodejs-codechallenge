@@ -1,82 +1,69 @@
-# Yape Code Challenge :rocket:
+# Description
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+This is a Nest JS generated with NestJS (^10.0.0)
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Pre Installation
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Install nvm & node >20.9.0
 
-# Problem
+You need access to a running postgres instance (Local, docker or RDS) with full grants
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## Docker install & run
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```
+docker-compose up -d
 ```
 
-# Tech Stack
+## Installation
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```bash
+$ yarn install
 ```
 
-2. Resource to retrieve a transaction
+## Running the app
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+You can start the app using the Nest CLI:
+
+```bash
+# Using the CLI
+$ nest start
 ```
 
-## Optional
+Add a .env file in the root of the project; an .env.example can be found in the root
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## Test
 
-You can use Graphql;
+```bash
+# unit tests
+$ yarn test
+# e2e tests
+$ yarn test:e2e
+# test coverage
+$ yarn test:cov
+```
 
-# Send us your challenge
+## Running Migrations
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+The app auto-runs the migrations when is started for first time and the environment `MAIN_DB_RUN_MIGRATIONS` is set to `1`; because it runs the js files from de dist directory, you should run `yarn build` in order to generate the appropiate migration files before start the app.
 
-If you have any questions, please let us know.
+Note that the `MIGRATIONS_PATH` env variable must be set to `'/dist/database/migration/*.{js,ts}'` in local and `/database/migration/*.{js,ts}` to other deployed environments.
+
+In case that you want to run the migrations manually, run the next commands:
+
+```bash
+# to generate migration
+$ yarn migrations:generate <migration_name>
+# to run migrations:
+$ yarn migrations:run
+```
+
+## Running Test
+
+In case you want to run the unit tests, implement the following command:
+
+```bash
+# to run all test in api yape challenge
+$ yarn test
+# to run test in mode watch and you can select a test and you can select a specific test
+$ yarn test:watch
+```

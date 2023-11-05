@@ -1,0 +1,23 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "123456789",
+  "database": "yape_transaction",
+  "synchronize": false,
+  "autoLoadEntities": true,
+  "migrationsTableName": "migrations",
+  "cli": {
+    "migrationsDir": "./database/migration"
+  },
+  "entities": [
+    "./src/modules/**/*.entity.ts"
+  ],
+  "migrations": [
+    "./database/migration/*.ts"
+  ],
+  "seeds": [
+    "./database/seeds/*.ts"
+  ]
+}
