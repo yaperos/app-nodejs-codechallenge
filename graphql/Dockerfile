@@ -13,10 +13,10 @@ COPY . .
 
 ENV NODE_ENV=production
 
-RUN yarn build
-#RUN yarn build && \
-    # npm run typeorm:generate-migrations && \
-    #npm run typeorm:run-migrations
+#RUN yarn build
+RUN yarn build && \
+    npm run typeorm:generate-migrations && \
+    npm run typeorm:run-migrations
 
 FROM node:18.18-alpine
 WORKDIR /app

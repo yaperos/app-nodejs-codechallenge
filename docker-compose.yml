@@ -40,7 +40,8 @@ services:
     build:
       context: ./graphql
       dockerfile: Dockerfile
-    depends_on: [postgres]
+    depends_on: 
+      - postgres
     ports:
       - "5001:5001"
     environment:
@@ -50,7 +51,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DATABASE=postgres
       - PORT=5001
-  
+
   nestjs-anti-fraud:
     build:
       context: ./anti-fraud
@@ -70,7 +71,8 @@ services:
       - "5000:5000"
     environment:
       - PORT=5000    
-      - GRAPHQL_SERVER=nestjs-graphql:5001/graphql
+      - GRAPHQL_SERVER=http://nestjs-graphql:5001/graphql
       - KAFKA_BROKER=kafka:29092
       - KAFKA_GROUP_ID=transaction-yape
       - KAFKA_CLIENT_ID=transaction
+    

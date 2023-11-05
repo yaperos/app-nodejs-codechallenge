@@ -49,6 +49,7 @@ export class TransactionRepositoryImpl
   }
 
   async sendGraphQL(query: string, variables?: any) {
+    console.log(this.server);
     const client = new GraphQLClient(this.server);
     const response = await client.request(query, variables);
     return response;

@@ -4,9 +4,107 @@ Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
+- [Solution](#solution)
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
 - [Send us your challenge](#send_us_your_challenge)
+
+# Solution
+
+I have created the next architecture to solve the problem:
+
+```mermaid
+  flowchart LR
+    User -- Create transaction --> Transaction_API
+    Transaction_API -- Create transaction --> Graphql
+    Graphql -- store, update, read transactions --> transactionDatabase[(Database)]
+    Transaction_API -- Send transaction Created event--> Anti-Fraud
+    Anti-Fraud -- Send transaction Status Approved event--> Transaction_API
+    Anti-Fraud -- Send transaction Status Rejected event--> Transaction_API
+    Transaction_API -- Update transaction Status event--> Graphql
+    Transaction_API -- Read transaction--> Graphql
+```
+
+Transaction creation sequence:
+
+```mermaid
+  sequenceDiagram
+    User->>+Transaction_API: create transaction
+    Transaction_API->>+graphql: create transaction
+    graphql-->>+database: create transaction in bd
+    graphql-->>+Transaction_API: return created transaction
+    Transaction_API-->>+kafka: created transaction topic
+    kafka-->>+anti-fraud: Validate transaction
+    anti-fraud-->>+kafka: reject, approved transaction topic
+    kafka-->>+Transaction_API: get data to reject or approve
+    Transaction_API-->>+graphql: reject or approve transaction
+    graphql-->>+database: Store updated information
+```
+
+Transaction read sequence:
+
+```mermaid
+sequenceDiagram
+    User->>+Transaction_API: read transaction
+    Transaction_API->>+graphql: get transaction
+    graphql->>+database: find transaction in bd
+    graphql-->>+Transaction_API: return transaction
+    Transaction_API-->>+User: Transaction
+```
+
+## How to run project?
+
+### With docker-compose:
+
+```bash
+docker-compose up -d
+```
+
+### Individual services:
+
+Remove lines 39-end from docker-compose.yaml
+
+```bash
+docker-compose up -d
+cd anti-fraud
+yarn start:dev
+cd graphql
+yarn start:dev
+cd transactions
+yarn start:dev
+```
+
+## How test?
+
+Let's use curl for this
+
+**for an approved transaction:**
+
+```bash
+curl --location 'http://localhost:5000/transactions' \
+--header 'Content-Type: application/json' \
+--data '{
+    "accountExternalIdDebit": "IdDebit",
+    "accountExternalIdCredit": "IdCredit",
+    "tranferTypeId": 1,
+    "value": 500
+}'
+```
+
+**for an rejected transaction:**
+
+```bash
+curl --location 'http://localhost:5000/transactions' \
+--header 'Content-Type: application/json' \
+--data '{
+    "accountExternalIdDebit": "IdDebit",
+    "accountExternalIdCredit": "IdCredit",
+    "tranferTypeId": 1,
+    "value": 1001
+}'
+```
+
+You can open `http://localhost:8080` to see kafka descriptions and data
 
 # Problem
 
