@@ -1,12 +1,12 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 
 export class CreateTransactionDto {
-  @IsString()
+  @IsUUID('4', { message: 'accountExternalIdDebit debe ser UID tipo 4' })
   @IsNotEmpty()
   accountExternalIdDebit: string;
 
+  @IsUUID('4', { message: 'accountExternalIdCredit debe ser UID tipo 4' })
   @IsNotEmpty()
-  @IsString()
   accountExternalIdCredit: string;
 
   @IsNumber()

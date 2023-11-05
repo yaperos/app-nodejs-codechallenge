@@ -1,3 +1,5 @@
+scalar Date
+
 type Query {
   transactions: [Transaction]
   transaction(id: ID!): Transaction
@@ -16,7 +18,7 @@ type Transaction {
   tranferTypeId: Int!
   value: Float!
   status: String!
-  createdAt: String!
+  createdAt: Date!
 }
 
 input CreateTransactionInput {

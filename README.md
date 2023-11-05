@@ -31,14 +31,14 @@ Transaction creation sequence:
   sequenceDiagram
     User->>+Transaction_API: create transaction
     Transaction_API->>+graphql: create transaction
-    graphql-->>+database: create transaction in bd
+    graphql->>+database: create transaction in bd
     graphql-->>+Transaction_API: return created transaction
-    Transaction_API-->>+kafka: created transaction topic
-    kafka-->>+anti-fraud: Validate transaction
+    Transaction_API->>+kafka: created transaction topic
+    kafka->>+anti-fraud: Validate transaction
     anti-fraud-->>+kafka: reject, approved transaction topic
     kafka-->>+Transaction_API: get data to reject or approve
-    Transaction_API-->>+graphql: reject or approve transaction
-    graphql-->>+database: Store updated information
+    Transaction_API->>+graphql: reject or approve transaction
+    graphql->>+database: Store updated information
 ```
 
 Transaction read sequence:
@@ -84,8 +84,8 @@ Let's use curl for this
 curl --location 'http://localhost:5000/transactions' \
 --header 'Content-Type: application/json' \
 --data '{
-    "accountExternalIdDebit": "IdDebit",
-    "accountExternalIdCredit": "IdCredit",
+    "accountExternalIdDebit": "550e8400-e29b-41d4-a716-446655440000",
+    "accountExternalIdCredit": "550e8400-e29b-41d4-a716-446655440000",
     "tranferTypeId": 1,
     "value": 500
 }'

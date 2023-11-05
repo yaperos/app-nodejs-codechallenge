@@ -13,10 +13,10 @@ COPY . .
 
 ENV NODE_ENV=production
 
-#RUN yarn build
-RUN yarn build && \
-    npm run typeorm:generate-migrations && \
-    npm run typeorm:run-migrations
+RUN yarn build
+#RUN yarn build && \
+#    npm run typeorm:generate-migrations && \
+#    npm run typeorm:run-migrations
 
 FROM node:18.18-alpine
 WORKDIR /app
@@ -26,6 +26,9 @@ COPY --from=builder /app/node_modules ./node_modules
 
 # Copy commands file
 COPY --from=builder /app/package.json .
+
+# Copy commands file
+COPY --from=builder /app/ormconfig.ts .
 
 # Copy bundle backend files
 COPY --from=builder /app/dist ./dist

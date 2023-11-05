@@ -51,12 +51,14 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DATABASE=postgres
       - PORT=5001
-
+    command: sh -c "npm run typeorm:generate-migrations || true && npm run typeorm:run-migrations || true && npm run start:prod"
+    
   nestjs-anti-fraud:
     build:
       context: ./anti-fraud
       dockerfile: Dockerfile
-    depends_on: [kafka]
+    depends_on:
+      - kafka
     environment:
       - KAFKA_BROKER=kafka:29092
       - KAFKA_GROUP_ID=antifraud-yape
@@ -66,7 +68,9 @@ services:
     build:
       context: ./transactions
       dockerfile: Dockerfile
-    depends_on: [nestjs-graphql, kafka]
+    depends_on:
+      - kafka
+      - nestjs-graphql
     ports:
       - "5000:5000"
     environment:

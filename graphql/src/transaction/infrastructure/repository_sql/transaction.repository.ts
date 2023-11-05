@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionRepositoryInterface } from 'src/transaction/domain/interfaces/transaction.repository.interface';
@@ -17,7 +17,13 @@ export class TransactionRepositoryImpl
   ) {}
 
   async create(transaction: DomainCreateTransactionDto): Promise<Transaction> {
-    return await this.repository.save(transaction);
+    let data = null;
+    try {
+      data = await this.repository.save(transaction);
+    } catch (e) {
+      throw new HttpException(e.message, 500);
+    }
+    return data;
   }
 
   async updateStatus(id: number, status: StatusesEnum): Promise<Transaction> {
@@ -27,6 +33,7 @@ export class TransactionRepositoryImpl
 
   async getById(id: number): Promise<Transaction> {
     const data = await this.repository.findOneBy({ id });
+    console.log(data);
     if (!data) {
       throw new Error('No existe el recurso');
     }

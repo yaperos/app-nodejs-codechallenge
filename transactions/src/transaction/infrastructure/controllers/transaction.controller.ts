@@ -2,10 +2,10 @@ import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { TransactionServiceInterface } from '../../domain/interfaces/transaction.service.interface';
 import { TransactionMapper } from '../../application/mapper/transaction.mapper';
 import { BaseController } from 'src/shared/infrastructure/controllers/base.controller';
-import { CreateTransactionDto } from 'src/transaction/application/dto/transaction.create.dto';
-import { TransactionDto } from 'src/transaction/application/dto/transaction.dto';
+import { CreateTransactionDto } from '../dto/transaction.create.dto';
+import { TransactionDto } from 'src/transaction/infrastructure/dto/transaction.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UpdateTransactionDto } from 'src/transaction/application/dto/transaction.update.dto';
+import { UpdateTransactionDto } from 'src/transaction/infrastructure/dto/transaction.update.dto';
 
 @Controller('transactions')
 export class TransactionController extends BaseController {

@@ -49,10 +49,18 @@ export class TransactionRepositoryImpl
   }
 
   async sendGraphQL(query: string, variables?: any) {
-    console.log(this.server);
-    const client = new GraphQLClient(this.server);
-    const response = await client.request(query, variables);
-    return response;
+    try {
+      const client = new GraphQLClient(this.server);
+      const response = await client.request(query, variables);
+      return response;
+    } catch (e) {
+      throw new HttpException(
+        e?.response
+          ? JSON.stringify(e?.response?.errors || {}, null, 2)
+          : e.message,
+        500,
+      );
+    }
   }
 
   async sendCreated(transaction: Transaction) {
