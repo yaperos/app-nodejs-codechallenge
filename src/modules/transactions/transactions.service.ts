@@ -1,31 +1,58 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { LoggerService } from '@shared/logger/logger.service';
-import { CreateTransactionDto, TransactionDto } from './transactions.dto';
+import {
+  CreateTransactionDto,
+  TransactionDto,
+  TransactionEntityDto,
+} from './transactions.dto';
+import { TransactionsEntity } from '@entities/transactions.entity';
+import {
+  mapTransactionToEntity,
+  mapTransactionToResponse,
+} from './mappers/transactions.mapper';
 
 @Injectable()
 export class TransactionsService extends LoggerService {
+  constructor(
+    @InjectRepository(TransactionsEntity)
+    private readonly transactionsRepository: Repository<TransactionsEntity>,
+  ) {
+    super(TransactionsService.name);
+  }
+
   async createTransaction(
-    createTransactionDto: CreateTransactionDto,
+    dataForCreateTransaction: CreateTransactionDto,
   ): Promise<TransactionDto> {
-    return {
-      transactionExternalId: createTransactionDto.transactionExternalId,
-      transactionType: { id: createTransactionDto.tranferTypeId, name: '' },
-      transactionStatus: { name: 'PENDING' },
-      value: createTransactionDto.value,
-      createdAt: '2023-11-05',
-    };
+    const transactionTransformedToEntity: TransactionEntityDto =
+      mapTransactionToEntity(dataForCreateTransaction);
+    const transactionSaved = await this.save(transactionTransformedToEntity);
+
+    return mapTransactionToResponse(transactionSaved);
   }
 
   async getTransactionByExternalId(
-    transactionExternalId,
+    transactionExternalId: string,
   ): Promise<TransactionDto> {
-    return {
-      transactionExternalId: transactionExternalId,
-      transactionType: { id: 0, name: '' },
-      transactionStatus: { name: '' },
-      value: 0,
-      createdAt: '2023-11-05',
-    };
+    const transactionOnDatabase: TransactionsEntity =
+      await this.findOneByTransactionExternalId(transactionExternalId);
+
+    return mapTransactionToResponse(transactionOnDatabase);
+  }
+
+  private async save(
+    transactionTransformedToEntity: TransactionEntityDto,
+  ): Promise<TransactionsEntity> {
+    return this.transactionsRepository.save(transactionTransformedToEntity);
+  }
+
+  private async findOneByTransactionExternalId(
+    transactionExternalId: string,
+  ): Promise<TransactionsEntity> {
+    return this.transactionsRepository.findOneOrFail({
+      transaction_external_id: transactionExternalId,
+    });
   }
 }

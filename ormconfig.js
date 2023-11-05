@@ -4,11 +4,10 @@ const {
   db_postgres_transactionsdb_name: DB_NAME,
   db_postgres_transactionsdb_host: HOST,
   db_postgres_transactionsdb_port: PORT,
-  DATABASE_URL,
 } = process.env;
 module.exports = {
   type: 'postgres',
-  url: DATABASE_URL,
+  url: `postgres://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB_NAME}`,
   host: HOST,
   port: parseInt(PORT),
   username: USER,
@@ -25,8 +24,5 @@ module.exports = {
   cli: {
     entitiesDir: 'src/database/models',
     migrationsDir: 'src/database/migrations',
-  },
-  ssl: {
-    rejectUnauthorized: false,
   },
 };

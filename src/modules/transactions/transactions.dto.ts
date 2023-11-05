@@ -4,6 +4,7 @@ import {
   IsString,
   IsDate,
   IsNotEmpty,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateTransactionDto {
@@ -19,6 +20,9 @@ export class CreateTransactionDto {
   @IsNotEmpty()
   @IsNumber()
   tranferTypeId: number;
+  @IsOptional()
+  @IsString()
+  tranferTypeName: string;
   @IsNotEmpty()
   @IsNumber()
   value: number;
@@ -35,6 +39,9 @@ export class TransactionDto {
   @IsNotEmpty()
   @IsDate()
   createdAt: string | Date;
+  @IsOptional()
+  @IsDate()
+  updatedAt: string | Date;
 }
 
 class TransactionType {
@@ -48,4 +55,12 @@ class TransactionStatus {
   @IsNotEmpty()
   @IsString()
   name: string;
+}
+
+export class TransactionEntityDto {
+  transaction_external_id: string;
+  transaction_type_id: number;
+  transaction_type_name: string;
+  transaction_status: string;
+  value: number;
 }
