@@ -1,8 +1,8 @@
 {
-  "name": "space-backend",
+  "name": "graphql-backend",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Graphql server for yape",
+  "author": "Wilfer Daniel Ciro Maya",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

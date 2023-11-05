@@ -1,8 +1,8 @@
 {
-  "name": "space-backend",
+  "name": "transactions-backend",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Transactions api for yape",
+  "author": "Wilfer Daniel Ciro Maya",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

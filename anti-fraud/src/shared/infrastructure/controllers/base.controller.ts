@@ -1,7 +1,7 @@
 import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { HttpExceptionFilter } from '../../infrastructure/exceptions/http.exception.filter';
-import { LoggingInterceptor } from '../../application/interceptors/logging.interceptor';
-import { FormatResponseInterceptor } from '../../application/interceptors/format-response.interceptor';
+import { LoggingInterceptor } from '../interceptors/logging.interceptor';
+import { FormatResponseInterceptor } from '../interceptors/format-response.interceptor';
 
 @UseInterceptors(FormatResponseInterceptor)
 @UseFilters(HttpExceptionFilter) // Use http exceptions filters

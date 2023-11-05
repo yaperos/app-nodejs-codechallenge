@@ -21,7 +21,6 @@ export class TransactionController extends BaseController {
   @Get(':id')
   async getById(@Param('id') id: number): Promise<TransactionDto> {
     const data = await this.service.getById(id);
-    console.log(data);
     return this.mapper.toDto(data);
   }
 
