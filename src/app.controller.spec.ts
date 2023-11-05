@@ -16,7 +16,10 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+      expect(appController.getHealth()).toStrictEqual({
+        name: 'transactions-challenge',
+        version: 'v0.0.1',
+      });
     });
   });
 });
