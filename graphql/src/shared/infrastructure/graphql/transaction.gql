@@ -1,0 +1,27 @@
+type Query {
+  transactions: [Transaction]
+  transaction(id: ID!): Transaction
+}
+
+type Mutation {
+  createTransaction(input: CreateTransactionInput): Transaction
+  rejectTransaction(id: Int!): Transaction
+  approveTransaction(id: Int!): Transaction
+}
+
+type Transaction {
+  id: Int!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Int!
+  value: Float!
+  status: String!
+  createdAt: String!
+}
+
+input CreateTransactionInput {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Int!
+  value: Float!
+}

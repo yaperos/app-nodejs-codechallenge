@@ -1,8 +1,10 @@
 // Se ubica en infraestructura porque tiene intereacción con la base de datos
 import { Global, Module, Provider } from '@nestjs/common';
-import { TransactionRepositoryImpl } from './repositories/transaction.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TransactionRepositoryImpl } from './repository_sql/transaction.repository';
 import { TransactionServiceImpl } from '../application/services/transaction.service';
-import { TransactionController } from './controllers/transaction.controller';
+import { TransactionEntity } from './repository_sql/transaction.entity';
+import { TransactionResolver } from './resolver/transaction.resolver';
 
 export const transactionProviders: Provider[] = [
   {
@@ -16,9 +18,9 @@ export const transactionProviders: Provider[] = [
 ];
 @Global()
 @Module({
-  imports: [],
-  controllers: [TransactionController],
-  providers: [...transactionProviders],
+  imports: [TypeOrmModule.forFeature([TransactionEntity])],
+  controllers: [],
+  providers: [TransactionResolver, ...transactionProviders],
   exports: [...transactionProviders],
 })
 export class TransactionModule {}

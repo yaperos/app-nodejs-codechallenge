@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTransactionDto } from '../dto/transaction.create.dto';
-import { TransactionDto } from '../dto/transaction.dto';
 import { Transaction } from 'src/transaction/domain/entities/transaction.type';
+import { StatusesEnum } from 'src/transaction/domain/enum/transaction.statuses';
 import { DomainCreateTransactionDto } from 'src/transaction/domain/dto/transaction.create.dto';
+import { TransactionCreateInput } from 'src/transaction/infrastructure/dto/transaction.create.input';
 
 @Injectable()
 export class TransactionMapper {
   toDomainCreate(
-    createUserDto: CreateTransactionDto,
+    createUserDto: TransactionCreateInput,
   ): DomainCreateTransactionDto {
     const {
       accountExternalIdDebit,
@@ -20,13 +20,15 @@ export class TransactionMapper {
       accountExternalIdCredit,
       tranferTypeId,
       value,
+      status: StatusesEnum.PENDING,
     };
   }
 
-  toDto(transaction: Transaction): TransactionDto {
+  toDto(transaction: Transaction) {
     const {
       id,
       accountExternalIdDebit,
+      accountExternalIdCredit,
       tranferTypeId,
       value,
       status,
@@ -34,14 +36,11 @@ export class TransactionMapper {
     } = transaction;
     return {
       id,
-      transactionExternalId: accountExternalIdDebit,
-      transactionType: {
-        name: tranferTypeId + '',
-      },
-      transactionStatus: {
-        name: status,
-      },
+      accountExternalIdDebit,
+      accountExternalIdCredit,
+      tranferTypeId,
       value,
+      status,
       createdAt,
     };
   }

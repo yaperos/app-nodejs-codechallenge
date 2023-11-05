@@ -1,8 +1,7 @@
-import { DomainCreateTransactionDto } from '../dto/transaction.create.dto';
 import { Transaction } from '../entities/transaction.type';
 
 export interface TransactionServiceInterface {
-  create(transaction: DomainCreateTransactionDto): Promise<Transaction>;
+  create(transaction: Transaction): Promise<Transaction>;
   reject(id: number): Promise<Transaction>;
   approve(id: number): Promise<Transaction>;
 
