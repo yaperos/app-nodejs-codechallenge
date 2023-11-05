@@ -22,7 +22,7 @@ services:
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -34,15 +34,25 @@ services:
     container_name: transactions-api
     build:
       context: ..
-      dockerfile: docker/Dockerfile.prod
+      dockerfile: docker/Dockerfile.transaction
     ports:
       - 3309:3309
     depends_on:
       - mysql_yape
       - kafka
-    command: sh -c "/wait && npm run start"
+    command: sh -c "/wait && npm run dev"
     environment:
       - WAIT_HOSTS=mysql_yape:3306
       - WAIT_HOSTS_TIMEOUT=300
       - WAIT_SLEEP_INTERVAL=30
       - WAIT_HOST_CONNECT_TIMEOUT=30
+
+  antifraud-api:
+    container_name: antifraud-api
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.antifraud
+    ports:
+      - 3310:3310
+    depends_on:
+      - kafka

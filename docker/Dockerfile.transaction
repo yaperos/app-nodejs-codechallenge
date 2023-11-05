@@ -1,0 +1,19 @@
+FROM node:16-alpine
+
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+
+WORKDIR /code
+
+COPY ./transaction-module/package*.json ./
+COPY ./transaction-module/package*.json ./transaction-module/
+COPY ./transaction-module/build ./transaction-module/build
+COPY ./transaction-module/.env ./transaction-module/.env
+
+
+RUN npm install
+
+COPY . .
+
+CMD [ "node", "transaction-module/build/index.js" ] 

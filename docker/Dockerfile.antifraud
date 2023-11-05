@@ -1,0 +1,14 @@
+FROM node:16-alpine
+
+WORKDIR /code
+
+COPY ./antifraud-module/package*.json ./
+COPY ./antifraud-module/package*.json ./antifraud-module/
+COPY ./antifraud-module/build ./antifraud-module/build
+COPY ./antifraud-module/.env ./antifraud-module/.env
+
+RUN npm install
+
+COPY . .
+
+CMD [ "node", "antifraud-module/build/index.js" ] 
