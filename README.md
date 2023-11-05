@@ -67,3 +67,11 @@ $ yarn test
 # to run test in mode watch and you can select a test and you can select a specific test
 $ yarn test:watch
 ```
+
+## Endpoint documentation
+
+I attach the url where you can view the endpoints that implement the application. Note that the endpoint where the transactions are created receives an array of many transactions.
+
+```bash
+[Postman](https://documenter.getpostman.com/view/7918195/2s9YC5xrps)
+```
