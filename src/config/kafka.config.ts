@@ -30,7 +30,7 @@ export const microServiceKafka: KafkaOptions = {
       groupId: KAFKA.groupId,
     },
     client: {
-      brokers: KAFKA.broker.split(','),
+      brokers: KAFKA.broker?.split(','),
     },
     subscribe: {
       fromBeginning: false,

@@ -19,7 +19,7 @@ import { KAFKA } from '@config/kafka.config';
         options: {
           consumer: { groupId: KAFKA.groupId },
           client: {
-            brokers: KAFKA.broker.split(','),
+            brokers: KAFKA.broker?.split(','),
           },
         },
       },

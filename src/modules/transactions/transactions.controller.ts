@@ -11,6 +11,7 @@ import {
   OnModuleDestroy,
   Inject,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { CreateTransactionDto, TransactionDto } from './transactions.dto';
 import { LoggerService } from '@shared/logger/logger.service';
@@ -75,12 +76,14 @@ export class TransactionsController
   @Post('/')
   async createTransaction(
     @Headers('trace_id') traceId: string,
-    @Body() createTransactionDto: CreateTransactionDto,
-    @Res() response,
-  ): Promise<TransactionDto> {
+    @Body() dataForCreateTransaction: CreateTransactionDto,
+    @Res() response: Response,
+  ): Promise<Response> {
     try {
       const transaction: TransactionDto =
-        await this.transactionsService.createTransaction(createTransactionDto);
+        await this.transactionsService.createTransaction(
+          dataForCreateTransaction,
+        );
 
       return response.status(200).json(transaction);
     } catch (error) {
@@ -103,8 +106,8 @@ export class TransactionsController
     @Headers('trace_id') traceId: string,
     @Param('transactionExternalId', new ParseUUIDPipe())
     transactionExternalId: string,
-    @Res() response,
-  ): Promise<TransactionDto> {
+    @Res() response: Response,
+  ): Promise<Response> {
     try {
       const transaction: TransactionDto =
         await this.transactionsService.getTransactionByExternalId(

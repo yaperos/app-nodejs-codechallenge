@@ -34,19 +34,17 @@ export class TransactionsService extends LoggerService {
   ): Promise<TransactionDto> {
     const transactionTransformedToEntity: TransactionEntityDto =
       mapTransactionToEntity(dataForCreateTransaction);
-    const transactionSaved = await this.save(transactionTransformedToEntity);
-    this.kafkaService.sendTransactionToFraudValidationTopic(
-      TOPIC_NAMES.FRAUD_TRANSACTION_VALIDATION_TOPIC,
-      dataForCreateTransaction,
-    );
+    const transactionSaved: TransactionsEntity =
+      await this.transactionsRepository.save(transactionTransformedToEntity);
+
+    if (transactionSaved.transaction_status === TRANSACTION_STATUS.PENDING) {
+      this.kafkaService.sendTransactionToFraudValidationTopic(
+        TOPIC_NAMES.FRAUD_TRANSACTION_VALIDATION_TOPIC,
+        dataForCreateTransaction,
+      );
+    }
 
     return mapTransactionToResponse(transactionSaved);
-  }
-
-  private async save(
-    transactionTransformedToEntity: TransactionEntityDto,
-  ): Promise<TransactionsEntity> {
-    return this.transactionsRepository.save(transactionTransformedToEntity);
   }
 
   async getTransactionByExternalId(
@@ -70,30 +68,24 @@ export class TransactionsService extends LoggerService {
     topicName,
     context,
   ): Promise<void> {
-    const originalMessage = context.getMessage();
+    const originalMessage = await context.getMessage();
     this.logger.log(
       `<-- Receiving new message from topic: ${topicName}: ` +
         JSON.stringify(originalMessage.value),
     );
-
     const fraudValidation: FraudValidationDto = JSON.parse(
       JSON.stringify(originalMessage.value),
     );
+    const transaction: TransactionsEntity =
+      await this.findOneByTransactionExternalId(
+        fraudValidation?.transactionExternalId,
+      );
 
-    await this.update(
-      fraudValidation.transactionExternalId,
-      fraudValidation.transactionStatus,
-    );
-  }
-
-  private async update(
-    transactionExternalId: string,
-    newStatus: TRANSACTION_STATUS,
-  ): Promise<void> {
-    const transaction = await this.findOneByTransactionExternalId(
-      transactionExternalId,
-    );
-    const changes = { transaction_status: newStatus };
-    await this.transactionsRepository.update(transaction.id, changes);
+    if (transaction) {
+      const changes = {
+        transaction_status: fraudValidation?.transactionStatus,
+      };
+      await this.transactionsRepository.update(transaction.id, changes);
+    }
   }
 }

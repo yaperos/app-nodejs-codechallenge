@@ -9,11 +9,16 @@ import { TRANSACTION_STATUS } from '@config/transaction-status.enum';
 export const mapTransactionToEntity = (
   dataForCreateTransaction: CreateTransactionDto,
 ): TransactionEntityDto => {
+  const firstTransactionStatus =
+    dataForCreateTransaction.value > 1000
+      ? TRANSACTION_STATUS.REJECTED
+      : TRANSACTION_STATUS.PENDING;
+
   return {
     transaction_external_id: dataForCreateTransaction.transactionExternalId,
     transaction_type_id: dataForCreateTransaction.tranferTypeId,
     transaction_type_name: dataForCreateTransaction.tranferTypeName || '',
-    transaction_status: TRANSACTION_STATUS.PENDING,
+    transaction_status: firstTransactionStatus,
     value: dataForCreateTransaction.value,
   };
 };
