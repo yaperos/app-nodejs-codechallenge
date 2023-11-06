@@ -5,16 +5,16 @@ import { type TransactionConditions } from '../../interfaces/ITransactions'
 export const conditionsBuilder = (conditions: Partial<TransactionConditions>): IDaoConditionsObject => {
   const baseConditions: IDaoConditionsObject = {}
 
-  if (conditions.transactionExternalId) {
-    baseConditions.transactionExternalId = conditions.transactionExternalId
+  if (conditions.transaction_id) {
+    baseConditions.transaction_id = conditions.transaction_id
   }
 
-  if (conditions.transactionType) {
-    baseConditions.transactionType = conditions.transactionType
+  if (conditions.transferTypeId) {
+    baseConditions.transferTypeId = conditions.transferTypeId
   }
 
-  if (conditions.transactionStatus) {
-    baseConditions.transactionStatus = conditions.transactionStatus
+  if (conditions.transaction_status_id) {
+    baseConditions.transaction_status_id = conditions.transaction_status_id
   }
 
   if (conditions.value) {

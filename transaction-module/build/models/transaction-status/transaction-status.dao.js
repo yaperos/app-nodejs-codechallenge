@@ -50,6 +50,14 @@ class TransactionStatusDao {
             const createdTransactionStatus = await this.transactionStatusModel.create({ ...params });
             return createdTransactionStatus;
         };
+        this.bulkCreate = async (transactions) => {
+            const transactionsStatusCreated = await this.transactionStatusModel.bulkCreate(transactions);
+            return transactionsStatusCreated;
+        };
+    }
+    async clearTable() {
+        const transactionsStatusDeleted = await this.transactionStatusModel.destroy({ where: {} });
+        return transactionsStatusDeleted;
     }
 }
 exports.TransactionStatusDao = TransactionStatusDao;

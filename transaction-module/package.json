@@ -14,9 +14,13 @@
   "license": "ISC",
   "devDependencies": {
     "@types/body-parser": "^1.19.4",
+    "@types/chai": "^4.3.9",
     "@types/cors": "^2.8.15",
     "@types/express": "^4.17.20",
+    "@types/mocha": "^10.0.3",
     "@types/node": "^20.8.10",
+    "@types/sinon": "^17.0.0",
+    "@types/supertest": "^2.0.15",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "eslint": "^8.52.0",
     "eslint-config-standard-with-typescript": "^39.1.1",
@@ -32,12 +36,16 @@
   },
   "dependencies": {
     "body-parser": "^1.20.2",
+    "chai": "^4.3.10",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
     "kafkajs": "^2.2.4",
+    "mocha": "^10.2.0",
     "mysql2": "^3.6.2",
-    "sequelize": "^6.33.0"
+    "sequelize": "^6.33.0",
+    "sinon": "^17.0.1",
+    "supertest": "^6.3.3"
   }
 }

@@ -8,7 +8,9 @@ const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const express_1 = __importDefault(require("express"));
+const message_broker_consumer_provider_1 = require("./providers/message-broker-consumer.provider");
 const sequelize_1 = require("./database/sequelize");
+require("./services/v1/transactions/events");
 const routes_1 = __importDefault(require("./services/v1/routes"));
 (0, sequelize_1.initializeDb)().then(() => {
     console.log('DB connection Created');
@@ -16,6 +18,7 @@ const routes_1 = __importDefault(require("./services/v1/routes"));
     console.log('DB connection error:', error);
 });
 const app = (0, express_1.default)();
+message_broker_consumer_provider_1.MessageQueueConsumer.start();
 app.use((0, cors_1.default)());
 app.use((0, helmet_1.default)());
 app.use(body_parser_1.default.json());

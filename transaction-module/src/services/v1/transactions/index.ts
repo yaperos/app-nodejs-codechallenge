@@ -6,7 +6,7 @@ import { type TransactionConditions, type TransactionResponse, type TransactionP
 
 import * as hooks from './hooks'
 export class TransactionService {
-  async getAll (conditions: Partial<TransactionConditions>): Promise<TransactionResponse[]> {
+  async getAll (conditions: Partial<TransactionConditions>): Promise<{ data: TransactionResponse[], pagination: object }> {
     const aTransactionsDao = new TransactionsDao()
 
     const transactions = await aTransactionsDao.getAll(conditions)
@@ -24,8 +24,6 @@ export class TransactionService {
       ...params,
       transaction_status_id: initialTransactionStatus.transaction_status_id
     })
-
-    // parsear transaction
 
     await hooks.sendMessageToMessageQueue(MessageKeys.TRANSACTION_CREATED, transaction)
 

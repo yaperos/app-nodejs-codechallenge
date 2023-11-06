@@ -1,54 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.messageQueueConsumer = exports.MessageQueueConsumer = exports.subscribeMessageQueueManager = void 0;
+exports.MessageQueueProducer = void 0;
 const kafka_tools_1 = require("../tools/kafka.tools");
-const messageManagers = {};
-const subscribeMessageQueueManager = (data) => {
-    messageManagers[`${data.topic}_${data.messageKey}`] = data.function;
-};
-exports.subscribeMessageQueueManager = subscribeMessageQueueManager;
-const handleMessages = async ({ topic, message }) => {
-    var _a, _b;
-    if (!message.value) {
-        return;
-    }
-    const messageKey = (_a = message.key) === null || _a === void 0 ? void 0 : _a.toString();
-    const messageValue = JSON.parse((_b = message.value) === null || _b === void 0 ? void 0 : _b.toString());
-    if (!!messageManagers[`${topic}_${messageKey}`] && Object.getOwnPropertyNames(messageValue).length !== 0) {
-        console.log(`Consumer received message: ${messageKey}`);
-        messageManagers[`${topic}_${messageKey}`](messageValue);
-    }
-};
-class MessageQueueConsumer {
+class MessageQueueProducer {
     constructor() {
-        this.consumerIsConnected = false;
+        this.producerIsConnected = false;
         const kafka = kafka_tools_1.KafkaTools.instanceKafka();
-        this.consumerMessageQueue = kafka.consumer({ groupId: 'capacity-consumer' });
-        void this.connectConsumer();
+        this.messageQueueProducer = kafka.producer();
     }
     static getInstance() {
-        if (!MessageQueueConsumer.instance) {
-            MessageQueueConsumer.instance = new MessageQueueConsumer();
+        if (!MessageQueueProducer.instance) {
+            MessageQueueProducer.instance = new MessageQueueProducer();
         }
-        return MessageQueueConsumer.instance;
+        return MessageQueueProducer.instance;
     }
-    static start() {
-        return MessageQueueConsumer.getInstance();
+    get isConnected() {
+        return this.producerIsConnected;
     }
-    async connectConsumer() {
-        if (!this.consumerIsConnected) {
-            await this.consumerMessageQueue.connect();
-            await this.consumerMessageQueue.subscribe({ topic: 'test_topic' });
-            this.consumerIsConnected = true;
-            this.consumerMessageQueue.on('consumer.connect', () => {
-                console.log('Consumer connected to the message queue');
-            });
-            this.consumerMessageQueue.on('consumer.disconnect', () => {
-                console.log('Consumer connected to the message queue');
-            });
-            await this.consumerMessageQueue.run({ eachMessage: handleMessages });
+    async connect() {
+        await this.messageQueueProducer.connect();
+        this.producerIsConnected = true;
+    }
+    get producer() {
+        return this.messageQueueProducer;
+    }
+    async sendMessage(record) {
+        if (!this.producerIsConnected) {
+            await this.connect();
         }
+        return await this.messageQueueProducer.send(record);
     }
 }
-exports.MessageQueueConsumer = MessageQueueConsumer;
-exports.messageQueueConsumer = MessageQueueConsumer.getInstance();
+exports.MessageQueueProducer = MessageQueueProducer;

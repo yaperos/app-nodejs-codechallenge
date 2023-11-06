@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.initializeDb = void 0;
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-const index_js_1 = require("../config/index.js");
 const promise_1 = __importDefault(require("mysql2/promise"));
 const sequelize_1 = require("sequelize");
+const index_js_1 = require("../config/index.js");
 const { host, port, user, password, database } = index_js_1.environmentVariables.database;
 async function initializeDb() {
     const connection = await promise_1.default.createConnection({ host, port, user, password });

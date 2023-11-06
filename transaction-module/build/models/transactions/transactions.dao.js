@@ -28,15 +28,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransactionsDao = void 0;
 const transactions_model_1 = __importDefault(require("../../database/models/transactions.model"));
-const transaction_status_model_1 = __importDefault(require("../../database/models/transaction-status.model"));
 const transaction_types_model_1 = __importDefault(require("../../database/models/transaction-types.model"));
+const transaction_status_model_1 = __importDefault(require("../../database/models/transaction-status.model"));
 const transactionsHooks = __importStar(require("./transactions.hooks"));
 class TransactionsDao {
     constructor() {
         this.transactionsModel = transactions_model_1.default;
-        this.getAll = async (conditions, options) => {
+        this.getAll = async ({ limit = 20, page = 1, ...conditions }, options) => {
             const transactionsConditions = transactionsHooks.conditionsBuilder(conditions);
-            const transactions = await transactions_model_1.default.findAll({
+            const { rows, count } = await transactions_model_1.default.findAndCountAll({
                 where: transactionsConditions,
                 include: [
                     {
@@ -49,14 +49,38 @@ class TransactionsDao {
                         required: false,
                         attributes: ['transaction_type_id', 'name']
                     }
-                ]
+                ],
+                limit: +limit,
+                offset: (page - 1) * limit
             });
-            return transactions;
+            return {
+                data: rows.map((row) => row.toJSON()),
+                pagination: {
+                    count,
+                    limit: +limit,
+                    page: +page
+                }
+            };
         };
         this.create = async (params) => {
             const createdTransaction = await this.transactionsModel.create({ ...params });
             return createdTransaction;
         };
+        this.update = async (conditions, dataToUpdate) => {
+            const updatedTransaction = await this.transactionsModel.update({ ...dataToUpdate }, {
+                where: { ...conditions },
+                logging: true
+            });
+            return updatedTransaction;
+        };
+        this.bulkCreate = async (transactions) => {
+            const transactionsCreated = await this.transactionsModel.bulkCreate(transactions);
+            return transactionsCreated;
+        };
+    }
+    async clearTable() {
+        const transactionsDeleted = await this.transactionsModel.destroy({ where: {} });
+        return transactionsDeleted;
     }
 }
 exports.TransactionsDao = TransactionsDao;

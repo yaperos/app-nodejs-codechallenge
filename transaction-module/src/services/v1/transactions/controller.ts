@@ -9,9 +9,9 @@ export class TransactionController {
 
       const params = { ...req.query }
 
-      const response = await aTransactionService.getAll(params)
+      const { data, pagination } = await aTransactionService.getAll(params)
 
-      return res.status(200).json({ data: response })
+      return res.status(200).json({ data, pagination })
     } catch (error) {
       next(error)
     }

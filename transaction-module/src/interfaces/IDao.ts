@@ -38,6 +38,8 @@ export type IDaoConditionsItem =
 
 export declare type DaoFn<T, U = any> = (conditions: T, options?: DaoOptions) => Promise<U>
 
+export declare type DaoFnUpdate<T, K> = (conditions: T, dataToUpdate: K, options?: DaoOptions) => any
+
 export interface DaoOptions {
   transaction?: Transaction
   exclude?: string[]

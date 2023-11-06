@@ -5,7 +5,11 @@ import bodyParser from 'body-parser'
 
 import express, { type Request, type Response } from 'express'
 
+import { MessageQueueConsumer } from './providers/message-broker-consumer.provider'
+
 import { initializeDb } from './database/sequelize'
+
+import './services/v1/transactions/events'
 
 import apiV1 from './services/v1/routes'
 
@@ -16,6 +20,8 @@ initializeDb().then(() => {
 })
 
 const app: express.Application = express()
+
+MessageQueueConsumer.start()
 
 app.use(cors())
 app.use(helmet())

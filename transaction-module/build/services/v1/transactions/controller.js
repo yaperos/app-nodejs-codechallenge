@@ -8,8 +8,8 @@ class TransactionController {
             try {
                 const aTransactionService = new index_1.TransactionService();
                 const params = { ...req.query };
-                const response = await aTransactionService.getAll(params);
-                return res.status(200).json({ data: response });
+                const { data, pagination } = await aTransactionService.getAll(params);
+                return res.status(200).json({ data, pagination });
             }
             catch (error) {
                 next(error);

@@ -15,6 +15,6 @@ export const environmentVariables = {
   kafka: {
     transaction_topic: process.env.TRANSACTION_TOPIC ?? 'transaction_topic',
     client_id: process.env.CLIENT_ID ?? 'transaction_integration',
-    brokers: String(process.env.KAFKA_BROKERS ?? '').split(',') ?? ['kafka:9092']
+    brokers: [process.env.KAFKA_BROKERS ?? 'kafka:9092']
   }
 }

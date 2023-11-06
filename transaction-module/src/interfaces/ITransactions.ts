@@ -16,11 +16,13 @@ export interface TransactionParams {
 }
 
 export interface TransactionConditions {
-  transactionExternalId: string
-  transactionType: number
-  transactionStatus: string
+  transaction_id: string
+  transferTypeId: number
+  transaction_status_id: string
   value: number
   createdAt: Date
+  page: number
+  limit: number
 }
 
 export interface TransactionResponse {
@@ -30,4 +32,9 @@ export interface TransactionResponse {
   value: number
   createdAt: Date
   updatedAt: Date
+}
+
+export interface MessageBrokerTransactionResponse extends TransactionParams {
+  transaction_id: string
+  status: string
 }

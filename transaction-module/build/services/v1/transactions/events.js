@@ -23,28 +23,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransactionService = void 0;
+const index_1 = require("../../../config/index");
 const message_queue_constants_1 = require("../../../constants/message-queue.constants");
 const transactions_status_constants_1 = require("../../../constants/transactions-status.constants");
-const transactions_dao_1 = require("../../../models/transactions/transactions.dao");
-const transaction_status_dao_1 = require("../../../models/transaction-status/transaction-status.dao");
+const message_broker_consumer_provider_1 = require("../../../providers/message-broker-consumer.provider");
 const hooks = __importStar(require("./hooks"));
-class TransactionService {
-    async getAll(conditions) {
-        const aTransactionsDao = new transactions_dao_1.TransactionsDao();
-        const transactions = await aTransactionsDao.getAll(conditions);
-        return transactions;
+const transactionStatusHandler = async function manageTransaction(data) {
+    try {
+        if (data.status === transactions_status_constants_1.TransactionStatus.APPROVED) {
+            console.log('Transaction approved');
+            await hooks.updateTransactionStatus({ ...data, status: transactions_status_constants_1.TransactionStatus.APPROVED });
+        }
+        if (data.status === transactions_status_constants_1.TransactionStatus.REJECTED) {
+            await hooks.updateTransactionStatus({ ...data, status: transactions_status_constants_1.TransactionStatus.REJECTED });
+            console.log('Transaction rejected');
+        }
+        console.error('Transaction was not processed', data);
     }
-    async create(params) {
-        const aTransactionsDao = new transactions_dao_1.TransactionsDao();
-        const aTransactionStatusDao = new transaction_status_dao_1.TransactionStatusDao();
-        const initialTransactionStatus = await aTransactionStatusDao.getOne({ name: transactions_status_constants_1.TransactionStatus.PENDING });
-        const transaction = await aTransactionsDao.create({
-            ...params,
-            transaction_status_id: initialTransactionStatus.transaction_status_id
-        });
-        await hooks.sendMessageToMessageQueue(message_queue_constants_1.MessageKeys.TRANSACTION_CREATED, transaction);
-        return transaction;
-    }
-}
-exports.TransactionService = TransactionService;
+    catch (error) { }
+};
+(0, message_broker_consumer_provider_1.subscribeMessageQueueManager)({
+    function: transactionStatusHandler,
+    messageKey: message_queue_constants_1.MessageKeys.TRANSACTION_STATUS_CHANGED,
+    topic: index_1.environmentVariables.kafka.transaction_topic
+});

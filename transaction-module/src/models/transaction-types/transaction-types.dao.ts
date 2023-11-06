@@ -1,6 +1,7 @@
+import type Model from 'sequelize/types/model'
 import { type DaoFn } from '../../interfaces/IDao'
-import transactionTypes from '../../database/models/transaction-types.model'
 import { type TransactionTypes } from '../../interfaces/ITransactionTypes'
+import transactionTypes from '../../database/models/transaction-types.model'
 
 import * as transactionsHooks from './transaction-types.hooks'
 
@@ -21,5 +22,15 @@ export class TransactionTypesDao {
     const createdTransactionType = await this.transactionTypesModel.create({ ...params })
 
     return createdTransactionType
+  }
+
+  bulkCreate = async (transactions: any[]): Promise<Array<Model<any, any>>> => {
+    const transactionsTypesCreated = await this.transactionTypesModel.bulkCreate(transactions)
+    return transactionsTypesCreated
+  }
+
+  async clearTable (): Promise<number> {
+    const transactionsTypesDeleted = await this.transactionTypesModel.destroy({ where: {} })
+    return transactionsTypesDeleted
   }
 }

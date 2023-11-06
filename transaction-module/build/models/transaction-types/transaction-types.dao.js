@@ -43,6 +43,14 @@ class TransactionTypesDao {
             const createdTransactionType = await this.transactionTypesModel.create({ ...params });
             return createdTransactionType;
         };
+        this.bulkCreate = async (transactions) => {
+            const transactionsTypesCreated = await this.transactionTypesModel.bulkCreate(transactions);
+            return transactionsTypesCreated;
+        };
+    }
+    async clearTable() {
+        const transactionsTypesDeleted = await this.transactionTypesModel.destroy({ where: {} });
+        return transactionsTypesDeleted;
     }
 }
 exports.TransactionTypesDao = TransactionTypesDao;

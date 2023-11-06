@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { environmentVariables } from '../config/index.js'
 import mysql from 'mysql2/promise'
 import { Sequelize } from 'sequelize'
+import { environmentVariables } from '../config/index.js'
 
 const { host, port, user, password, database } = environmentVariables.database
 
