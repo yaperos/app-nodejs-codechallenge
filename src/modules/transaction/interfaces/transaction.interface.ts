@@ -19,3 +19,15 @@ export interface ITransactionResponse {
   value: number;
   status: string;
 }
+
+export interface ITransactionById {
+  transactionExternalId: string;
+  transactionType: Transaction;
+  transactionStatus: Transaction;
+  value: number;
+  createdAt: string;
+}
+
+export interface Transaction {
+  name: string;
+}

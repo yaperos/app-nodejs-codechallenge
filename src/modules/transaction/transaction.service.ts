@@ -4,11 +4,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { TransactionRepository } from './repository/transaction.repository';
 import { CreateTransactionDto } from './dtos/create-transaction.dto';
 import {
+  ITransactionById,
   ITransactionPayload,
   ITransactionResponse,
 } from './interfaces/transaction.interface';
 import { StatusTransactions } from './enums/status.enum';
 import { TransactionException } from './exceptions/transaction.exception';
+import { TransactionTypeEnum } from './enums/transaction-type.enum';
 
 @Injectable()
 export class TransactionService {
@@ -50,12 +52,12 @@ export class TransactionService {
     return await this.repository.getTransactions();
   }
 
-  public async getTransaction(id: string) {
+  public async getTransaction(id: string): Promise<ITransactionById> {
     const response = await this.repository.findByTransactionId(id);
     if (!response) {
       throw new NotFoundException(`Transaction no encontrada con el id: ${id}`);
     }
-    return await this.repository.findByTransactionId(id);
+    return this.transform(response);
   }
 
   private isNegative(num: number) {
@@ -63,5 +65,23 @@ export class TransactionService {
       return true;
     }
     return false;
+  }
+
+  private transform(data: ITransactionResponse): ITransactionById {
+    return {
+      transactionExternalId: data.id,
+      transactionType: {
+        name: TransactionTypeEnum[data.tranferTypeId],
+      },
+      transactionStatus: {
+        name: StatusTransactions[data.status],
+      },
+      value: data.value,
+      createdAt: data.createdAt.toLocaleString('es-PE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      }),
+    };
   }
 }
