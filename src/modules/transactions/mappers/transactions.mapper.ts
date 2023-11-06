@@ -4,6 +4,7 @@ import {
   TransactionDto,
   TransactionEntityDto,
 } from '../transactions.dto';
+import { TRANSACTION_STATUS } from '@config/transaction-status.enum';
 
 export const mapTransactionToEntity = (
   dataForCreateTransaction: CreateTransactionDto,
@@ -12,7 +13,7 @@ export const mapTransactionToEntity = (
     transaction_external_id: dataForCreateTransaction.transactionExternalId,
     transaction_type_id: dataForCreateTransaction.tranferTypeId,
     transaction_type_name: dataForCreateTransaction.tranferTypeName || '',
-    transaction_status: 'PENDING',
+    transaction_status: TRANSACTION_STATUS.PENDING,
     value: dataForCreateTransaction.value,
   };
 };

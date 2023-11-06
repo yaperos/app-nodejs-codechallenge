@@ -1,3 +1,4 @@
+import { TRANSACTION_STATUS } from '@config/transaction-status.enum';
 import {
   IsUUID,
   IsNumber,
@@ -58,9 +59,28 @@ class TransactionStatus {
 }
 
 export class TransactionEntityDto {
+  @IsNotEmpty()
+  @IsUUID()
   transaction_external_id: string;
+  @IsNotEmpty()
+  @IsNumber()
   transaction_type_id: number;
+  @IsNotEmpty()
+  @IsString()
   transaction_type_name: string;
-  transaction_status: string;
+  @IsNotEmpty()
+  @IsString()
+  transaction_status: TRANSACTION_STATUS;
+  @IsNotEmpty()
+  @IsNumber()
   value: number;
+}
+
+export class FraudValidationDto {
+  @IsNotEmpty()
+  @IsUUID()
+  transactionExternalId: string;
+  @IsNotEmpty()
+  @IsString()
+  transactionStatus: TRANSACTION_STATUS;
 }

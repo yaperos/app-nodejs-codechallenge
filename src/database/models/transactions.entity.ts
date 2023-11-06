@@ -16,7 +16,7 @@ export class TransactionsEntity extends BaseEntity {
   id: number;
 
   @Index()
-  @Column({ nullable: false })
+  @Column({ unique: true, nullable: false })
   transaction_external_id: string;
 
   @Column({ nullable: false })
