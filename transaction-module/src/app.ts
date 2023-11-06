@@ -11,6 +11,8 @@ import { initializeDb } from './database/sequelize'
 
 import './services/v1/transactions/events'
 
+import './graphql/v1/index'
+
 import apiV1 from './services/v1/routes'
 
 initializeDb().then(() => {

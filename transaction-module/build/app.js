@@ -11,6 +11,7 @@ const express_1 = __importDefault(require("express"));
 const message_broker_consumer_provider_1 = require("./providers/message-broker-consumer.provider");
 const sequelize_1 = require("./database/sequelize");
 require("./services/v1/transactions/events");
+require("./graphql/v1/index");
 const routes_1 = __importDefault(require("./services/v1/routes"));
 (0, sequelize_1.initializeDb)().then(() => {
     console.log('DB connection Created');
