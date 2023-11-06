@@ -20,7 +20,7 @@ export class TransactionService {
     transactions.map((transaction) => {
       if (this.isNegative(transaction.value)) {
         throw new TransactionException(
-          `El monto ingresado: ${transaction.value} no es un valor valido en la transaction: ${transaction.accountExternalIdDebit}`,
+          `The amount entered: ${transaction.value} is not a valid value in the transaction: ${transaction.accountExternalIdDebit}`,
         );
       }
       transaction.id = uuidv4();
