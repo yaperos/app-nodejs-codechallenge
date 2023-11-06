@@ -9,25 +9,23 @@ services:
     depends_on:
       - kafka
   migration:
-    build:
-      context: .
-      dockerfile: ./transaction-api/Dockerfile
+    build:  
+      context: ./transaction-api
       target: development
     restart: on-failure
-    volumes:
-      - ./transaction-api:/usr/src/app
     env_file:
       - .env
-    # Run a command against the development stage of the image
     command: npm run migrate
+    volumes:
+      - /usr/src/app/node_modules
     depends_on:
       - postgres
+      - transaction-api
 
   transaction-api:
     image: transaction-api:latest
     build:  
-      context: .
-      dockerfile: ./transaction-api/Dockerfile
+      context: ./transaction-api
     restart: on-failure
     ports:
       - 8080:3000
