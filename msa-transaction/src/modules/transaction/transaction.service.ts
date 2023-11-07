@@ -22,7 +22,7 @@ export class TransactionService {
     });
   }
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
+  update(id: string, updateTransactionDto: UpdateTransactionDto) {
+    return this.transactionRepository.update(id, updateTransactionDto);
   }
 }

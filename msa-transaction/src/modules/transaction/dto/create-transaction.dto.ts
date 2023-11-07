@@ -28,7 +28,7 @@ export class CreateTransactionDto {
   value: number;
 
   @IsOptional()
-  @IsIn([Object.values(TrxStatus)])
+  @IsIn(Object.values(TrxStatus))
   status?: TransactionStatus;
 
   @IsOptional()
