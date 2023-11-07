@@ -4,6 +4,7 @@ import {
   TransactionCreate,
   TransactionStatusResolver,
 } from './transaction.type';
+import { TransactionType } from 'src/constants/transaction.const';
 
 @Resolver(() => TransactionStatusResolver)
 export class TransactionResolver {
@@ -27,8 +28,10 @@ export class TransactionResolver {
   ) {
     return {
       transactionExternalId: 'test',
-      transactionType: { name: 'transactionType' },
-      transactionStatus: { name: 'transactionStatus' },
+      transactionType: {
+        name: TransactionType[transactionCreate.tranferTypeId],
+      },
+      transactionStatus: { name: 'asdsad' },
       value: transactionCreate.value,
       createdAt: new Date(),
     };

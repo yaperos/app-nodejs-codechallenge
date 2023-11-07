@@ -1,9 +1,17 @@
 import { ObjectType, Field, ID, InputType, ArgsType } from '@nestjs/graphql';
-import { IsDate, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import {
+  IsDate,
+  IsIn,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsUUID,
+} from 'class-validator';
+import { TransactionStatus, TransactionType } from 'src/types/transaction.type';
 @ObjectType()
-export class Transaction {
+export class Type {
   @Field()
-  name: string;
+  name: TransactionType | TransactionStatus;
 }
 
 @ObjectType()
@@ -12,11 +20,11 @@ export class TransactionStatusResolver {
   @IsUUID()
   transactionExternalId: string;
 
-  @Field(() => Transaction, { nullable: true })
-  transactionType: Transaction;
+  @Field(() => Type, { nullable: true })
+  transactionType: Type;
 
-  @Field(() => Transaction, { nullable: true })
-  transactionStatus: Transaction;
+  @Field(() => Type, { nullable: true })
+  transactionStatus: Type;
 
   @Field()
   @IsNumber()
@@ -39,10 +47,12 @@ export class TransactionCreate {
 
   @Field()
   @IsNumber()
+  @IsIn([1])
   tranferTypeId: number;
 
   @Field()
   @IsNumber()
+  @IsPositive()
   value: number;
 }
 
