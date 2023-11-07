@@ -2,6 +2,7 @@ import {
   IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsUUID,
 } from 'class-validator';
@@ -26,8 +27,11 @@ export class CreateTransactionDto {
   @IsPositive()
   value: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  @IsIn(Object.values(TrxStatus))
-  status: TransactionStatus;
+  @IsOptional()
+  @IsIn([Object.values(TrxStatus)])
+  status?: TransactionStatus;
+
+  @IsOptional()
+  @IsUUID()
+  id: string;
 }

@@ -10,6 +10,7 @@ import {
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { v4 as uuidv4 } from 'uuid';
 
 @Controller('transaction')
 export class TransactionController {
@@ -17,17 +18,15 @@ export class TransactionController {
 
   @Post()
   create(@Body() createTransactionDto: CreateTransactionDto) {
-    return this.transactionService.create(createTransactionDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.transactionService.findAll();
+    return this.transactionService.create({
+      ...createTransactionDto,
+      id: uuidv4(),
+    });
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.transactionService.findOne(+id);
+    return this.transactionService.findOne(id);
   }
 
   @Patch(':id')
@@ -36,10 +35,5 @@ export class TransactionController {
     @Body() updateTransactionDto: UpdateTransactionDto,
   ) {
     return this.transactionService.update(+id, updateTransactionDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.transactionService.remove(+id);
   }
 }
