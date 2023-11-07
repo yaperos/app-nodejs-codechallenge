@@ -3,7 +3,7 @@ import {
   GetTransactionArgs,
   TransactionCreate,
   TransactionStatusResolver,
-} from './transaction.type';
+} from './transaction.schema';
 import { TransactionType } from 'src/constants/transaction.const';
 
 @Resolver(() => TransactionStatusResolver)
