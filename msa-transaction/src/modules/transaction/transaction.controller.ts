@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { KAFKA_TRANSACTION_UPDATE } from 'src/config/kafka.config';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
-@Controller('transaction')
+@Controller('transactions')
 export class TransactionController {
   private logger = new Logger(TransactionController.name);
 

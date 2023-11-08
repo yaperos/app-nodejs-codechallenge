@@ -1,6 +1,6 @@
-import { TransactionType } from 'src/constants/transaction.const';
-import { TransactionResponse } from 'src/interface/transaction.interface';
-import { TransactionStatusResolver } from 'src/modules/transaction/transaction.schema';
+import { TransactionType } from '../constants/transaction.const';
+import { TransactionResponse } from '../interface/transaction.interface';
+import { TransactionStatusResolver } from '../modules/transaction/transaction.schema';
 
 export function transformTransaction(
   trx: TransactionResponse,

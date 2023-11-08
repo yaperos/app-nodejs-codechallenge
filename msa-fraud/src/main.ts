@@ -5,7 +5,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './middleware/all-exceptions.filter';
 import { KafkaConfig } from './config/kafka.config';
 
-const logger = new Logger(`Service Transaction`);
+const logger = new Logger(`Service Fraud`);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

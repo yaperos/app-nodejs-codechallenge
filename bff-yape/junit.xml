@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="4.458">
+  <testsuite name="Helpers Utils" errors="0" failures="0" skipped="0" timestamp="2023-11-08T14:51:57" time="3.582" tests="1">
+    <testcase classname="Helpers Utils Transform response" name="Helpers Utils Transform response" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="TransactionResolver" errors="0" failures="0" skipped="0" timestamp="2023-11-08T14:51:57" time="3.873" tests="2">
+    <testcase classname="TransactionResolver getTransaction should return a transaction" name="TransactionResolver getTransaction should return a transaction" time="0.011">
+    </testcase>
+    <testcase classname="TransactionResolver createTransaction should create a transaction" name="TransactionResolver createTransaction should create a transaction" time="0.002">
+    </testcase>
+  </testsuite>
+</testsuites>
