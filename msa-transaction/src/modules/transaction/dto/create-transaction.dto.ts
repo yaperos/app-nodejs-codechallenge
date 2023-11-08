@@ -35,3 +35,8 @@ export class CreateTransactionDto {
   @IsUUID()
   id: string;
 }
+
+export interface AntiFraudCreate {
+  id: string;
+  amount: number;
+}

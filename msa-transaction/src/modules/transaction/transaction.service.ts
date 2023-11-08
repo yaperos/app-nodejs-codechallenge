@@ -1,18 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  AntiFraudCreate,
+  CreateTransactionDto,
+} from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { Repository } from 'typeorm';
+import { ClientKafka, ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+import { KAFKA_TRANSACTION_FRAUD } from 'src/config/kafka.config';
 
 @Injectable()
 export class TransactionService {
+  private logger = new Logger(TransactionService.name);
+
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
+    @Inject('KAFKA')
+    private readonly kafka: ClientKafka,
   ) {}
 
-  create(createTransactionDto: CreateTransactionDto) {
+  async create(createTransactionDto: CreateTransactionDto) {
+    const messageValue: AntiFraudCreate = {
+      id: createTransactionDto.id,
+      amount: createTransactionDto.value,
+    };
+    try {
+      await firstValueFrom(
+        this.kafka.emit(KAFKA_TRANSACTION_FRAUD, messageValue),
+      );
+    } catch (err) {
+      this.logger.error(KAFKA_TRANSACTION_FRAUD, err);
+    }
     return this.transactionRepository.save(createTransactionDto);
   }
 
@@ -23,6 +44,7 @@ export class TransactionService {
   }
 
   update(id: string, updateTransactionDto: UpdateTransactionDto) {
+    delete updateTransactionDto.id;
     return this.transactionRepository.update(id, updateTransactionDto);
   }
 }

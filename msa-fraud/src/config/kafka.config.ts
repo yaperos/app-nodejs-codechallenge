@@ -11,7 +11,7 @@ export const KafkaConfig: MicroserviceOptions = {
       formBeginning: true,
     },
     consumer: {
-      groupId: 'transaction-consumer',
+      groupId: 'fraud-consumer',
     },
     client: {
       brokers: [process.env.KAFKA_URL],
