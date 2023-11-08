@@ -2,7 +2,7 @@ import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AntiFraudService } from './anti-fraud.service';
 import { CreateAntiFraudDto } from './dto/create-anti-fraud.dto';
-import { KAFKA_TRANSACTION_FRAUD } from 'src/config/kafka.config';
+import { KAFKA_TRANSACTION_FRAUD } from '../../config/kafka.config';
 
 @Controller()
 export class AntiFraudController {

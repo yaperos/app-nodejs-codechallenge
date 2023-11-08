@@ -4,9 +4,9 @@ import {
   CreateAntiFraudDto,
 } from './dto/create-anti-fraud.dto';
 import { ClientKafka } from '@nestjs/microservices';
-import { TransactionStatus } from 'src/constants/transaction.const';
+import { TransactionStatus } from '../../constants/transaction.const';
 import { firstValueFrom } from 'rxjs';
-import { KAFKA_TRANSACTION_UPDATE } from 'src/config/kafka.config';
+import { KAFKA_TRANSACTION_UPDATE } from '../../config/kafka.config';
 
 @Injectable()
 export class AntiFraudService {

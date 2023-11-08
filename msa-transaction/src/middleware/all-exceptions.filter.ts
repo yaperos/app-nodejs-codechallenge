@@ -13,7 +13,9 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
     const request = ctx.getRequest();
 
     const error: Record<string, any> = exception.response
-      ? exception.response.data || exception.response.message || exception.response
+      ? exception.response.data ||
+        exception.response.message ||
+        exception.response
       : exception.message || exception;
     this.logger.error(error);
 
