@@ -5,35 +5,38 @@ import {
   TransactionStatusResolver,
 } from './transaction.schema';
 import { TransactionType } from 'src/constants/transaction.const';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
+import { transformTransaction } from 'src/utils/transform';
 
 @Resolver(() => TransactionStatusResolver)
 export class TransactionResolver {
+  constructor(private httpService: HttpService) {}
+
   @Query(() => TransactionStatusResolver)
-  getTransaction(
+  async getTransaction(
     @Args('getTransactionArgs')
     { transactionExternalId }: GetTransactionArgs,
   ) {
-    return {
-      transactionExternalId,
-      transactionType: { name: 'transactionType' },
-      transactionStatus: { name: 'transactionStatus' },
-      value: 100,
-      createdAt: new Date(),
-    };
+    const { data: response } = await lastValueFrom(
+      this.httpService.get(
+        `${process.env.MSA_TRANSACTION}/transaction/${transactionExternalId}`,
+        {},
+      ),
+    );
+    return transformTransaction(response);
   }
 
   @Mutation(() => TransactionStatusResolver)
-  createTransaction(
+  async createTransaction(
     @Args('transactionCreate') transactionCreate: TransactionCreate,
   ) {
-    return {
-      transactionExternalId: 'test',
-      transactionType: {
-        name: TransactionType[transactionCreate.tranferTypeId],
-      },
-      transactionStatus: { name: 'asdsad' },
-      value: transactionCreate.value,
-      createdAt: new Date(),
-    };
+    const { data: response } = await lastValueFrom(
+      this.httpService.post(
+        `${process.env.MSA_TRANSACTION}/transaction`,
+        transactionCreate,
+      ),
+    );
+    return transformTransaction(response);
   }
 }

@@ -28,12 +28,11 @@ export class TransactionService {
       amount: createTransactionDto.value,
     };
     try {
-      await firstValueFrom(
-        this.kafka.emit(KAFKA_TRANSACTION_FRAUD, messageValue),
-      );
+      this.kafka.emit(KAFKA_TRANSACTION_FRAUD, messageValue);
     } catch (err) {
       this.logger.error(KAFKA_TRANSACTION_FRAUD, err);
     }
+
     return this.transactionRepository.save(createTransactionDto);
   }
 
