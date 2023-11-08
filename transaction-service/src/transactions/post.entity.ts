@@ -2,7 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn } from 'typeorm'
 
 @ObjectType()
-@Entity()
+@Entity({name : "transactions_types"})
 export class TransactionType {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -13,7 +13,7 @@ export class TransactionType {
 }
 
 @ObjectType()
-@Entity()
+@Entity({name: "transactions_status"})
 export class TransactionStatus {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -24,7 +24,7 @@ export class TransactionStatus {
 }
 
 @ObjectType()
-@Entity()
+@Entity({name : "retrieves_transactions"})
 export class RetrieveTransaction {
 
   @Field()

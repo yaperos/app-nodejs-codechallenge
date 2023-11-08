@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Transaction {
+model RetrieveTransaction {
   transactionExternalId  String  @id @default(uuid())  
   transactionType    TransactionType @relation(fields: [transactionTypeId], references: [id])
   transactionTypeId String @unique
@@ -18,17 +18,23 @@ model Transaction {
   transactionStatusId String @unique
   value              Int
   createdAt          DateTime
+
+  @@map("retrieves_transactions")
 }
 
 model TransactionType {
   id        String     @id @default(uuid())
   name      String
-  transaction Transaction?
+  transaction RetrieveTransaction?
+
+  @@map("transactions_types")
 }
 
 model TransactionStatus {
   id        String     @id @default(uuid())
   name      String
-  transaction Transaction?
+  transaction RetrieveTransaction?
+
+  @@map("transactions_status")
 }
 

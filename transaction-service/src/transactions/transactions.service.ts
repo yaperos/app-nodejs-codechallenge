@@ -5,7 +5,7 @@ import {
   TransactionType,
 } from './post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, getManager } from 'typeorm';
+import { DeleteResult, Repository, getManager } from 'typeorm';
 import { CreateTransactionInput } from './dto/create-transaction.input';
 import { ProducerService } from 'src/kafka/producer.service';
 
@@ -35,13 +35,23 @@ export class TransactionsService {
     return transaction;
   }
 
+  async retrieveAll():Promise<RetrieveTransaction[]>{
+    const transaction = await this.transactionRepository.find({});
+
+    if (!transaction) {
+      throw new Error(`No se encontró data.`);
+    }
+
+    return transaction;
+  }
+
   async transaction(
     data: CreateTransactionInput,
   ): Promise<RetrieveTransaction> {
     this.validateTransactionValue(data.value);
     try {
       const transactionStatus = await this.transactionStatusRepository.create({
-        name: 'PENDING',
+        name: 'pending',
       });
       const transactionStatusInserted =
         await this.transactionStatusRepository.save(transactionStatus);
@@ -62,12 +72,22 @@ export class TransactionsService {
       const response = await this.transactionRepository.save(
         retrieveTransaction,
       );
-      await this.sendMessageToAntiFraudService(response.transactionExternalId);
+      await this.sendMessageToAntiFraudService(response.transactionStatus.id);
 
       return response;
     } catch (error) {
       throw error;
     }
+  }
+
+  async delete(id: string): Promise<DeleteResult> {
+    const transaction = await this.transactionRepository.delete(id);
+
+    if (!transaction) {
+      throw new Error(`La transacción con ID ${id} no se encontró.`);
+    }
+
+    return transaction;
   }
 
   private async sendMessageToAntiFraudService(id: string) {
@@ -83,7 +103,7 @@ export class TransactionsService {
 
   private validateTransactionValue(value: number) {
     if (value < 1 || value > 1000) {
-      throw new Error('Transaction REJECTED');
+      throw new Error('Transaction rejected');
     }
   }
 }

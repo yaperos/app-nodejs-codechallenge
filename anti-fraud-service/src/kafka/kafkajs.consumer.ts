@@ -8,7 +8,7 @@ import {
 } from 'kafkajs';
 import { sleep } from '../utils/sleep';
 import { IConsumer } from './consumer.interface';
-//import { DatabaseService } from '../database/database.service';
+import { PrismaService } from 'src/database/prisma';
 
 export class KafkajsConsumer implements IConsumer {
   private readonly kafka: Kafka;
@@ -17,7 +17,7 @@ export class KafkajsConsumer implements IConsumer {
 
   constructor(
     private readonly topic: ConsumerSubscribeTopics,
-    //private readonly databaseService: DatabaseService,
+    private databaseService: PrismaService,
     config: ConsumerConfig,
     broker: string,
   ) {
@@ -30,7 +30,7 @@ export class KafkajsConsumer implements IConsumer {
     await this.consumer.subscribe(this.topic);
     await this.consumer.run({
       eachMessage: async ({topic, message, partition }) => {
-        this.logger.debug(`Processing message partition: ${partition}`);
+        this.logger.debug(`${topic} -- Processing message partition: ${partition}`);
       
        try {
           await this.addMessageToDlq(message);
@@ -42,14 +42,49 @@ export class KafkajsConsumer implements IConsumer {
         }
       },
     });
+
+    
   }
 
   private async addMessageToDlq(message: KafkaMessage) {
     this.logger.log("here database", message.value.toString())
-   /* await this.databaseService
-      .getDbHandle()
-      .collection('dlq')
-      .insertOne({ value: message.value, topic: this.topic.topics });*/
+ 
+    try {
+      const uuid = message.value.toString()
+      if(!this.antiFraudCheck(uuid)){
+        this.logger.error(`error to update in database, rejected ${uuid}`)
+        return
+      }
+
+      this.updateTransactionStatus(uuid, 'aproved')
+  
+    } catch (error) {
+      this.logger.error("error to update in database", error)
+    }
+  }
+
+
+  private async updateTransactionStatus(uuid: string, status: string){
+    await this.databaseService.transactionStatus.update({
+      where: {
+        id: uuid
+      },
+      data: {
+        name: status
+      }
+    })
+  }
+
+   private antiFraudCheck(inputString: string): boolean {
+    if (!inputString) {
+        return false;
+    }
+
+    if (inputString.length < 36) {
+        return false;
+    }
+
+    return true;
   }
 
   async connect() {

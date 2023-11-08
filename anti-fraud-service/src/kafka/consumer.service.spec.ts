@@ -12,7 +12,7 @@ describe('KafkajsConsumer', () => {
   const mockBroker = 'localhost:9092';
 
   beforeEach(() => {
-    kafkajsConsumer = new KafkajsConsumer(mockTopic, mockConsumerConfig, mockBroker);
+    kafkajsConsumer = new KafkajsConsumer(mockTopic, '', mockConsumerConfig, mockBroker);
   });
 
   it('should be defined', () => {
