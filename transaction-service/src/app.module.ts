@@ -23,7 +23,7 @@ import { ConfigModule } from '@nestjs/config';
       port: 5432,
       password: 'postgress',
       username: 'postgres',
-      entities: [__dirname + '/**/*.entity{.ts, .js}'],
+      entities: [__dirname + '/**/*.entity.{js,ts}'],
       synchronize: true,
       logging: true,
     }),
@@ -33,4 +33,5 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}

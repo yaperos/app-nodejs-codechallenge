@@ -6,7 +6,6 @@ import {
   Kafka,
   KafkaMessage,
 } from 'kafkajs';
-import * as retry from 'async-retry';
 import { sleep } from '../utils/sleep';
 import { IConsumer } from './consumer.interface';
 //import { DatabaseService } from '../database/database.service';

@@ -9,3 +9,26 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Transaction {
+  transactionExternalId  String  @id @default(uuid())  
+  transactionType    TransactionType @relation(fields: [transactionTypeId], references: [id])
+  transactionTypeId String @unique
+  transactionStatus  TransactionStatus @relation(fields: [transactionStatusId], references: [id])
+  transactionStatusId String @unique
+  value              Int
+  createdAt          DateTime
+}
+
+model TransactionType {
+  id        String     @id @default(uuid())
+  name      String
+  transaction Transaction?
+}
+
+model TransactionStatus {
+  id        String     @id @default(uuid())
+  name      String
+  transaction Transaction?
+}
+

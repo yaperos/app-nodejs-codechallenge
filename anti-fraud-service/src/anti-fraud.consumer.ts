@@ -7,7 +7,7 @@ export class AntiFraudConsumer implements OnModuleInit {
 
   async onModuleInit() {
     await this.consumerService.consume({
-      topic: { topics: ['test'] },
+      topic: { topics: ['test', 'anti-fraud'] },
       config: { groupId: 'test-consumer' },
       onMessage: async (message) => {
         console.log({

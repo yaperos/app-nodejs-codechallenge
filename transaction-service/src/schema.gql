@@ -11,7 +11,7 @@ type TransactionStatus {
 }
 
 type RetrieveTransaction {
-  transactionExternalId: Float!
+  transactionExternalId: String!
   transactionType: TransactionType!
   transactionStatus: TransactionStatus!
   value: Int!
