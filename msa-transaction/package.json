@@ -13,8 +13,6 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "migrations:run": "npm run typeorm -- migration:run",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

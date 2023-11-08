@@ -4,26 +4,14 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './middleware/all-exceptions.filter';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { KafkaConfig } from './config/kafka.config';
 
 const logger = new Logger(`Service Transaction`);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const { httpAdapter } = app.get(HttpAdapterHost);
-  app.connectMicroservice({
-    transport: Transport.KAFKA,
-    options: {
-      subcribe: {
-        formBeginning: true,
-      },
-      consumer: {
-        groupId: 'transaction-consumer',
-      },
-      client: {
-        brokers: [process.env.KAFKA_URL],
-      },
-    },
-  } as MicroserviceOptions);
+  app.connectMicroservice(KafkaConfig);
   app.startAllMicroservices();
   app.init();
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
