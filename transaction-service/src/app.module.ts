@@ -6,9 +6,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import { join } from 'path';
+import { KafkaModule } from './kafka/kafka.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({isGlobal: true}),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql')
@@ -24,7 +27,8 @@ import { join } from 'path';
       synchronize: true,
       logging: true,
     }),
-    TransactionsModule
+    TransactionsModule,
+    KafkaModule
   ],
   controllers: [AppController],
   providers: [AppService],
