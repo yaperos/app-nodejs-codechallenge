@@ -1,4 +1,4 @@
-import { TransactionStatus } from 'src/constants/transaction.const';
+import { TransactionStatus } from '../../../constants/transaction.const';
 import {
   Entity,
   Column,
@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
   PrimaryColumn,
 } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
 export class Transaction {

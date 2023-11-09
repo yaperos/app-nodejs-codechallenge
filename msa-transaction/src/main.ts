@@ -3,7 +3,6 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './middleware/all-exceptions.filter';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { KafkaConfig } from './config/kafka.config';
 
 const logger = new Logger(`Service Transaction`);

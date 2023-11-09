@@ -1,2 +1,2 @@
-import { TransactionStatus as TrxStatus } from 'src/constants/transaction.const';
+import { TransactionStatus as TrxStatus } from '../constants/transaction.const';
 export type TransactionStatus = (typeof TrxStatus)[keyof typeof TrxStatus];

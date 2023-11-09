@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="2.169">
-  <testsuite name="AntiFraudController" errors="0" failures="0" skipped="0" timestamp="2023-11-08T16:35:00" time="1.722" tests="1">
-    <testcase classname="AntiFraudController create should call antiFraudService.create with the correct arguments" name="AntiFraudController create should call antiFraudService.create with the correct arguments" time="0.011">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="4.416">
+  <testsuite name="AntiFraudService" errors="0" failures="0" skipped="0" timestamp="2023-11-09T15:56:43" time="2.317" tests="2">
+    <testcase classname="AntiFraudService create should create an anti-fraud record and emit a Kafka message approved" name="AntiFraudService create should create an anti-fraud record and emit a Kafka message approved" time="0.011">
+    </testcase>
+    <testcase classname="AntiFraudService create should create an anti-fraud record and emit a Kafka message rejected" name="AntiFraudService create should create an anti-fraud record and emit a Kafka message rejected" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="AntiFraudService" errors="0" failures="0" skipped="0" timestamp="2023-11-08T16:35:00" time="1.73" tests="2">
-    <testcase classname="AntiFraudService create should create an anti-fraud record and emit a Kafka message approved" name="AntiFraudService create should create an anti-fraud record and emit a Kafka message approved" time="0.01">
-    </testcase>
-    <testcase classname="AntiFraudService create should create an anti-fraud record and emit a Kafka message rejected" name="AntiFraudService create should create an anti-fraud record and emit a Kafka message rejected" time="0.003">
+  <testsuite name="AntiFraudController" errors="0" failures="0" skipped="0" timestamp="2023-11-09T15:56:43" time="3.908" tests="1">
+    <testcase classname="AntiFraudController create should call antiFraudService.create with the correct arguments" name="AntiFraudController create should call antiFraudService.create with the correct arguments" time="0.01">
     </testcase>
   </testsuite>
 </testsuites>

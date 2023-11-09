@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="5.608">
+  <testsuite name="TransactionService" errors="0" failures="0" skipped="0" timestamp="2023-11-09T16:12:39" time="4.728" tests="5">
+    <testcase classname="TransactionService should be defined" name="TransactionService should be defined" time="0.011">
+    </testcase>
+    <testcase classname="TransactionService create should create a transaction" name="TransactionService create should create a transaction" time="0.002">
+    </testcase>
+    <testcase classname="TransactionService create should create a transaction error" name="TransactionService create should create a transaction error" time="0.003">
+    </testcase>
+    <testcase classname="TransactionService findOne should return a transaction" name="TransactionService findOne should return a transaction" time="0.002">
+    </testcase>
+    <testcase classname="TransactionService update should update a transaction" name="TransactionService update should update a transaction" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="TransactionController" errors="0" failures="0" skipped="0" timestamp="2023-11-09T16:12:39" time="4.995" tests="3">
+    <testcase classname="TransactionController create should create a transaction" name="TransactionController create should create a transaction" time="0.01">
+    </testcase>
+    <testcase classname="TransactionController update should update a transaction" name="TransactionController update should update a transaction" time="0.002">
+    </testcase>
+    <testcase classname="TransactionController findOne should findOne a transaction" name="TransactionController findOne should findOne a transaction" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>

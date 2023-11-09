@@ -6,8 +6,8 @@ import {
   IsPositive,
   IsUUID,
 } from 'class-validator';
-import { TransactionStatus } from 'src/types/transaction.type';
-import { TransactionStatus as TrxStatus } from 'src/constants/transaction.const';
+import { TransactionStatus } from '../../../types/transaction.type';
+import { TransactionStatus as TrxStatus } from '../../../constants/transaction.const';
 export class CreateTransactionDto {
   @IsNotEmpty()
   @IsUUID()

@@ -4,7 +4,7 @@ import { TransactionController } from './transaction.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { ClientsModule } from '@nestjs/microservices';
-import { KafkaClient } from 'src/config/kafka.config';
+import { KafkaClient } from '../../config/kafka.config';
 
 @Module({
   imports: [

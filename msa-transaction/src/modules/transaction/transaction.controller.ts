@@ -1,18 +1,9 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Logger,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Logger } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { KAFKA_TRANSACTION_UPDATE } from 'src/config/kafka.config';
+import { KAFKA_TRANSACTION_UPDATE } from '../../config/kafka.config';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('transactions')

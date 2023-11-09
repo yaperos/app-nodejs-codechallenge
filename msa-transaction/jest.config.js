@@ -1,0 +1,32 @@
+module.exports = {
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coveragePathIgnorePatterns: [
+    '.config.ts',
+    '.dto.ts',
+    '.entity.ts',
+    '.enum.ts',
+    '.interface.ts',
+    '.module.ts',
+    'config/',
+    'constants/',
+    'dto/',
+    'entities/',
+    'enums/',
+    'interfaces/',
+    'common.ts',
+    'mock-data.ts',
+    'schema.ts',
+  ],
+  coverageReporters: ['cobertura', 'lcov', 'text', 'text-summary'],
+  preset: 'ts-jest',
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      { outputDirectory: 'reports', outputName: 'junit-report.xml' },
+    ],
+  ],
+  setupFiles: ['./test/setup-tests.ts'],
+  testMatch: ['**/*.spec.ts'],
+};

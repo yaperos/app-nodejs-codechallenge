@@ -6,7 +6,6 @@ import { CreateAntiFraudDto } from '../../../src/modules/anti-fraud/dto/create-a
 describe('AntiFraudController', () => {
   let controller: AntiFraudController;
   let service: AntiFraudService;
-  const mockEmit = jest.fn();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -16,7 +15,7 @@ describe('AntiFraudController', () => {
         {
           provide: 'KAFKA',
           useFactory: () => ({
-            emit: mockEmit,
+            emit: jest.fn(),
           }),
         },
       ],

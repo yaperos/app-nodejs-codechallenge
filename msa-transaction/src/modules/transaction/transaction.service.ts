@@ -7,13 +7,12 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { Repository } from 'typeorm';
-import { ClientKafka, ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { KAFKA_TRANSACTION_FRAUD } from 'src/config/kafka.config';
+import { ClientKafka } from '@nestjs/microservices';
+import { KAFKA_TRANSACTION_FRAUD } from '../../config/kafka.config';
 
 @Injectable()
 export class TransactionService {
-  private logger = new Logger(TransactionService.name);
+  public logger = new Logger(TransactionService.name);
 
   constructor(
     @InjectRepository(Transaction)

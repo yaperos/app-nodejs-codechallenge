@@ -44,9 +44,7 @@ describe('AntiFraudService', () => {
         id: '123',
         amount: 10000,
       };
-
       await service.create(createAntiFraudDto);
-
       expect(kafkaClient.emit).toHaveBeenCalledWith('transaction-update', {
         id: '123',
         status: 'rejected',
