@@ -1,8 +1,7 @@
 import { Resolver, Query, Mutation, Args} from '@nestjs/graphql';
 import { TransactionsService } from './transactions.service';
-import { RetrieveTransaction } from './post.entity';
 import { CreateTransactionInput } from './dto/create-transaction.input';
-import { DeleteResult } from 'typeorm';
+import { RetrieveTransaction } from '../domain/transaction.entity';
 
 @Resolver()
 export class TransactionsResolver {
@@ -11,7 +10,7 @@ export class TransactionsResolver {
 
     @Query(() => RetrieveTransaction)
     retrieveTransaction(@Args('transactionExternalId')id: string){
-        return this.transactionService.retrieve(id)
+        return this.transactionService.retrieveTransaction(id)
     }
 
     @Query(() => [RetrieveTransaction])

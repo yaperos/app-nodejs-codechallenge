@@ -1,16 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  RetrieveTransaction,
-  TransactionStatus,
-  TransactionType,
-} from './post.entity';
+
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, getManager } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateTransactionInput } from './dto/create-transaction.input';
 import { ProducerService } from 'src/kafka/producer.service';
+import { RetrieveTransaction, TransactionStatus, TransactionType } from '../domain/transaction.entity';
 
 @Injectable()
-export class TransactionsService {
+export class TransactionsRepository implements TransactionsRepository{
   constructor(
     @InjectRepository(RetrieveTransaction)
     private transactionRepository: Repository<RetrieveTransaction>,
@@ -48,7 +45,6 @@ export class TransactionsService {
   async transaction(
     data: CreateTransactionInput,
   ): Promise<RetrieveTransaction> {
-    this.validateTransactionValue(data.value);
     try {
       const transactionStatus = await this.transactionStatusRepository.create({
         name: 'pending',
@@ -72,7 +68,6 @@ export class TransactionsService {
       const response = await this.transactionRepository.save(
         retrieveTransaction,
       );
-      await this.sendMessageToAntiFraudService(response.transactionStatus.id);
 
       return response;
     } catch (error) {
@@ -88,22 +83,5 @@ export class TransactionsService {
     }
 
     return transaction;
-  }
-
-  private async sendMessageToAntiFraudService(id: string) {
-    try {
-      Logger.log('Sending..');
-      await this.producerService.produce('anti-fraud', {
-        value: id,
-      });
-    } catch (error) {
-      Logger.error('Send Kafka error', error);
-    }
-  }
-
-  private validateTransactionValue(value: number) {
-    if (value < 1 || value > 1000) {
-      throw new Error('Transaction rejected');
-    }
   }
 }
