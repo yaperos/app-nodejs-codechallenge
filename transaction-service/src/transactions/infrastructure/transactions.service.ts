@@ -1,17 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { DeleteResult } from 'typeorm';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateTransactionInput } from './dto/create-transaction.input';
-import { ProducerService } from 'src/kafka/producer.service';
 import { RetrieveTransaction } from '../domain/transaction.entity';
-import { TransactionsRepository } from './repository';
 import { ITransactionsServiceUseCase } from '../aplication/transactionUseCases';
+import { IProducerService } from '../domain/producer.interface';
+import { ITransactionsRepository } from '../domain/repository.interface';
 
 
 @Injectable()
 export class TransactionsService implements ITransactionsServiceUseCase {
   constructor(
-    private readonly producerService: ProducerService,
-    private readonly transactionRepository: TransactionsRepository
+    @Inject('IProducerService') private readonly producerService: IProducerService,
+    @Inject('ITransactionsRepository') private readonly transactionRepository: ITransactionsRepository
   ) {}
 
   async retrieveTransaction(id: string): Promise<RetrieveTransaction> {
@@ -33,10 +32,6 @@ export class TransactionsService implements ITransactionsServiceUseCase {
 
     return response
     
-  }
-
-  async delete(id: string): Promise<DeleteResult> {
-    return this.transactionRepository.delete(id)
   }
 
   private async sendMessageToAntiFraudService(id: string) {

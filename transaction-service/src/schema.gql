@@ -26,7 +26,6 @@ scalar DateTime
 type Query {
   retrieveTransaction(transactionExternalId: String!): RetrieveTransaction!
   retrieveTransactionAll: [RetrieveTransaction!]!
-  deleteTransaction(transactionExternalId: String!): RetrieveTransaction!
 }
 
 type Mutation {

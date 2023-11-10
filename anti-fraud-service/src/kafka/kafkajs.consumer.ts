@@ -47,7 +47,7 @@ export class KafkajsConsumer implements IConsumer {
   }
 
   private async addMessageToDlq(message: KafkaMessage) {
-    this.logger.log("here database", message.value.toString())
+  
  
     try {
       const uuid = message.value.toString()
@@ -59,12 +59,13 @@ export class KafkajsConsumer implements IConsumer {
       this.updateTransactionStatus(uuid, 'aproved')
   
     } catch (error) {
-      this.logger.error("error to update in database", error)
+      this.logger.error("error to update in database", error, message.value.toString())
     }
   }
 
 
   private async updateTransactionStatus(uuid: string, status: string){
+    this.logger.log("here database updated")
     await this.databaseService.transactionStatus.update({
       where: {
         id: uuid

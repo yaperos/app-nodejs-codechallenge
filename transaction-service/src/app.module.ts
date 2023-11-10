@@ -8,6 +8,7 @@ import { join } from 'path';
 import { KafkaModule } from './kafka/kafka.module';
 import { ConfigModule } from '@nestjs/config';
 import { TransactionsModule } from './transactions/infrastructure/transactions.module';
+import { ProducerService } from './kafka/producer.service';
 
 @Module({
   imports: [
@@ -18,10 +19,10 @@ import { TransactionsModule } from './transactions/infrastructure/transactions.m
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      database: 'transaction',
+      database: 'postgres',
       host: 'localhost',
       port: 5432,
-      password: 'postgress',
+      password: 'postgres',
       username: 'postgres',
       entities: [__dirname + '/**/*.entity.{js,ts}'],
       synchronize: true,
@@ -31,7 +32,13 @@ import { TransactionsModule } from './transactions/infrastructure/transactions.m
     KafkaModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'IProducerService',
+      useClass: ProducerService
+    },
+  ],
 })
 
 export class AppModule {}

@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TransactionsService } from './transactions.service';
+
 import { TransactionsResolver } from './transactions.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RetrieveTransaction
-  , TransactionStatus, TransactionType } from './post.entity';
+
+import { RetrieveTransaction, TransactionStatus, TransactionType } from '../domain/transaction.entity';
 import { KafkaModule } from 'src/kafka/kafka.module';
+import { TransactionsRepository } from './repository';
+import { ProducerService } from 'src/kafka/producer.service';
+import { TransactionsService } from './transactions.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -15,7 +18,18 @@ import { KafkaModule } from 'src/kafka/kafka.module';
   KafkaModule
 ],
   providers: [
-    TransactionsService, 
+    {
+      provide: 'ITransactionsRepository',
+      useClass: TransactionsRepository, 
+    },
+    {
+      provide: 'IProducerService',
+      useClass: ProducerService
+    },
+    {
+      provide: 'ITransactionsServiceUseCase',
+      useClass: TransactionsService
+    },
     TransactionsResolver
   ]
 })

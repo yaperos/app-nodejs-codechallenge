@@ -1,7 +1,9 @@
 
 import { DeleteResult } from "typeorm";
 import { RetrieveTransaction } from "../domain/transaction.entity";
-import { CreateTransactionInput } from "src/transactions/dto/create-transaction.input";
+import { DTOCreateTransaction } from "../domain/dto.interface";
+
+
 
 
 // Aqui solo esta la interface de los casos de uso, la implentacion concreta deberia
@@ -11,8 +13,8 @@ import { CreateTransactionInput } from "src/transactions/dto/create-transaction.
 export interface ITransactionsServiceUseCase {
   retrieveTransaction(id: string): Promise<RetrieveTransaction>;
   retrieveAll(): Promise<RetrieveTransaction[]>;
-  transaction(data: CreateTransactionInput): Promise<RetrieveTransaction>;
-  delete(id: string): Promise<DeleteResult>;
+  transaction(data: DTOCreateTransaction): Promise<RetrieveTransaction>;
+  //delete(id: string): Promise<DeleteResult>;
 }
 
 

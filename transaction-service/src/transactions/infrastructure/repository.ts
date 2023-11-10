@@ -1,13 +1,13 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateTransactionInput } from './dto/create-transaction.input';
-import { ProducerService } from 'src/kafka/producer.service';
 import { RetrieveTransaction, TransactionStatus, TransactionType } from '../domain/transaction.entity';
+import { ITransactionsRepository } from '../domain/repository.interface';
 
 @Injectable()
-export class TransactionsRepository implements TransactionsRepository{
+export class TransactionsRepository implements ITransactionsRepository{
   constructor(
     @InjectRepository(RetrieveTransaction)
     private transactionRepository: Repository<RetrieveTransaction>,
@@ -15,7 +15,6 @@ export class TransactionsRepository implements TransactionsRepository{
     private transactionStatusRepository: Repository<TransactionStatus>,
     @InjectRepository(TransactionType)
     private transactionTypeRepository: Repository<TransactionType>,
-    private readonly producerService: ProducerService,
   ) {}
 
   async retrieve(id: string): Promise<RetrieveTransaction> {

@@ -1,12 +1,13 @@
 import { Resolver, Query, Mutation, Args} from '@nestjs/graphql';
-import { TransactionsService } from './transactions.service';
 import { CreateTransactionInput } from './dto/create-transaction.input';
 import { RetrieveTransaction } from '../domain/transaction.entity';
+import { ITransactionsServiceUseCase } from '../aplication/transactionUseCases';
+import { Inject } from '@nestjs/common';
 
 @Resolver()
 export class TransactionsResolver {
 
-    constructor(private transactionService :TransactionsService){}
+    constructor(@Inject('ITransactionsServiceUseCase') private transactionService :ITransactionsServiceUseCase){}
 
     @Query(() => RetrieveTransaction)
     retrieveTransaction(@Args('transactionExternalId')id: string){
@@ -17,14 +18,6 @@ export class TransactionsResolver {
     retrieveTransactionAll(){
         return this.transactionService.retrieveAll()
     }
-
-    @Query(() => RetrieveTransaction)
-    async deleteTransaction(@Args('transactionExternalId')id: string){
-        const deleted = await this.transactionService.delete(id)
-
-        return deleted.raw
-    }
-
 
     @Mutation(() => RetrieveTransaction)
     createTransaction(@Args('createTransaction') createTransaction : CreateTransactionInput){

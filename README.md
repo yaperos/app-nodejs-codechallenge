@@ -1,4 +1,79 @@
-## Solution
+# Solution
+
+:writing_hand: For the solution, I have decided to create two microservices. One called anti-fraud-services and another called transaction-services. Let's see what function each of them fulfills to solve the problem.
+
+- [anti-fraud-services](#anti-fraud-services)
+- [transaction-services](#transaction-service)
+- [considerations](#considerations)
+
+
+### anti-fraud-services
+
+This is a service that works as a validator that fraud is not taking place. Basically it is a Kafka consumer that verifies the integrity of a UUID and updates a transaction to "approved" if it meets the requirements
+
+In the real world, you would have to check against rules and policies, which could be government or your own. It should have machine learning models, identity management, for example, visual verification, audits and other modules.
+
+infrastructure:
+
+* One Module
+* Prisma ORM
+* Cliente Kafka -> Consumer
+
+
+### transaction-service
+
+This is the orchestrator of the transactions. Here we have an API service, which uses graphql to communicate, using a clean and hexagonal architecture. It also has a Kafka producer module that sends a message to validate integrity against fraud.
+
+infrastructure:
+
+* Two module
+* Clean and Hexagonal Arquitecture
+* Cliente Kafka -> Producer
+* TypeORM 
+
+### Considerations
+
+I have used dependency inversion to keep the concrete import of a decoupled class. For example: 
+
+```typescript
+@Resolver()
+export class TransactionsResolver {
+
+    constructor(@Inject('ITransactionsServiceUseCase') private transactionService :ITransactionsServiceUseCase){}
+}
+```
+
+Also, I have decided to apply a folder structure:
+
+├── trasaction
+│   ├── aplication
+│   ├── domain
+│   ├── infrastructure
+
+Being aware that there are many other ways to do it, but for this problem, I think it is the most accurate.
+
+In the case of the infrastructure layer, it could be even more decoupled from nest, to be able to change technology without problems if necessary, but for educational reasons I have decided not to do so. In any case I can explain how to do this decoupling.
+
+
+### Starting
+
+In the case of anti-fraud-service runs on port 3000 and transaction-service runs on port 4000
+
+You can start with the command:
+
+* Run the docker compose file
+
+```sh
+docker-compose up -d
+```
+
+```sh
+  npm i 
+  npm run start:dev
+```
+
+the postgres database is being used, in the real world we would use a transaction call for example
+
 
 # Yape Code Challenge :rocket:
 
