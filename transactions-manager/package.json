@@ -2,6 +2,7 @@
   "name": "transactions-manager",
   "version": "1.0.0",
   "description": "A NestJS project to listen to a Kafka topic and save it in a PostgreSQL database",
+  "author": "Marco Antonio Celaya Ordaz",
   "main": "src/main.ts",
   "scripts": {
     "build": "nest build",

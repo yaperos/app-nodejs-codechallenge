@@ -2,7 +2,7 @@
   "name": "transactions-validator",
   "version": "1.0.0",
   "description": "A NestJS project to validate transactions",
-  "author": "",
+  "author": "Marco Antonio Celaya Ordaz",
   "private": true,
   "scripts": {
     "build": "nest build",
