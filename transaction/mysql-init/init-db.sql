@@ -1,0 +1,3 @@
+CREATE USER 'nicolo0312'@'%' IDENTIFIED BY 'yapechallenge1994';
+GRANT ALL PRIVILEGES ON yape.* TO 'nicolo0312'@'%' IDENTIFIED BY 'yapechallenge1994';
+FLUSH PRIVILEGES;

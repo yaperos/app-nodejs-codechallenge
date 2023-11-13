@@ -1,0 +1,20 @@
+{
+  "name": "anti-fraud",
+  "version": "1.0.0",
+  "description": "Anti-fraud service",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon index.js"
+  },
+  "author": "Nicolas Ignacio Moran",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1"
+  }
+}
