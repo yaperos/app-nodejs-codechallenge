@@ -31,7 +31,6 @@ export class TransactionService {
       data.accountExternalIdDebit = randomUUID();
       const transaction = this.transactionRepository.create(data);
 
-      await this.transactionRepository.save(transaction);
       console.log(transaction);
       await sendKafkaMessage(
         Topics.TRANSACTION_CREATED,
@@ -41,6 +40,8 @@ export class TransactionService {
           status: transaction.status,
         }),
       );
+
+      await this.transactionRepository.save(transaction);
 
       return transaction;
     } catch (error) {
