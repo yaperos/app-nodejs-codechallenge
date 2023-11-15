@@ -10,10 +10,8 @@ export class AntiFruadService {
   constructor(private readonly transactionService: TransactionService) {}
 
   async antiFraud(event: any): Promise<void> {
-    console.log({ event });
     const { transactionId } = event;
     const transaction = await this.transactionService.findOne(transactionId);
-    console.log('++++', transaction);
 
     if (+transaction.value < 1000) {
       await sendKafkaMessage(

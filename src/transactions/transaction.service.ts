@@ -30,8 +30,8 @@ export class TransactionService {
       data.accountExternalIdCredit = randomUUID();
       data.accountExternalIdDebit = randomUUID();
       const transaction = this.transactionRepository.create(data);
+      await this.transactionRepository.save(transaction);
 
-      console.log(transaction);
       await sendKafkaMessage(
         Topics.TRANSACTION_CREATED,
         JSON.stringify({
@@ -40,8 +40,6 @@ export class TransactionService {
           status: transaction.status,
         }),
       );
-
-      await this.transactionRepository.save(transaction);
 
       return transaction;
     } catch (error) {
@@ -63,7 +61,7 @@ export class TransactionService {
     if (error.code === '23505') throw new BadRequestException(error.detail);
 
     this.logger.error(error);
-    // console.log(error)
+
     throw new InternalServerErrorException(
       'Unexpected error, check server logs',
     );
@@ -71,12 +69,12 @@ export class TransactionService {
 
   async updateTransactionStatus(event: Event): Promise<void> {
     const { transactionId, status } = event;
-    console.log({ transactionId, status });
+
     const transaction = await this.findOne(transactionId);
-    console.log({ transaction });
+
     transaction.status = status;
-    const resp = await this.transactionRepository.save(transaction);
-    console.log({ resp });
+    await this.transactionRepository.save(transaction);
+
     return;
   }
 }

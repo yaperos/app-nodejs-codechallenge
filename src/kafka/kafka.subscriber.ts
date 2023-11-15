@@ -59,6 +59,7 @@ export class KafkaSubscriber implements OnModuleInit {
   private async processKafkaMessage(message: Message) {
     try {
       const eventData = JSON.parse(message.value.toString());
+
       await this.topicHandlers[message.topic](eventData);
     } catch (error) {
       console.error('Error al procesar el evento de Kafka:', error);
