@@ -1,0 +1,31 @@
+{
+  "name": "transaction-microservice",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "bun test",
+    "test:unit": "bun test tests/unit",
+    "test:integration": "bun test tests/integration",
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts"
+  },
+  "prisma": {
+    "seed": "bun run prisma/seed.ts"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "trustedDependencies": [
+    "@prisma/client"
+  ],
+  "dependencies": {
+    "@elysiajs/cors": "^0.7.1",
+    "@prisma/client": "^5.5.2",
+    "elysia": "^0.7.24",
+    "kafkajs": "^2.2.4",
+    "prisma": "^5.5.2"
+  }
+}

@@ -13,7 +13,8 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on:
+      - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -23,3 +24,22 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  # transaction-microservice:
+  #   build:
+  #     context: ./transaction-microservice
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/transactions_db?schema=public
+  #   depends_on:
+  #     - postgres
+  #     - kafka
+  #   command: ["./wait-for-it.sh", "postgres:5432", "--", "./wait-for-it.sh", "kafka:9092", "--", "bun", "start"]
+  # anti-fraud-microservice:
+  #   build:
+  #     context: ./anti-fraud-microservice
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - kafka
+  #   command: ["./wait-for-it.sh", "kafka:9092", "--", "bun", "start"]
