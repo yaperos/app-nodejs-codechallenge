@@ -1,0 +1,32 @@
+{
+  "name": "producer",
+  "version": "1.0.0",
+  "description": "Producer - Yape Code Challenge",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json",
+    "start": "node index.js",
+    "dev": "npx nodemon ./index.ts"
+  },
+  "author": "Renato Beltran",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "fastify": "^4.24.3",
+    "fastify-autoload": "^3.13.0",
+    "fastify-plugin": "^4.5.1",
+    "kafka-node": "^5.0.0",
+    "pg": "^8.11.3",
+    "ts-node": "^10.9.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.201",
+    "@types/node": "^20.9.0",
+    "@types/pg": "^8.10.9",
+    "@types/underscore": "^1.11.14",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
+  }
+}

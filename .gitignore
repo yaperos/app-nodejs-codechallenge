@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+consumer/node_modules
+producer/node_modules
