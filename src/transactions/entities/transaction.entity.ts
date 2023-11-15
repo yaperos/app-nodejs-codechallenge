@@ -1,5 +1,5 @@
+import { TransactionStatus } from 'src/common/types/transactionStatus';
 import {
-  BeforeInsert,
   Entity,
   PrimaryGeneratedColumn,
   Column,
@@ -25,18 +25,11 @@ export class TransactionsEntity {
 
   @Column({
     type: 'enum',
-    enum: ['pending', 'approved', 'rejected'],
-    default: 'pending',
+    enum: TransactionStatus,
+    default: TransactionStatus.PENDING,
   })
   status: string;
 
   @CreateDateColumn()
   createdAt: Date;
-
-  @BeforeInsert()
-  checkTransactionValue() {
-    if (this.value > 1000) {
-      this.status = 'rejected';
-    }
-  }
 }

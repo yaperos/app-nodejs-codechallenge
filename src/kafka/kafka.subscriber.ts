@@ -3,6 +3,7 @@ import { KafkaClient, Consumer, Message } from 'kafka-node';
 import { ConfigService } from '@nestjs/config';
 import { TransactionService } from 'src/transactions/transaction.service';
 import { AntiFruadService } from 'src/antiFraud/antiFraud.service';
+import { Topics } from 'src/common/types/topicsNames';
 
 @Injectable()
 export class KafkaSubscriber implements OnModuleInit {
@@ -23,9 +24,9 @@ export class KafkaSubscriber implements OnModuleInit {
       this.consumer = new Consumer(
         this.kafkaClient,
         [
-          { topic: 'transaction-created' },
-          { topic: 'approved' },
-          { topic: 'rejected' },
+          { topic: Topics.TRANSACTION_CREATED },
+          { topic: Topics.APPROVED },
+          { topic: Topics.REJECTED },
         ],
         { groupId: 'yape-group', autoCommit: true, fromOffset: false },
       );
@@ -52,14 +53,14 @@ export class KafkaSubscriber implements OnModuleInit {
       const eventData = JSON.parse(message.value.toString());
       console.log({ eventData });
 
-      if (message.topic === 'transaction-created') {
+      if (message.topic === Topics.TRANSACTION_CREATED) {
         console.log('Manejando evento "transaction-created":', eventData);
         await this.antiFruadService.antiFraud(eventData);
-      } else if (message.topic === 'approved') {
+      } else if (message.topic === Topics.APPROVED) {
         console.log('Manejando evento "approved":', eventData);
 
         await this.transactionService.updateTransactionStatus(eventData);
-      } else if (message.topic === 'rejected') {
+      } else if (message.topic === Topics.REJECTED) {
         console.log('Manejando evento "transaction-created":', eventData);
 
         await this.transactionService.updateTransactionStatus(eventData);

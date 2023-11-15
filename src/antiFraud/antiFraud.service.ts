@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Topics } from 'src/common/types/topicsNames';
+import { TransactionStatus } from 'src/common/types/transactionStatus';
 
 import { sendKafkaMessage } from 'src/kafka/kafka.producer';
 import { TransactionService } from 'src/transactions/transaction.service';
@@ -15,20 +17,20 @@ export class AntiFruadService {
 
     if (+transaction.value < 1000) {
       await sendKafkaMessage(
-        'approved',
+        Topics.APPROVED,
         JSON.stringify({
           transactionId: transaction.id,
           value: transaction.value,
-          status: 'approved',
+          status: TransactionStatus.APPROVED,
         }),
       );
     } else {
       await sendKafkaMessage(
-        'rejected',
+        Topics.REJECTED,
         JSON.stringify({
           transactionId: transaction.id,
           value: transaction.value,
-          status: 'rejected',
+          status: TransactionStatus.REJECTED,
         }),
       );
     }

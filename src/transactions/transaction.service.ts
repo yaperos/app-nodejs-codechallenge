@@ -6,13 +6,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { CreateTransactionDto } from './dto/transaction.dto';
 
 import { TransactionsEntity } from './entities/transaction.entity';
 import { randomUUID } from 'crypto';
 import { sendKafkaMessage } from 'src/kafka/kafka.producer';
+import { Topics } from 'src/common/types/topicsNames';
+import { Event } from 'src/common/types/event.interface';
 
 @Injectable()
 export class TransactionService {
@@ -32,7 +34,7 @@ export class TransactionService {
       await this.transactionRepository.save(transaction);
       console.log(transaction);
       await sendKafkaMessage(
-        'transaction-created',
+        Topics.TRANSACTION_CREATED,
         JSON.stringify({
           transactionId: transaction.id,
           value: transaction.value,
@@ -66,7 +68,7 @@ export class TransactionService {
     );
   }
 
-  async updateTransactionStatus(event: any): Promise<void> {
+  async updateTransactionStatus(event: Event): Promise<void> {
     const { transactionId, status } = event;
     console.log({ transactionId, status });
     const transaction = await this.findOne(transactionId);
