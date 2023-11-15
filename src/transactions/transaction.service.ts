@@ -66,33 +66,6 @@ export class TransactionService {
     );
   }
 
-  async antiFraud(event: any): Promise<void> {
-    console.log({ event });
-    const { transactionId } = event;
-    const transaction = await this.findOne(transactionId);
-    console.log('++++', transaction);
-
-    if (+transaction.value < 1000) {
-      await sendKafkaMessage(
-        'approved',
-        JSON.stringify({
-          transactionId: transaction.id,
-          value: transaction.value,
-          status: 'approved',
-        }),
-      );
-    } else {
-      await sendKafkaMessage(
-        'rejected',
-        JSON.stringify({
-          transactionId: transaction.id,
-          value: transaction.value,
-          status: 'rejected',
-        }),
-      );
-    }
-  }
-
   async updateTransactionStatus(event: any): Promise<void> {
     const { transactionId, status } = event;
     console.log({ transactionId, status });

@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { KafkaClient, Consumer, Message } from 'kafka-node';
 import { ConfigService } from '@nestjs/config';
 import { TransactionService } from 'src/transactions/transaction.service';
+import { AntiFruadService } from 'src/antiFraud/antiFraud.service';
 
 @Injectable()
 export class KafkaSubscriber implements OnModuleInit {
@@ -11,6 +12,7 @@ export class KafkaSubscriber implements OnModuleInit {
   constructor(
     private readonly configService: ConfigService,
     private readonly transactionService: TransactionService,
+    private readonly antiFruadService: AntiFruadService,
   ) {}
 
   async onModuleInit() {
@@ -52,7 +54,7 @@ export class KafkaSubscriber implements OnModuleInit {
 
       if (message.topic === 'transaction-created') {
         console.log('Manejando evento "transaction-created":', eventData);
-        await this.transactionService.antiFraud(eventData);
+        await this.antiFruadService.antiFraud(eventData);
       } else if (message.topic === 'approved') {
         console.log('Manejando evento "approved":', eventData);
 

@@ -9,6 +9,7 @@ import { TransactionModule } from './transactions/transaction.module';
 import { KafkaModule } from './kafka/kafka.module';
 import { KafkaSubscriber } from './kafka/kafka.subscriber';
 import { KafkaAdminService } from './kafka/kafka-admin.service';
+import { AntiFraudModule } from './antiFraud/antiFraud.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { KafkaAdminService } from './kafka/kafka-admin.service';
 
     TransactionModule,
     KafkaModule,
+    AntiFraudModule,
   ],
   controllers: [],
   providers: [KafkaAdminService, KafkaSubscriber],

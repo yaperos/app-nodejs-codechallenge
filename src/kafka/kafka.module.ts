@@ -2,6 +2,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import kafkaConfig from './kafka.config';
+import { TransactionModule } from 'src/transactions/transaction.module';
+import { AntiFraudModule } from 'src/antiFraud/antiFraud.module';
 
 @Module({
   imports: [
@@ -9,6 +11,8 @@ import kafkaConfig from './kafka.config';
       isGlobal: true,
       load: [kafkaConfig],
     }),
+    TransactionModule,
+    AntiFraudModule,
   ],
   providers: [ConfigService],
   exports: [ConfigService],
