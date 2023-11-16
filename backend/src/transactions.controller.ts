@@ -19,5 +19,4 @@ export class TransactionsController {
       return obtTransaction;
     }
   }
-  
 }
