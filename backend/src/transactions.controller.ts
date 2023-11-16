@@ -1,5 +1,3 @@
-// transactions.controller.ts
-
 import { Controller, Post, Body, Get } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { Transaction } from './transaction.entity';
@@ -19,10 +17,7 @@ export class TransactionsController {
     if(transactionData.transactionExternalId){
       const obtTransaction = await this.transactionService.getTransaction(transactionData.transactionExternalId);
       return obtTransaction;
-    }else{
-      //TODO MANEJAR ERROR   
     }
-    return transactionData;
   }
   
 }
