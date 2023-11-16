@@ -1,6 +1,20 @@
+# Steps to Set Up the Project
+
+1. Clone the project.
+2. `yarn install`
+3. Clone the .env.template file and rename it to .env`
+4. Update the environment variables.
+5. Start the database and kafka
+
+```
+docker-compose up -d
+```
+
+6. Start the application: yarn start:dev.
+
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
