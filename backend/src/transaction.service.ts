@@ -7,10 +7,17 @@ import { Producer, KafkaClient, KeyedMessage } from 'kafka-node';
 
 @Injectable()
 export class TransactionService {
+  private readonly kafkaClient: KafkaClient;
+  private readonly producer: Producer;
+
+
   constructor(
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
-  ) {}
+  ) {
+    this.kafkaClient = new KafkaClient({ kafkaHost: 'kafka:29092' });
+    this.producer = new Producer(this.kafkaClient);
+  }
 
   async createTransaction(transactionData: any): Promise<Transaction> {
     const transaction = this.transactionRepository.create(transactionData);
@@ -19,6 +26,18 @@ export class TransactionService {
       throw new BadRequestException('Error in transaction fields');
     }  
     if (transaction instanceof Transaction) {
+      const kafkaMessage = {
+        topic: 'transaction-topic',
+        messages: JSON.stringify(transaction),
+      };
+
+      this.producer.send([kafkaMessage], (err, data) => {
+        if (err) {
+          console.error(`Error sending message to Kafka: ${err}`);
+        } else {
+          console.log(`Message sent to Kafka: ${JSON.stringify(data)}`);
+        }
+      });
       const [savedTransaction] = await this.transactionRepository.save([transaction]);
       let validatedTransatction = await this.validateTransatction([savedTransaction]);
       return savedTransaction;
@@ -28,6 +47,19 @@ export class TransactionService {
   }
 
   async getTransaction(transactionExternalId: string): Promise<Transaction | undefined> {
+    const kafkaMessage = {
+      topic: 'transaction-getTransaction-topic',
+      messages: JSON.stringify(transactionExternalId),
+    };
+
+    this.producer.send([kafkaMessage], (err, data) => {
+      if (err) {
+        console.error(`Error sending message to Kafka: ${err}`);
+      } else {
+        console.log(`Message sent to Kafka: ${JSON.stringify(data)}`);
+      }
+    });
+    
     return this.transactionRepository.findOne({ where: { transactionExternalId } });
   }
 
@@ -39,6 +71,18 @@ export class TransactionService {
         } else {
           transaction.updateTransactionStatus('rejected');
         }
+        const kafkaMessage = {
+          topic: 'transaction-updateStatus-topic',
+          messages: JSON.stringify(transaction),
+        };
+  
+        this.producer.send([kafkaMessage], (err, data) => {
+          if (err) {
+            console.error(`Error sending message to Kafka: ${err}`);
+          } else {
+            console.log(`Message sent to Kafka: ${JSON.stringify(data)}`);
+          }
+        });
         return transaction;
       });
     } catch (error) {
