@@ -1,5 +1,13 @@
 version: "3.7"
 services:
+  backend:
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      ports:
+        - "3000:3000"
+      depends_on:
+        - postgres
   postgres:
     image: postgres:14
     ports:
