@@ -16,3 +16,10 @@ curl --location --request GET 'http://localhost:3000/api/transactions' \
 --data '{
   "transactionExternalId":"3140d576-f51d-4ad9-a503-e4e20295169a"
 }'
+
+
+# Obtine los datos Kafka
+apt install kafkacat
+kafkacat -b kafka:9092 -t transaction-save-topic
+kafkacat -b kafka:9092 -t transaction-getTransaction-topic
+kafkacat -b kafka:9092 -t transaction-updateStatus-topic

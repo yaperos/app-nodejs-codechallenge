@@ -28,7 +28,7 @@ export class TransactionService {
     if (transaction instanceof Transaction) {
       const [savedTransaction] = await this.transactionRepository.save([transaction]);
       const kafkaMessage = {
-        topic: 'transaction-topic',
+        topic: 'transaction-save-topic',
         messages: JSON.stringify(savedTransaction),
       };
 
