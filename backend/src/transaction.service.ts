@@ -26,19 +26,17 @@ export class TransactionService {
       throw new BadRequestException('Error in transaction fields');
     }  
     if (transaction instanceof Transaction) {
+      const [savedTransaction] = await this.transactionRepository.save([transaction]);
       const kafkaMessage = {
         topic: 'transaction-topic',
-        messages: JSON.stringify(transaction),
+        messages: JSON.stringify(savedTransaction),
       };
 
       this.producer.send([kafkaMessage], (err, data) => {
         if (err) {
           console.error(`Error sending message to Kafka: ${err}`);
-        } else {
-          console.log(`Message sent to Kafka: ${JSON.stringify(data)}`);
         }
       });
-      const [savedTransaction] = await this.transactionRepository.save([transaction]);
       let validatedTransatction = await this.validateTransatction([savedTransaction]);
       return savedTransaction;
     } else {
@@ -55,8 +53,6 @@ export class TransactionService {
     this.producer.send([kafkaMessage], (err, data) => {
       if (err) {
         console.error(`Error sending message to Kafka: ${err}`);
-      } else {
-        console.log(`Message sent to Kafka: ${JSON.stringify(data)}`);
       }
     });
     
@@ -79,8 +75,6 @@ export class TransactionService {
         this.producer.send([kafkaMessage], (err, data) => {
           if (err) {
             console.error(`Error sending message to Kafka: ${err}`);
-          } else {
-            console.log(`Message sent to Kafka: ${JSON.stringify(data)}`);
           }
         });
         return transaction;
