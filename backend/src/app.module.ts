@@ -7,9 +7,16 @@ import { TransactionService } from './transaction.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: '././yape.sqlite',
-      synchronize: true,
+      // type: 'sqlite',
+      // database: '././yape.sqlite',
+      // synchronize: true,
+      type: 'postgres', // Cambiado a PostgreSQL
+      host: 'postgres',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'Yapedb',
+      synchronize: true, 
       entities: [Transaction],
     }),
     TypeOrmModule.forFeature([Transaction]),
