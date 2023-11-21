@@ -4,11 +4,14 @@ import { connectDatabase } from "./config/database";
 import { producer, startConsumer } from "./services/kafka";
 import { logger } from "./config/logger";
 import { errorHandler } from "./middleware/errorHandler";
+import transactionRoutes from "./routes/transactions";
 
 const app = express();
 
 app.use(helmet());
 app.use(express.json());
+
+app.use("/api", transactionRoutes);
 
 app.use(errorHandler);
 
@@ -26,7 +29,8 @@ async function startServer() {
       logger.info(`Server running on port: ${PORT}`)
     );
 
-    process.on("SIGINT", () => { //seguro
+    process.on("SIGINT", () => {
+      //seguro
       logger.info("Shutting down server...");
       server.close(() => {
         logger.info("Server closed");
