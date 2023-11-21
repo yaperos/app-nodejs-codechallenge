@@ -1,6 +1,7 @@
 import express from "express";
 import helmet from "helmet";
 import { connectDatabase } from "./config/database";
+import { logger } from "./config/logger";
 
 const app = express();
 
@@ -14,18 +15,18 @@ async function startServer() {
     await connectDatabase();
 
     const server = app.listen(PORT, () =>
-      console.log(`Server running on port: ${PORT}`)
+      logger.info(`Server running on port: ${PORT}`)
     );
 
     process.on("SIGINT", () => {
-      console.log("Shutting down server...");
+      logger.info("Shutting down server...");
       server.close(() => {
-        console.log("Server closed");
+        logger.info("Server closed");
         process.exit(0);
       });
     });
   } catch (error) {
-    console.log("Error running server:", error);
+    logger.info("Error running server:", error);
     process.exit(1);
   }
 }
