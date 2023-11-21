@@ -24,8 +24,8 @@ export class Transaction {
 
   @Column({
     type: "enum",
-    enum: ["pending", "approved", "rejected"],
-    default: "pending",
+    enum: ["PENDING", "APPROVED", "REJECTED"],
+    default: "PENDING",
   })
   status: string;
 
