@@ -14,7 +14,6 @@ export const producer = kafka.producer();
 // consumer lee mensajes de un topic
 const consumer = kafka.consumer({ groupId: "transaction-group" });
 
-// inicia kafka
 export const startConsumer = async () => {
   await consumer.connect();
   await consumer.subscribe({ topic: "send-transaction", fromBeginning: true });
