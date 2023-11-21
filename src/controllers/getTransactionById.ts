@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Transaction } from "../models/transaction";
 import { AppDataSource } from "../config/database";
 import { logger } from "../config/logger";
+import { ErrorResponse } from "../middleware/errorHandler";
 
 export const getTransactionById = async (
   req: Request,
@@ -22,7 +23,10 @@ export const getTransactionById = async (
     }
   } catch (error) {
     logger.error("Error retrieving transaction:", error);
-    const customErrorMessage = new Error("Error retrieving transaction");
+    const customErrorMessage = new ErrorResponse(
+      "Error retrieving transaction",
+      500
+    );
     next(customErrorMessage);
   }
 };

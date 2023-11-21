@@ -3,6 +3,7 @@ import { Transaction } from "../models/transaction";
 import { producer } from "../services/kafka";
 import { AppDataSource } from "../config/database";
 import { logger } from "../config/logger";
+import { ErrorResponse } from "../middleware/errorHandler";
 
 interface TransactionRequest {
   accountExternalIdDebit: string;
@@ -61,7 +62,10 @@ export const createTransaction = async (
     });
   } catch (error) {
     logger.error("Error processing transaction:", error);
-    const customErrorMessage = new Error("Error processing transaction");
+    const customErrorMessage = new ErrorResponse(
+      "Error processing transaction",
+      500
+    );
 
     next(customErrorMessage);
   }
