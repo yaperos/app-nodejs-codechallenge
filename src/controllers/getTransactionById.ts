@@ -3,7 +3,11 @@ import { Transaction } from "../models/transaction";
 import { AppDataSource } from "../config/database";
 import { logger } from "../config/logger";
 
-export const getTransactionById = async (req: Request, res: Response) => {
+export const getTransactionById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const transactionId = req.params.id;
     const transactionRepository = AppDataSource.getRepository(Transaction);
@@ -18,6 +22,7 @@ export const getTransactionById = async (req: Request, res: Response) => {
     }
   } catch (error) {
     logger.error("Error retrieving transaction:", error);
-    res.status(500).json({ message: "Error retrieving transaction" });
+    const customErrorMessage = new Error("Error retrieving transaction");
+    next(customErrorMessage);
   }
 };

@@ -15,6 +15,7 @@ export function errorHandler(
   err: ErrorResponse,
   _req: Request,
   res: Response,
+  next: NextFunction
 ) {
   logger.error(err.stack || err);
 
@@ -24,7 +25,7 @@ export function errorHandler(
     process.env.NODE_ENV === "develop"
       ? err.message
       : "Internal Server Error";
-
+      
   const errorDetails =
     process.env.NODE_ENV === "develop"
       ? {

@@ -11,7 +11,11 @@ interface TransactionRequest {
   value: number;
 }
 
-export const createTransaction = async (req: Request, res: Response) => {
+export const createTransaction = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const {
       accountExternalIdDebit,
@@ -57,6 +61,8 @@ export const createTransaction = async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error("Error processing transaction:", error);
-    res.status(500).json({ message: "Error processing transaction" });
+    const customErrorMessage = new Error("Error processing transaction");
+
+    next(customErrorMessage);
   }
 };
