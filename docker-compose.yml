@@ -1,5 +1,14 @@
 version: "3.7"
 services:
+  app:
+    build: .
+    environment:
+      - KAFKAJS_NO_PARTITIONER_WARNING=1
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+      - kafka
   postgres:
     image: postgres:14
     ports:
@@ -7,6 +16,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +34,6 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+volumes:
+  postgres_data:
