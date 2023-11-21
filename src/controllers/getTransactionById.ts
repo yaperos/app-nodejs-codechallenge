@@ -16,8 +16,21 @@ export const getTransactionById = async (
     const transaction = await transactionRepository.findOneBy({
       id: transactionId,
     });
+
     if (transaction) {
-      res.json(transaction);
+      const formattedResponse = {
+        transactionExternalId: transaction.id,
+        transactionType: {
+          name: "", // ?
+        },
+        transactionStatus: {
+          name: transaction.status,
+        },
+        value: transaction.value,
+        createdAt: transaction.createdAt.toISOString(),
+      };
+
+      res.json(formattedResponse);
     } else {
       res.status(404).json({ message: "Transaction not found" });
     }
