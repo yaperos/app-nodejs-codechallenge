@@ -11,12 +11,12 @@ export class ErrorResponse extends Error {
   }
 }
 
-export function errorHandler(
+export const errorHandler = async(
   err: ErrorResponse,
   _req: Request,
   res: Response,
   next: NextFunction
-) {
+) =>{
   logger.error(err.stack || err);
 
   const statusCode = err.statusCode || 500;

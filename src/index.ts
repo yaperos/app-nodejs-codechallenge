@@ -23,7 +23,7 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 
-async function startServer() {
+const startServer = async () => {
   try {
     await connectDatabase();
     await producer.connect();
@@ -47,6 +47,6 @@ async function startServer() {
     logger.error("Error running server:", error);
     process.exit(1);
   }
-}
+};
 
 startServer();
