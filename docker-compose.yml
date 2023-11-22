@@ -32,12 +32,3 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
-  #! Prueba Consumo Kafka
-  ubuntu:
-    image: ubuntu:latest
-    command: /bin/bash
-    stdin_open: true
-    tty: true
-    environment:
-      - USER=user
-      - PASSWORD=pass777

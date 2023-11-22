@@ -23,8 +23,6 @@ import { TransactionResolver } from './transaction.resolver';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: 'schema.gql',
       driver: ApolloDriver,
-      // debug: true,
-      // playground: true,
     }),
   ],
   controllers: [TransactionsController],
