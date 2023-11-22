@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { Transaction } from './transaction.entity';
 import { TransactionsController } from './transactions.controller';
 import { TransactionService } from './transaction.service';
+import { TransactionResolver } from './transaction.resolver';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Transaction]),
     TypeOrmModule.forRoot({
-      // type: 'sqlite',
-      // database: '././yape.sqlite',
-      // synchronize: true,
-      type: 'postgres', // Cambiado a PostgreSQL
+      type: 'postgres',
       host: 'postgres',
       port: 5432,
       username: 'postgres',
@@ -19,9 +20,14 @@ import { TransactionService } from './transaction.service';
       synchronize: true, 
       entities: [Transaction],
     }),
-    TypeOrmModule.forFeature([Transaction]),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: 'schema.gql',
+      driver: ApolloDriver,
+      // debug: true,
+      // playground: true,
+    }),
   ],
   controllers: [TransactionsController],
-  providers: [TransactionService],
+  providers: [TransactionService, TransactionResolver],
 })
 export class AppModule {}

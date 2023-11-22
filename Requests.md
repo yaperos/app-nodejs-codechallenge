@@ -23,3 +23,6 @@ apt install kafkacat
 kafkacat -b kafka:9092 -t transaction-save-topic
 kafkacat -b kafka:9092 -t transaction-getTransaction-topic
 kafkacat -b kafka:9092 -t transaction-updateStatus-topic
+
+# URL GraphQL
+http://localhost:3000/graphql

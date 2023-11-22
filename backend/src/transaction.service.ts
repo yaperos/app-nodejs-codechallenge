@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transaction } from './transaction.entity';
-import { Producer, KafkaClient, KeyedMessage } from 'kafka-node';
+import { Producer, KafkaClient } from 'kafka-node';
 
 
 @Injectable()
@@ -82,6 +82,10 @@ export class TransactionService {
     } catch (error) {
       throw new Error(`Error validateTransaction: ${error.message}`);
     }
+  }
+
+  async getAllTransactions(): Promise<Transaction[]> {
+    return this.transactionRepository.find();
   }
 }
 
