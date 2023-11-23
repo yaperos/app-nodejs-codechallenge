@@ -1,0 +1,22 @@
+{
+  "name": "@yape/kafka",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/event-emitter": "^2.0.3",
+    "nanoid": "^5.0.3",
+    "node-rdkafka": "^2.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}

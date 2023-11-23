@@ -1,0 +1,35 @@
+{
+  "name": "yape",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*",
+    "services-rdkafka/*"
+  ],
+  "scripts": {
+    "kafka:clean": "docker-compose down --rmi all --volumes --remove-orphans ",
+    "kafka:up": "docker-compose up -d",
+    "kafka:check": "docker-compose ps",
+    "kafka:down": "docker-compose down",
+    "kafka:rebuild": "docker-compose up --build -d",
+    "kafka:scale": "docker-compose up --scale service1=3 --scale service2=3 -d",
+    "topics": "docker-compose exec kafka usr/bin/kafka-topics --bootstrap-server kafka:9092 --list",
+    "topics:create": "sh -c 'docker-compose exec kafka usr/bin/kafka-topics --create --topic $0 --bootstrap-server kafka:9092'",
+    "topics:delete": "sh -c 'docker-compose exec kafka usr/bin/kafka-topics --delete --topic $0 --bootstrap-server kafka:9092'",
+    "prisma:seed": "yarn workspace @yape/database prisma:seed",
+    "prisma:generate": "yarn workspace @yape/database prisma:generate",
+    "prisma:reset": "yarn workspace @yape/database prisma:reset",
+    "transaction": "yarn workspace @yape/transaction start:dev",
+    "antifraud": "yarn workspace @yape/antifraud start:dev",
+    "antifraud:rdkafka": "yarn workspace @yape/antifraud-rdkafka start:dev",
+    "clean": "chmod +x scripts/clean.sh && ./scripts/clean.sh",
+    "build": "chmod +x scripts/build.sh && ./scripts/build.sh",
+    "try": "npx ts-node scripts/run-transactions.ts",
+    "test": "yarn workspace @yape/transaction test && yarn workspace @yape/antifraud test"
+  },
+  "devDependencies": {
+    "axios": "^1.6.2"
+  }
+}
