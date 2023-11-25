@@ -1,5 +1,5 @@
 export enum TransactionStatus {
-  PENDING = 6,
-  APPROVED = 7,
-  REJECTED = 8,
+  PENDING = 1,
+  APPROVED = 2,
+  REJECTED = 3,
 }
