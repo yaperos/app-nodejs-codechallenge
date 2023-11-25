@@ -1,6 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
-import * as dotenv from 'dotenv';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
+import { TransactionStatus } from '../enums';
+import { TransactionToUpdate } from '../interfaces';
 
 dotenv.config();
 

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 
-import { AntiFraudModule } from './anti-fraud/anti-fraud.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { kafkaConfig } from './utils/kafka.config';
+import { AntiFraudController } from './controllers/anti-fraud.controller';
+import { AntiFraudService } from './services/anti-fraud.service';
 
 @Module({
   imports: [
-    AntiFraudModule,
     ClientsModule.register([
       {
         name: 'KAFKA_CLUSTER',
@@ -15,7 +15,7 @@ import { kafkaConfig } from './utils/kafka.config';
       },
     ]),
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AntiFraudController],
+  providers: [AntiFraudService],
 })
 export class AppModule {}

@@ -13,9 +13,9 @@ async function bootstrap() {
   const host = process.env.MSTRANSACTION_HOST;
 
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
 
   await app.listen(host);
-  app.enableCors();
 
   logger.log(`Server listening on port ${port} and host ${host}`);
 }
