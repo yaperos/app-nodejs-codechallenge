@@ -34,11 +34,6 @@ export class TransactionService {
    * `TransaccionEntity`.
    */
   async getTransaction(transactionId: string): Promise<TransaccionEntity> {
-    /* const transactionFound = await this.transactionRepository.findOne({
-      where: { transactionId },
-    });
-    console.log(transactionFound); */
-
     const transactionFound = await this.transactionRepository
       .createQueryBuilder('transaction')
       .leftJoinAndSelect('transaction.tranferTypeId', 'type')
@@ -124,7 +119,7 @@ export class TransactionService {
       return this.transactionRepository.save(transaction);
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
-        throw new Error(`Transacción con ID ${transactionId} no encontrada`);
+        throw new Error(`Transaction ID: ${transactionId} not found`);
       }
 
       throw new Error(`Error updating data: ${error.message}`);

@@ -47,7 +47,7 @@ export class TransactionStatusService {
       return this.transactionStatusRepository.save(statusFound);
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
-        throw new Error(`Transacción con ID ${id} no encontrada`);
+        throw new Error(`Transaction ID: ${id} not found`);
       }
 
       throw new Error(`Error updating data: ${error.message}`);
