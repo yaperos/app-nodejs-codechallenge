@@ -1,0 +1,46 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type NamedEntityDTO {
+  name: String!
+}
+
+type TransactionByIdResponseDTO {
+  """UUID of the transaction"""
+  transactionExternalId: String!
+
+  """transaction's type information"""
+  transactionType: NamedEntityDTO!
+
+  """transaction's status information"""
+  transactionStatus: NamedEntityDTO!
+
+  """transaction's amount"""
+  value: Float!
+
+  """transaction's creating date"""
+  createdAt: String!
+}
+
+type Query {
+  transaction(transactionId: String!): TransactionByIdResponseDTO!
+}
+
+type Mutation {
+  createTransaction(createTransactionInput: CreateTransactionRequestDTO!): TransactionByIdResponseDTO!
+}
+
+input CreateTransactionRequestDTO {
+  """UUID of the account from which the transaction amount is debited"""
+  accountExternalIdDebit: String!
+
+  """UUID of the account in which the transaction amount is deposited"""
+  accountExternalIdCredit: String!
+
+  """transaction type id"""
+  transferTypeId: Int!
+
+  """transaction amount"""
+  value: Float!
+}
