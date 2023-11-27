@@ -3,6 +3,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApiErrorFilter } from 'src/common/api-errors/api-error-filter';
 import { Transaction } from 'src/domain/entities/transaction.entity';
+import { KafkaModule } from 'src/infra/kafka/kafka.module';
 import { TransactionStatusModule } from '../transaction-status/transaction-status.module';
 import { TransactionTypeModule } from '../transaction-type/transaction-type.module';
 import { TransactionsResolver } from './graphql/transactions.resolver';
@@ -11,6 +12,7 @@ import { TransactionsService } from './services/transactions.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Transaction]),
+    KafkaModule,
     TransactionTypeModule,
     TransactionStatusModule,
   ],
@@ -23,4 +25,10 @@ import { TransactionsService } from './services/transactions.service';
     },
   ],
 })
-export class TransactionsModule {}
+export class TransactionsModule {
+  constructor(private transactionsService: TransactionsService) {}
+
+  async onModuleInit() {
+    await this.transactionsService.subscribeAntiFraudTransactionEvaluation();
+  }
+}

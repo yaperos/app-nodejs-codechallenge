@@ -44,3 +44,19 @@ VALUES
 ```
 
 5. Open the [documentation](http://localhost:3000/graphql)
+
+## Testing
+
+### Kafka(local)
+
+1. Send a message to the `antifraud-evaluation` topic to simulate the application's behavior when it receives the result from the anti-fraud system.
+
+```bash
+echo "{\"transactionId\":\"[uuid]\",\"result\":\"approved\"}" | ./kafka-console-producer.sh --broker-list localhost:9092 --topic antifraud-evaluation
+```
+
+2. Subscribe to the `transaction-created` topic to receive notifications when a transaction is created by the application
+
+```bash
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic transaction-created --from-beginning
+```

@@ -10,6 +10,7 @@ export class DataAccessService {
     protected configService: ConfigService,
     protected baseCacheKey: string,
     serviceName: string,
+    protected cacheTtl?: number,
   ) {
     this.logger = new Logger(serviceName);
   }
@@ -30,12 +31,20 @@ export class DataAccessService {
     record = await dbQuery();
     if (!record) return null;
 
-    await this.cacheManager.set(
+    await this.setCacheItem(
       itemCacheKey,
       record,
-      this.configService.get('CACHE_TTL'),
+      this.cacheTtl ?? this.configService.get('CACHE_TTL'),
     );
 
     return record;
+  }
+
+  protected async setCacheItem(key: string, value: unknown, ttl?: number) {
+    await this.cacheManager.set(
+      key,
+      value,
+      ttl || this.cacheTtl || this.configService.get('CACHE_TTL'),
+    );
   }
 }
