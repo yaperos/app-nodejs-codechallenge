@@ -1,25 +1,71 @@
 version: "3.7"
 services:
   postgres:
+    container_name: postgres
     image: postgres:14
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
   zookeeper:
+    container_name: zookeeper
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
+    container_name: kafka
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: [ zookeeper ]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+  transaction:
+    container_name: transaction
+    image: localhost/transaction
+    restart: always
+    build:
+      context: ./transaction
+      dockerfile: Dockerfile
+    volumes:
+      - ./transaction/src:/app/src
+    privileged: true
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+      - KAFKA_URL=kafka:9092
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - postgres
+      - kafka
+
+  anti-fraud:
+    container_name: anti-fraud
+    image: localhost/anti-fraud
+    restart: always
+    build:
+      context: ./anti-fraud
+      dockerfile: Dockerfile
+    volumes:
+      - ./anti-fraud/src:/app/src #:ro
+    privileged: true
+    ports:
+      - 4000:4000
+    environment:
+      - PORT=4000
+      - KAFKA_URL=kafka:9092
+    depends_on:
+      - kafka
