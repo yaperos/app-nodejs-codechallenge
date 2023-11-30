@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FinancialTransactionModule } from '@/transactions/financial-transactions.module';
 
 @Module({
-  imports: [FinancialTransactionModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.local', '.env'],
+    }),
+    FinancialTransactionModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
