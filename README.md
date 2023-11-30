@@ -1,82 +1,65 @@
-# Yape Code Challenge :rocket:
+# Yape Challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Introduction 
+Project to handle the creation and validation to a transaction, thorugh a microservices based arquitecture exposed by a gateway.
+Tech stack: Nest.js, TypeScript, Kafka, GraphQL, Postgres and TypeOrm.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+### Installation
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Requirements: Node version 18+, docker and pnpm.
+This project is build using a monorepo, so ymake sure to follow those instructions to be avaible to run it.
 
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+1. Firts of all you should run the docker yml file that is in the root of the repository.
+```bash
+docker-compose up
+```
+or 
+```bash
+docker compose up
+```
+2. Install dependencies requiered for this project:
+```bash
+pnpm i
 ```
 
-# Tech Stack
+3. Now create a .env file in the root of the project, here you can see an example:
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```bash
+GATEWAY_PORT=3000
+DATABASE_URL=postgresql://gate:gate@localhost:5432/yapechallenge?schema=public
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+TRANSACTION_PORT=3001
+TRANSACTION_SERVICE_URL=http://localhost:${TRANSACTION_PORT}/graphql
 
-You must have two resources:
+ANTI_FRAUD_PORT=3002
+ANTI_FRAUD_SERVICE_URL= http://localhost:${ANTI_FRAUD_PORT}/graphql
 
-1. Resource to create a transaction that must containt:
+KAFKA_BROKER_URL=localhost:9092
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+POSTGRES_DB_NAME=yape
+POSTGRES_DB_PORT=5432
+POSTGRES_DB_PASSWORD=postgres
+POSTGRES_DB_USER=postgres
+POSTGRES_DB_HOST=localhost 
 ```
 
-2. Resource to retrieve a transaction
+Now you're almost ready... there are some test that you can run before everything to make sure everything is fine
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+4. Make sure to run Transaction and AntiFraud applications before trying to run the Gateway App.
+```bash
+nest start transaction
 ```
 
-## Optional
+```bash
+nest start anti-fraud
+```
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+Once both of them are running complete run the Gateway app:
+```bash
+nest start gateway
+```
 
-You can use Graphql;
 
-# Send us your challenge
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+And thats it, the project may be runing fine, now you can open your browser, and start playing: 
+http:localhost:3000/graphql
