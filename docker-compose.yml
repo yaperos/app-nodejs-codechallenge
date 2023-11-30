@@ -2,24 +2,61 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: codechallenge-yape-postgres
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - yape-red 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: codechallenge-yape-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - yape-red 
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    container_name: codechallenge-yape-kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - yape-red 
+  #redis:
+  #  image: redis
+  #  container_name: codechallenge-yape-redis
+  #  ports:
+  #    - "6379:6379"
+  #  networks:
+  #    - yape-red 
+  transaction:
+    build:
+      context: ./services/transactions
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - yape-red 
+    depends_on: [kafka, postgres]
+  anti-fraud:
+    build:
+      context: ./services/anti-fraud
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - yape-red 
+    depends_on: [kafka, postgres]
+networks:
+  yape-red:
+    driver: bridge 
