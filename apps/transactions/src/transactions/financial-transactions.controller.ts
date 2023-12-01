@@ -51,7 +51,7 @@ export class FinancialTransactionsController
 
     await this.kafka.emit(KafkaTopics.FinancialTransactionCreated, payload);
 
-    return entity.transactionId;
+    return payload.transactionId;
   }
 
   @Get()

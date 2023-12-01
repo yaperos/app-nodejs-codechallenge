@@ -73,13 +73,8 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "^@/(.*)": "<rootDir>/$1"
-    },
-    "roots": [
-      "<rootDir>/apps/"
-    ]
-  },
-  "_moduleAliases": {
-    "@": "dist"
+      "^@/(.*)": "<rootDir>/apps/transactions/src/$1",
+      "^@transactions/(.*)": "<rootDir>/apps/transactions/src/$1"
+    }
   }
 }

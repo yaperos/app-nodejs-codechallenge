@@ -5,6 +5,7 @@ import { TypeOrmConfig } from '@/config/typeorm.config';
 import { FinancialTransactionsController } from '@/transactions/financial-transactions.controller';
 import { FinancialTransactionsService } from '@/transactions/financial-transactions.service';
 import { CreateFinancialTransactionDTO } from '@/transactions/dto/create-financial-transaction.dto';
+import { KafkaConfig } from '@transactions/config/kafka.config';
 
 describe('FinancialTransactionsController', () => {
   let controller: FinancialTransactionsController;
@@ -22,7 +23,15 @@ describe('FinancialTransactionsController', () => {
         TypeOrmModule.forFeature(TypeOrmConfig.financialTransactionEntities),
       ],
       controllers: [FinancialTransactionsController],
-      providers: [FinancialTransactionsService],
+      providers: [
+        FinancialTransactionsService,
+        {
+          provide: KafkaConfig.ModuleName,
+          useValue: {
+            emit: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     controller = moduleRef.get<FinancialTransactionsController>(

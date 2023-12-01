@@ -2,17 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": false,
-    "outDir": "../../dist/apps/antifraud",
-    "baseUrl": "./",
-    "paths": {
-      "@transactions/*": [
-        "../transactions/src/*",
-        
-      ],
-      "@/*": [
-        "../transactions/src/*"
-      ]
-    },
+    "outDir": "../../dist/apps/antifraud"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
