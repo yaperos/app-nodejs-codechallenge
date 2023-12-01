@@ -49,10 +49,14 @@ export class FinancialTransactionsController
   @Post()
   async create(@Body() dto: CreateFinancialTransactionDTO): Promise<number> {
     const entity = FinancialTransactionBuilder.fromCreateDTO(dto);
+
     const payload: FinancialTransactionCreatedPayload =
       await this.service.create(entity);
 
-    await this.kafka.emit(KafkaTopics.FinancialTransactionCreated, payload);
+    await this.kafka.emit(KafkaTopics.FinancialTransactionCreated, {
+      key: crypto.randomUUID(),
+      value: JSON.stringify(payload),
+    });
 
     return payload.transactionId;
   }
@@ -71,9 +75,9 @@ export class FinancialTransactionsController
   }
 
   @EventPattern(KafkaTopics.FinancialTransactionCreated)
-  async logCreated(@Payload() dto: Record<string, unknown>) {
+  async logCreated(@Payload() dto: FinancialTransactionCreatedPayload) {
     console.log(KafkaTopics.FinancialTransactionCreated);
-    console.dir(dto);
+    console.log(dto);
   }
 
   @EventPattern(KafkaTopics.FinancialTransactionStatusUpdated)

@@ -1,7 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { ValidationService } from './validation.service';
-import { FinancialTransaction } from '@transactions/transactions/entities/financial-transaction.entity';
+// import { FinancialTransaction } from '@transactions/transactions/entities/financial-transaction.entity';
 import {
+  FinancialTransactionCreatedPayload,
   FinancialTransactionStatusUpdatedPayload,
   KafkaTopics,
 } from '@transactions/utils/kafka-events.consts';
@@ -17,9 +18,12 @@ export class ValidationController {
   constructor(private service: ValidationService) {}
 
   @EventPattern(KafkaTopics.FinancialTransactionCreated)
-  async validate(dto: FinancialTransaction, @Ctx() context: KafkaContext) {
+  async validate(
+    @Payload() dto: FinancialTransactionCreatedPayload,
+    @Ctx() context: KafkaContext,
+  ) {
     console.log(KafkaTopics.FinancialTransactionCreated);
-    console.dir(dto);
+    console.log(dto);
 
     const payload: FinancialTransactionStatusUpdatedPayload =
       this.service.validate(dto);
@@ -28,6 +32,7 @@ export class ValidationController {
       topic: KafkaTopics.FinancialTransactionStatusUpdated,
       messages: [
         {
+          key: crypto.randomUUID(),
           value: JSON.stringify(payload),
         },
       ],
@@ -37,8 +42,8 @@ export class ValidationController {
   }
 
   @EventPattern(KafkaTopics.FinancialTransactionStatusUpdated)
-  async logStatusUpdated(@Payload() dto: Record<string, unknown>) {
+  async logStatusUpdated(@Payload() dto: FinancialTransactionCreatedPayload) {
     console.log(KafkaTopics.FinancialTransactionStatusUpdated);
-    console.dir(dto);
+    console.log(dto);
   }
 }

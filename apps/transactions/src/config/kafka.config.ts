@@ -1,13 +1,13 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, KafkaOptions, Transport } from '@nestjs/microservices';
-// import { Partitioners } from 'kafkajs';
+import { Partitioners } from 'kafkajs';
 
 export class KafkaConfig {
   static getOptions = (configService: ConfigService): KafkaOptions => {
     return {
       transport: Transport.KAFKA,
       options: {
-        // producer: { createPartitioner: Partitioners.LegacyPartitioner },
+        producer: { createPartitioner: Partitioners.DefaultPartitioner },
         client: {
           brokers: [
             `${configService.get<string>(

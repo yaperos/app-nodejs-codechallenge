@@ -1,7 +1,7 @@
 import { FinancialTransaction } from '@/transactions/entities/financial-transaction.entity';
 
 export class KafkaTopics {
-  static FinancialTransactionCreated = 'transaction.created';
+  static FinancialTransactionCreated = 'transaction.new';
   static FinancialTransactionStatusUpdated = 'transaction.status.updated';
 }
 
