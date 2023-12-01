@@ -3,14 +3,16 @@ services:
   postgres:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      KAFKA_HEAP_OPTS: "-Xms200M -Xms200M"
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -21,5 +23,30 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_HEAP_OPTS: "-Xms200M -Xms200M"
     ports:
-      - 9092:9092
+      - "9092:9092"
+  ms-transaction:
+    build: ./ms-transaction
+    depends_on: [postgres,kafka]
+    environment:
+      PORT: "3000"
+      PG_HOST: "postgres"
+      PG_PORT: "5432"
+      PG_USERNAME: "postgres"
+      PG_PASSWORD: "postgres"
+      PG_DATABASE: "postgres"
+      KAKFA_CLIENT_ID: "transaction"
+      KAFKA_BROKER: "kafka:29092"
+      KAFKA_CONSUMER_SEND_GROUP_ID: "transaction-consumer"
+      KAFKA_CONSUMER_CONSUMER_GROUP_ID: "antifraud-consumer"
+    ports:
+      - "3000:3000"
+  ms-antifraud:
+    build: ./ms-antifraud
+    depends_on: [kafka]
+    environment:
+      KAKFA_CLIENT_ID: "antifraud"
+      KAFKA_BROKER: "kafka:29092"
+      KAFKA_CONSUMER_CONSUMER_GROUP_ID: "transaction-consumer"
+      KAFKA_CONSUMER_SEND_GROUP_ID: "antifraud-consumer"
