@@ -13,6 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/transactions/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "seed": "jest ./apps/transactions/src/transaction-types/transactions-types.controller.spec.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
