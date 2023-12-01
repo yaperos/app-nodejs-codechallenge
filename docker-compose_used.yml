@@ -1,0 +1,36 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  zookeeper:
+    image: "bitnami/zookeeper:latest"
+    platform: linux/amd64
+    container_name: "zookeeper"
+    ports:
+      - 2181:2181
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: bitnami/kafka:latest
+    platform: linux/amd64
+    container_name: "kafka"
+    ports:
+      - 9092:9092
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_RESTART_ATTEMPTS=10
+      - KAFKA_RESTART_DELAY=5
+      - ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL=0
+    # - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1

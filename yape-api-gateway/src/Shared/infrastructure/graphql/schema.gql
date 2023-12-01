@@ -1,0 +1,67 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateTransactionInput {
+  transferTypeId: Float!
+  value: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type FindTransactionOutput {
+  createdAt: DateTime!
+  transactionExternalId: ID
+  transactionStatus: TransactionStatusDTO
+  transactionType: TransactionTypeDTO
+  updatedAt: DateTime!
+  value: Float!
+}
+
+input FindTransactionsInput {
+  skip: Float
+  status: Float
+  take: Float
+}
+
+type Mutation {
+  createTransaction(input: CreateTransactionInput!): Transaction!
+}
+
+type PaginatedTransactionsOutput {
+  count: Int!
+  items: [Transaction!]!
+  total: Int!
+}
+
+type Query {
+  getTransactionById(transactionId: Int!): FindTransactionOutput!
+  getTransactionsWithPagination(input: FindTransactionsInput!): PaginatedTransactionsOutput!
+}
+
+type Transaction {
+  """UUID of the account from which the transaction amount is credited"""
+  accountExternalIdCredit: String
+
+  """UUID of the account from which the transaction amount is debited"""
+  accountExternalIdDebit: String
+  createdAt: DateTime
+  id: ID
+  status: Float!
+
+  """transaction type id"""
+  transferTypeId: Float!
+  updatedAt: DateTime
+  value: Float!
+}
+
+type TransactionStatusDTO {
+  name: String!
+}
+
+type TransactionTypeDTO {
+  name: String!
+}
