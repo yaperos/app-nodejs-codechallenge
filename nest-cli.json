@@ -3,6 +3,9 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/transactions/src",
   "compilerOptions": {
+    "plugins": ["@nestjs/swagger"]
+  },
+  "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
     "tsConfigPath": "apps/transactions/tsconfig.app.json"

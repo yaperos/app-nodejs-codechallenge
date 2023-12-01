@@ -3,7 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MicroserviceOptions } from '@nestjs/microservices';
-import { KafkaConfig } from './config/kafka.config';
+import { KafkaConfig } from '@/config/kafka.config';
+import { SwaggerConfig } from '@/config/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,7 @@ async function bootstrap() {
   await app.startAllMicroservices();
 
   app.useGlobalPipes(new ValidationPipe());
+  SwaggerConfig.setup(app);
   await app.listen(configService.get<string>('APP_PORT'));
 }
 bootstrap();

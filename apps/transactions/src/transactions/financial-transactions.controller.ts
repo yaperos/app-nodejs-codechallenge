@@ -21,7 +21,10 @@ import {
   FinancialTransactionStatusUpdatedPayload,
   KafkaTopics,
 } from '@/utils/kafka-events.consts';
+import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Financial Transactions')
+@ApiExtraModels(ReadFinancialTransactionDTO)
 @Controller('financial-transactions')
 export class FinancialTransactionsController
   implements OnModuleInit, OnModuleDestroy
