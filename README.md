@@ -1,6 +1,6 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
@@ -80,3 +80,18 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+---
+
+# How to use:
+
+1. create a postgresql db in your server.
+2. fill the .env file with your enviroment parameters.
+3. run `npm install` to install dependences.
+4. run `npm run seed` to fill the basic data
+5. run `npm run test` (optional)
+6. run `npm start` to run the rest microservice (do not close)
+7. run `npm antifraud` to run the antifraud microservice (in other terminal, do not close)
+8. open `http://localhost:<APP_PORT>/api` in your browser
+9. read basic documentation
+10. enjoy!.
