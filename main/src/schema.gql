@@ -1,0 +1,103 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Transaction {
+  id: Float!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Float!
+  status: String!
+  value: Float!
+  isDeleted: Boolean!
+  createdAt: Float!
+  updatedAt: Float!
+}
+
+type CreateTransactionPayload {
+  errors: [String!]
+  transaction: Transaction
+}
+
+type ServiceError {
+  code: String
+  detail: String
+  field: String
+}
+
+type Pagination {
+  total_items: Float!
+  total_pages: Float!
+  page: Float!
+}
+
+type TransactionConnection {
+  transactions: [Transaction!]!
+  pagination: Pagination!
+}
+
+type DeleteTransactionPayload {
+  errors: [String!]
+  transaction: Transaction
+}
+
+type Transfer {
+  id: Float!
+  name: String!
+  isDeleted: Boolean!
+}
+
+type CreateTransferPayload {
+  errors: [String!]
+  transfer: Transfer
+}
+
+type TransferConnection {
+  transfers: [Transfer!]!
+  pagination: Pagination!
+}
+
+type DeleteTransferPayload {
+  errors: [String!]
+  transfer: Transfer
+}
+
+type Query {
+  transaction(id: Int!): Transaction
+  transactions(page: Int, limit: Int, query: SearchTransactionsQuery): TransactionConnection
+  transfers(page: Int, limit: Int, query: SearchTransfersQuery): TransferConnection
+}
+
+input SearchTransactionsQuery {
+  ids: [Int!]
+  status: [TransactionStatus!]
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+input SearchTransfersQuery {
+  ids: [Int!]
+  names: [String!]
+}
+
+type Mutation {
+  createTransaction(input: CreateTransactionInput!): CreateTransactionPayload
+  deleteTransaction(id: Int!): DeleteTransactionPayload
+  createTransfer(input: CreateTransferInput!): CreateTransferPayload
+  deleteTransfer(id: Int!): DeleteTransferPayload
+}
+
+input CreateTransactionInput {
+  account_external_id_debit: String!
+  account_external_id_credit: String!
+  tranfer_type_id: Int!
+  value: Int!
+}
+
+input CreateTransferInput {
+  name: String!
+}

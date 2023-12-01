@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model tranfer_type {
+  id            Int           @id @default(autoincrement())
+  name          String
+  is_deleted    Boolean       @default(false)
+  transactions  transaction[]
+}
+
+model transaction {
+  id                          Int                 @id @default(autoincrement())
+  account_external_id_debit   String
+  account_external_id_credit  String
+
+  tranfer_type                tranfer_type         @relation(fields: [tranfer_type_id], references: [id])
+  tranfer_type_id             Int
+
+  status                      TransactionStatus   @default(PENDING)
+  value                       Int
+  is_deleted                  Boolean             @default(false)
+  created_at                  DateTime            @default(now())
+  updated_at                  DateTime            @default(now())
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
