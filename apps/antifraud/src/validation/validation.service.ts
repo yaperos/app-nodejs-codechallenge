@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-// import { Transaction } from '@transactons/entities/transaction.entity';
 import { FinancialTransaction } from '@transactions/transactions/entities/financial-transaction.entity';
 
 @Injectable()

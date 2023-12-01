@@ -35,4 +35,18 @@ export class FinancialTransactionsService {
       where: { transactionId: id },
     });
   }
+
+  async updateSatus(
+    entityLike: Partial<FinancialTransaction>,
+  ): Promise<FinancialTransaction> {
+    const incoming = this.repository.create(entityLike);
+    const existing = await this.getOne(incoming.transactionId);
+
+    const entity = this.repository.merge(existing, {
+      transactionStatus: incoming.transactionStatus,
+      transactionExternalId: incoming.transactionExternalId,
+    });
+
+    return await this.repository.save(entity);
+  }
 }
