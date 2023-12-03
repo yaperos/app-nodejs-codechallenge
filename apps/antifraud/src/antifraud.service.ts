@@ -1,8 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 
 @Injectable()
 export class AntifraudService {
   constructor(@Inject('ANTIFRAUD') private readonly antifraud: any) { }
+
 
   confirmed(id: string, value: number) {
     let status = 'pending';

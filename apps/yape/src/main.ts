@@ -10,11 +10,11 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: 'antifraud',
+        clientId: 'yape',
         brokers: ['localhost:9092'],
       },
       consumer: {
-        groupId: 'antifraud-consumer',
+        groupId: 'yape-consumer',
       },
       subscribe: {
         fromBeginning: true,

@@ -1,11 +1,12 @@
 
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TransactionType } from './transaction.model';
 import { TransactionService } from './transaction.service';
 
 @Resolver()
 export class TransactionResolver {
   constructor(private readonly service: TransactionService) { }
+
 
   @Query(() => TransactionType)
   getTransaction(@Args('transactionExternalId') transactionExternalId: string) {
