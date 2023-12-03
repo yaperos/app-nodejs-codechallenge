@@ -27,15 +27,6 @@
       "compilerOptions": {
         "tsConfigPath": "apps/antifraud/tsconfig.app.json"
       }
-    },
-    "transaction": {
-      "type": "application",
-      "root": "apps/transaction",
-      "entryFile": "main",
-      "sourceRoot": "apps/transaction/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/transaction/tsconfig.app.json"
-      }
     }
   }
 }

@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "start:antifraud": "nest start antifraud",
-    "start:dev": "nest start --watch",
+    "start:antifraud": "nest start --watch antifraud",
+    "start:yape": "nest start --watch",
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",

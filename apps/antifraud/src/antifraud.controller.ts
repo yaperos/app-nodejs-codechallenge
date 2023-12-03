@@ -4,11 +4,13 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AntifraudController {
-  constructor(private readonly antifraudService: AntifraudService) {}
+  constructor(private readonly antifraudService: AntifraudService) { }
 
   @MessagePattern('antifraud.validate')
   validate(@Payload() { id, value }: any) {
     console.log({ id, value });
     this.antifraudService.confirmed(id, value);
   }
+
+
 }
