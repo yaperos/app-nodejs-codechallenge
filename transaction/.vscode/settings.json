@@ -1,0 +1,7 @@
+{
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"[terraform]": {
+		"editor.defaultFormatter": "hashicorp.terraform"
+	}
+}
