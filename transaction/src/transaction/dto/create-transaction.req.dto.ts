@@ -13,10 +13,10 @@ export class CreateTransactionRequestDto {
 	public accountExternalIdCredit: string;
 
 	@IsNotEmpty()
-	@ApiProperty({ type: 'number', example: 1 })
+	@ApiProperty({ type: 'int', example: 1 })
 	public tranferTypeId: number;
 
 	@IsNotEmpty()
-	@ApiProperty({ type: 'number', example: 120 })
+	@ApiProperty({ type: 'numeric', example: 120 })
 	public value: number;
 }

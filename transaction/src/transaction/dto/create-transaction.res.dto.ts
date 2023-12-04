@@ -10,6 +10,6 @@ export class CreateTransactionResponseDto {
 
 	constructor(transaction: Transaction) {
 		this.transactionExternalId = transaction.transactionExternalId;
-		this.transactionStatus = transaction.transactionStatus;
+		this.transactionStatus = transaction.transactionStatus.name;
 	}
 }

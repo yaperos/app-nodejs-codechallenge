@@ -24,8 +24,8 @@ export class GetTransactionResponseDto {
 
 	constructor(transaction: Transaction) {
 		this.transactionExternalId = transaction.transactionExternalId;
-		this.transactionType = { name: transaction.transactionType };
-		this.transactionStatus = { name: transaction.transactionStatus };
+		this.transactionType = { name: transaction.transactionType.name };
+		this.transactionStatus = { name: transaction.transactionStatus.name };
 		this.value = transaction.value;
 		this.createdAt = transaction.createdAt;
 	}
