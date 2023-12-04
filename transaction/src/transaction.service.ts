@@ -48,20 +48,33 @@ export class TransactionService {
     const newTransactionPending =
       await this.transactionRepository.save(newTransactionData);
 
-    await this.emitToAntiFraud(newTransactionPending);
+    await this.emitToAntiFraud({
+      transactionExternalId: newTransactionPending.transactionExternalId,
+      value: newTransactionPending.value,
+    });
 
-    return newTransactionPending.transactionExternalId;
+    return { id: newTransactionPending.transactionExternalId };
   }
 
-  private async emitToAntiFraud(newTransaction: Transaction) {
-    this.client.emit('transaction_created', newTransaction);
+  private async emitToAntiFraud(newTransaction: any) {
+    this.client.emit('transaction_created', JSON.stringify(newTransaction));
   }
 
   async findOne(transactionExternalId: string) {
-    const transaction = await this.transactionRepository.findOneBy({
-      transactionExternalId,
+    const transaction = await this.transactionRepository.findOne({
+      where: { transactionExternalId },
+      select: ['transactionExternalId', 'value', 'createdAt'],
+      relations: {
+        transactionStatus: true,
+        transactionType: true,
+      },
     });
-    return transaction;
+
+    return {
+      ...transaction,
+      transactionStatus: { name: transaction.transactionStatus.name },
+      transactionType: { name: transaction.transactionType.name },
+    };
   }
 
   async statusHandle(transactionExternalId: string, transactionStatus: string) {

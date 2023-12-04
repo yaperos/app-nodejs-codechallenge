@@ -10,7 +10,7 @@ export class AntiFraudService {
   async validateTransaction(data: any) {
     const { transactionExternalId, value } = data;
     const transactionStatus = this.validateTransactionValue(value);
-    await this.emitToTransaction({ transactionExternalId, transactionStatus });
+    await this.emitToTransaction(transactionExternalId, transactionStatus);
   }
 
   private validateTransactionValue(value: number) {
@@ -19,10 +19,16 @@ export class AntiFraudService {
       : TransactionStatuses.APPROVED;
   }
 
-  private async emitToTransaction({ transactionExternalId, status }: any) {
-    this.client.emit('transaction_status_handle', {
-      transactionExternalId,
-      status,
-    });
+  private async emitToTransaction(
+    transactionExternalId: string,
+    status: string,
+  ) {
+    this.client.emit(
+      'transaction_status_handle',
+      JSON.stringify({
+        transactionExternalId,
+        status,
+      }),
+    );
   }
 }

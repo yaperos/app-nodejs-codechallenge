@@ -17,7 +17,8 @@ import { TransactionStatus } from './entities/transaction-status.entity';
         transport: Transport.KAFKA,
         options: {
           client: {
-            brokers: ['localhost:9092'],
+            // brokers: ['localhost:9092'],
+            brokers: ['kafka:29092'],
           },
           consumer: {
             groupId: 'antifraud-consumer',

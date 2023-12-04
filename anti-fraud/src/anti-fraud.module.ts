@@ -14,7 +14,8 @@ import { AntiFraudController } from './anti-fraud.controller';
             transport: Transport.KAFKA,
             options: {
               client: {
-                brokers: ['localhost:9092'],
+                // brokers: ['localhost:9092'],
+                brokers: ['kafka:29092'],
               },
               consumer: {
                 groupId: 'transaction-consumer',
