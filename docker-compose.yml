@@ -2,6 +2,7 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: yape_db
     ports:
       - "5432:5432"
     environment:
@@ -23,3 +24,36 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  transaction:
+    image: localhost/transaction
+    container_name: transaction
+    restart: always
+    build:
+      context: ./transaction
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+      - KAFKA_URL=kafka:9092
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - postgres
+      - kafka
+  anti-fraud:
+    image: localhost/anti-fraud
+    container_name: anti-fraud
+    restart: always
+    build:
+      context: ./anti-fraud
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    environment:
+      - PORT=3001
+      - KAFKA_URL=kafka:9092
+    depends_on:
+      - kafka
