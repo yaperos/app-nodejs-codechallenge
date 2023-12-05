@@ -19,10 +19,12 @@ const sendKafkaEvent = async (transactionId, status) => {
       messages: [
         {
           key: transactionId,
-          value: JSON.stringify({ transactionId, status }),
+          value: JSON.stringify({ transactionId, status: "approved" }),
         },
       ],
     });
+
+    console.log("Message sent successfully");
   } catch (error) {
     console.error("Error sending Kafka event:", error);
   } finally {

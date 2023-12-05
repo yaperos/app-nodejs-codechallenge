@@ -27,7 +27,9 @@ const createTransaction = async (req, res) => {
       transactionStatus: status,
     });
 
-    sendKafkaEvent(newTransaction.transactionExternalId, status);
+    if (value < 1000) {
+      sendKafkaEvent(newTransaction.transactionExternalId, status);
+    }
 
     res.status(201).json(newTransaction);
   } catch (err) {
@@ -60,8 +62,31 @@ const getTransactionFindAll = async (req, res) => {
   }
 };
 
+const updateTransaction = async (transactionExternalId, newStatus) => {
+  try {
+    const transaction = await Transaction.findOne({
+      where: { transactionExternalId },
+    });
+
+    if (!transaction) {
+      console.log(`Transaction with ID ${transactionExternalId} not found`);
+      return;
+    }
+
+    transaction.transactionStatus = newStatus;
+    await transaction.save();
+
+    console.log(
+      `Transaction with ID ${transactionExternalId} updated to new status: ${newStatus}`
+    );
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   createTransaction,
   getTransactionById,
   getTransactionFindAll,
+  updateTransaction,
 };
