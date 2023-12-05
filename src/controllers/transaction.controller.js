@@ -1,6 +1,10 @@
 const Transaction = require("../models/transaction.model");
 const generateTransactionId = require("../helpers/generateTransactionId.helper");
 const sendKafkaEvent = require("../helpers/kafkaProducer.helper");
+const {
+  STATUS_TRANSACTION,
+} = require("../models/enums/statusTransaction.enum");
+const { MESSAGE_TRANSACTION_NOT_FOUND } = require("../utils/constants.util");
 
 const createTransaction = async (req, res) => {
   const {
@@ -10,12 +14,6 @@ const createTransaction = async (req, res) => {
     value,
   } = req.body;
 
-  let status = "pending";
-
-  if (value > 1000) {
-    status = "rejected";
-  }
-
   try {
     const newTransaction = await Transaction.create({
       accountExternalIdDebit,
@@ -24,12 +22,14 @@ const createTransaction = async (req, res) => {
       value,
       transactionExternalId: generateTransactionId(),
       transactionType: { name: "" },
-      transactionStatus: status,
+      transactionStatus: { name: STATUS_TRANSACTION.PENDING },
     });
 
-    if (value < 1000) {
-      sendKafkaEvent(newTransaction.transactionExternalId, status);
-    }
+    sendKafkaEvent(
+      newTransaction.transactionExternalId,
+      STATUS_TRANSACTION.PENDING,
+      value
+    );
 
     res.status(201).json(newTransaction);
   } catch (err) {
@@ -46,7 +46,7 @@ const getTransactionById = async (req, res) => {
     if (transaction) {
       res.json(transaction);
     } else {
-      res.status(404).json({ message: "Transaction not found" });
+      res.status(404).json({ message: MESSAGE_TRANSACTION_NOT_FOUND });
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -73,7 +73,7 @@ const updateTransaction = async (transactionExternalId, newStatus) => {
       return;
     }
 
-    transaction.transactionStatus = newStatus;
+    transaction.transactionStatus = { name: newStatus };
     await transaction.save();
 
     console.log(

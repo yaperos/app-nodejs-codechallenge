@@ -2,6 +2,11 @@ const express = require("express");
 const sequelize = require("./database/connection");
 const transactionRoutes = require("./routes/transaction.route");
 const sendKafkaEvent = require("./helpers/kafkaConsumer.helper");
+const {
+  MESSAGE_START_SERVER,
+  MESSAGE_SERVER_RUNNING_PORT,
+  MESSAGE_ERROR_CONNECT_DATABASE,
+} = require("./utils/constants.util");
 
 require("dotenv").config();
 
@@ -17,15 +22,15 @@ sendKafkaEvent();
 async function startServer() {
   try {
     await sequelize.authenticate();
-    console.log("Conexión establecida con la base de datos.");
+    console.log(MESSAGE_START_SERVER);
 
     await sequelize.sync();
 
     app.listen(PORT, () => {
-      console.log(`Servidor corriendo en el puerto ${PORT}`);
+      console.log(`${MESSAGE_SERVER_RUNNING_PORT} ${PORT}`);
     });
   } catch (error) {
-    console.error("Error al conectar con la base de datos:", error);
+    console.error(MESSAGE_ERROR_CONNECT_DATABASE, error);
   }
 }
 

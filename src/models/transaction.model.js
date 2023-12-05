@@ -11,7 +11,7 @@ const Transaction = sequelize.define("Transaction", {
     type: DataTypes.JSONB,
   },
   transactionStatus: {
-    type: DataTypes.STRING,
+    type: DataTypes.JSONB,
   },
   createdAt: {
     type: DataTypes.DATE,
