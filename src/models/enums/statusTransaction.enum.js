@@ -3,4 +3,11 @@ const STATUS_TRANSACTION = {
   APPROVED: "approved",
   REJECTED: "rejected",
 };
-module.exports = { STATUS_TRANSACTION };
+
+const TYPE_TRANSACTION = {
+  1: "CREATED",
+  2: "UPDATE_TO_APPROVE",
+  3: "UPDATE_TO_REJECT",
+};
+
+module.exports = { STATUS_TRANSACTION, TYPE_TRANSACTION };

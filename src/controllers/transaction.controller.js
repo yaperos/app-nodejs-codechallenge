@@ -3,6 +3,7 @@ const generateTransactionId = require("../helpers/generateTransactionId.helper")
 const sendKafkaEvent = require("../helpers/kafkaProducer.helper");
 const {
   STATUS_TRANSACTION,
+  TYPE_TRANSACTION,
 } = require("../models/enums/statusTransaction.enum");
 const { MESSAGE_TRANSACTION_NOT_FOUND } = require("../utils/constants.util");
 
@@ -21,7 +22,7 @@ const createTransaction = async (req, res) => {
       tranferTypeId,
       value,
       transactionExternalId: generateTransactionId(),
-      transactionType: { name: "" },
+      transactionType: { name: TYPE_TRANSACTION[tranferTypeId] },
       transactionStatus: { name: STATUS_TRANSACTION.PENDING },
     });
 
@@ -62,7 +63,11 @@ const getTransactionFindAll = async (req, res) => {
   }
 };
 
-const updateTransaction = async (transactionExternalId, newStatus) => {
+const updateTransaction = async (
+  transactionExternalId,
+  newStatus,
+  transactionType
+) => {
   try {
     const transaction = await Transaction.findOne({
       where: { transactionExternalId },
@@ -74,6 +79,7 @@ const updateTransaction = async (transactionExternalId, newStatus) => {
     }
 
     transaction.transactionStatus = { name: newStatus };
+    transaction.transactionType = transactionType;
     await transaction.save();
 
     console.log(

@@ -3,6 +3,7 @@ require("dotenv").config();
 const { updateTransaction } = require("../controllers/transaction.controller");
 const {
   STATUS_TRANSACTION,
+  TYPE_TRANSACTION,
 } = require("../models/enums/statusTransaction.enum");
 const { MESSAGE_ERROR_KAFKA_CONSUMER } = require("../utils/constants.util");
 
@@ -28,14 +29,17 @@ const listenToKafkaEvents = async () => {
         setTimeout(async () => {
           const key = message.key.toString();
           const value = JSON.parse(message.value.toString());
+          const transactionType = { name: TYPE_TRANSACTION[1] };
 
           if (value.value > 1000) {
             value.status = STATUS_TRANSACTION.REJECTED;
+            transactionType.name = TYPE_TRANSACTION[3];
           } else {
             value.status = STATUS_TRANSACTION.APPROVED;
+            transactionType.name = TYPE_TRANSACTION[2];
           }
 
-          await updateTransaction(key, value.status);
+          await updateTransaction(key, value.status, transactionType);
         }, 5000);
       },
     });
