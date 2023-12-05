@@ -3,12 +3,24 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateTransactionRequestDto } from './dto/create-transaction.req.dto';
 import { CreateTransactionResponseDto } from './dto/create-transaction.res.dto';
 import { GetTransactionResponseDto } from './dto/get-transaction.res.dto';
+import Page from './dto/Page';
 import { TransactionService } from './transaction.service';
 
 @Controller('transactions')
 @ApiTags('transactions')
 export class TransactionController {
 	constructor(private readonly transactionService: TransactionService) {}
+
+	@Get()
+	@HttpCode(HttpStatus.OK)
+	@ApiOperation({ summary: 'Get all transactions' })
+	public async getAll(): Promise<Page<GetTransactionResponseDto>> {
+		const [transaction, countAll] = await this.transactionService.getAll();
+		return Page.create<GetTransactionResponseDto>(
+			transaction.map((transaction) => new GetTransactionResponseDto(transaction)),
+			countAll,
+		);
+	}
 
 	@Get('/:transactionExternalId')
 	@HttpCode(HttpStatus.OK)

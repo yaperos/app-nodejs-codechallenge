@@ -1,34 +1,49 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
+import { TransactionStatus } from './transaction-status.entity';
+import { TransactionType } from './transaction-type.entity';
+import { TransferType } from './transfer-type.entity';
 
 @Entity('transaction')
 export class Transaction extends BaseEntity {
-	@PrimaryGeneratedColumn({ type: 'int', name: 'id' })
+	@PrimaryGeneratedColumn()
 	public id: number;
 
-	@Column({ type: 'varchar', name: 'transaction_external_id', length: 36 })
+	@Column({ type: 'varchar', name: 'transaction_external_id', length: 36, nullable: false, unique: true })
 	public transactionExternalId: string;
 
-	@Column({ type: 'varchar', name: 'account_external_id_debit', length: 36 })
+	@Column({ type: 'varchar', name: 'account_external_id_debit', length: 36, nullable: true })
 	public accountExternalIdDebit: string;
 
-	@Column({ type: 'varchar', name: 'account_external_id_credit', length: 36 })
+	@Column({ type: 'varchar', name: 'account_external_id_credit', length: 36, nullable: true })
 	public accountExternalIdCredit: string;
 
-	@Column({ type: 'int', name: 'tranfer_type_id' })
-	public tranferTypeId: number;
+	@Column({ type: 'int', name: 'transaction_type_id', nullable: false })
+	public transactionTypeId: number;
 
-	@Column({ type: 'varchar', name: 'transaction_type' })
-	public transactionType: string;
+	@ManyToOne(() => TransactionType, { eager: true })
+	@JoinColumn({ name: 'transaction_type_id', referencedColumnName: 'id' })
+	public transactionType: TransactionType;
 
-	@Column({ type: 'varchar', name: 'transaction_status' })
-	public transactionStatus: string;
+	@Column({ type: 'int', name: 'transaction_status_id', nullable: false })
+	public transactionStatusId: number;
 
-	@Column({ type: 'numeric', name: 'value' })
+	@ManyToOne(() => TransactionStatus, { eager: true })
+	@JoinColumn({ name: 'transaction_status_id', referencedColumnName: 'id' })
+	public transactionStatus: TransactionStatus;
+
+	@Column({ type: 'int', name: 'transfer_type_id', nullable: false })
+	public transferTypeId: number;
+
+	@ManyToOne(() => TransferType, { eager: true })
+	@JoinColumn({ name: 'transfer_type_id', referencedColumnName: 'id' })
+	public transferType: TransferType;
+
+	@Column({ type: 'numeric', name: 'value', nullable: false })
 	public value: number;
 
-	@Column({ type: 'timestamp', name: 'created_at' })
+	@Column({ type: 'timestamp', name: 'created_at', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
 	public createdAt: Date;
 
-	@Column({ type: 'timestamp', name: 'update_at' })
+	@Column({ type: 'timestamp', name: 'update_at', nullable: true, default: null })
 	public updateAt: Date;
 }

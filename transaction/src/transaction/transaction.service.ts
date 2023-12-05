@@ -8,6 +8,10 @@ import { ProducerService } from 'src/kafka/producer.service';
 export class TransactionService {
 	constructor(private readonly producerService: ProducerService) {}
 
+	public async getAll(): Promise<[Transaction[], number]> {
+		return await Transaction.findAndCount();
+	}
+
 	public async getByTransactionExternalId(transactionExternalId: string): Promise<Transaction> {
 		const transactionDb: Transaction | null = await Transaction.findOne({ where: { transactionExternalId } });
 
@@ -21,9 +25,9 @@ export class TransactionService {
 		transaction.transactionExternalId = uuidv4();
 		transaction.accountExternalIdDebit = request.accountExternalIdDebit;
 		transaction.accountExternalIdCredit = request.accountExternalIdCredit;
-		transaction.transferTypeId = request.tranferTypeId;
-		transaction.transactionType.name = 'transfer';
-		transaction.transactionStatus.name = 'pending';
+		transaction.transferTypeId = request.transferTypeId;
+		transaction.transactionTypeId = 1;
+		transaction.transactionStatusId = 1;
 		transaction.value = request.value;
 		transaction.createdAt = new Date();
 		transaction.updateAt = new Date();

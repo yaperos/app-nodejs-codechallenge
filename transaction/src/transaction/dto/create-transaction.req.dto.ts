@@ -14,7 +14,7 @@ export class CreateTransactionRequestDto {
 
 	@IsNotEmpty()
 	@ApiProperty({ type: 'int', example: 1 })
-	public tranferTypeId: number;
+	public transferTypeId: number;
 
 	@IsNotEmpty()
 	@ApiProperty({ type: 'numeric', example: 120 })
