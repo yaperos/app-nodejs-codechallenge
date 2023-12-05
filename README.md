@@ -80,3 +80,24 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Build project with Docker
+
+1. run command `docker-compose up -d`
+
+2. Go to the url `http://localhost:3000/transactions`
+
+3. Method POST
+
+Body: 
+{
+    "accountExternalIdDebit": "ac0696c7-4dbb-4183-a59f-f8eea0d2f64c",
+    "accountExternalIdCredit": "f0f61682-feca-405c-9a1b-70eaa4eaf772",
+    "tranferTypeId": 1,
+    "value": 1001
+}
+
+4. Method GET by Id: `http://localhost:3000/transactions/4223a185-a698-4b58-9ad5-5d0253c19848`
+
+5. Method GET findAll: `http://localhost:3000/transactions`
+
