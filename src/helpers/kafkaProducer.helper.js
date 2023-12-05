@@ -32,8 +32,6 @@ const sendKafkaEvent = async (transactionId, status, value) => {
     console.log(MESSAGE_SUCCESS_KAFKA_PRODUCER);
   } catch (error) {
     console.error(MESSAGE_ERROR_KAFKA_PRODUCER, error);
-  } finally {
-    await producer.disconnect();
   }
 };
 
