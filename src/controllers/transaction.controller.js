@@ -27,6 +27,7 @@ const createTransaction = async (req, res) => {
       transactionStatus: { name: STATUS_TRANSACTION.PENDING },
     });
 
+    await redisClient.del("ALL_TRANSACTIONS");
     await setRedisData(newTransaction.transactionExternalId, newTransaction);
 
     sendKafkaEvent(
@@ -68,8 +69,11 @@ const getTransactionById = async (req, res) => {
 
 const getTransactionFindAll = async (req, res) => {
   try {
-    const transaction = await Transaction.findAll();
-    return res.json(transaction);
+    const transactions = await Transaction.findAll();
+
+    await redisClient.set("ALL_TRANSACTIONS", JSON.stringify(transactions));
+
+    return res.json(transactions);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -94,6 +98,7 @@ const updateTransaction = async (
     transaction.transactionType = transactionType;
     await transaction.save();
 
+    await redisClient.del("ALL_TRANSACTIONS");
     await setRedisData(transaction.transactionExternalId, transaction);
 
     console.log(
