@@ -1,6 +1,7 @@
 const Transaction = require("../models/transaction.model");
 const generateTransactionId = require("../helpers/generateTransactionId.helper");
 const sendKafkaEvent = require("../helpers/kafkaProducer.helper");
+const redisClient = require("../database/redis");
 const {
   STATUS_TRANSACTION,
   TYPE_TRANSACTION,
@@ -26,40 +27,51 @@ const createTransaction = async (req, res) => {
       transactionStatus: { name: STATUS_TRANSACTION.PENDING },
     });
 
+    await setRedisData(newTransaction.transactionExternalId, newTransaction);
+
     sendKafkaEvent(
       newTransaction.transactionExternalId,
       STATUS_TRANSACTION.PENDING,
       value
     );
 
-    res.status(201).json(newTransaction);
+    return res.status(201).json(newTransaction);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
 const getTransactionById = async (req, res) => {
   try {
-    const transaction = await Transaction.findOne({
-      where: { transactionExternalId: req.params.id },
-    });
+    const cachedTransaction = await redisClient.get(
+      `transaction:${req.params.id}`
+    );
 
-    if (transaction) {
-      res.json(transaction);
+    if (cachedTransaction) {
+      return res.json(JSON.parse(cachedTransaction));
     } else {
-      res.status(404).json({ message: MESSAGE_TRANSACTION_NOT_FOUND });
+      const transaction = await Transaction.findOne({
+        where: { transactionExternalId: req.params.id },
+      });
+
+      if (transaction) {
+        await setRedisData(transaction.transactionExternalId, transaction);
+        return res.json(transaction);
+      } else {
+        return res.status(404).json({ message: MESSAGE_TRANSACTION_NOT_FOUND });
+      }
     }
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
 const getTransactionFindAll = async (req, res) => {
   try {
     const transaction = await Transaction.findAll();
-    res.json(transaction);
+    return res.json(transaction);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -82,12 +94,21 @@ const updateTransaction = async (
     transaction.transactionType = transactionType;
     await transaction.save();
 
+    await setRedisData(transaction.transactionExternalId, transaction);
+
     console.log(
       `Transaction with ID ${transactionExternalId} updated to new status: ${newStatus}`
     );
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
+};
+
+const setRedisData = async (transactionExternalId, transaction) => {
+  await redisClient.set(
+    `transaction:${transactionExternalId}`,
+    JSON.stringify(transaction)
+  );
 };
 
 module.exports = {

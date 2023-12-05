@@ -2,6 +2,7 @@ const express = require("express");
 const sequelize = require("./database/connection");
 const transactionRoutes = require("./routes/transaction.route");
 const sendKafkaEvent = require("./helpers/kafkaConsumer.helper");
+require("./database/redis");
 const {
   MESSAGE_START_SERVER,
   MESSAGE_SERVER_RUNNING_PORT,
