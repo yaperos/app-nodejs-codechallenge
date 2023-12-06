@@ -1,12 +1,11 @@
-# Use a lightweight Node.js image
-FROM node:18.12.0-buster
+FROM node:18
 
 WORKDIR /challenge/src/app
 
-COPY package*.json ./
+COPY anti-fraud/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY ./anti-fraud .
 
 CMD ["node", "consumer"]

@@ -2,7 +2,7 @@ import { type EachMessagePayload, Kafka, Consumer, Producer} from 'kafkajs';
 
 const kafka = new Kafka({
   clientId: 'anti-fraud',
-  brokers: ['localhost:9092'],
+  brokers: [process.env.KAFKA_BROKER || 'kafka:29092'], //localhost:9092
 });
 
 const consumer: Consumer = kafka.consumer({ groupId: 'notification-group' });
