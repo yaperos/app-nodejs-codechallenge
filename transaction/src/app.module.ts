@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'db/data-source';
 import { AntiFraudConsumer } from './antifraud.consumer';
@@ -8,7 +9,12 @@ import { KafkaModule } from './kafka/kafka.module';
 import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
-	imports: [TypeOrmModule.forRoot(dataSourceOptions), TransactionModule, KafkaModule],
+	imports: [
+		ConfigModule.forRoot({ isGlobal: true }),
+		TypeOrmModule.forRoot(dataSourceOptions),
+		TransactionModule,
+		KafkaModule,
+	],
 	controllers: [AppController],
 	providers: [AppService, AntiFraudConsumer],
 })

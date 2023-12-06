@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-extraneous-class */
 import { Module } from '@nestjs/common';
 import { ProducerService } from './producer.service';
 import { ConsumerService } from './consumer.service';
@@ -7,4 +6,5 @@ import { ConsumerService } from './consumer.service';
 	providers: [ProducerService, ConsumerService],
 	exports: [ProducerService, ConsumerService],
 })
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 export class KafkaModule {}

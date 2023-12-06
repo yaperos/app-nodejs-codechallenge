@@ -12,7 +12,6 @@ const handleMessage = async ({ topic, partition, message }: EachMessagePayload):
   console.log(`Received message from topic '${topic}': ${message.value?.toString()}`);
 
   if (topic === 'new-transaction') {
-    // Handle new-transaction notification
     console.log('Message received:', message.value?.toString());
     await runProducer(message.value?.toString());
   } else {
@@ -48,7 +47,6 @@ const sendNotification = async (topic: string, payload: any): Promise<void> => {
 };
 
 const runProducer = async (message: any): Promise<void> => {
-    // Process request
     let status: string;
     let messageDecoded = JSON.parse(message);
     console.log("---> value received: ", messageDecoded.value);

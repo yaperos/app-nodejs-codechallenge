@@ -7,4 +7,5 @@ import { ProducerService } from 'src/kafka/producer.service';
 	controllers: [TransactionController],
 	providers: [TransactionService, ProducerService],
 })
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 export class TransactionModule {}
