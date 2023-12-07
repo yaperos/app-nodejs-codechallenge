@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "a5e4e9d0-d7c5-4384-b9a1-a36f2a935256",
+		"name": "transaction-system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3776193"
+	},
+	"item": [
+		{
+			"name": "/transaction-api/v1/transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountExternalIdDebit\": \"11\",\n    \"accountExternalIdCredit\": \"767\",\n    \"tranferTypeId\": 2,\n    \"value\": 700\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/transaction-api/v1/transaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"transaction-api",
+						"v1",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/transaction-api/v1/transaction/:id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountExternalIdDebit\": \"1\",\n    \"accountExternalIdCredit\": \"3\",\n    \"tranferTypeId\": 120,\n    \"value\": 101\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/transaction-api/v1/transaction/6bbfdd97-cac3-4e38-a61e-81849430a4e99",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"transaction-api",
+						"v1",
+						"transaction",
+						"6bbfdd97-cac3-4e38-a61e-81849430a4e99"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

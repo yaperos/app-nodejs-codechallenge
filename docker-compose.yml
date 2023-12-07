@@ -2,17 +2,38 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: postgresdb
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=yape_db
+    networks:
+      - yape-networks      
+
+  mongodb:
+    image: mongo:5
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+#    volumes:
+#      - mongo_data:/data/db
+    environment:
+      - MONGODB_DATABASE=yape_db
+    networks:
+      - yape-networks      
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - yape-networks      
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    container_name: kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -23,3 +44,55 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - yape-networks      
+
+  anti-fraud-service:
+    build:
+      context: ./anti-fraud-service
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLIENT_ID: anti-fraud-service
+      KAFKA_BROKER: kafka:29092
+    networks:
+      - yape-networks
+
+  transaction-api-command:
+    build:
+      context: ./transaction-api-command
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      KAFKA_CLIENT_ID: transaction-api-command
+      KAFKA_BROKER: kafka:29092 
+      DB_HOST: postgres     
+    networks:
+      - yape-networks  
+
+  transaction-api-query:
+    build:
+      context: ./transaction-api-query
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - kafka
+      - mongodb
+    environment:
+      KAFKA_CLIENT_ID: transaction-api-query
+      KAFKA_BROKER: kafka:29092 
+      DB_URL: mongodb://mongodb:27017/yape_db     
+    networks:
+      - yape-networks            
+
+networks:
+  yape-networks:
+    driver: bridge      
