@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/api-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/api-gateway",
+  "projects": {
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
+    "ms-antifraud": {
+      "type": "application",
+      "root": "apps/ms-antifraud",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-antifraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-antifraud/tsconfig.app.json"
+      }
+    },
+    "ms-transaction": {
+      "type": "application",
+      "root": "apps/ms-transaction",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-transaction/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-transaction/tsconfig.app.json"
+      }
+    }
+  }
+}
