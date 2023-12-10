@@ -12,10 +12,9 @@ const config = {
   database: process.env.DATABASE_NAME,
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
-  entities: ['dist/**/schemas/*.schema.js'],
-  migrations: ['dist/**/database/migrations/*.js'],
+  migrations: ['**/database/migrations/*{.ts,.js}'],
   migrationsTableName: 'migrations',
-  seeds: ['dist/**/seeds/*.seeder.js'],
+  seeds: ['**/database/seeds/*.seeder.ts'],
 };
 
 export default registerAs('database', () => config);

@@ -11,19 +11,19 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/apps/api-gateway/main",
+    "start:prod": "node dist/apps/ms-transaction/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/api-gateway/test/jest-e2e.json",
+    "test:e2e": "jest --config ./apps/ms-transaction/test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "migration:run": "npm run typeorm migration:run -- -d ./apps/ms-transaction/src/database/database.config.ts",
-    "migration:generate": "npm run typeorm -- -d ./apps/ms-transaction/src/database/database.config.ts migration:generate ./apps/ms-transaction/src/database/migrations/$npm_config_name",
-    "migration:create": "npm run typeorm -- migration:create ./apps/ms-transaction/src/database/migrations/$npm_config_name",
-    "migration:revert": "npm run typeorm -- -d ./apps/ms-transaction/src/database/database.config.ts migration:revert",
-    "database:seed": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./apps/ms-transaction/src/database/database.config.ts"
+    "migration:run": "npm run typeorm migration:run -- -d ./libs/common/src/config/database.config.ts",
+    "migration:generate": "npm run typeorm -- -d ./libs/common/src/config/database.config.ts migration:generate ./apps/ms-transaction/src/database/migrations/$npm_config_name",
+    "migration:create": "npm run typeorm -- migration:create ./libs/common/src/database/migrations/$npm_config_name",
+    "migration:revert": "npm run typeorm -- -d ./libs/common/src/config/database.config.ts migration:revert",
+    "database:seed": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./libs/common/src/config/database.config.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
@@ -85,7 +85,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+    }
   }
 }

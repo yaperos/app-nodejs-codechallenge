@@ -1,0 +1,46 @@
+scalar Date
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECT
+}
+
+type Query {
+  transaction(id: ID!): Transaction
+  transactions(first: Int, offset: Int): [Transaction]!
+}
+
+type Mutation {
+  createTransaction(input: CreateTransactionInput!): CreateTransaction!
+}
+
+type TransactionType {
+  name: String!
+}
+
+type TransactionStatusCustom {
+  name: TransactionStatus!
+}
+
+type Transaction {
+  transactionExternalId: ID!
+  value: Float!
+  transactionType: TransactionType!
+  transactionStatus: TransactionStatusCustom!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type CreateTransaction {
+  success: Boolean!
+  message: String!
+  transaction: Transaction
+}
+
+input CreateTransactionInput {
+  accountExternalIdDebit: ID!
+  accountExternalIdCredit: ID!
+  tranferTypeId: ID!
+  value: Float!
+}

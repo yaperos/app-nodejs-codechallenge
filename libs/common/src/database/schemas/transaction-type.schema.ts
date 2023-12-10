@@ -1,7 +1,7 @@
 import { TransactionType } from './../../entities/transaction-type.entity';
 import { EntitySchema } from 'typeorm';
 
-export const TransactionTypeSchema = new EntitySchema<TransactionType>({
+const TransactionTypeSchema = new EntitySchema<TransactionType>({
   name: 'transaction_types',
   columns: {
     id: {
@@ -22,3 +22,5 @@ export const TransactionTypeSchema = new EntitySchema<TransactionType>({
     },
   ],
 });
+
+export default TransactionTypeSchema;
