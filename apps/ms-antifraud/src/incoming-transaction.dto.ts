@@ -1,11 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
-
-export class IncomingTransactionDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsUUID()
+export interface IncomingTransactionDto {
   transactionExternalId: string;
-
-  @IsNumber()
   value: number;
 }

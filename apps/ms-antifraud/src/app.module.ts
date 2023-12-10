@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@app/common/config/config.module';
 
 @Module({
   imports: [
+    ConfigModule,
     ClientsModule.register([
       {
         name: 'TRANSACTION_SERVICE',
@@ -12,7 +14,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           client: {
             clientId: 'ms-transaction',
-            brokers: ['localhost:9092'],
+            brokers: [process.env.KAFKA_BROKER],
           },
           producerOnlyMode: true,
           consumer: {

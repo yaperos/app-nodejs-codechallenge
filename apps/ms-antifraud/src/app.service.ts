@@ -13,7 +13,6 @@ export class AppService {
   verifyTransaction({ transactionExternalId, value }: IncomingTransactionDto) {
     const status =
       value > 1000 ? TransactionStatus.REJECTED : TransactionStatus.APPROVED;
-
     this.transactionService.emit(
       'transaction_verified',
       JSON.stringify({ transactionExternalId, status }),
