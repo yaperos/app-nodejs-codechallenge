@@ -1,4 +1,3 @@
-import { registerAs } from '@nestjs/config';
 import { SeederOptions } from 'typeorm-extension';
 import { config as dotenvConfig } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
@@ -12,9 +11,10 @@ const config = {
   database: process.env.DATABASE_NAME,
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
+  migrations: ['./database/migrations/*{.ts,.js}'],
+  migrationsTableName: 'migrations',
+  seeds: ['./database/seeds/*.seeder.ts'],
 };
-
-export default registerAs('database', () => config);
 
 export const dataSource = new DataSource(
   config as DataSourceOptions & SeederOptions,
