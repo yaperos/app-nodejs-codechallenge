@@ -19,11 +19,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/ms-transaction/test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "migration:run": "npm run typeorm migration:run -- -d ./libs/common/src/config/database.config.ts",
-    "migration:generate": "npm run typeorm -- -d ./libs/common/src/config/database.config.ts migration:generate ./apps/ms-transaction/src/database/migrations/$npm_config_name",
-    "migration:create": "npm run typeorm -- migration:create ./libs/common/src/database/migrations/$npm_config_name",
-    "migration:revert": "npm run typeorm -- -d ./libs/common/src/config/database.config.ts migration:revert",
-    "database:seed": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./libs/common/src/config/database.config.ts"
+    "migration:run": "npm run typeorm migration:run -- -d ./database/config.ts",
+    "migration:generate": "npm run typeorm -- -d ./database/config.ts migration:generate ./database/migrations/$npm_config_name",
+    "migration:create": "npm run typeorm -- migration:create ./database/migrations/$npm_config_name",
+    "migration:revert": "npm run typeorm -- -d ./database/config.ts migration:revert",
+    "database:seed": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./database/config.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
@@ -63,7 +63,7 @@
     "prettier": "^3.0.0",
     "source-map-support": "^0.5.21",
     "supertest": "^6.3.3",
-    "ts-jest": "^29.1.0",
+    "ts-jest": "^29.1.1",
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",

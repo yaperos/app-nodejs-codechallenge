@@ -15,8 +15,8 @@ export class TransactionsService {
     private readonly transactionRepository: TransactionRepositoryContract,
     @Inject('TRANSACTION_TYPE_REPOSITORY')
     private readonly transactionTypeRepository: TransactionTypeRepositoryContract,
-    // @Inject('ANTIFRAUD_SERVICE')
-    // private readonly antiFraudService: ClientKafka,
+    @Inject('ANTIFRAUD_SERVICE')
+    private readonly antiFraudService: ClientKafka,
   ) {}
 
   async create(input: CreateTransactionInput) {
@@ -32,13 +32,13 @@ export class TransactionsService {
     transaction.transactionType = transactionType;
     transaction.value = input.value;
     const trx = await this.transactionRepository.save(transaction);
-    // this.antiFraudService.emit(
-    //   'transaction_created',
-    //   new TransactionCreatedEvent(
-    //     trx.transactionExternalId,
-    //     trx.value,
-    //   ).toString(),
-    // );
+    this.antiFraudService.emit(
+      'transaction_created',
+      new TransactionCreatedEvent(
+        trx.transactionExternalId,
+        trx.value,
+      ).toString(),
+    );
     return trx;
   }
 

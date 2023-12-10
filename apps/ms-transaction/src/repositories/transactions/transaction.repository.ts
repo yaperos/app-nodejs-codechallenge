@@ -24,7 +24,6 @@ export class TransactionRepository implements TransactionRepositoryContract {
     });
   }
   async save(transaction: Transaction): Promise<Transaction> {
-    console.log('transaction', transaction);
     return this.repository.save(transaction);
   }
 }
