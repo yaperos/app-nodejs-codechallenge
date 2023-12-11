@@ -1,0 +1,45 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "Challenge YAPE",
+  "author": "javiladeveloper",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/apps/app-nodejs-codechallenge/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+  },
+  "workspaces": [
+    "apps/**"
+  ],
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.1",
+    "@nestjs/core": "^9.0.0",
+    "kafkajs": "^2.2.3",
+    "nestjs-kafkajs": "^0.0.2",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.2.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^9.0.0",
+    "@nestjs/schematics": "^9.0.0",
+    "@types/node": "18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.3.2",
+    "source-map-support": "^0.5.20",
+    "ts-loader": "^9.2.3",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "4.1.1",
+    "typescript": "^4.7.4"
+  }
+}
