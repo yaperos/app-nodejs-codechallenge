@@ -6,7 +6,8 @@ mutation($input: CreateTransactionInput!) {
   createTransaction(input: $input) {
     success message 
     transaction {
-      transactionExternalId value status createdAt updatedAt
+      transactionExternalId value createdAt updatedAt
+      transactionStatus { name }
       transactionType { name }
     }
   }

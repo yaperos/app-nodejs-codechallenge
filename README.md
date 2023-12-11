@@ -82,6 +82,7 @@ When you finish your challenge, after forking a repository, you **must** open a 
 If you have any questions, please let us know.
 
 # Running on local
+Rename .env.example to .env
 
 ```sh
 docker-compose up --build
@@ -96,7 +97,7 @@ mutation($input: CreateTransactionInput!) {
   createTransaction(input: $input) {
     success message 
     transaction {
-      transactionExternalId value status createdAt updatedAt
+      transactionExternalId value createdAt updatedAt transactionStatus { name }
       transactionType { name }
     }
   }
