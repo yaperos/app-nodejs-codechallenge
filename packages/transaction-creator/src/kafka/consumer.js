@@ -28,6 +28,7 @@ const listenAndUpdateStatus = () => {
       try {
         await pool.query(query, values);
         console.log("Transaction processed");
+        consumer.commit(data);
       } catch (error) {
         console.error("Error updating transaction:", error);
       }
