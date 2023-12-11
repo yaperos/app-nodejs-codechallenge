@@ -80,3 +80,32 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Architecture
+
+<image src="challenge-architecture.png" alt="software-architecture">
+
+# Solution
+
+1. Install libraries in each project
+
+   ```shell
+   npm install
+   ```
+
+2. Start the project with docker-compose up
+   ```shell
+   docker-compose up
+   ```
+
+# Local docker services
+
+- **http://localhost:3000/** : API Gateway Transaction
+- **http://localhost:9999/** : Dazzle (see logs by service)
+- **http://localhost:9000/** : Kafdrop (see messages of Kafka)
+
+# Endpoint
+
+```shell
+http://localhost:3000/api/v1/transaction
+```
