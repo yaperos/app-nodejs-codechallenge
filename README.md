@@ -86,3 +86,50 @@ If you have any questions, please let us know.
 ```sh
 docker-compose up --build
 ```
+
+## Queries and mutation
+POST https://localhost:3000/graphql
+
+* Create a transaction
+```graphql
+mutation($input: CreateTransactionInput!) {
+  createTransaction(input: $input) {
+    success message 
+    transaction {
+      transactionExternalId value status createdAt updatedAt
+      transactionType { name }
+    }
+  }
+}
+```
+Variables
+```json
+{
+  "input": {
+    "accountExternalIdDebit": "QWNjb3VudEV4dGVybmFsSWREZWJpdDpkM2U0MTViYS0yNmZiLTRhNGUtYTY2Mi03MzY1Nzc3MmE0ZWE=",
+    "accountExternalIdCredit": "QWNjb3VudEV4dGVybmFsSWRDcmVkaXQ6M2ZmMTQ3NjEtZGRmOC00Y2RlLTg4MjQtMjc0MDgxM2IxYzg5",
+    "tranferTypeId": "VHJhbnNhY3Rpb25UeXBlOjE=",
+    "value": 120
+  }
+}
+```
+
+* List transactions
+```graphql
+query {
+  transactions(first: 20) {
+    transactionExternalId transactionType { name } transactionStatus { name }
+    value createdAt
+  }
+}
+```
+
+* Get a transaction by id
+```graphql
+query {
+  transaction(id: "VHJhbnNhY3Rpb246MGMzNzZmZWItNzM2Yi00NzM3LTkzYmUtMTgyNTI5Yjk0Mzlm") {
+    transactionExternalId transactionType { name } transactionStatus { name }
+    value createdAt
+  }
+}
+``````
