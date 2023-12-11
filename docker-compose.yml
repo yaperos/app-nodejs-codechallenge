@@ -1,25 +1,89 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
+  db:
+    image: mongo:5
+    restart: always
     ports:
-      - "5432:5432"
+      - 27017:27017
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      MONGODB_DATABASE: transactions
+    volumes:
+      - ./mongo_data:/data/db
+    networks:
+      - challenge-network
+
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - challenge-network
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+    networks:
+      - challenge-network
+
+  api-gateway-transaction:
+    build:
+      context: ./api-gateway-transaction
+      dockerfile: Dockerfile
     ports:
-      - 9092:9092
+      - "3000:3000"
+    depends_on:
+      - "kafka"
+      - "db"
+    networks:
+      - challenge-network
+
+  ms-anti-fraud:
+    build:
+      context: ./ms-anti-fraud
+      dockerfile: Dockerfile
+    depends_on:
+      - "kafka"
+      - "db"
+    networks:
+      - challenge-network
+
+  ms-create-transaction-handler:
+    build:
+      context: ./ms-create-transaction-handler
+      dockerfile: Dockerfile
+    depends_on:
+      - "kafka"
+      - "db"
+    networks:
+      - challenge-network
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+    depends_on:
+      - "kafka"
+    networks:
+      - challenge-network
+
+  logs:
+    container_name: logs
+    image: amir20/dozzle:latest
+    ports:
+      - "9999:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  challenge-network:
+    driver: bridge
