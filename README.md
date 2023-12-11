@@ -81,11 +81,11 @@ When you finish your challenge, after forking a repository, you **must** open a 
 
 If you have any questions, please let us know.
 
+# Solution
+
 # Architecture
 
 <image src="challenge-architecture.png" alt="software-architecture">
-
-# Solution
 
 1. Install libraries in each project
 
