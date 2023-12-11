@@ -7,8 +7,13 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 export class TransactionsController {
   constructor(private readonly transactionService: TransactionsService) {}
 
-  @EventPattern('transaction_verified')
-  verifyTransaction(@Payload() updateTransactionDto: UpdateTransactionDto) {
+  @EventPattern('transaction_reject')
+  transactionReject(@Payload() updateTransactionDto: UpdateTransactionDto) {
+    return this.transactionService.updateStatus(updateTransactionDto);
+  }
+
+  @EventPattern('transaction_approved')
+  transactionApproved(@Payload() updateTransactionDto: UpdateTransactionDto) {
     return this.transactionService.updateStatus(updateTransactionDto);
   }
 }

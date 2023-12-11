@@ -41,7 +41,7 @@ services:
     depends_on: [kafka, db]
 
   antifraud:
-    container_name: antifraud
+    container_name: ms-antifraud
     build:
       context: .
       dockerfile: ./apps/ms-antifraud/Dockerfile
