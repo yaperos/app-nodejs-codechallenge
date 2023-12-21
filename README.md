@@ -1,82 +1,103 @@
-# Yape Code Challenge :rocket:
+# YAPE challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+las intrucciones del challenge estan el CHALLENGE_README.md
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Proyectos
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+se hicieron 3 proyectos para resolver el challenge:
+ * api: donde se crean las transacciones, actualiza y lista
+ * antifraude: el cual califica las transacciones
+ * finances: un pequeño front end para visualizar las transacciones
 
-# Problem
+## Instrucciones
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Iniciamos inicializando el docker-compose
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```sh
+  $ docker compose up
 ```
 
-# Tech Stack
+creamos los topicos pero necesitamos saber el nombre del contenedor
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```sh
+ $ docker ps
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+```sh
+CONTAINER ID   IMAGE                                    COMMAND                  CREATED        STATUS       PORTS                          NAMES
+efb19183117b   confluentinc/cp-enterprise-kafka:5.5.3   "/etc/confluent/dock…"   15 hours ago   Up 8 hours   0.0.0.0:9092->9092/tcp         app-nodejs-codechallenge-kafka-1
 ```
 
-## Optional
+una vez identificado el nombre del contenedor
+```sh
+ $ docker exec -it app-nodejs-codechallenge-kafka-1 /bin/sh
+```
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+y ahora si creamos los topicos 2 para el entorno de development y 2 para los test
 
-You can use Graphql;
+```sh
+  kafka-topics --zookeeper zookeeper:2181 --create --if-not-exists --topic api-topic --replication-factor 1 --partitions 1
+  kafka-topics --zookeeper zookeeper:2181 --create --if-not-exists --topic antifraud-topic --replication-factor 1 --partitions 1
 
-# Send us your challenge
+  kafka-topics --zookeeper zookeeper:2181 --create --if-not-exists --topic api-test-topic --replication-factor 1 --partitions 1
+  kafka-topics --zookeeper zookeeper:2181 --create --if-not-exists --topic antifraud-test-topic --replication-factor 1 --partitions 1
+```
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+### API
 
-If you have any questions, please let us know.
+Este proyecto es para la creación de las transacciones, al crear la transaccion a la bd y manda a kafka, espera la llamada de kafka que es la evaluación del antifraude para que luego actualizar a la bd con la decisión y tambien hace un emit por el websocket
+
+En la carpeta `/api`hacemos los siguientes pasos
+
+instalamos los modulos
+```sh
+ $ yarn
+```
+
+```sh
+ $ yarn migrate:test
+```
+
+corremos las pruebas
+```sh
+ $ yarn test
+```
+corremos las migraciones para dev
+```sh
+ $ yarn migrate:dev
+```
+e inicializamos el proyecto
+```sh
+ $ yarn start
+```
+
+### ANTIFRAUD
+
+Este proyecto simula el antifraude que califica la transaccion por medio de un score y lo manda a kafka
+
+En la carpeta `/antifraud` instalamos los modulos
+
+```sh
+ $ yarn
+```
+
+e inicializamos el proyecto
+
+```sh
+ $ yarn start
+```
+
+### finances
+
+Este proyecto es para una visualizacion para crear transacciones y listas de ellas
+
+instalamos los modulos
+```sh
+ $ yarn
+```
+
+```sh
+ $ yarn dev
+```
+
+podras visualizar en `http://localhost:3000`

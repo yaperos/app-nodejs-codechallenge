@@ -1,0 +1,31 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "NODE_ENV=development dotenv -e .env node ./bin/www",
+    "test": "NODE_ENV=test dotenv -e .env.test  mocha --exit ./test/test.js",
+    "migrate:dev": "dotenv -e .env npx prisma migrate dev --name init",
+    "migrate:test": "dotenv -e .env.test npx prisma migrate dev --name init"
+  },
+  "dependencies": {
+    "@prisma/client": "5.7.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^16.8.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "kafkajs": "^2.2.4",
+    "morgan": "~1.9.1",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "chai-http": "^4.4.0",
+    "dotenv-cli": "^7.3.0",
+    "mocha": "^10.2.0",
+    "prisma": "^5.7.0"
+  }
+}
