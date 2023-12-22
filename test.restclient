@@ -1,0 +1,8 @@
+POST http://localhost/transaction
+Content-Type: application/json
+{
+  "accountExternalIdDebit": "123",
+  "accountExternalIdCredit": "345",
+  "tranferTypeId": 1,
+  "value": 2000
+}

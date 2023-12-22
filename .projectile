@@ -1,5 +1,3 @@
 app_main/node_modules
 app_antifraud/node_modules
 app_db/node_modules
-kafka
-redis

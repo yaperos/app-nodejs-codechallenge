@@ -1,82 +1,74 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge 🚀
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# About the Software
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+The application run over a Event-Driven and microservices architectures. 
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Components:
+* Main service, is the microservice that provide de endpoint to access to the software
+* Antifraud server, is the service consumer and producer whose objective is to review transactions for fraud.
+* DB server, is the service consumer to register and update transaction in the database (Redis). 
+* Redis, is the database (memory) of the Transactions.
+* Kafka, is the distributed event streaming.
+* Zookeeper, is the central of configuration of Kafka.
 
-# Problem
+## Process 
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+![Process Image](design.png)
 
-Every transaction with a value greater than 1000 should be rejected.
+## Extra challenges
+About Huge amount of writes and reads.
+* We used microservice architecture for break down the application into smaller, independent services that can be scaled horizontally.
+* We used redis only for transactions, it partitioning and distributed the data into smaller,  more manageable pieces called shards to spread the load and reduce bottlenecks.
+* Redis suport cluster sharding for divide the write and reads of database in multiple servers.
+* Redis run as memory database, with a support persistence in disk, configurated to 20 minutes.
+* We used event driven architecture for asynchronous processing which helps in absorbing sudden spikes in load.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+# Instalation:
 
-# Tech Stack
+## Requirements:
+The application require:
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+* Docker compose 
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+## Run the software:
 
-You must have two resources:
+If you run in production environment execute ./run.sh (linux) or run.bat (windows).
 
-1. Resource to create a transaction that must containt:
+If you run in devevelop environment execute ./run-dev.sh (linux) or run-dev.bat (windows).
 
-```json
+## Test 
+
+Using a Restful client send POST to http://localhost/transaction the next body with content-type application/json:
+```json 
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "123",
+  "accountExternalIdCredit": "345",
   "tranferTypeId": 1,
-  "value": 120
+  "value": 2000
 }
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+Example using curl 
+```sh
+curl --location 'http://localhost/transaction' \
+--header 'Content-Type: application/json' \
+--data '{
+  "accountExternalIdDebit": "123",
+  "accountExternalIdCredit": "345",
+  "tranferTypeId": 1,
+  "value": 2000
 }
+'
 ```
 
-## Optional
+* In the logs of the containers: main, db and antifraud, you can see the information producer and consumer in Kafka. 
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+The check the data recorder in database:
+* Access to redis container and execute "redis-cli";
+* In redis-cli get the list of transaction with the command: keys *
+* Identify the last ID with format "TR-XXXX-XXX"
+* In redis-cli get the data or the record with the command: get "TR-XXXX-XXX"
 
-You can use Graphql;
 
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
