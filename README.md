@@ -2,7 +2,7 @@
 
 # About the Software
 
-The application run over a Event-Driven and microservices architectures. 
+The application run over a Event-Driven and microservices architectures. The development was doing in Functional paradigm.
 
 Components:
 * Main service, is the microservice that provide de endpoint to access to the software
