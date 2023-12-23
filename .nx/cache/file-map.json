@@ -1,0 +1,662 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.2.3",
+  "deps": {
+    "@nestjs/common": "^10.0.2",
+    "@nestjs/config": "^3.1.1",
+    "@nestjs/core": "^10.0.2",
+    "@nestjs/microservices": "^10.2.10",
+    "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/typeorm": "^10.0.1",
+    "axios": "^1.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0",
+    "tslib": "^2.3.0",
+    "typeorm": "^0.3.17",
+    "@nestjs/schematics": "^10.0.1",
+    "@nestjs/testing": "^10.0.2",
+    "@nx/eslint": "17.2.3",
+    "@nx/eslint-plugin": "17.2.3",
+    "@nx/jest": "17.2.3",
+    "@nx/js": "17.2.3",
+    "@nx/nest": "17.2.3",
+    "@nx/node": "17.2.3",
+    "@nx/webpack": "17.2.3",
+    "@nx/workspace": "17.2.3",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+    "@svgr/webpack": "^8.0.1",
+    "@swc-node/register": "~1.6.7",
+    "@swc/core": "~1.3.85",
+    "@types/jest": "^29.4.0",
+    "@types/node": "18.16.9",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "eslint": "~8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "jest": "^29.4.1",
+    "jest-environment-node": "^29.4.1",
+    "nx": "17.2.3",
+    "prettier": "^2.6.2",
+    "react-refresh": "^0.10.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.1",
+    "typescript": "~5.2.2",
+    "url-loader": "^4.1.1"
+  },
+  "pathMappings": {
+    "@app-nodejs-codechallenge/shared": [
+      "shared/src/index.ts"
+    ],
+    "@app-nodejs-codechallenge/shared/dto": [
+      "shared/src/lib/dto/index.ts"
+    ],
+    "@app-nodejs-codechallenge/shared/entities": [
+      "shared/src/lib/entities/index.ts"
+    ],
+    "@app-nodejs-codechallenge/shared/env": [
+      "shared/src/lib/env/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".prettierignore",
+        "hash": "16448050467312557263"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "8953062029847463278"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "7663861978715868291"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "1482810769789930301"
+      },
+      {
+        "file": "nx.json",
+        "hash": "13617133247851730338"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "235626400633494639"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "4185368808439573122"
+      },
+      {
+        "file": "README.md",
+        "hash": "4232215460691317053"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "15951709452871085887"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "2782260913247621536"
+      },
+      {
+        "file": "package.json",
+        "hash": "17751548209238521948"
+      },
+      {
+        "file": ".env.development",
+        "hash": "11603607943963710773"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "8278665120952369726"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "11366282356234634728"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      }
+    ],
+    "projectFileMap": {
+      "antifraud-microservice-e2e": [
+        {
+          "file": "apps/antifraud-microservice-e2e/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "apps/antifraud-microservice-e2e/jest.config.ts",
+          "hash": "14149848890353850674"
+        },
+        {
+          "file": "apps/antifraud-microservice-e2e/project.json",
+          "hash": "1861632871459367876"
+        },
+        {
+          "file": "apps/antifraud-microservice-e2e/src/antifraud-microservice/antifraud-microservice.spec.ts",
+          "hash": "110394728024017389",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/antifraud-microservice-e2e/src/support/global-setup.ts",
+          "hash": "2568409276037275290"
+        },
+        {
+          "file": "apps/antifraud-microservice-e2e/src/support/global-teardown.ts",
+          "hash": "5275447082211835490"
+        },
+        {
+          "file": "apps/antifraud-microservice-e2e/src/support/test-setup.ts",
+          "hash": "10984585515912236441",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/antifraud-microservice-e2e/tsconfig.json",
+          "hash": "15443990093475294480"
+        },
+        {
+          "file": "apps/antifraud-microservice-e2e/tsconfig.spec.json",
+          "hash": "14954872453723519891"
+        }
+      ],
+      "transaction-microservice-e2e": [
+        {
+          "file": "apps/transaction-microservice-e2e/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "apps/transaction-microservice-e2e/jest.config.ts",
+          "hash": "16503092006590256405"
+        },
+        {
+          "file": "apps/transaction-microservice-e2e/project.json",
+          "hash": "9662158246666696954"
+        },
+        {
+          "file": "apps/transaction-microservice-e2e/src/support/global-setup.ts",
+          "hash": "2568409276037275290"
+        },
+        {
+          "file": "apps/transaction-microservice-e2e/src/support/global-teardown.ts",
+          "hash": "5275447082211835490"
+        },
+        {
+          "file": "apps/transaction-microservice-e2e/src/support/test-setup.ts",
+          "hash": "10984585515912236441",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice-e2e/src/transaction-microservice/transaction-microservice.spec.ts",
+          "hash": "110394728024017389",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice-e2e/tsconfig.json",
+          "hash": "15443990093475294480"
+        },
+        {
+          "file": "apps/transaction-microservice-e2e/tsconfig.spec.json",
+          "hash": "14954872453723519891"
+        }
+      ],
+      "transaction-microservice": [
+        {
+          "file": "apps/transaction-microservice/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "apps/transaction-microservice/jest.config.ts",
+          "hash": "1006070950886482055"
+        },
+        {
+          "file": "apps/transaction-microservice/project.json",
+          "hash": "14624699041154009824"
+        },
+        {
+          "file": "apps/transaction-microservice/src/app/app.controller.spec.ts",
+          "hash": "9499997688052526633",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice/src/app/app.controller.ts",
+          "hash": "10636882654917371250",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/microservices",
+            "shared"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice/src/app/app.module.ts",
+          "hash": "8131452441520065868",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/config",
+            "shared",
+            "npm:@nestjs/typeorm"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice/src/app/app.service.spec.ts",
+          "hash": "8587461140686713758",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice/src/app/app.service.ts",
+          "hash": "17341290337159257423",
+          "deps": [
+            "npm:@nestjs/common",
+            "shared"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice/src/app/transaction.repository.ts",
+          "hash": "5605128063737813443",
+          "deps": [
+            "npm:@nestjs/common",
+            "shared",
+            "npm:uuid",
+            "npm:@nestjs/typeorm",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/transaction-microservice/src/main.ts",
+          "hash": "12202710027799205443",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/microservices"
+          ]
+        },
+        {
+          "file": "apps/transaction-microservice/tsconfig.app.json",
+          "hash": "3171572500325445971"
+        },
+        {
+          "file": "apps/transaction-microservice/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/transaction-microservice/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        },
+        {
+          "file": "apps/transaction-microservice/webpack.config.js",
+          "hash": "5708803163266262522",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "shared": [
+        {
+          "file": "shared/.eslintrc.json",
+          "hash": "11808533155536463924"
+        },
+        {
+          "file": "shared/README.md",
+          "hash": "4177710660839030163"
+        },
+        {
+          "file": "shared/jest.config.ts",
+          "hash": "2981541933462521042"
+        },
+        {
+          "file": "shared/project.json",
+          "hash": "6986404114575021686"
+        },
+        {
+          "file": "shared/src/index.ts",
+          "hash": "15721632429446788800"
+        },
+        {
+          "file": "shared/src/lib/dto/create-transaction-dto.ts",
+          "hash": "17925118679127378625",
+          "deps": [
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "shared/src/lib/dto/index.ts",
+          "hash": "13253962818536936720"
+        },
+        {
+          "file": "shared/src/lib/entities/index.ts",
+          "hash": "8358709248176700551"
+        },
+        {
+          "file": "shared/src/lib/entities/transaction.entity.ts",
+          "hash": "16328281580525363355",
+          "deps": [
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "shared/src/lib/env/enviroments.ts",
+          "hash": "1629396667873740119"
+        },
+        {
+          "file": "shared/src/lib/env/index.ts",
+          "hash": "13088051671938696545"
+        },
+        {
+          "file": "shared/src/lib/shared.spec.ts",
+          "hash": "10294249502165281269"
+        },
+        {
+          "file": "shared/src/lib/shared.ts",
+          "hash": "3815621113879200261"
+        },
+        {
+          "file": "shared/tsconfig.json",
+          "hash": "10304993020986584308"
+        },
+        {
+          "file": "shared/tsconfig.lib.json",
+          "hash": "941310147601136693"
+        },
+        {
+          "file": "shared/tsconfig.spec.json",
+          "hash": "17313551537729802733"
+        }
+      ],
+      "antifraud-microservice": [
+        {
+          "file": "apps/antifraud-microservice/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "apps/antifraud-microservice/jest.config.ts",
+          "hash": "4970049154356675732"
+        },
+        {
+          "file": "apps/antifraud-microservice/project.json",
+          "hash": "4800094665494845557"
+        },
+        {
+          "file": "apps/antifraud-microservice/src/app/app.controller.spec.ts",
+          "hash": "9499997688052526633",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/antifraud-microservice/src/app/app.controller.ts",
+          "hash": "6852798455809153973",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/microservices",
+            "shared"
+          ]
+        },
+        {
+          "file": "apps/antifraud-microservice/src/app/app.module.ts",
+          "hash": "3163250445227373966",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/antifraud-microservice/src/app/app.service.spec.ts",
+          "hash": "8587461140686713758",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/antifraud-microservice/src/app/app.service.ts",
+          "hash": "3526548959352590315",
+          "deps": [
+            "npm:@nestjs/common",
+            "shared"
+          ]
+        },
+        {
+          "file": "apps/antifraud-microservice/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/antifraud-microservice/src/main.ts",
+          "hash": "12278455003591255155",
+          "deps": [
+            "npm:@nestjs/core",
+            "npm:@nestjs/microservices"
+          ]
+        },
+        {
+          "file": "apps/antifraud-microservice/tsconfig.app.json",
+          "hash": "3171572500325445971"
+        },
+        {
+          "file": "apps/antifraud-microservice/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/antifraud-microservice/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        },
+        {
+          "file": "apps/antifraud-microservice/webpack.config.js",
+          "hash": "5708803163266262522",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "api-gateway-e2e": [
+        {
+          "file": "apps/api-gateway-e2e/.eslintrc.json",
+          "hash": "2295303304320410742"
+        },
+        {
+          "file": "apps/api-gateway-e2e/jest.config.ts",
+          "hash": "10742901818661000442"
+        },
+        {
+          "file": "apps/api-gateway-e2e/project.json",
+          "hash": "1337995182703318204"
+        },
+        {
+          "file": "apps/api-gateway-e2e/src/api-gateway/api-gateway.spec.ts",
+          "hash": "2263470703898423778",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/api-gateway-e2e/src/support/global-setup.ts",
+          "hash": "14688124112638150235"
+        },
+        {
+          "file": "apps/api-gateway-e2e/src/support/global-teardown.ts",
+          "hash": "10856769668484651558"
+        },
+        {
+          "file": "apps/api-gateway-e2e/src/support/test-setup.ts",
+          "hash": "9379448616442792630",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/api-gateway-e2e/tsconfig.json",
+          "hash": "15443990093475294480"
+        },
+        {
+          "file": "apps/api-gateway-e2e/tsconfig.spec.json",
+          "hash": "14519349202314136898"
+        }
+      ],
+      "api-gateway": [
+        {
+          "file": "apps/api-gateway/.eslintrc.json",
+          "hash": "2295303304320410742"
+        },
+        {
+          "file": "apps/api-gateway/jest.config.ts",
+          "hash": "9652108524245138692"
+        },
+        {
+          "file": "apps/api-gateway/project.json",
+          "hash": "4179259464084035355"
+        },
+        {
+          "file": "apps/api-gateway/src/app/app.controller.spec.ts",
+          "hash": "11156443618385188612",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/app.controller.ts",
+          "hash": "9005150069945785676",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/app.module.ts",
+          "hash": "1646748111264300063",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/config",
+            "shared"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/app.service.spec.ts",
+          "hash": "10601044450234745126",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/app.service.ts",
+          "hash": "1398463054208547248",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/transaction/transaction.controller.spec.ts",
+          "hash": "339421596088029156",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/transaction/transaction.controller.ts",
+          "hash": "4920857784074416023",
+          "deps": [
+            "npm:@nestjs/common",
+            "shared"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/transaction/transaction.module.ts",
+          "hash": "17523149265848466578",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/microservices"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/transaction/transaction.service.spec.ts",
+          "hash": "8795763086224376684",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/transaction/transaction.service.ts",
+          "hash": "2876508087312845050",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/microservices",
+            "shared"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/api-gateway/src/main.ts",
+          "hash": "14819337011353640225",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/core"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/tsconfig.app.json",
+          "hash": "3550142505637665650"
+        },
+        {
+          "file": "apps/api-gateway/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/api-gateway/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        },
+        {
+          "file": "apps/api-gateway/webpack.config.js",
+          "hash": "14100730557391234188",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/antifraud/antifraud.module.ts",
+          "hash": "10575312927983348524",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/microservices"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/antifraud/antifraud.service.ts",
+          "hash": "15807725858964834786",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api-gateway/src/app/antifraud/antifraud.service.spec.ts",
+          "hash": "17498893995890916095",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        }
+      ]
+    }
+  }
+}

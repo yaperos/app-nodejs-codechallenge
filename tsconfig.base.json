@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@app-nodejs-codechallenge/shared": ["shared/src/index.ts"],
+      "@app-nodejs-codechallenge/shared/dto": ["shared/src/lib/dto/index.ts"],
+      "@app-nodejs-codechallenge/shared/entities": [
+        "shared/src/lib/entities/index.ts"
+      ],
+      "@app-nodejs-codechallenge/shared/env": ["shared/src/lib/env/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

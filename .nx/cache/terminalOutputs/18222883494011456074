@@ -1,0 +1,10 @@
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 4.71 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (5ad65017f863aa38)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 42776  - [39m[31m13-12-2023, 22:34:30 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Response Metadata(key: 3, version: 6) {"timestamp":"2023-12-14T01:34:30.072Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","correlationId":1,"size":90}[39m[31m[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 4.65 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (4adc8eb953d0e91f)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m

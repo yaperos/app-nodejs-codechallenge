@@ -1,0 +1,92 @@
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 9.54 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (cb7a3baa332decfd)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 9.45 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (dc66724effdc0bc5)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 9.45 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (39281e17297413e9)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 32156  - [39m[31m13-12-2023, 21:47:35 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Response SyncGroup(key: 14, version: 3) {"timestamp":"2023-12-14T00:47:35.669Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","error":"The group is rebalancing, so a rejoin is needed","correlationId":5,"size":14}[39m[31m[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 9.92 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (53875a5db0e4133d)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 40708  - [39m[31m13-12-2023, 21:50:47 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the TransactionRepository (?). Please make sure that the argument "TransactionRepository" at index [0] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TransactionRepository" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TransactionRepository" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TransactionRepository" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the TransactionRepository (?). Please make sure that the argument "TransactionRepository" at index [0] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TransactionRepository" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TransactionRepository" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TransactionRepository" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 0)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadProvider (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:97:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:56:13[39m[22m
+[1m[31m    at async Promise.all (index 4)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfProviders (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:55:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 9.79 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (89262179a2545af2)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 42436  - [39m[31m13-12-2023, 21:50:53 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the TransactionRepository (?). Please make sure that the argument "TransactionRepository" at index [0] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TransactionRepository" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TransactionRepository" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TransactionRepository" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the TransactionRepository (?). Please make sure that the argument "TransactionRepository" at index [0] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TransactionRepository" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TransactionRepository" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TransactionRepository" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 0)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadProvider (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:97:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:56:13[39m[22m
+[1m[31m    at async Promise.all (index 4)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfProviders (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:55:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+

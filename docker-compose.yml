@@ -1,12 +1,17 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
+  mongo_localmongo:
+    image: mongo
+    container_name: mongo_localmongo
+    restart: unless-stopped
+    env_file: .env
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - localmongodata:/data/db
+    ports:
+      - "27018:27017"
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:

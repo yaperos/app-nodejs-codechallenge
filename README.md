@@ -80,3 +80,21 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Respuesta jahernandezg
+
+La respuesta fue construida con nestjs, utilizando un monrepo Nx, mongodb, apache Kafka, typeOrm.
+Se debe crear la base de datos yape, en mongodb, por favor mirar los archivos .env
+En el repo principal, se puede instalar todas las dependencias con el comando npm i
+En consolas diferentes levantar cada uno de los microservicios:
+nx serve api-gateway
+nx serve transaction-microservice
+nx serve antifraud-microservice
+
+En postman, http://localhost:3000/api/transaction con un POST, enviar
+{
+  "accountExternalIdDebit": "Guid",
+  "accountExternalIdCredit": "Guid",
+  "tranferTypeId": 0,
+  "value": 1200
+}

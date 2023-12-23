@@ -1,0 +1,69 @@
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.65 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (7a75dd24a401951a)
+[1m[31mDebugger listening on ws://localhost:9229/2fe1b348-ee04-4771-ba72-ef8f3c1f5f11[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/2fe1b348-ee04-4771-ba72-ef8f3c1f5f11[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 24796  - [39m[31m13-12-2023, 17:12:20 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the AppService (?). Please make sure that the argument TransactionRepository at index [0] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If TransactionRepository is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If TransactionRepository is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing TransactionRepository */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the AppService (?). Please make sure that the argument TransactionRepository at index [0] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If TransactionRepository is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If TransactionRepository is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing TransactionRepository */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 0)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadProvider (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:97:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:56:13[39m[22m
+[1m[31m    at async Promise.all (index 3)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfProviders (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:55:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.76 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (b927f9a4c5aa90fa)
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.76 KiB [1m[33m[entry][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (b927f9a4c5aa90fa)
+[1m[31mDebugger listening on ws://localhost:9229/61dd5d14-650a-4169-ab15-461923da32da[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/61dd5d14-650a-4169-ab15-461923da32da[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:33 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Connection error:  {"timestamp":"2023-12-13T20:14:33.207Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","stack":"AggregateError: \n    at internalConnectMultiple (node:net:1114:18)\n    at afterConnectMultiple (node:net:1667:5)"}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:33 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [BrokerPool] Failed to connect to seed broker, trying another broker from the list: Connection error:  {"timestamp":"2023-12-13T20:14:33.208Z","logger":"kafkajs","retryCount":0,"retryTime":326}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:33 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Connection error:  {"timestamp":"2023-12-13T20:14:33.546Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","stack":"AggregateError: \n    at internalConnectMultiple (node:net:1114:18)\n    at afterConnectMultiple (node:net:1667:5)"}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:33 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [BrokerPool] Failed to connect to seed broker, trying another broker from the list: Connection error:  {"timestamp":"2023-12-13T20:14:33.547Z","logger":"kafkajs","retryCount":1,"retryTime":600}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:34 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Connection error:  {"timestamp":"2023-12-13T20:14:34.158Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","stack":"AggregateError: \n    at internalConnectMultiple (node:net:1114:18)\n    at afterConnectMultiple (node:net:1667:5)"}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:34 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [BrokerPool] Failed to connect to seed broker, trying another broker from the list: Connection error:  {"timestamp":"2023-12-13T20:14:34.158Z","logger":"kafkajs","retryCount":2,"retryTime":1246}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:35 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Connection error:  {"timestamp":"2023-12-13T20:14:35.416Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","stack":"AggregateError: \n    at internalConnectMultiple (node:net:1114:18)\n    at afterConnectMultiple (node:net:1667:5)"}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:35 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [BrokerPool] Failed to connect to seed broker, trying another broker from the list: Connection error:  {"timestamp":"2023-12-13T20:14:35.417Z","logger":"kafkajs","retryCount":3,"retryTime":2502}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:37 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Connection error:  {"timestamp":"2023-12-13T20:14:37.926Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","stack":"AggregateError: \n    at internalConnectMultiple (node:net:1114:18)\n    at afterConnectMultiple (node:net:1667:5)"}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 17932  - [39m[31m13-12-2023, 17:14:37 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [BrokerPool] Failed to connect to seed broker, trying another broker from the list: Connection error:  {"timestamp":"2023-12-13T20:14:37.926Z","logger":"kafkajs","retryCount":4,"retryTime":4574}[39m[31m[39m[22m
+[1m[31m[39m[22m

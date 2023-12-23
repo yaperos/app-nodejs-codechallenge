@@ -1,0 +1,684 @@
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.76 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (077fc153f0f9e7c2)
+[1m[31mDebugger listening on ws://localhost:9229/6d86ae85-673c-479c-a142-1828de8a7cad[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/6d86ae85-673c-479c-a142-1828de8a7cad[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.82 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (25770c1f5c142590)
+[1m[31mDebugger listening on ws://localhost:9229/1ee3bd36-8b01-477f-99fa-655fde8011d7[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/1ee3bd36-8b01-477f-99fa-655fde8011d7[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.88 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (6c21deb9e1b47b77)
+[1m[31mDebugger listening on ws://localhost:9229/c84d04db-3eab-45c3-ab75-fd884b0996d9[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/c84d04db-3eab-45c3-ab75-fd884b0996d9[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.88 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (f3a8e786bf979dec)
+[1m[31mDebugger listening on ws://localhost:9229/d9d431f8-f5b0-4959-9e06-6c17dd0ffba8[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/d9d431f8-f5b0-4959-9e06-6c17dd0ffba8[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 35908  - [39m[31m13-12-2023, 18:28:15 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Response Heartbeat(key: 12, version: 3) {"timestamp":"2023-12-13T21:28:15.784Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","error":"The group is rebalancing, so a rejoin is needed","correlationId":12,"size":10}[39m[31m[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.89 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+
+[1m[31mERROR[39m[22m in [1m./apps/transaction-microservice/src/app/app.service.ts:[32m[1m13:5[22m[39m[1m[39m[22m
+[90mTS2322: [39mType 'Promise<unknown>' is not assignable to type 'Promise<Transaction>'.
+  Type '{}' is missing the following properties from type 'Transaction': transactionType, transactionStatus, value, createdAt
+  [0m [90m 11 |[39m[0m
+  [0m [90m 12 |[39m   createTransaction(data[33m:[39m [33mCreateTransactionDto[39m)[33m:[39m [33mPromise[39m[33m<[39m[33mTransaction[39m[33m>[39m {[0m
+  [0m[31m[1m>[22m[39m[90m 13 |[39m     [36mreturn[39m [36mthis[39m[33m.[39mtrasactionRepository[33m.[39msave(data)[33m;[39m[0m
+  [0m [90m    |[39m     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m 14 |[39m   }[0m
+  [0m [90m 15 |[39m[0m
+  [0m [90m 16 |[39m   getUser(id[33m:[39m string)[33m:[39m [33mTransaction[39m {[0m
+
+webpack compiled with [1m[31m1 error[39m[22m (a0acefa945cfdc87)
+[1m[31mBuild failed, waiting for changes to restart...[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.89 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (1d775c969a2a594c)
+[1m[31mDebugger listening on ws://localhost:9229/3ea3977d-57c7-402d-b31f-89bc4d17bb1d[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/3ea3977d-57c7-402d-b31f-89bc4d17bb1d[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.9 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (9f894ce0cb14f71a)
+[1m[31mDebugger listening on ws://localhost:9229/74d92965-7f6a-42b3-9b12-11f672146855[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/74d92965-7f6a-42b3-9b12-11f672146855[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 38600  - [39m[31m13-12-2023, 18:38:26 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Response Heartbeat(key: 12, version: 3) {"timestamp":"2023-12-13T21:38:26.672Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","error":"The group is rebalancing, so a rejoin is needed","correlationId":16,"size":10}[39m[31m[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.92 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (93752fa00a03dac5)
+[1m[31mDebugger listening on ws://localhost:9229/b5fbd208-1eb0-47d5-9a4b-a9ed66af2839[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/b5fbd208-1eb0-47d5-9a4b-a9ed66af2839[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.92 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (c674e1479f499899)
+[1m[31mDebugger listening on ws://localhost:9229/7b911ddd-4631-487f-9eaf-e2c0e105b049[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/7b911ddd-4631-487f-9eaf-e2c0e105b049[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 13836  - [39m[31m13-12-2023, 19:33:00 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Response Metadata(key: 3, version: 6) {"timestamp":"2023-12-13T22:33:00.815Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","correlationId":1,"size":85}[39m[31m[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.93 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (a7560f60e76c1630)
+[1m[31mDebugger listening on ws://localhost:9229/de8951be-fa77-4823-bd27-7e16a16e71ed[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/de8951be-fa77-4823-bd27-7e16a16e71ed[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.93 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (4aab90e1d9b17b5a)
+[1m[31mDebugger listening on ws://localhost:9229/cba52cb7-3074-4c23-99c0-1556c9f38907[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/cba52cb7-3074-4c23-99c0-1556c9f38907[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.92 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (115f564169fdc7cf)
+[1m[31mDebugger listening on ws://localhost:9229/22e1b41b-ec75-4a70-93cb-e2fc5e0b3de8[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/22e1b41b-ec75-4a70-93cb-e2fc5e0b3de8[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.02 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (c71cd3ebda4f7e17)
+[1m[31mDebugger listening on ws://localhost:9229/ade1e6cd-6890-44c3-a8e3-984aa1895fea[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/ade1e6cd-6890-44c3-a8e3-984aa1895fea[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.71 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (0208a4e5db38519f)
+[1m[31mDebugger listening on ws://localhost:9229/0945afdd-d4fa-4fa4-898b-4be64157535c[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/0945afdd-d4fa-4fa4-898b-4be64157535c[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.96 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (9858a0619eb77d0f)
+[1m[31mDebugger listening on ws://localhost:9229/7aa15afc-76eb-4ae8-9f23-5508f81fd315[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/7aa15afc-76eb-4ae8-9f23-5508f81fd315[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 39564  - [39m[31m13-12-2023, 20:23:03 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the AppController (AppService, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the AppController (AppService, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 1)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadController (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:88:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:68:13[39m[22m
+[1m[31m    at async Promise.all (index 0)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfControllers (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:67:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.08 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (5f85d0767df3d35b)
+[1m[31mDebugger listening on ws://localhost:9229/d0084419-6f4b-4818-b1e7-e81b08757c1c[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/d0084419-6f4b-4818-b1e7-e81b08757c1c[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 10912  - [39m[31m13-12-2023, 20:23:28 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the AppController (AppService, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the AppController (AppService, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 1)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadController (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:88:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:68:13[39m[22m
+[1m[31m    at async Promise.all (index 0)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfControllers (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:67:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.71 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (4cc74098ded78db2)
+[1m[31mDebugger listening on ws://localhost:9229/b409a05c-ff95-4180-9c12-0e3bc8cd06c6[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/b409a05c-ff95-4180-9c12-0e3bc8cd06c6[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.13 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (afc3f9e7b8b591c8)
+[1m[31mDebugger listening on ws://localhost:9229/d3f78c8a-2d09-4c45-96db-0499b8b1b0f0[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/d3f78c8a-2d09-4c45-96db-0499b8b1b0f0[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 35812  - [39m[31m13-12-2023, 20:24:21 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the AppService (TransactionRepository, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the AppService (TransactionRepository, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 1)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadProvider (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:97:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:56:13[39m[22m
+[1m[31m    at async Promise.all (index 3)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfProviders (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:55:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.13 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (d4aa35a947538cd9)
+[1m[31mDebugger listening on ws://localhost:9229/e3939c11-2f8e-44e9-8606-ca6691eaddca[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/e3939c11-2f8e-44e9-8606-ca6691eaddca[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 39340  - [39m[31m13-12-2023, 20:24:25 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the AppService (TransactionRepository, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the AppService (TransactionRepository, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 1)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadProvider (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:97:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:56:13[39m[22m
+[1m[31m    at async Promise.all (index 3)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfProviders (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:55:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.13 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (253747919ddc8e90)
+[1m[31mDebugger listening on ws://localhost:9229/327be2c6-6421-40b0-9391-5657c9a8044f[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/327be2c6-6421-40b0-9391-5657c9a8044f[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 28544  - [39m[31m13-12-2023, 20:24:34 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the AppService (TransactionRepository, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the AppService (TransactionRepository, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 1)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadProvider (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:97:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:56:13[39m[22m
+[1m[31m    at async Promise.all (index 3)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfProviders (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:55:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.18 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+
+[1m[31mERROR[39m[22m in [1m./apps/transaction-microservice/src/app/app.service.ts:[32m[1m19:33[22m[39m[1m[39m[22m
+[90mTS2304: [39mCannot find name 'cmd'.
+  [0m [90m 17 |[39m   }[0m
+  [0m [90m 18 |[39m   createTransaction(data[33m:[39m [33mCreateTransactionDto[39m) {[0m
+  [0m[31m[1m>[22m[39m[90m 19 |[39m     [36mreturn[39m [36mthis[39m[33m.[39mauthClient[33m.[39msend(cmd[33m,[39m userData)[33m;[39m [0m
+  [0m [90m    |[39m                                 [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m 20 |[39m     [36mreturn[39m [36mthis[39m[33m.[39mtrasactionRepository[33m.[39msave(data)[33m;[39m[0m
+  [0m [90m 21 |[39m   }[0m
+  [0m [90m 22 |[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./apps/transaction-microservice/src/app/app.service.ts:[32m[1m19:38[22m[39m[1m[39m[22m
+[90mTS2304: [39mCannot find name 'userData'.
+  [0m [90m 17 |[39m   }[0m
+  [0m [90m 18 |[39m   createTransaction(data[33m:[39m [33mCreateTransactionDto[39m) {[0m
+  [0m[31m[1m>[22m[39m[90m 19 |[39m     [36mreturn[39m [36mthis[39m[33m.[39mauthClient[33m.[39msend(cmd[33m,[39m userData)[33m;[39m [0m
+  [0m [90m    |[39m                                      [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m 20 |[39m     [36mreturn[39m [36mthis[39m[33m.[39mtrasactionRepository[33m.[39msave(data)[33m;[39m[0m
+  [0m [90m 21 |[39m   }[0m
+  [0m [90m 22 |[39m[0m
+
+webpack compiled with [1m[31m2 errors[39m[22m (926841b1813abaa4)
+[1m[31mBuild failed, waiting for changes to restart...[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.2 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (38530d3d28ae4478)
+[1m[31mDebugger listening on ws://localhost:9229/214ed769-995e-4b48-91a4-b21637c74092[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/214ed769-995e-4b48-91a4-b21637c74092[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 32348  - [39m[31m13-12-2023, 20:26:12 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mNest can't resolve dependencies of the AppService (TransactionRepository, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mError: Nest can't resolve dependencies of the AppService (TransactionRepository, ?). Please make sure that the argument "TRANSACTION_MICROSERVICE" at index [1] is available in the AppModule context.[39m[22m
+[1m[31m[39m[22m
+[1m[31mPotential solutions:[39m[22m
+[1m[31m- Is AppModule a valid NestJS module?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is a provider, is it part of the current AppModule?[39m[22m
+[1m[31m- If "TRANSACTION_MICROSERVICE" is exported from a separate @Module, is that module imported within AppModule?[39m[22m
+[1m[31m  @Module({[39m[22m
+[1m[31m    imports: [ /* the Module containing "TRANSACTION_MICROSERVICE" */ ][39m[22m
+[1m[31m  })[39m[22m
+[1m[31m[39m[22m
+[1m[31m    at Injector.lookupComponentInParentModules (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:254:19)[39m[22m
+[1m[31m    at Injector.resolveComponentInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:207:33)[39m[22m
+[1m[31m    at resolveParam (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:128:38)[39m[22m
+[1m[31m    at async Promise.all (index 1)[39m[22m
+[1m[31m    at Injector.resolveConstructorParams (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:143:27)[39m[22m
+[1m[31m    at Injector.loadInstance (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:70:13)[39m[22m
+[1m[31m    at Injector.loadProvider (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\injector.js:97:9)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:56:13[39m[22m
+[1m[31m    at async Promise.all (index 3)[39m[22m
+[1m[31m    at InstanceLoader.createInstancesOfProviders (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\core\injector\instance-loader.js:55:9)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.71 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (c13afd6e9384a3bb)
+[1m[31mDebugger listening on ws://localhost:9229/6a987ad6-3e40-4855-bea8-15eaa0512950[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/6a987ad6-3e40-4855-bea8-15eaa0512950[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.71 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (ca8b249abeec3e96)
+[1m[31mDebugger listening on ws://localhost:9229/c5f68f9a-0d18-4e36-bdc3-39423fcb73c1[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/c5f68f9a-0d18-4e36-bdc3-39423fcb73c1[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.71 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (fc019b2fd20c525f)
+[1m[31mDebugger listening on ws://localhost:9229/078f8d0f-a38b-42e2-b7d5-f808759af346[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/078f8d0f-a38b-42e2-b7d5-f808759af346[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 10908  - [39m[31m13-12-2023, 20:32:58 [31m  ERROR[39m[31m [38;5;3m[ServerKafka] [39m[31m[31mERROR [Connection] Response SyncGroup(key: 14, version: 3) {"timestamp":"2023-12-13T23:32:58.091Z","logger":"kafkajs","broker":"localhost:9092","clientId":"nestjs-consumer-server","error":"The group is rebalancing, so a rejoin is needed","correlationId":5,"size":14}[39m[31m[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 6.73 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (51bdba1bcf7a3ae5)
+[1m[31mDebugger listening on ws://localhost:9229/19e6a27f-f6be-46eb-98ec-e1a9330e678c[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/19e6a27f-f6be-46eb-98ec-e1a9330e678c[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 73.2 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+
+[1m[31mERROR[39m[22m in [1m./src/app/app.module.ts[39m[22m [1m[32m10:14-61[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@app-nodejs-codechallenge/shared/env' in 'C:\workspace\app-nodejs-codechallenge\apps\transaction-microservice\src\app'[39m[22m
+
+[1m[31mERROR[39m[22m in [1m./apps/transaction-microservice/src/app/app.module.ts:[32m[1m7:29[22m[39m[1m[39m[22m
+[90mTS2307: [39mCannot find module '@app-nodejs-codechallenge/shared/env' or its corresponding type declarations.
+  [0m [90m  5 |[39m [36mimport[39m { [33mTransactionRepository[39m } [36mfrom[39m [32m'./transaction.repository'[39m[33m;[39m[0m
+  [0m [90m  6 |[39m [36mimport[39m { [33mConfigModule[39m } [36mfrom[39m [32m'@nestjs/config'[39m[33m;[39m[0m
+  [0m[31m[1m>[22m[39m[90m  7 |[39m [36mimport[39m { enviroments } [36mfrom[39m [32m'@app-nodejs-codechallenge/shared/env'[39m[33m;[39m[0m
+  [0m [90m    |[39m                             [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m  8 |[39m[0m
+  [0m [90m  9 |[39m [33m@[39m[33mModule[39m({[0m
+  [0m [90m 10 |[39m   imports[33m:[39m [[0m
+
+webpack compiled with [1m[31m2 errors[39m[22m (57b7d9776a1182c1)
+[1m[31mBuild failed, waiting for changes to restart...[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 4.9 MiB (javascript) 937 bytes (runtime) [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/app-root-path/lib/app-root-path.js[39m[22m [1m[32m14:10-56[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/pg/lib/native/client.js[39m[22m [1m[32m7:11-31[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-native' in 'C:\workspace\app-nodejs-codechallenge\node_modules\pg\lib\native'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/connection/ConnectionOptionsReader.js[39m[22m [1m[32m118:32-51[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/driver/react-native/ReactNativeDriver.js[39m[22m [1m[32m720:50-88[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'react-native-sqlite-storage' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\driver\react-native'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m42:27-59[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@google-cloud/spanner' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m47:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mongodb' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m52:27-54[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@sap/hana-client' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m54:27-46[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'hdb-pool' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m59:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mysql' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m61:27-44[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mysql2' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m66:27-46[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'oracledb' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m73:27-47[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-native' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m75:27-53[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-query-stream' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m77:27-68[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'typeorm-aurora-data-api-driver' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m82:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'redis' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m84:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'ioredis' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m89:27-52[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'better-sqlite3' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m94:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'sqlite3' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m99:27-44[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'sql.js' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m104:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mssql' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m109:27-65[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'react-native-sqlite-storage' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m113:19-81[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/util/DirectoryExportedClassesLoader.js[39m[22m [1m[32m62:23-79[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/util/ImportUtils.js[39m[22m [1m[32m20:16-33[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[31mERROR[39m[22m in [1m./src/app/app.module.ts[39m[22m [1m[32m10:14-61[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@app-nodejs-codechallenge/shared/env' in 'C:\workspace\app-nodejs-codechallenge\apps\transaction-microservice\src\app'[39m[22m
+
+[1m[31mERROR[39m[22m in [1m./apps/transaction-microservice/src/app/app.module.ts:[32m[1m7:29[22m[39m[1m[39m[22m
+[90mTS2307: [39mCannot find module '@app-nodejs-codechallenge/shared/env' or its corresponding type declarations.
+  [0m [90m  5 |[39m [36mimport[39m { [33mTransactionRepository[39m } [36mfrom[39m [32m'./transaction.repository'[39m[33m;[39m[0m
+  [0m [90m  6 |[39m [36mimport[39m { [33mConfigModule[39m[33m,[39m [33mConfigService[39m } [36mfrom[39m [32m'@nestjs/config'[39m[33m;[39m[0m
+  [0m[31m[1m>[22m[39m[90m  7 |[39m [36mimport[39m { enviroments } [36mfrom[39m [32m'@app-nodejs-codechallenge/shared/env'[39m[33m;[39m[0m
+  [0m [90m    |[39m                             [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m  8 |[39m [36mimport[39m { [33mTypeOrmModule[39m } [36mfrom[39m [32m'@nestjs/typeorm'[39m[33m;[39m[0m
+  [0m [90m  9 |[39m[0m
+  [0m [90m 10 |[39m [33m@[39m[33mModule[39m({[0m
+
+webpack compiled with [1m[31m2 errors[39m[22m and [1m[33m24 warnings[39m[22m (65f46af2409d11e5)
+[1m[31mBuild failed, waiting for changes to restart...[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 4.9 MiB (javascript) 937 bytes (runtime) [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/app-root-path/lib/app-root-path.js[39m[22m [1m[32m14:10-56[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/pg/lib/native/client.js[39m[22m [1m[32m7:11-31[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-native' in 'C:\workspace\app-nodejs-codechallenge\node_modules\pg\lib\native'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/connection/ConnectionOptionsReader.js[39m[22m [1m[32m118:32-51[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/driver/react-native/ReactNativeDriver.js[39m[22m [1m[32m720:50-88[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'react-native-sqlite-storage' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\driver\react-native'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m42:27-59[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@google-cloud/spanner' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m47:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mongodb' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m52:27-54[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@sap/hana-client' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m54:27-46[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'hdb-pool' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m59:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mysql' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m61:27-44[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mysql2' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m66:27-46[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'oracledb' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m73:27-47[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-native' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m75:27-53[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-query-stream' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m77:27-68[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'typeorm-aurora-data-api-driver' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m82:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'redis' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m84:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'ioredis' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m89:27-52[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'better-sqlite3' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m94:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'sqlite3' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m99:27-44[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'sql.js' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m104:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mssql' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m109:27-65[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'react-native-sqlite-storage' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m113:19-81[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/util/DirectoryExportedClassesLoader.js[39m[22m [1m[32m62:23-79[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/util/ImportUtils.js[39m[22m [1m[32m20:16-33[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[31mERROR[39m[22m in [1m./src/app/app.module.ts[39m[22m [1m[32m10:14-61[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@app-nodejs-codechallenge/shared/env' in 'C:\workspace\app-nodejs-codechallenge\apps\transaction-microservice\src\app'[39m[22m
+
+[1m[31mERROR[39m[22m in [1m./apps/transaction-microservice/src/app/app.module.ts:[32m[1m7:29[22m[39m[1m[39m[22m
+[90mTS2307: [39mCannot find module '@app-nodejs-codechallenge/shared/env' or its corresponding type declarations.
+  [0m [90m  5 |[39m [36mimport[39m { [33mTransactionRepository[39m } [36mfrom[39m [32m'./transaction.repository'[39m[33m;[39m[0m
+  [0m [90m  6 |[39m [36mimport[39m { [33mConfigModule[39m[33m,[39m [33mConfigService[39m } [36mfrom[39m [32m'@nestjs/config'[39m[33m;[39m[0m
+  [0m[31m[1m>[22m[39m[90m  7 |[39m [36mimport[39m { enviroments } [36mfrom[39m [32m'@app-nodejs-codechallenge/shared/env'[39m[33m;[39m[0m
+  [0m [90m    |[39m                             [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m  8 |[39m [36mimport[39m { [33mTypeOrmModule[39m } [36mfrom[39m [32m'@nestjs/typeorm'[39m[33m;[39m[0m
+  [0m [90m  9 |[39m[0m
+  [0m [90m 10 |[39m [33m@[39m[33mModule[39m({[0m
+
+webpack compiled with [1m[31m2 errors[39m[22m and [1m[33m24 warnings[39m[22m (cf7c1416a254b3e9)
+[1m[31mBuild failed, waiting for changes to restart...[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 4.9 MiB (javascript) 937 bytes (runtime) [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/app-root-path/lib/app-root-path.js[39m[22m [1m[32m14:10-56[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/pg/lib/native/client.js[39m[22m [1m[32m7:11-31[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-native' in 'C:\workspace\app-nodejs-codechallenge\node_modules\pg\lib\native'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/connection/ConnectionOptionsReader.js[39m[22m [1m[32m118:32-51[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/driver/react-native/ReactNativeDriver.js[39m[22m [1m[32m720:50-88[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'react-native-sqlite-storage' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\driver\react-native'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m42:27-59[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@google-cloud/spanner' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m47:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mongodb' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m52:27-54[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@sap/hana-client' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m54:27-46[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'hdb-pool' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m59:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mysql' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m61:27-44[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mysql2' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m66:27-46[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'oracledb' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m73:27-47[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-native' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m75:27-53[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'pg-query-stream' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m77:27-68[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'typeorm-aurora-data-api-driver' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m82:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'redis' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m84:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'ioredis' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m89:27-52[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'better-sqlite3' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m94:27-45[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'sqlite3' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m99:27-44[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'sql.js' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m104:27-43[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mssql' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m109:27-65[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'react-native-sqlite-storage' in 'C:\workspace\app-nodejs-codechallenge\node_modules\typeorm\platform'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/platform/PlatformTools.js[39m[22m [1m[32m113:19-81[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/util/DirectoryExportedClassesLoader.js[39m[22m [1m[32m62:23-79[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../node_modules/typeorm/util/ImportUtils.js[39m[22m [1m[32m20:16-33[39m[22m
+[1mCritical dependency: the request of a dependency is an expression[39m[22m
+
+[1m[31mERROR[39m[22m in [1m./src/app/app.module.ts[39m[22m [1m[32m10:14-61[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '@app-nodejs-codechallenge/shared/env' in 'C:\workspace\app-nodejs-codechallenge\apps\transaction-microservice\src\app'[39m[22m
+
+[1m[31mERROR[39m[22m in [1m./apps/transaction-microservice/src/app/app.module.ts:[32m[1m7:29[22m[39m[1m[39m[22m
+[90mTS2307: [39mCannot find module '@app-nodejs-codechallenge/shared/env' or its corresponding type declarations.
+  [0m [90m  5 |[39m [36mimport[39m { [33mTransactionRepository[39m } [36mfrom[39m [32m'./transaction.repository'[39m[33m;[39m[0m
+  [0m [90m  6 |[39m [36mimport[39m { [33mConfigModule[39m[33m,[39m [33mConfigService[39m } [36mfrom[39m [32m'@nestjs/config'[39m[33m;[39m[0m
+  [0m[31m[1m>[22m[39m[90m  7 |[39m [36mimport[39m { enviroments } [36mfrom[39m [32m'@app-nodejs-codechallenge/shared/env'[39m[33m;[39m[0m
+  [0m [90m    |[39m                             [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m  8 |[39m [36mimport[39m { [33mTypeOrmModule[39m } [36mfrom[39m [32m'@nestjs/typeorm'[39m[33m;[39m[0m
+  [0m [90m  9 |[39m[0m
+  [0m [90m 10 |[39m [33m@[39m[33mModule[39m({[0m
+
+webpack compiled with [1m[31m2 errors[39m[22m and [1m[33m24 warnings[39m[22m (ce39315b95d489b2)
+[1m[31mBuild failed, waiting for changes to restart...[39m[22m

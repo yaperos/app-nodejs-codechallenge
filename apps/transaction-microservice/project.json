@@ -1,0 +1,53 @@
+{
+  "name": "transaction-microservice",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/transaction-microservice/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/transaction-microservice",
+        "main": "apps/transaction-microservice/src/main.ts",
+        "tsConfig": "apps/transaction-microservice/tsconfig.app.json",
+        "assets": ["apps/transaction-microservice/src/assets"],
+        "webpackConfig": "apps/transaction-microservice/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "transaction-microservice:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "transaction-microservice:build:development"
+        },
+        "production": {
+          "buildTarget": "transaction-microservice:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/transaction-microservice/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

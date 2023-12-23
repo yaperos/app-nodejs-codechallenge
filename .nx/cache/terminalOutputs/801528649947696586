@@ -1,0 +1,48 @@
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.95 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (a8c0aa4ad5467489)
+[1m[31mDebugger listening on ws://localhost:9229/9d124a03-6a7f-45b7-92f7-6c1b478d1eba[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/9d124a03-6a7f-45b7-92f7-6c1b478d1eba[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.96 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (f24a07824b7bef6d)
+[1m[31mDebugger listening on ws://localhost:9229/bfb621b4-3895-480d-a801-9429d5a6bffb[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/bfb621b4-3895-480d-a801-9429d5a6bffb[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mC:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:152[39m[22m
+[1m[31m            throw new invalid_kafka_client_topic_exception_1.InvalidKafkaClientTopicException(topic);[39m[22m
+[1m[31m                  ^[39m[22m
+[1m[31mError: The client consumer did not subscribe to the corresponding reply topic (transaction.create.reply).[39m[22m
+[1m[31m    at ClientKafka.getReplyTopicPartition (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:152:19)[39m[22m
+[1m[31m    at ClientKafka.publish (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:168:41)[39m[22m
+[1m[31m    at Observable._subscribe (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-proxy.js:23:25)[39m[22m
+[1m[31m    at Observable._trySubscribe (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:244:19)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:234:18[39m[22m
+[1m[31m    at Object.errorContext (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\util\errorContext.ts:29:5)[39m[22m
+[1m[31m    at Observable.subscribe (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:220:5)[39m[22m
+[1m[31m    at doInnerSub (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\mergeInternals.ts:71:40)[39m[22m
+[1m[31m    at outerNext (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\mergeInternals.ts:53:58)[39m[22m
+[1m[31m    at OperatorSubscriber._this._next (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\OperatorSubscriber.ts:70:13)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.97 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (8134c42695eb5f93)
+[1m[31mDebugger listening on ws://localhost:9229/df76c000-23ca-4496-9c68-1afc265c2d7d[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/df76c000-23ca-4496-9c68-1afc265c2d7d[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 18576  - [39m[31m13-12-2023, 22:02:11 [31m  ERROR[39m[31m [38;5;3m[ClientKafka] [39m[31m[31mERROR [Connection] Response Metadata(key: 3, version: 6) {"timestamp":"2023-12-14T01:02:11.216Z","logger":"kafkajs","broker":"localhost:9092","clientId":"transaction-client","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","correlationId":1,"size":98}[39m[31m[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 9.03 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (6db9862159ee7a4d)
+[1m[31mDebugger listening on ws://localhost:9229/97c89162-d0c7-4a6d-981b-5d651f961878[39m[22m
+[1m[31mDebugger listening on ws://localhost:9229/97c89162-d0c7-4a6d-981b-5d651f961878[39m[22m
+[1m[31mFor help, see: https://nodejs.org/en/docs/inspector[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 39136  - [39m[31m13-12-2023, 22:02:18 [31m  ERROR[39m[31m [38;5;3m[ClientKafka] [39m[31m[31mERROR [Connection] Response Metadata(key: 3, version: 6) {"timestamp":"2023-12-14T01:02:18.002Z","logger":"kafkajs","broker":"localhost:9092","clientId":"transaction-client","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","correlationId":1,"size":161}[39m[31m[39m[22m
+[1m[31m[39m[22m

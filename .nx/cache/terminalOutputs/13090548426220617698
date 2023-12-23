@@ -1,0 +1,385 @@
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.17 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (2e3bf63b75a54747)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:18:37 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (1)...[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:18:40 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (2)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:18:43 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (3)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:18:46 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (4)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:18:50 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (5)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:18:53 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (6)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:18:56 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (7)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:18:59 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (8)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:19:02 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (9)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 2896  - [39m[31m13-12-2023, 21:19:02 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mdatabase "yapeCodeChallenge" does not exist[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.17 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (e72cbe5a2e9553e7)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:31:38 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (1)...[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:31:41 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (2)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:31:44 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (3)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:31:47 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (4)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:31:50 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (5)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:31:53 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (6)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:31:56 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (7)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:31:59 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (8)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:32:02 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (9)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30192  - [39m[31m13-12-2023, 21:32:02 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mdatabase "yapeCodeChallenge" does not exist[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 9.77 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (dcf0162dcf37ddf0)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:18 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (1)...[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:21 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (2)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:24 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (3)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:27 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (4)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:30 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (5)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:33 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (6)...[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:36 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (7)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:39 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (8)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:42 [31m  ERROR[39m[31m [38;5;3m[TypeOrmModule] [39m[31m[31mUnable to connect to the database. Retrying (9)...[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 19680  - [39m[31m13-12-2023, 21:32:42 [31m  ERROR[39m[31m [38;5;3m[ExceptionHandler] [39m[31m[31mdatabase "yapeCodeChallenge" does not exist[39m[31m[39m[22m
+[1m[31merror: database "yapeCodeChallenge" does not exist[39m[22m
+[1m[31m    at Parser.parseErrorMessage (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:369:69)[39m[22m
+[1m[31m    at Parser.handlePacket (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:188:21)[39m[22m
+[1m[31m    at Parser.parse (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\parser.ts:103:30)[39m[22m
+[1m[31m    at Socket.<anonymous> (C:\workspace\app-nodejs-codechallenge\node_modules\pg-protocol\src\index.ts:7:48)[39m[22m
+[1m[31m    at Socket.emit (node:events:514:28)[39m[22m
+[1m[31m    at addChunk (node:internal/streams/readable:545:12)[39m[22m
+[1m[31m    at readableAddChunkPushByteMode (node:internal/streams/readable:495:3)[39m[22m
+[1m[31m    at Socket.Readable.push (node:internal/streams/readable:375:5)[39m[22m
+[1m[31m    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+

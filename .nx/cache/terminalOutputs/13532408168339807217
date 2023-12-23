@@ -1,0 +1,192 @@
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.93 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (bfba4cee91d600bf)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.92 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+
+[1m[31mERROR[39m[22m in [1m./apps/api-gateway/src/app/transaction/transaction.controller.ts:[32m[1m11:40[22m[39m[1m[39m[22m
+[90mTS2551: [39mProperty 'createTRansaction' does not exist on type 'TransactionService'. Did you mean 'createTransaction'?
+  [0m [90m  9 |[39m     [33m@[39m[33mPost[39m([32m''[39m)[0m
+  [0m [90m 10 |[39m     createTransaction([33m@[39m[33mBody[39m([33mValidationPipe[39m) createTransactionDto[33m:[39m [33mCreateTransactionDto[39m) {[0m
+  [0m[31m[1m>[22m[39m[90m 11 |[39m         [36mreturn[39m [36mthis[39m[33m.[39mtransactionService[33m.[39mcreateTRansaction(createTransactionDto)[33m;[39m[0m
+  [0m [90m    |[39m                                        [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m 12 |[39m     }[0m
+  [0m [90m 13 |[39m }[0m
+  [0m [90m 14 |[39m[0m
+
+webpack compiled with [1m[31m1 error[39m[22m (d55c25c548b30737)
+[1m[31mBuild failed, waiting for changes to restart...[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 7.92 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (ce42ef629076c06c)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.01 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (57bbf9d98ec00c05)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.08 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (5fd546fbc63074ee)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.09 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (4f244e77d3999ed6)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.09 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (13ba3831e6c6be92)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mC:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:152[39m[22m
+[1m[31m            throw new invalid_kafka_client_topic_exception_1.InvalidKafkaClientTopicException(topic);[39m[22m
+[1m[31m                  ^[39m[22m
+[1m[31mError: The client consumer did not subscribe to the corresponding reply topic (create_transaction.reply).[39m[22m
+[1m[31m    at ClientKafka.getReplyTopicPartition (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:152:19)[39m[22m
+[1m[31m    at ClientKafka.publish (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:168:41)[39m[22m
+[1m[31m    at Observable._subscribe (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-proxy.js:23:25)[39m[22m
+[1m[31m    at Observable._trySubscribe (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:244:19)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:234:18[39m[22m
+[1m[31m    at Object.errorContext (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\util\errorContext.ts:29:5)[39m[22m
+[1m[31m    at Observable.subscribe (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:220:5)[39m[22m
+[1m[31m    at doInnerSub (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\mergeInternals.ts:71:40)[39m[22m
+[1m[31m    at outerNext (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\mergeInternals.ts:53:58)[39m[22m
+[1m[31m    at OperatorSubscriber._this._next (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\OperatorSubscriber.ts:70:13)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.09 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (94d7265d4abf2b5d)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mC:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:152[39m[22m
+[1m[31m            throw new invalid_kafka_client_topic_exception_1.InvalidKafkaClientTopicException(topic);[39m[22m
+[1m[31m                  ^[39m[22m
+[1m[31mError: The client consumer did not subscribe to the corresponding reply topic (create_transaction.reply).[39m[22m
+[1m[31m    at ClientKafka.getReplyTopicPartition (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:152:19)[39m[22m
+[1m[31m    at ClientKafka.publish (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:168:41)[39m[22m
+[1m[31m    at Observable._subscribe (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-proxy.js:23:25)[39m[22m
+[1m[31m    at Observable._trySubscribe (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:244:19)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:234:18[39m[22m
+[1m[31m    at Object.errorContext (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\util\errorContext.ts:29:5)[39m[22m
+[1m[31m    at Observable.subscribe (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:220:5)[39m[22m
+[1m[31m    at doInnerSub (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\mergeInternals.ts:71:40)[39m[22m
+[1m[31m    at outerNext (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\mergeInternals.ts:53:58)[39m[22m
+[1m[31m    at OperatorSubscriber._this._next (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\OperatorSubscriber.ts:70:13)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.08 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (03d6949a5c32a2af)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.08 KiB [1m[33m[entry][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (03d6949a5c32a2af)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.48 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (c7b4a340a72d7f74)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 29096  - [39m[31m13-12-2023, 19:37:20 [31m  ERROR[39m[31m [38;5;3m[ClientKafka] [39m[31m[31mERROR [Connection] Response Metadata(key: 3, version: 6) {"timestamp":"2023-12-13T22:37:20.224Z","logger":"kafkajs","broker":"localhost:9092","clientId":"transaction-client","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","correlationId":1,"size":88}[39m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31m[39m[22m
+[1m[31mC:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:152[39m[22m
+[1m[31m            throw new invalid_kafka_client_topic_exception_1.InvalidKafkaClientTopicException(topic);[39m[22m
+[1m[31m                  ^[39m[22m
+[1m[31mError: The client consumer did not subscribe to the corresponding reply topic (transaction.reply).[39m[22m
+[1m[31m    at ClientKafka.getReplyTopicPartition (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:152:19)[39m[22m
+[1m[31m    at ClientKafka.publish (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-kafka.js:168:41)[39m[22m
+[1m[31m    at Observable._subscribe (C:\workspace\app-nodejs-codechallenge\node_modules\@nestjs\microservices\client\client-proxy.js:23:25)[39m[22m
+[1m[31m    at Observable._trySubscribe (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:244:19)[39m[22m
+[1m[31m    at C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:234:18[39m[22m
+[1m[31m    at Object.errorContext (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\util\errorContext.ts:29:5)[39m[22m
+[1m[31m    at Observable.subscribe (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\Observable.ts:220:5)[39m[22m
+[1m[31m    at doInnerSub (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\mergeInternals.ts:71:40)[39m[22m
+[1m[31m    at outerNext (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\mergeInternals.ts:53:58)[39m[22m
+[1m[31m    at OperatorSubscriber._this._next (C:\workspace\app-nodejs-codechallenge\node_modules\rxjs\src\internal\operators\OperatorSubscriber.ts:70:13)[39m[22m
+[1m[31m[39m[22m
+
+[36m>[39m [7m[1m[36m NX [39m[22m[27m [1mProcess exited with code 1, waiting for changes to restart...[22m
+
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.49 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (720bf7a143e5ee8e)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+[1m[31m[31m[Nest] 30576  - [39m[31m13-12-2023, 19:37:45 [31m  ERROR[39m[31m [38;5;3m[ClientKafka] [39m[31m[31mERROR [Connection] Response Metadata(key: 3, version: 6) {"timestamp":"2023-12-13T22:37:45.597Z","logger":"kafkajs","broker":"localhost:9092","clientId":"transaction-client","error":"There is no leader for this topic-partition as we are in the middle of a leadership election","correlationId":1,"size":91}[39m[31m[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.52 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (3d4fac63b0e192be)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.5 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (bfa607c70d767dcc)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.59 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (091d1ef94a6ddec5)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.19 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (24c4141d0e7d746f)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.27 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (3b7fec02c6e3e940)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.02 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (9a053250c0acb51c)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.02 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (ee0ac45dfbd0716b)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.02 KiB [1m[33m[entry][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (ee0ac45dfbd0716b)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.02 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (51a420b48d589bf5)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.06 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (86e498283716210d)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.06 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (24a14c1704986acf)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.08 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (3cd904993a695700)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.17 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (08ab2988ee49422b)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.23 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+
+[1m[31mERROR[39m[22m in [1m./apps/api-gateway/src/app/transaction/transaction.service.ts:[32m[1m17:16[22m[39m[1m[39m[22m
+[90mTS2794: [39mExpected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?
+  [0m [90m 15 |[39m       [36mthis[39m[33m.[39mauthClient[33m.[39msend([32m'transaction'[39m[33m,[39m [33mJSON[39m[33m.[39mstringify(createTransactionDto))[33m.[39msubscribe((response[33m:[39m [33mTransaction[39m) [33m=>[39m {[0m
+  [0m [90m 16 |[39m         console[33m.[39mlog([32m'pq se revice esto? '[39m[33m,[39m response)[33m;[39m[0m
+  [0m[31m[1m>[22m[39m[90m 17 |[39m         [36mreturn[39m resolve()[33m;[39m[0m
+  [0m [90m    |[39m                [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[0m
+  [0m [90m 18 |[39m       })[33m;[39m[0m
+  [0m [90m 19 |[39m     })[33m;[39m[0m
+  [0m [90m 20 |[39m   }[0m
+
+webpack compiled with [1m[31m1 error[39m[22m (c7eee585ef4dd76f)
+[1m[31mBuild failed, waiting for changes to restart...[39m[22m
+chunk (runtime: main) [1m[32mmain.js[39m[22m (main) 8.23 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+webpack compiled [1m[32msuccessfully[39m[22m (dfa876e184a3379b)
+[1m[31mStarting inspector on localhost:9229 failed: address already in use[39m[22m
+[1m[31m[39m[22m
