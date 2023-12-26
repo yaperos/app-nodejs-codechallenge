@@ -1,0 +1,29 @@
+steps:
+# This step builds the container image.
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/ms-smartki-export'
+  - "--file=iac/docker/Dockerfile"
+  - '.'
+
+# This step pushes the image to Container Registry
+# The PROJECT_ID and SHORT_SHA variables are automatically
+# replaced by Cloud Build.
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/ms-smartki-export'
+
+# deploy container image to GKE
+- name: 'gcr.io/cloud-builders/gke-deploy'
+  args:
+  - 'run'
+  - '--filename=iac/k8s/develop/kubeconfig-develop.yml'
+  - '--image=gcr.io/$PROJECT_ID/ms-smartki-export'
+  - '--location=us-west1-a'
+  - '--cluster=cluster-desarrollo-cross'
+timeout: 1200s

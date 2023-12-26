@@ -1,0 +1,18 @@
+image: node:latest
+stages:
+  - deploy
+
+variables: 
+  SMK_CLOUD_BUILD_PATH: iac/k8s/develop/cloudbuild-develop.yaml
+build:
+  stage: deploy
+  only:
+    - template
+  image: google/cloud-sdk
+  services:
+    - docker:dind
+  script:
+    - echo $CLOUD_SERVICE_KEY > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $CLOUD_PROJECT_ID
+    - gcloud builds submit --timeout=3600s . --config=$SMK_CLOUD_BUILD_PATH

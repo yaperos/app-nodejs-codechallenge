@@ -1,82 +1,56 @@
-# Yape Code Challenge :rocket:
+# Desafio Tecnico Yape
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# Se crean dos microservicios
+- Transaction Consumer
+- Transaction Producer
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+# Stack Tecnologico:
+- Lenguajes de Programacion : TypeScript
+- Runtime : NodeJS
+- Framework : NestJS
+- ORM: TypeORM
+- Persistencia: PostgreSql
+- Comunicacion: Apache Kafka
+- Logging: Log4js
+- Otros: AOP Interceptor Logs
+- Arquitectura: Hexagonal segun template NestJS
+- Documentacion: SwaggerModule Nest
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+### Transaction Consumer
+Encargado de recibir el request de la transaccion nueva
 
-# Problem
+### Transaction Producer
+Encargado de procesar de forma asincrona el consumo del servicio de Antifraude y actualizar el resultado de la evaluacion
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+### Swagger
+Se genera de forma automatica a partir de SwaggerModule
+http://localhost:3001/api
 
-Every transaction with a value greater than 1000 should be rejected.
+### Variables de Entorno
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+- server=localhost : direccion ip o nombre del base de datos
+- port=5432 : puerto de base de datos
+- username=postgres : usuario de base de datos
+- password=admin1 : password de base de datos
+- database=postgres : nombre de instancia de base de datos
+- antifraud_path=https://dw02w.wiremockapi.cloud/json : endpoint de servicio antifraude
 
-# Tech Stack
+#### Opcionales
+- API_ADDRESS: Para establecer Path de Endpoint
+- clientID: id del cliente kafka
+- kafkaServer : direccion ip o nombre de broker kafka
+- groupId : id del grupo 
+- topic : topico de mensajeria
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+### Logs - Opcionales
+- LOG_TYPE
+- LOG_FILENAME
+- LOG_numBackups
+- LOG_LEVEL
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+### MockService Antifraude
+- Se crear Mock Service en wiremock.cloud para evaluacion de fraude
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+### Kafka
+- Topico : transaction-topic
