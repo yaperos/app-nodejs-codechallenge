@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true
+  },
+  "include": [
+    "./.*.cjs", // root commonjs files
+    "./.*.js", // root javascript config files
+    "**/*.js", // javascript files
+    "**/*.ts", // typescript files
+    "**/*.d.ts" // typescript interface files
+  ]
+}

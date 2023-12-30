@@ -1,19 +1,81 @@
-version: "3.7"
+version: "3.3"
+
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
+
+  api:
+    build:
+      context: .
+    image: app-nodejs-codechallenge
+    env_file: docker-compose.env
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      SERVICES: api
+      PORT: 3000
+    depends_on:
+      - zookeeper
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api-gw.rule=PathPrefix(`/`)"
+      - "traefik.http.services.api-gw.loadbalancer.server.port=3000"
+    networks:
+      - internal
+
+  transaction:
+    build:
+      context: .
+    image: app-nodejs-codechallenge
+    env_file: docker-compose.env
+    environment:
+      SERVICES: transaction
+    depends_on:
+      - zookeeper
+    networks:
+      - internal
+
+  anti-fraud:
+    build:
+      context: .
+    image: app-nodejs-codechallenge
+    env_file: docker-compose.env
+    environment:
+      SERVICES: anti-fraud
+    depends_on:
+      - zookeeper
+    networks:
+      - internal
+
+  storage:
+    build:
+      context: .
+    image: app-nodejs-codechallenge
+    env_file: docker-compose.env
+    environment:
+      SERVICES: storage
+    depends_on:
+      - mongo
+      - zookeeper
+    networks:
+      - internal
+
+  mongo:
+    image: mongo:4
+    volumes:
+      - data:/data/db
+    networks:
+      - internal
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    networks:
+      - internal
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: 
+      - zookeeper
+    networks:
+      - internal
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -22,4 +84,32 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - 29092:29092
+
+  traefik:
+    image: traefik:v2.4
+    command:
+      - "--api.insecure=true" # Don't do that in production!
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+    ports:
+      - 3000:80
+      - 3001:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - internal
+      - default
+  
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
+    networks:
+      - internal
+
+networks:
+  internal:
+
+volumes:
+  data:
