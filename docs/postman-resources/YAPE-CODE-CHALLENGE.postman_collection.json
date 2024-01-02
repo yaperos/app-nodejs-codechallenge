@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "ed34ee06-9770-4ca9-bbca-59b80979e845",
+		"name": "YAPE-CODE-CHALLENGE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1116915"
+	},
+	"item": [
+		{
+			"name": "create-transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"",
+							"    pm.environment.set(\"transacctionId\", jsonData.data.transactionId);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"accountExternalIdDebit\": \"{{$guid}}\",\n      \"accountExternalIdCredit\": \"{{$guid}}\",\n      \"tranferTypeId\": 1,\n      \"value\": 2000\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}{{host}}{{port}}/api/v1/transaction",
+					"host": [
+						"{{protocol}}{{host}}{{port}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transaction"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success-responde",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"accountExternalIdDebit\": \"{{$guid}}\",\n      \"accountExternalIdCredit\": \"{{$guid}}\",\n      \"tranferTypeId\": 1,\n      \"value\": 100\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/transfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"transfer"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "110"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"6e-YgqruUJSVikxEAih10BH5BvMHVg\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 Jan 2024 02:32:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Transaccion creada correctamente\",\n    \"data\": {\n        \"transactionId\": \"ebe0b675-69bd-44cf-8565-73d066a74437\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "find-transaction",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}{{host}}{{port}}/api/v1/transaction/{{transacctionId}}",
+					"host": [
+						"{{protocol}}{{host}}{{port}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transaction",
+						"{{transacctionId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "tx-not-found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/transaction/{{$guid}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"{{$guid}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "35"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"23-l9tJ1eYfMXboaoT68Eh78gFH/2Y\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 Jan 2024 15:12:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Transaction not found\"\n}"
+				},
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/transaction/{{transacctionId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"{{transacctionId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "191"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"bf-RTPaW47uhZde+a6g2YtVLeWhmnw\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 Jan 2024 15:15:59 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"createdAt\": \"2024-01-02T14:34:42.417Z\",\n    \"transactionExternalId\": \"2cdb3e2e-8d17-436f-b48f-df143bc5482a\",\n    \"transactionStatus\": {\n        \"name\": \"PENDING\"\n    },\n    \"transactionType\": {\n        \"name\": \"1\"\n    },\n    \"value\": \"$100.00\"\n}"
+				}
+			]
+		}
+	]
+}

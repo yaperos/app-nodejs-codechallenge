@@ -25,9 +25,12 @@ describe('TransactionService', () => {
                 if (token === TRANSACTION_REPOSITORY_PORT_TOKEN) {
                     return {
                         createTransaction: (transactionDto: TransactionDto) => {
+                            console.log(transactionDto);
                             return of(transactionId);
                         },
                         findTransaction: (transactionId: UUID) => {
+                            console.log(transactionId);
+
                             return of({
                                 createdAt: "2024-01-02T14:34:42.417Z",
                                 transactionExternalId: "2cdb3e2e-8d17-436f-b48f-df143bc5482a",

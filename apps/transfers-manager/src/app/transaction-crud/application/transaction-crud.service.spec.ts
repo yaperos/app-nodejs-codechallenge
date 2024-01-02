@@ -33,6 +33,7 @@ describe('TransactionCrudService', () => {
                 if (token === CREATE_TRANSACTION_PORT_TOKEN) {
                     return {
                         createTransaction: (transactionDto: TransactionDto) => {
+                            console.log(transactionDto);
                             return of(transactionId);
                         },
                     };
@@ -40,6 +41,7 @@ describe('TransactionCrudService', () => {
                 if (token === ANTI_FRAUD_SERVICE_PORT_TOKEN) {
                     return {
                         triggerAntiFraudService: (command: AntiFraudServiceCommand) => {
+                            console.log(command);
                             console.log('executing triggerAntiFraudService');
                         }
                     }

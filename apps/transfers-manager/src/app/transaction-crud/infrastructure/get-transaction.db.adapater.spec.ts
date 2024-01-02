@@ -1,12 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { v4 as uuidV4 } from 'uuid';
 
-import { ConfigModule } from '@nestjs/config';
-import { TransactionDto, TransactionEntity, TransactionResult, TransactionStatusEnum } from '@yape-transactions/shared';
-import { CREATE_TRANSACTION_PORT_TOKEN } from '../domain/create-transaction.port';
-import { of } from 'rxjs';
-import { ANTI_FRAUD_SERVICE_PORT_TOKEN, AntiFraudServicePort } from '../domain/anti-fraud-service.port';
-import { AntiFraudServiceCommand } from '../domain/anti-fraud-service.command';
+import { TransactionEntity, TransactionResult, TransactionStatusEnum } from '@yape-transactions/shared';
 import { GetTransactionDbAdapter } from './get-transaction.db.adapater';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';

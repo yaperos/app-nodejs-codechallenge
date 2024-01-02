@@ -27,6 +27,7 @@ describe('AntiFraudService', () => {
         if (token === NOTIFY_STATUS_CHANGED_PORT_TOKEN) {
           return {
             notifyStatusChanged: (event: string, transferData: { transactionId: UUID }) => {
+              console.log('data', event, transferData);
               return null;
             },
           };

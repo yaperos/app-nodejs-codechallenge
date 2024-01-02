@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
-import { Observable, map, tap } from "rxjs";
+import { Observable, map } from "rxjs";
 import { TransferCommand } from "../domain/transfer.commnad";
 import { TRANSACTION_REPOSITORY_PORT_TOKEN, TransactionRepositoryPort } from "../domain/transaction-repository.port";
 import { CommonResponse } from "@yape-transactions/shared";
