@@ -23,3 +23,19 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  anti-fraud:
+    build: anti-fraud-microservice/.
+    depends_on: [kafka]
+    environment:
+      - BROKERS=kafka:29092
+  transactions:
+    build:
+      context: transactions-microservice/.
+      dockerfile: Dockerfile
+    depends_on: [kafka, anti-fraud]
+    environment:
+      - BROKERS=kafka:29092
+      - POSTGRES_URL=postgres://postgres:postgres@postgres:5432/postgres
+      - POSTGRES_PRISMA_URL=postgres://postgres:postgres@postgres:5432/postgres?pgbouncer=true&connect_timeout=15
+    ports:
+      - 8000:8000

@@ -1,0 +1,35 @@
+{
+  "name": "transactions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "build": "prisma generate && prisma db push && prisma db seed"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "5.7.1",
+    "dotenv": "16.3.1",
+    "express": "4.18.2",
+    "express-joi-validation": "5.0.1",
+    "http-errors": "2.0.0",
+    "joi": "17.11.0",
+    "kafkajs": "2.2.4",
+    "pino": "8.17.2",
+    "pino-pretty": "10.3.1",
+    "verror": "1.10.1"
+  },
+  "devDependencies": {
+    "eslint": "8.56.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.29.1",
+    "prisma": "5.7.1"
+  }
+}

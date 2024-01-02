@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL") // uses a direct connection
+}
+
+// transfer, deposit, withdraw
+model TransactionType {
+  id   Int    @id
+  name String
+  key  String @unique
+
+  transactions   Transaction[]
+  operationTypes OperationType[]
+}
+
+// transfer type, deposit type, withdraw type
+model OperationType {
+  transactionTypeId Int
+  operationTypeId   Int
+  name              String
+
+  transactionType TransactionType @relation(fields: [transactionTypeId], references: [id])
+
+  transactions Transaction[]
+
+  @@id([transactionTypeId, operationTypeId])
+}
+
+model TransactionStatus {
+  id   Int    @id
+  name String
+  key  String @unique
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  transactionExternalId   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountExternalIdDebit  String
+  accountExternalIdCredit String
+  operationTypeId         Int
+  transactionTypeId       Int
+  value                   Float
+  transactionStatusId     Int
+  createdAt               DateTime @default(now()) @db.Timestamptz(6)
+
+  transactionStatus TransactionStatus @relation(fields: [transactionStatusId], references: [id])
+  transactionType   TransactionType   @relation(fields: [transactionTypeId], references: [id])
+  operationType     OperationType     @relation(fields: [operationTypeId, transactionTypeId], references: [operationTypeId, transactionTypeId])
+}

@@ -1,0 +1,26 @@
+{
+  "name": "anti-fraud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "16.3.1",
+    "joi": "17.11.0",
+    "kafkajs": "2.2.4",
+    "pino": "8.17.2",
+    "pino-pretty": "10.3.1",
+    "verror": "1.10.1"
+  },
+  "devDependencies": {
+    "eslint": "8.56.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.29.1"
+  }
+}
