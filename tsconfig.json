@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    "target": "es2020",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "node16",
+    "moduleResolution": "node16",
+    "declaration": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+  },
+  "references": [
+    { "path": "./libs/utils" },
+    { "path": "./libs/di" },
+  ]
+}

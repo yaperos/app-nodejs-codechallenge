@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "tsconfigRootDir": "./",
+    "project": ["./tsconfig.json", "./libs/*/tsconfig.json", "./apps/*/tsconfig.json"]
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "ignorePatterns":[
+    "node_modules",
+    "dist",
+    "*.json"
+  ]
+}
