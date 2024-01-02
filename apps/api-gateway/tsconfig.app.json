@@ -16,5 +16,5 @@
   ],
   "include": [
     "src/**/*.ts"
-  ]
+, "../../lib/shared/src/lib/dto/transfer.dto.ts"  ]
 }

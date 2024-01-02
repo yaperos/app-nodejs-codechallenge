@@ -1,0 +1,53 @@
+{
+  "name": "transfers-manager",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/transfers-manager/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/transfers-manager",
+        "main": "apps/transfers-manager/src/main.ts",
+        "tsConfig": "apps/transfers-manager/tsconfig.app.json",
+        "assets": ["apps/transfers-manager/src/assets"],
+        "webpackConfig": "apps/transfers-manager/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "transfers-manager:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "transfers-manager:build:development"
+        },
+        "production": {
+          "buildTarget": "transfers-manager:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/transfers-manager/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
