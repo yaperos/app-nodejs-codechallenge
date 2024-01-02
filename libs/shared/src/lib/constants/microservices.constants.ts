@@ -11,6 +11,7 @@ export const MICROSERVICES_CONSTANTS = Object.freeze({
         TRANSACTION_APPROVED: 'transaction_approved',
         TRANSACTION_REJECTED: 'transaction_rejecetd',
         TRANSACTION_CREATED: 'transaction_created',
-        CREATE_TRANSACTION: 'create_transaction'
+        CREATE_TRANSACTION: 'create_transaction',
+        GET_TRANSACTION: 'get_transaction'
     }
 })

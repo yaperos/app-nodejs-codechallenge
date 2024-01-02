@@ -1,8 +1,9 @@
 import { Inject, Logger, OnModuleInit } from "@nestjs/common";
 import { ClientKafka } from "@nestjs/microservices";
-import { tap } from "rxjs";
-import { MICROSERVICES_CONSTANTS, TransactionDto } from "@yape-transactions/shared";
+import { Observable, map, tap } from "rxjs";
+import { MICROSERVICES_CONSTANTS, TransactionDto, TransactionResult } from "@yape-transactions/shared";
 import { TransactionRepositoryPort } from "../domain/transaction-repository.port";
+import { UUID } from "crypto";
 
 export class TransactionRepositoryAdapter implements TransactionRepositoryPort, OnModuleInit {
     private logger = new Logger(TransactionRepositoryAdapter.name);
@@ -23,7 +24,25 @@ export class TransactionRepositoryAdapter implements TransactionRepositoryPort, 
     }
 
 
+    findTransaction(transactionId: UUID): Observable<TransactionResult> {
+        return this.transferManagerClient.send(MICROSERVICES_CONSTANTS.EVENTS.GET_TRANSACTION, {
+            transactionId
+        }).pipe(
+            map(
+                result => {
+                    this.logger.debug(`map -> transaccion obtenida ${JSON.stringify(result)}`);
+                    if (result === "null") {
+                        return null;
+                    }
+                    return result as TransactionResult;
+                }
+            )
+        )
+    }
+
+
     onModuleInit() {
         this.transferManagerClient.subscribeToResponseOf(MICROSERVICES_CONSTANTS.EVENTS.CREATE_TRANSACTION);
+        this.transferManagerClient.subscribeToResponseOf(MICROSERVICES_CONSTANTS.EVENTS.GET_TRANSACTION);
     }
 }

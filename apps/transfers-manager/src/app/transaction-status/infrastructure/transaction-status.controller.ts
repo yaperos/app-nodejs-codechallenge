@@ -1,6 +1,6 @@
 import { Controller, ValidationPipe } from "@nestjs/common";
-import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
-import { MICROSERVICES_CONSTANTS, TransactionStatusEnum, TransactionDto } from "@yape-transactions/shared";
+import { EventPattern, Payload } from "@nestjs/microservices";
+import { MICROSERVICES_CONSTANTS, TransactionStatusEnum } from "@yape-transactions/shared";
 import { TransactionStatusService } from "../application/transaction-status.service";
 import { TransactionStatusCommand } from "../domain/transaction-status.command";
 import { TransactionStatusDto } from "./transaction-status.dto";

@@ -1,12 +1,13 @@
-import { TransactionDto, TransactionEntity, TransactionStatusEnum } from "@yape-transactions/shared";
-import { CreateTransactionPort } from "../domain/create-transaction.port";
-import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { from, map } from "rxjs";
 import { UUID } from "crypto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Injectable } from "@nestjs/common";
+import { TransactionDto, TransactionEntity, TransactionStatusEnum } from "@yape-transactions/shared";
+import { CreateTransactionPort } from "../domain/create-transaction.port";
 
 //
-
+@Injectable()
 export class CreateTransactionDBAdapater implements CreateTransactionPort {
     constructor(@InjectRepository(TransactionEntity) private readonly txRepository: Repository<TransactionEntity>) {
 

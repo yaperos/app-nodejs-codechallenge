@@ -3,7 +3,7 @@ import { UUID } from "crypto";
 
 export class TransactionDto {
 
-    trnsactionId: UUID;
+    transactionId?: UUID;
 
     @IsNotEmpty()
     @IsUUID()

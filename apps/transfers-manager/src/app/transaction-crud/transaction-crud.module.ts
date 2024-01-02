@@ -8,6 +8,8 @@ import { AntiFraudServiceKafkaAdapater } from './infrastructure/anti-fraud-servi
 import { CREATE_TRANSACTION_PORT_TOKEN } from './domain/create-transaction.port';
 import { CreateTransactionDBAdapater } from './infrastructure/create-transaction.db.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GET_TRANSACTION_PORT_TOKEN } from './domain/get-transaction.port';
+import { GetTransactionDbAdapter } from './infrastructure/get-transaction.db.adapater';
 
 // default: localhost:9092
 const brokers = process.env.KAFKA_BROKERS ? process.env.KAFKA_BROKERS.split(',') : ['localhost:9092'];
@@ -37,9 +39,14 @@ const brokers = process.env.KAFKA_BROKERS ? process.env.KAFKA_BROKERS.split(',')
     providers: [TransactionCrudService, {
         provide: ANTI_FRAUD_SERVICE_PORT_TOKEN,
         useClass: AntiFraudServiceKafkaAdapater
-    }, {
+    },
+        {
             provide: CREATE_TRANSACTION_PORT_TOKEN,
             useClass: CreateTransactionDBAdapater
+        },
+        {
+            provide: GET_TRANSACTION_PORT_TOKEN,
+            useClass: GetTransactionDbAdapter
         }],
 })
 export class TransactionCrudModule { }

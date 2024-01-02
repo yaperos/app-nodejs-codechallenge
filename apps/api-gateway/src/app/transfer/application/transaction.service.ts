@@ -1,9 +1,10 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { Observable, map, tap } from "rxjs";
 import { TransferCommand } from "../domain/transfer.commnad";
 import { TRANSACTION_REPOSITORY_PORT_TOKEN, TransactionRepositoryPort } from "../domain/transaction-repository.port";
 import { CommonResponse } from "@yape-transactions/shared";
 import { UUID } from "crypto";
+import { FindTransactionCommand } from "../domain/find-transaction.command";
 
 @Injectable()
 export class TransactionService {
@@ -21,5 +22,18 @@ export class TransactionService {
                 return { message: "Transaccion creada correctamente", data: { transactionId } };
             })
         );
+    }
+
+    findTransaction(command: FindTransactionCommand) {
+        return this.transferRepositoryPort.findTransaction(command.transactionId).pipe(
+            map(result => {
+                if (!result) {
+                    throw new NotFoundException({
+                        message: "Transaction not found"
+                    })
+                }
+                return result;
+            })
+        )
     }
 }

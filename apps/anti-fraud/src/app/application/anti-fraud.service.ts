@@ -26,7 +26,7 @@ export class AntiFraudService implements OnModuleInit {
   processCreatedTrasaction(command: AntiFraudCommand) {
     const transactionInfo = command.transaction;
     const transactionStatus = this.obtainTransferStatus(transactionInfo);
-    this.logger.log(`estado final de la transaccion id:${transactionInfo.trnsactionId}, estado: ${transactionStatus}`)
+    this.logger.log(`estado final de la transaccion id:${transactionInfo.transactionId}, estado: ${transactionStatus}`)
     const event = this.EVENT_BY_STATUS[transactionStatus];
 
     if (!event) {
@@ -35,7 +35,7 @@ export class AntiFraudService implements OnModuleInit {
     }
 
     this.notifyStatusChangedPort.notifyStatusChanged(event, {
-      transactionId: transactionInfo.trnsactionId
+      transactionId: transactionInfo.transactionId
     });
 
   }
