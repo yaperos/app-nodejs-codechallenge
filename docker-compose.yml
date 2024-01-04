@@ -23,3 +23,37 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    networks:
+      - nest
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    ports:
+      - "5601:5601"
+    networks:
+      - nest
+    depends_on:
+      - elasticsearch
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "5000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=123456  # Configura la contraseña del usuario admin en Grafana
+    networks:
+      - nest
+    depends_on:
+      - elasticsearch
+      - kibana
+
+networks:
+  nest:
+    driver: bridge

@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AntiFraudController } from './anti-fraud.controller';
-import { AntiFraudService } from './anti-fraud.service';
+import { LoggerModule } from '@app/shared';
+import { ValidateTransactionModule } from './validate-transaction/validate-transaction.module';
 
 @Module({
-  imports: [],
-  controllers: [AntiFraudController],
-  providers: [AntiFraudService],
+  imports: [LoggerModule, ValidateTransactionModule],
 })
 export class AntiFraudModule {}
