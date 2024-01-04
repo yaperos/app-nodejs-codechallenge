@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "4dc61a92-88ba-487b-9169-f142d75849b9",
+		"name": "app-nodejs-codechallenge-transactions-api-yape",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1602811",
+		"_collection_link": "https://www.postman.com/lively-shuttle-877438/workspace/public/collection/1602811-4dc61a92-88ba-487b-9169-f142d75849b9?action=share&source=collection_link&creator=1602811"
+	},
+	"item": [
+		{
+			"name": "New Transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();",
+							"pm.collectionVariables.set(\"transactionExternalId\", response.data.transactionExternalId)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountExternalIdDebit\": \"6b18455c-685b-4c53-934d-a5ac0736159c\",\n    \"accountExternalIdCredit\": \"6b18455c-685b-4c53-934d-a5ac07361592\",\n    \"transferTypeId\": 1,\n    \"value\": 999\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/transactions/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"transactions",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Trasnsaction Info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/transactions/{{transactionExternalId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"transactions",
+						"{{transactionExternalId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "transactionExternalId",
+			"value": ""
+		}
+	]
+}

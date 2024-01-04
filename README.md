@@ -1,5 +1,26 @@
 # Yape Code Challenge :rocket:
 
+# Start Challenge
+```
+docker-compose up
+```
+# Run Tests
+```
+cd anti-fraud-microservice
+npm run test
+
+cd transactions-microservice
+npm run test
+```
+
+### Postman
+You can import the Postman collection from `transactions-microservice/postman/transactions-microservice.postman_collection.json` to test the API.
+
+# Microservices Documentation
+- [Anti-Fraud Microservice](anti-fraud-microservice/README.md)
+- [Transactions Microservice](transactions-microservice/README.md)
+
+
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
