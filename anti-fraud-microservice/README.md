@@ -47,7 +47,7 @@ npm run start
 npm run test
 ```
 
-### Test Description
+### Tests Description
 #### Unit-Tests - Anti-Fraud - IsFraudulentTransaction
 - Transaction with a value less than one thousand is not fraudulent
 - Transaction with a value greater than one thousand is fraudulent

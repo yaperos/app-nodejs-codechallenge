@@ -1,6 +1,6 @@
 # Yape Code Challenge :rocket:
 
-# Start Challenge
+# Start project
 ```
 docker-compose up
 ```
@@ -20,7 +20,7 @@ You can import the Postman collection from `transactions-microservice/postman/tr
 - [Anti-Fraud Microservice](anti-fraud-microservice/README.md)
 - [Transactions Microservice](transactions-microservice/README.md)
 
-
+# Challenge description
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!

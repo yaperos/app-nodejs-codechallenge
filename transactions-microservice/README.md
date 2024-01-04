@@ -14,7 +14,7 @@ The microservice stores transactions in a PostgreSQL database and publishes even
     Transaction --Send transaction Created event--> Anti-Fraud
     Anti-Fraud -- Send transaction Status Approved event--> Transaction
     Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transact
+    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
 ```
 
 ## Execution
@@ -63,10 +63,10 @@ You can import the Postman collection from `postman/transactions-microservice.po
 npm run test
 ```
 
-### Test Description
+### Tests Description
+
 #### Integration-Tests - Transactions Service
 - Request Transactions API / Status ok
-
 
 #### Integration-Tests - Transfer
 - Request Transactions API / Status ok
