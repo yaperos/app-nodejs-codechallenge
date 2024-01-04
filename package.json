@@ -15,7 +15,8 @@
     "apps/ms-antifraud",
     "libs/service",
     "libs/domain",
-    "libs/datasource"
+    "libs/datasource",
+    "libs/logger"
   ],
   "devDependencies": {
     "@types/node": "^20.10.6",
