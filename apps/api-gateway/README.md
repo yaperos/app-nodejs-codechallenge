@@ -12,6 +12,9 @@ npm i
 ## Variables de entorno
 **KAFKA_BROKERS**: Direcciones de los brokers de kafka separados por ','
 **PORT**: puerto de escucha del servidor de applicaciones 
+**REDIS_URL** : Url del servidor de redis para  manejo de cache
+**REDIS_GLOBAL_TTL**: time to live global para manejo de cache
+**GET_TX_BY_ID_TTL**: time to live para el metodo get transaction by id
 
 ## endpoint expuestos
 1. POST /api/v1/transaction

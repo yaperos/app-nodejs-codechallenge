@@ -23,3 +23,8 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  redis:
+    image: "redis:latest"
+    container_name: "yape_redis"
+    ports:
+      - "6379:6379"

@@ -1,5 +1,5 @@
 import { CommonResponse } from '@yape-transactions/shared';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, HttpStatusCode } from 'axios';
 import { UUID } from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
 describe('POST /api/v1/transaction', () => {
@@ -31,8 +31,37 @@ describe('POST /api/v1/transaction', () => {
     } catch (error) {
       const axiosError = error as AxiosError;
       //console.log(error);
-      expect(axiosError.response.status).toBe(400);
+      expect(axiosError.response.status).toBe(HttpStatusCode.BadRequest);
     }
   });
 
 });
+
+
+describe('GET /api/v1/transaction/:transactionId', () => {
+
+  it('should return bad request errror', async () => {
+    const txId = "bla-bla";
+    try {
+      await axios.get(`/api/v1/transaction/${txId}`);
+
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      //console.log(error);
+      expect(axiosError.response.status).toBe(HttpStatusCode.BadRequest);
+    }
+  });
+
+  it('should return not found error', async () => {
+    const txId = uuidV4();
+    try {
+      await axios.get(`/api/v1/transaction/${txId}`);
+
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      //console.log(error);
+      expect(axiosError.response.status).toBe(HttpStatusCode.NotFound);
+    }
+  });
+
+})
