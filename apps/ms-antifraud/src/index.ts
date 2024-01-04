@@ -36,7 +36,18 @@ async function main() {
     }
   })
 
+  process.send && process.send("ready")
   await consumer.run()
+    .then(() => logger.info("[server]: MS is running"))
+
+  for(const signal of ["SIGINT", "SIGTERM"]) {
+    process.on(signal, () => {
+      logger.info(`${signal} signal received: closing ms`)
+      consumer.stop()
+        .then(() => process.exit())
+        .catch(() => process.exit(1))
+    })
+  }
 }
 
 txnDataSource

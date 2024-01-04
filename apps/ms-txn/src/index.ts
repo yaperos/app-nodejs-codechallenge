@@ -67,13 +67,15 @@ async function main() {
 
   const server = app.listen(port, () => {
     logger.info(`[server]: Server is running at http://localhost:${port}`)
+    process.send && process.send("ready")
   })
 
-  process.on('SIGTERM', () => {
-    logger.info('SIGTERM signal received: closing HTTP server')
-
-    server.close(() => logger.info('HTTP server closed'))
-  })
+  for(const signal of ["SIGINT", "SIGTERM"]) {
+    process.on(signal, () => {
+      logger.info(`${signal} signal received: closing HTTP server`)
+      server.close(() => logger.info('HTTP server closed'))
+    })
+  }
 }
 
 txnDataSource
