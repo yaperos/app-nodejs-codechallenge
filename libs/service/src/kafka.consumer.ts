@@ -26,7 +26,7 @@ export class KafkaConsumerService {
   async run () {
     await this.consumer.connect()
     await this.consumer.subscribe({ topic: this.topic })
-    await this.consumer.run({
+    return this.consumer.run({
       eachMessage: this.eachMessage
     })
   }

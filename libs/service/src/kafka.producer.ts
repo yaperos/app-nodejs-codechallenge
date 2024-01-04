@@ -13,7 +13,7 @@ export class KafkaProducerService {
     this.kafka = new Kafka({
       clientId: `${topic}-producer-client-${random(1, 2, true)}`,
       brokers: this.brokers,
-      logLevel: logLevel.INFO
+      logLevel: logLevel.ERROR
     })
     this.producer = this.kafka.producer()
   }

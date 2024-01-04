@@ -3,13 +3,16 @@ import "dotenv/config"
 import assert from "assert"
 import compression from "compression"
 import cors from "cors"
-import express, { Express, Request, Response } from "express"
+import express, { Express, NextFunction, Request, Response } from "express"
 import { graphqlHTTP } from "express-graphql"
 import { buildSchema } from "type-graphql"
 import { Container } from "typedi"
+import { createCommonLogger, createRequestLogger } from "@common-txn/logger"
 import { KafkaProducerService } from "@common-txn/service"
 import { TxnResolver } from "./graphql/resolvers"
 import { txnDataSource } from "./datasource"
+
+const logger = createCommonLogger(process.stdout)
 
 async function main() {
   assert.ok(process.env.PORT, "Undefined port")
@@ -37,6 +40,18 @@ async function main() {
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
 
+  const reqLogger = createRequestLogger(process.stdout)
+
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    reqLogger.info({ req, res })
+    next()
+  })
+
+  app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    reqLogger.error({ req, res, err })
+    next(err)
+  })
+
   const schema = await buildSchema({
     resolvers: [TxnResolver],
     validate: false,
@@ -51,24 +66,24 @@ async function main() {
   })
 
   const server = app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`)
+    logger.info(`[server]: Server is running at http://localhost:${port}`)
   })
 
   process.on('SIGTERM', () => {
-    console.log('SIGTERM signal received: closing HTTP server')
+    logger.info('SIGTERM signal received: closing HTTP server')
 
-    server.close(() => console.log('HTTP server closed'))
+    server.close(() => logger.info('HTTP server closed'))
   })
 }
 
 txnDataSource
   .initialize()
     .then(() => {
-        console.log("Data Source has been initialized!")
+        logger.info("Data Source has been initialized!")
     })
     .catch((err) => {
-        console.error("Error during Data Source initialization:", err)
+        logger.error("Error during Data Source initialization:", err)
     })
 
 main()
-  .catch((err: Error) => console.error(err.stack || err.message))
+  .catch((err: Error) => logger.error(err.stack || err.message))

@@ -5,6 +5,9 @@ import { KafkaConsumerService } from "@common-txn/service"
 import { txnDataSource } from "./datasource"
 import { Transaction } from '@common-txn/datasource'
 import { TxnStatus } from '@common-txn/domain'
+import { createCommonLogger } from '@common-txn/logger'
+
+const logger = createCommonLogger(process.stdout)
 
 async function main() {
   assert.ok(process.env.KAFKA_BROKERS, "Undefined kafka brokers")
@@ -28,7 +31,7 @@ async function main() {
 
     if (txnData) {
       txnData.transactionStatus = txnData.value > 1000 ? TxnStatus.REJECTED : TxnStatus.APPROVED
-      console.log(`Change status ${transactionExternalId} to ${txnData.transactionStatus}`)
+      logger.info(`Changed status ${transactionExternalId} to ${txnData.transactionStatus}`)
       await txnDataSource.manager.save(txnData)
     }
   })
@@ -39,11 +42,11 @@ async function main() {
 txnDataSource
   .initialize()
     .then(() => {
-        console.log("Data Source has been initialized!")
+        logger.info("Data Source has been initialized!")
     })
     .catch((err) => {
-        console.error("Error during Data Source initialization:", err)
+        logger.error("Error during Data Source initialization:", err)
     })
 
 main()
-  .catch((err: Error) => console.error(err.stack || err.message))
+  .catch((err: Error) => logger.error(err.stack || err.message))
