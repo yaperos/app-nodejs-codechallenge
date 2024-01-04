@@ -1,1 +1,0 @@
-export { createTopics, startConsumer, startProducer } from './kafka'

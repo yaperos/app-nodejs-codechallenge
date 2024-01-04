@@ -10,7 +10,7 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "keywords": [],
-  "author": "",
+  "author": "Hector de la Paz Ortiz Contreras",
   "license": "ISC",
   "dependencies": {
     "@common-txn/domain": "^1.0.0",

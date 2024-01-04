@@ -13,7 +13,8 @@
     "skipLibCheck": true,
   },
   "references": [
-    { "path": "./libs/service" },
+    { "path": "./libs/datasource" },
     { "path": "./libs/domain" },
+    { "path": "./libs/service" }
   ]
 }
