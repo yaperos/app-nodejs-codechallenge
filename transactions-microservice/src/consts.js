@@ -26,8 +26,8 @@ const BROKER_ENV = {
   GROUP_ID: process.env.BROKER_GROUP_ID ?? 'transactions-app',
   INITIAL_RETRY_TIME: +(process.env.BROKER_INITIAL_RETRY_TIME ?? '10000'),
 
-  TOPIC_TRANSACTIONS: process.env.BROKER_TOPIC ?? 'transactions',
-  TOPIC_ANTI_FRAUD: process.env.BROKER_TOPIC ?? 'anti-fraud',
+  TOPIC_TRANSACTIONS: process.env.BROKER_TOPIC_TRANSACTIONS ?? 'transactions',
+  TOPIC_ANTI_FRAUD: process.env.BROKER_TOPIC_ANTI_FRAUD ?? 'anti-fraud',
 }
 const brokers = process.env.BROKERS ?? 'localhost:9092'
 
