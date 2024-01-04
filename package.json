@@ -13,8 +13,9 @@
   "workspaces": [
     "apps/ms-txn",
     "apps/ms-antifraud",
-    "libs/utils",
-    "libs/di"
+    "libs/service",
+    "libs/domain",
+    "libs/datasource"
   ],
   "devDependencies": {
     "@types/node": "^20.10.6",

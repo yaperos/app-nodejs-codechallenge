@@ -1,0 +1,19 @@
+{
+   "compilerOptions": {
+      "target": "es2020",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "module": "node16",
+      "moduleResolution": "node16",
+      "incremental": true,
+      "composite": true,
+      "declaration": true,
+      "sourceMap": true,
+      //"strict": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "rootDir": "./src",
+      "outDir": "./dist"
+   },
+   "exclude": ["./src/data-source.ts", "node_modules", "./dist/**/*"]
+}

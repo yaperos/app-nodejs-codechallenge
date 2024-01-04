@@ -1,19 +1,22 @@
+/* Visit https://aka.ms/tsconfig to read more about this file */
 {
   "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig to read more about this file */
     "target": "es2020",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "module": "node16",
     "moduleResolution": "node16",
+    "incremental": true,
+    "composite": true,
     "declaration": true,
     "sourceMap": true,
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "./src",
+    "outDir": "./dist"
   },
-  "references": [
-    { "path": "./libs/service" },
-    { "path": "./libs/domain" },
-  ]
+  "exclude": ["node_modules", "*/dist/**/*"],
+  "include": ["./src/**/*"]
 }

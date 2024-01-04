@@ -1,17 +1,15 @@
 {
-  "name": "@common-txn/di",
+  "name": "@common-txn/domain",
   "version": "1.0.0",
-  "description": "",
+  "description": "Domain objects",
   "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc --build ",
+    "build": "tsc --build --verbose",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Hector de la Paz Ortiz Contreras",
   "license": "ISC",
-  "dependencies": {
-    "kafkajs": "^2.2.4",
-    "typedi": "^0.10.0"
-  }
+  "devDependencies": {}
 }
