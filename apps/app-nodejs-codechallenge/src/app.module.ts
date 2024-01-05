@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TransactionModule } from './transaction/transaction.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppConfig, DatabaseConfig } from './config';
+// import { AppConfig, DatabaseConfig } from './config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { join } from 'path';
@@ -10,14 +10,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionType } from './transaction/entities/transaction-type.entity';
 import { TransactionStatus } from './transaction/entities/transaction-status.entity';
 import { Transaction } from './transaction/entities/transaction.entity';
-import { LoggerModule } from '@app/shared';
+import { DatabaseConfig, LoggerModule } from '@app/shared';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [AppConfig, DatabaseConfig],
+      load: [DatabaseConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

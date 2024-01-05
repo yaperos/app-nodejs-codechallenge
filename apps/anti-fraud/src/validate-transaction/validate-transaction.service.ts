@@ -1,19 +1,54 @@
-import { CreateAntiFraudDto, LoggerService } from '@app/shared';
+import {
+  CreateAntiFraudDto,
+  LoggerService,
+  MAXIMUM_VALUE,
+  TRANSACTION_STATUS,
+} from '@app/shared';
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LogValidateTransaction } from './entities/validate-transaction.entity';
+import { Repository } from 'typeorm';
+import { ValidationTransaction } from '@app/shared/validation-transaction/validation-transaction.interface';
 
 @Injectable()
 export class ValidateTransactionService {
-  constructor(private readonly logger: LoggerService) {}
+  constructor(
+    private readonly logger: LoggerService,
+    @InjectRepository(LogValidateTransaction)
+    private logValidateTransactionRepository: Repository<LogValidateTransaction>,
+  ) {}
 
-  validationValue(createAntiFraudDto: CreateAntiFraudDto) {
+  async validationValue(
+    createAntiFraudDto: CreateAntiFraudDto,
+  ): Promise<ValidationTransaction> {
+    const { transactionExternalId, value } = createAntiFraudDto;
+
     this.logger.info(
-      `${ValidateTransactionService.name}.entry`,
+      `${ValidateTransactionService.name}.validationValue.entry`,
       createAntiFraudDto,
+      transactionExternalId,
     );
+
+    const record = this.logValidateTransactionRepository.create({
+      maximumValue: MAXIMUM_VALUE,
+      status:
+        value > MAXIMUM_VALUE
+          ? TRANSACTION_STATUS.REJECTED
+          : TRANSACTION_STATUS.APPROVED,
+      transactionExternalId,
+    });
+
+    await this.logValidateTransactionRepository.save(record);
+
+    this.logger.info(
+      `${ValidateTransactionService.name}.validationValue.record`,
+      record,
+      transactionExternalId,
+    );
+
     return {
-      transactionExternalId: createAntiFraudDto.transactionExternalId,
-      value: createAntiFraudDto.value,
-      status: createAntiFraudDto.value > 1000 ? 3 : 2,
+      transactionExternalId: record.transactionExternalId,
+      status: record.status,
     };
   }
 }

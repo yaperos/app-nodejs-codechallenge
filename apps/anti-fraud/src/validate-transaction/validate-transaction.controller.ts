@@ -16,7 +16,7 @@ export class ValidateTransactionController implements OnModuleInit {
   transactionValidation(@Payload() createAntiFraudDto: CreateAntiFraudDto) {
     const { transactionExternalId } = createAntiFraudDto;
     this.logger.info(
-      `${ValidateTransactionController.name}.entry`,
+      `${ValidateTransactionController.name}.transactionValidation.entry`,
       createAntiFraudDto,
       transactionExternalId,
     );
@@ -24,7 +24,7 @@ export class ValidateTransactionController implements OnModuleInit {
     const response = this.antiFraudService.validationValue(createAntiFraudDto);
 
     this.logger.info(
-      `${ValidateTransactionController.name}.validationValue`,
+      `${ValidateTransactionController.name}.transactionValidation.validationValue`,
       response,
       transactionExternalId,
     );
@@ -32,12 +32,14 @@ export class ValidateTransactionController implements OnModuleInit {
     this.transactionClient
       .send('updateTransaction', JSON.stringify(response))
       .subscribe({
-        next: (value) =>
+        next: (value) => {
+          console.log(typeof value);
           this.logger.info(
             `${ValidateTransactionController.name}.updateTransaction.response`,
             value,
             transactionExternalId,
-          ),
+          );
+        },
         error: (err) =>
           this.logger.error(
             `${ValidateTransactionController.name}.updateTransaction.error`,

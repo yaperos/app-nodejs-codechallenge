@@ -39,12 +39,12 @@ type TransactionStatus {
 
 type Query {
   transactions: [Transaction!]!
-  transaction(id: Int!): Transaction!
+  transaction(transactionExternalId: String!): Transaction!
 }
 
 type Mutation {
   createTransaction(createTransactionInput: CreateTransactionInput!): Transaction!
-  removeTransaction(id: Int!): Transaction!
+  removeTransaction(transactionExternalId: String!): Transaction!
 }
 
 input CreateTransactionInput {

@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateTransactionInput } from './dto/create-transaction.input';
@@ -13,7 +12,11 @@ import { TransactionType } from './entities/transaction-type.entity';
 import { TransactionStatus } from './entities/transaction-status.entity';
 import { ClientKafka } from '@nestjs/microservices';
 import { v4 } from 'uuid';
-import { CreateAntiFraudDto, LoggerService } from '@app/shared';
+import {
+  CreateAntiFraudDto,
+  LoggerService,
+  TRANSACTION_STATUS,
+} from '@app/shared';
 
 @Injectable()
 export class TransactionsService {
@@ -29,8 +32,13 @@ export class TransactionsService {
     private readonly logger: LoggerService,
   ) {}
 
-  async create(createTransactionInput: CreateTransactionInput) {
-    this.logger.info(TransactionsService.name, createTransactionInput);
+  async createTransaction(createTransactionInput: CreateTransactionInput) {
+    const { tranferTypeId } = createTransactionInput;
+
+    this.logger.info(
+      `${TransactionsService.name}.createTransaction.entry`,
+      createTransactionInput,
+    );
 
     const transaction = this.transactionRepository.create(
       createTransactionInput,
@@ -39,11 +47,11 @@ export class TransactionsService {
     transaction.transactionExternalId = v4();
 
     const status = await this.transactionStatusRepository.findOne({
-      where: { id: 1 },
+      where: { id: TRANSACTION_STATUS.REJECTED },
     });
 
     this.logger.info(
-      `${TransactionsService.name}.transactionStatus.findOne`,
+      `${TransactionsService.name}.createTransaction.getStatus`,
       status,
     );
 
@@ -53,12 +61,12 @@ export class TransactionsService {
 
     const type = await this.transactionTypeRepository.findOne({
       where: {
-        id: createTransactionInput.tranferTypeId,
+        id: tranferTypeId,
       },
     });
 
     this.logger.info(
-      `${TransactionsService.name}.transactionType.findOne`,
+      `${TransactionsService.name}.createTransaction.getType`,
       type,
     );
 
@@ -68,14 +76,20 @@ export class TransactionsService {
 
     await this.transactionRepository.save(transaction);
 
-    this.logger.info(`${TransactionsService.name}.saved`, transaction);
+    this.logger.info(
+      `${TransactionsService.name}.createTransaction.saved`,
+      transaction,
+    );
 
     const createAntiFraudDto: CreateAntiFraudDto = {
       transactionExternalId: transaction.transactionExternalId,
       value: transaction.value,
     };
 
-    Logger.log({ createAntiFraudDto }, `${TransactionsService.name}.sendQueue`);
+    this.logger.info(
+      `${TransactionsService.name}.createTransaction.sendQueue`,
+      createAntiFraudDto,
+    );
 
     this.antiFraudClient
       .emit('transactionValidation', JSON.stringify(createAntiFraudDto))
@@ -98,8 +112,10 @@ export class TransactionsService {
     });
   }
 
-  findOne(id: number) {
-    return this.transactionRepository.findOne({ where: { id } });
+  findOne(transactionExternalId: string) {
+    return this.transactionRepository.findOne({
+      where: { transactionExternalId },
+    });
   }
 
   findOneByTransactionId(transactionExternalId: string) {
@@ -140,8 +156,8 @@ export class TransactionsService {
     return bodyUpdate;
   }
 
-  async remove(id: number) {
-    const transaction = await this.findOne(id);
+  async remove(transactionExternalId: string) {
+    const transaction = await this.findOne(transactionExternalId);
 
     if (!transaction) {
       throw new NotFoundException();

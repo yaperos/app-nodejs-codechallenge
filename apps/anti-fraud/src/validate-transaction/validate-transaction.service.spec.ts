@@ -9,7 +9,9 @@ describe('ValidateTransactionService', () => {
       providers: [ValidateTransactionService],
     }).compile();
 
-    service = module.get<ValidateTransactionService>(ValidateTransactionService);
+    service = module.get<ValidateTransactionService>(
+      ValidateTransactionService,
+    );
   });
 
   it('should be defined', () => {

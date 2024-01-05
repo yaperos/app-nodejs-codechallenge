@@ -29,6 +29,6 @@ export class TransactionController {
       updated,
     );
 
-    return updated;
+    return JSON.stringify(updated);
   }
 }

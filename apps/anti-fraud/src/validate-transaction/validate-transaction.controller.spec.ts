@@ -11,7 +11,9 @@ describe('ValidateTransactionController', () => {
       providers: [ValidateTransactionService],
     }).compile();
 
-    controller = module.get<ValidateTransactionController>(ValidateTransactionController);
+    controller = module.get<ValidateTransactionController>(
+      ValidateTransactionController,
+    );
   });
 
   it('should be defined', () => {

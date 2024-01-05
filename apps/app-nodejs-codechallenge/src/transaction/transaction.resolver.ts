@@ -2,7 +2,6 @@ import {
   Resolver,
   Mutation,
   Args,
-  Int,
   Query,
   ResolveField,
   Parent,
@@ -23,14 +22,16 @@ export class TransactionsResolver {
   }
 
   @Query(() => Transaction, { name: 'transaction' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.transactionsService.findOne(id);
+  findOne(
+    @Args('transactionExternalId', { type: () => String })
+    transactionExternalId: string,
+  ) {
+    return this.transactionsService.findOne(transactionExternalId);
   }
 
   /**
    * Mutation
    * * createTransaction
-   * * updateTransaction
    * * removeTransaction
    */
 
@@ -39,12 +40,15 @@ export class TransactionsResolver {
     @Args('createTransactionInput')
     createTransactionInput: CreateTransactionInput,
   ) {
-    return this.transactionsService.create(createTransactionInput);
+    return this.transactionsService.createTransaction(createTransactionInput);
   }
 
   @Mutation(() => Transaction)
-  removeTransaction(@Args('id', { type: () => Int }) id: number) {
-    return this.transactionsService.remove(id);
+  removeTransaction(
+    @Args('transactionExternalId', { type: () => String })
+    transactionExternalId: string,
+  ) {
+    return this.transactionsService.remove(transactionExternalId);
   }
 
   /**
