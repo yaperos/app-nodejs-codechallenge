@@ -2,11 +2,9 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    env_file: .env
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - ${POSTGRES_PORT}:5432
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +21,13 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:29092"
+    depends_on:
+      - "kafka"

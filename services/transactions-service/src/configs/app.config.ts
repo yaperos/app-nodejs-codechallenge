@@ -5,7 +5,7 @@ export default registerAs(
   'app',
   (): Record<string, any> => ({
     name: process.env.APP_NAME ?? 'transactions-service',
-    env: process.env.APP_ENV ?? ENUM_APP_ENVIRONMENT.DEVELOPMENT,
+    env: process.env.APP_ENV ?? ENUM_APP_ENVIRONMENT.LOCAL,
     port: process.env.PORT,
     host: process.env.HOST,
   }),
