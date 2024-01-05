@@ -15,6 +15,7 @@ export default new DataSource({
   database: configService.get('DB_NAME'),
   entities: [
     `${__dirname}/../apps/app-nodejs-codechallenge/src/**/*.entity{.ts,.js}`,
+    `${__dirname}/../apps/anti-fraud/src/**/*.entity{.ts,.js}`,
   ],
   synchronize: false,
   logging: configService.get('nodenv') === 'development',

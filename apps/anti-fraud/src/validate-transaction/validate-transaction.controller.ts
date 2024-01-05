@@ -13,7 +13,9 @@ export class ValidateTransactionController implements OnModuleInit {
   ) {}
 
   @EventPattern('transactionValidation')
-  transactionValidation(@Payload() createAntiFraudDto: CreateAntiFraudDto) {
+  async transactionValidation(
+    @Payload() createAntiFraudDto: CreateAntiFraudDto,
+  ) {
     const { transactionExternalId } = createAntiFraudDto;
     this.logger.info(
       `${ValidateTransactionController.name}.transactionValidation.entry`,
@@ -21,7 +23,8 @@ export class ValidateTransactionController implements OnModuleInit {
       transactionExternalId,
     );
 
-    const response = this.antiFraudService.validationValue(createAntiFraudDto);
+    const response =
+      await this.antiFraudService.validationValue(createAntiFraudDto);
 
     this.logger.info(
       `${ValidateTransactionController.name}.transactionValidation.validationValue`,

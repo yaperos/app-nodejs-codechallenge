@@ -36,6 +36,7 @@ export class ValidateTransactionService {
           ? TRANSACTION_STATUS.REJECTED
           : TRANSACTION_STATUS.APPROVED,
       transactionExternalId,
+      value,
     });
 
     await this.logValidateTransactionRepository.save(record);

@@ -17,6 +17,7 @@ import {
   LoggerService,
   TRANSACTION_STATUS,
 } from '@app/shared';
+import { UpdateTransactionDto } from './dto/update-transaction.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -126,7 +127,7 @@ export class TransactionsService {
 
   async updateTransaction(
     transactionExternalId: string,
-    updateTransactionInput: any,
+    updateTransactionInput: UpdateTransactionDto,
   ) {
     this.logger.info(
       `${TransactionsService.name}.updateTransaction.entry`,
@@ -149,7 +150,7 @@ export class TransactionsService {
     const bodyUpdate = await this.transactionRepository.update(
       { transactionExternalId },
       {
-        transactionStatusId: updateTransactionInput.status,
+        transactionStatusId: updateTransactionInput.transactionStatusId,
       },
     );
 
