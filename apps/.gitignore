@@ -1,2 +1,6 @@
 #environment variables for development
 !.env
+
+**/src/**/*.d.ts
+**/src/**/*.js
+**/src/**/*.js.map
