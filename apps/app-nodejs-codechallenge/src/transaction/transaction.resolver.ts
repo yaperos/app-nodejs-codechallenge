@@ -5,6 +5,7 @@ import {
   Query,
   ResolveField,
   Parent,
+  Int,
 } from '@nestjs/graphql';
 import { Transaction } from './entities/transaction.entity';
 import { CreateTransactionInput } from './dto/create-transaction.input';
@@ -16,9 +17,20 @@ import { TransactionStatus } from './entities/transaction-status.entity';
 export class TransactionsResolver {
   constructor(private readonly transactionsService: TransactionsService) {}
 
+  /**
+   * Querys
+   * transactions
+   * transaction
+   */
+
   @Query(() => [Transaction], { name: 'transactions' })
-  findAll() {
-    return this.transactionsService.findAll();
+  findAll(
+    @Args('orderBy', { type: () => String })
+    orderBy: string,
+    @Args('limit', { type: () => Int })
+    limit: number,
+  ) {
+    return this.transactionsService.findAll(orderBy, limit);
   }
 
   @Query(() => Transaction, { name: 'transaction' })

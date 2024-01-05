@@ -38,7 +38,7 @@ type TransactionStatus {
 }
 
 type Query {
-  transactions: [Transaction!]!
+  transactions(orderBy: String!, limit: Int!): [Transaction!]!
   transaction(transactionExternalId: String!): Transaction!
 }
 

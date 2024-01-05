@@ -103,8 +103,26 @@ export class TransactionsService {
     return transaction;
   }
 
-  findAll() {
-    return this.transactionRepository.find();
+  findAll(orderBy: string, limit: number) {
+    const queryBuilder =
+      this.transactionRepository.createQueryBuilder('transaction');
+
+    if (orderBy) {
+      const [field, direction] = orderBy.split('_');
+
+      if (field && direction) {
+        queryBuilder.orderBy(
+          `transaction.${field}`,
+          direction as 'ASC' | 'DESC',
+        );
+      }
+    }
+
+    if (limit) {
+      queryBuilder.limit(limit);
+    }
+
+    return queryBuilder.getMany();
   }
 
   findAllByTransactionType(id: number) {
