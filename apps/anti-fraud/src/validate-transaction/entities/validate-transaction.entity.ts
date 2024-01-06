@@ -15,13 +15,13 @@ export class LogValidateTransaction {
   transactionExternalId: string;
 
   @Column({ type: 'int' })
-  maximumValue: number;
+  maximumValue?: number;
 
   @Column({ type: 'int' })
-  value: number;
+  value?: number;
 
   @Column({ type: 'int' })
-  status: number;
+  status?: number;
 
   @CreateDateColumn({ type: 'datetime', nullable: false })
   createdAt: Date;

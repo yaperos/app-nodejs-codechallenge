@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TransactionStatus } from './entities/transaction-status.entity';
 import { TransactionType } from './entities/transaction-type.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,23 +8,36 @@ import { TransactionsService } from './transaction.service';
 import { Transaction } from './entities/transaction.entity';
 // import { LoggerModule } from '@app/shared';
 import { TransactionController } from './transaction.controller';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    // ConfigModule.forRoot(),
     TypeOrmModule.forFeature([TransactionStatus, Transaction, TransactionType]),
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
-        transport: Transport.KAFKA,
         name: 'ANTI_FRAUD_SERVICE',
-        options: {
-          client: {
-            clientId: 'transaction',
-            brokers: ['localhost:9092'],
-          },
-          consumer: {
-            groupId: 'anti-fraud',
-          },
+        imports: [ConfigModule], // Asegúrate de importar ConfigModule
+        useFactory: async (configService: ConfigService) => {
+          const kafkaHost = configService.get<string>('KAFKA_HOST');
+          const kafkaPort = configService.get<number>('KAFKA_PORT');
+
+          Logger.debug(`${kafkaHost}:${kafkaPort}`, 'TransactionModule');
+
+          return {
+            transport: Transport.KAFKA,
+            options: {
+              client: {
+                clientId: 'transaction',
+                brokers: [`${kafkaHost}:${kafkaPort}`],
+              },
+              consumer: {
+                groupId: 'anti-fraud',
+              },
+            },
+          };
         },
+        inject: [ConfigService], // Inyecta el servicio de configuración
       },
     ]),
   ],

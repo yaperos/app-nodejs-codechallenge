@@ -1,12 +1,5 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -14,6 +7,7 @@ services:
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
+    restart: always
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -24,36 +18,18 @@ services:
     ports:
       - 9092:9092
   
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+  database-challenge:
+    image: mysql:5.7
+    container_name: database-challenge
+    ports:
+      - "3316:3306"
+    command: mysqld --sql_mode=""
+    volumes: 
+      - database-data:/var/lib/mysql
     environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-    networks:
-      - nest
+      MYSQL_DATABASE: challenge
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: America/Lima
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.10.0
-    ports:
-      - "5601:5601"
-    networks:
-      - nest
-    depends_on:
-      - elasticsearch
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "5000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=123456  # Configura la contraseña del usuario admin en Grafana
-    networks:
-      - nest
-    depends_on:
-      - elasticsearch
-      - kibana
-
-networks:
-  nest:
-    driver: bridge
+volumes:
+  database-data:
