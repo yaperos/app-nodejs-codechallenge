@@ -3,15 +3,20 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { TransactionStatus } from '../constants/transaction-status.enum';
+import { TransactionTypeEntity } from 'src/modules/transactions-types/entities/transactions-type.entity';
 
 @Entity('transactions')
 export class TransactionEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
+
+  @Column({ name: 'transaction_eternal_id', type: 'uuid' })
+  transactionExternalId: string;
 
   @Column({ name: 'account_external_id_debit' })
   accountExternalIdDebit: string;
@@ -19,8 +24,8 @@ export class TransactionEntity extends BaseEntity {
   @Column({ name: 'account_external_id_credit' })
   accountExternalIdCredit: string;
 
-  @Column({ name: 'tranfer_type_id' })
-  tranferTypeId: number;
+  @ManyToOne(() => TransactionTypeEntity)
+  transactionType: TransactionTypeEntity;
 
   @Column('float')
   value: number;

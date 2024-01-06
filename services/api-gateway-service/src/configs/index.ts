@@ -1,4 +1,4 @@
 import AppConfig from './app.config';
-import AuthConfig from './auth.config';
+import MicroservicesConfig from './microservices.config';
 
-export default [AppConfig, AuthConfig];
+export default [AppConfig, MicroservicesConfig];

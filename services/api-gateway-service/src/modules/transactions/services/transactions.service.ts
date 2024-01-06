@@ -7,7 +7,8 @@ import {
 import { CreateTransactionInput } from '../dto/create-transaction.input';
 import { ClientKafka } from '@nestjs/microservices';
 import { RequestedNewTransactionMessage } from '../messages/requested-new-transaction.message';
-import { TaskStatus } from 'src/common/constants/task-status.enum';
+import { TasksService } from 'src/modules/tasks/services/tasks.service';
+import { TransactionTaskEntity } from '../entities/transaction-task.entity';
 
 @Injectable()
 export class TransactionsService {
@@ -16,9 +17,12 @@ export class TransactionsService {
   constructor(
     @Inject('GATEWAY_PRODUCER')
     private readonly gatewayProducer: ClientKafka,
+    private readonly tasksService: TasksService,
   ) {}
 
-  create(createTransactionInput: CreateTransactionInput) {
+  async create(
+    createTransactionInput: CreateTransactionInput,
+  ): Promise<TransactionTaskEntity> {
     const {
       accountExternalIdDebit,
       accountExternalIdCredit,
@@ -27,7 +31,10 @@ export class TransactionsService {
     } = createTransactionInput;
 
     try {
+      const task = await this.tasksService.init(3, 10);
+
       const message = new RequestedNewTransactionMessage(
+        task.id,
         accountExternalIdDebit,
         accountExternalIdCredit,
         tranferTypeId,
@@ -37,10 +44,10 @@ export class TransactionsService {
       this.gatewayProducer.emit('create_transaction', message);
 
       this.logger.debug(
-        `Starting transaction creation with: accountExternalIdDebit [${accountExternalIdDebit}], accountExternalIdCredit [${accountExternalIdCredit}], value [${value}]`,
+        `Initiating transaction creation with: accountExternalIdDebit [${accountExternalIdDebit}], accountExternalIdCredit [${accountExternalIdCredit}], value [${value}]`,
       );
 
-      return { status: TaskStatus.PENDING };
+      return task;
     } catch (error) {
       this.logger.error(
         `Error trying to start transaction creation with: accountExternalIdDebit [${accountExternalIdDebit}], accountExternalIdCredit [${accountExternalIdCredit}], value [${value}]; Error message: ${error.message};`,
@@ -50,11 +57,8 @@ export class TransactionsService {
     }
   }
 
-  findAll() {
-    return [];
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
+  async findOneTask(id: string): Promise<TransactionTaskEntity> {
+    const t = await this.tasksService.findOne(id);
+    return t;
   }
 }

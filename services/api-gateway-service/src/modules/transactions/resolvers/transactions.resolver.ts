@@ -1,27 +1,27 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { TransactionsService } from '../services/transactions.service';
-import { Transaction } from '../entities/transaction.entity';
+import { TransactionTaskEntity } from '../entities/transaction-task.entity';
 import { CreateTransactionInput } from '../dto/create-transaction.input';
+import { Transaction } from '../entities/transaction.entity';
 
 @Resolver(() => Transaction)
 export class TransactionsResolver {
   constructor(private readonly transactionsService: TransactionsService) {}
 
-  @Mutation(() => Transaction)
-  createTransaction(
+  @Mutation(() => TransactionTaskEntity)
+  async createTransaction(
     @Args('createTransactionInput')
     createTransactionInput: CreateTransactionInput,
-  ) {
-    return this.transactionsService.create(createTransactionInput);
+  ): Promise<TransactionTaskEntity> {
+    const transactionTask = await this.transactionsService.create(
+      createTransactionInput,
+    );
+
+    return transactionTask;
   }
 
-  @Query(() => [Transaction], { name: 'transactions' })
-  findAll() {
-    return this.transactionsService.findAll();
-  }
-
-  @Query(() => Transaction, { name: 'transaction' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.transactionsService.findOne(id);
+  @Query(() => TransactionTaskEntity, { name: 'transactionTask' })
+  async findOneTask(@Args('id', { type: () => ID }) id: string) {
+    return await this.transactionsService.findOneTask(id);
   }
 }

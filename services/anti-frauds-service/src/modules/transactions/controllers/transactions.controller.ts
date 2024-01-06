@@ -9,9 +9,8 @@ export class TransactionsController {
 
   constructor(private readonly transactionsService: TransactionsService) {}
 
-  @EventPattern('transaction_created')
+  @EventPattern('transaction.created')
   validate(@Payload() validateTransactionDto: ValidateTransactionDto) {
-    this.logger.debug(`CORRIENDOOOOO`);
     return this.transactionsService.validate(validateTransactionDto);
   }
 }

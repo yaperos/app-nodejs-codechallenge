@@ -5,6 +5,7 @@ export class TransactionCreatedMessage {
 
   constructor(
     transactionId: string,
+    transactionExternalId: string,
     accountExternalIdDebit: string,
     accountExternalIdCredit: string,
     tranferTypeId: number,
@@ -12,6 +13,7 @@ export class TransactionCreatedMessage {
   ) {
     this.value = {
       transactionId,
+      transactionExternalId,
       accountExternalIdDebit,
       accountExternalIdCredit,
       tranferTypeId,

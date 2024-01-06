@@ -1,10 +1,11 @@
 import { registerAs } from '@nestjs/config';
 
 export default registerAs(
-  'auth',
+  'microservices',
   (): Record<string, any> => ({
-    jwt: {
-      secret: process.env.JWT_SECRET,
+    kafka: {
+      host: process.env.KAFKA_HOST,
+      port: process.env.KAFKA_PORT,
     },
   }),
 );

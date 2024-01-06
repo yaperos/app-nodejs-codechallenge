@@ -6,19 +6,15 @@ import { ClientOptions, Transport } from '@nestjs/microservices';
 export class MicroservicesClientService {
   constructor(private readonly configService: ConfigService) {}
   getOptions(): ClientOptions {
-    // const env = this.configService.get<string>('app.env');
-    // const host = this.configService.get<string>('db.postgres.host');
-    // const port = this.configService.get<number>('db.postgres.port');
-    // const database = this.configService.get<string>('db.postgres.name');
-    // const username = this.configService.get<string>('db.postgres.user');
-    // const password = this.configService.get<string>('db.postgres.password');
+    const host = this.configService.get<string>('microservices.kafka.host');
+    const port = this.configService.get<number>('microservices.kafka.port');
 
     return {
       transport: Transport.KAFKA,
       options: {
         client: {
           clientId: 'anti-fraud',
-          brokers: ['localhost:9092'],
+          brokers: [`${host}:${port}`],
         },
       },
     };

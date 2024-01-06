@@ -1,12 +1,9 @@
-import { Module } from '@nestjs/common';
+import { HttpStatus, Module } from '@nestjs/common';
 import { CommonModule } from '../common/common.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TransactionsModule } from 'src/modules/transactions/transactions.module';
-import {
-  constraintDirective,
-  constraintDirectiveTypeDefs,
-} from 'graphql-constraint-directive';
+import { CustomGraphQLFormattedError } from 'src/common/models/http-exception-response.interface';
 
 @Module({
   imports: [
@@ -15,8 +12,14 @@ import {
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
-      typeDefs: constraintDirectiveTypeDefs,
-      transformSchema: constraintDirective(),
+      formatError: (error: CustomGraphQLFormattedError) => {
+        const graphQLFormattedError = {
+          message: error.message,
+          code:
+            error.extensions?.statusCode || HttpStatus.INTERNAL_SERVER_ERROR,
+        };
+        return graphQLFormattedError;
+      },
     }),
   ],
 })

@@ -2,9 +2,15 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateTransactionDto } from '../dto/create-transaction.dto';
 import { TransactionEntity } from '../entities/transaction.entity';
 import { DataSource } from 'typeorm';
-import { ClientKafka } from '@nestjs/microservices';
+import {
+  ClientKafka,
+  KafkaRetriableException,
+  RpcException,
+} from '@nestjs/microservices';
 import { TransactionCreatedMessage } from '../messages/transaction-created.message';
 import { UpdateTransactionDto } from '../dto/update-transaction.dto';
+import { TransactionStatusUpdatedMessage } from '../messages/transaction-status-updated.message';
+import { TransactionsTypesService } from 'src/modules/transactions-types/services/transactions-types.service';
 
 @Injectable()
 export class TransactionsService {
@@ -12,6 +18,7 @@ export class TransactionsService {
 
   constructor(
     private dataSource: DataSource,
+    private readonly transactionsTypesService: TransactionsTypesService,
     @Inject('TRANSACTIONS_PRODUCER')
     private readonly transactionsProducer: ClientKafka,
   ) {}
@@ -19,31 +26,32 @@ export class TransactionsService {
   async create(
     createTransactionDto: CreateTransactionDto,
   ): Promise<TransactionEntity> {
+    const { transactionExternalId, tranferTypeId } = createTransactionDto;
+
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      this.logger.debug(`Transaction creation started`);
+      this.logger.debug(
+        `Transaction creation started with external id [${transactionExternalId}]`,
+      );
+
+      const transactionType = await this.getTransactionType(tranferTypeId);
 
       const createdTransaction = await queryRunner.manager.save(
         TransactionEntity,
-        createTransactionDto,
+        { transactionType, ...createTransactionDto },
       );
 
-      const {
-        id,
-        accountExternalIdDebit,
-        accountExternalIdCredit,
-        tranferTypeId,
-        value,
-      } = createdTransaction;
-
-      await queryRunner.startTransaction();
+      const { id, accountExternalIdDebit, accountExternalIdCredit, value } =
+        createdTransaction;
 
       this.transactionsProducer.emit(
-        'transaction_created',
+        'transaction.created',
         new TransactionCreatedMessage(
           id,
+          transactionExternalId,
           accountExternalIdDebit,
           accountExternalIdCredit,
           tranferTypeId,
@@ -58,12 +66,35 @@ export class TransactionsService {
       return createdTransaction;
     } catch (error) {
       await queryRunner.rollbackTransaction();
+
       this.logger.error(
-        `Error trying to create transaction. Error message: ${error.message}.`,
+        `Error trying to create transaction with transactionExternalId [${transactionExternalId}]. Error message: ${error.message}.`,
+      );
+
+      if (error instanceof RpcException) {
+        // TODO: provide some error handler method
+        return;
+      }
+
+      throw new KafkaRetriableException(
+        `Error trying to create transaction with transactionExternalId [${transactionExternalId}]. Error message: ${error.message}.`,
       );
     } finally {
       await queryRunner.release();
     }
+  }
+
+  private async getTransactionType(tranferTypeId: number) {
+    const transactionType =
+      await this.transactionsTypesService.findOne(tranferTypeId);
+
+    if (!transactionType) {
+      throw new RpcException(
+        `Transaction type with id [${tranferTypeId}] is not valid`,
+      );
+    }
+
+    return transactionType;
   }
 
   async update(id: string, updateTransactionDto: UpdateTransactionDto) {
@@ -83,10 +114,22 @@ export class TransactionsService {
         { id, status },
       );
 
+      const transaction = await queryRunner.manager.findOne(TransactionEntity, {
+        where: { id },
+        relations: {
+          transactionType: true,
+        },
+      });
+
       await queryRunner.commitTransaction();
 
       this.logger.debug(
         `Transaction successfully updated: id [${id}], status [${status}]`,
+      );
+
+      this.transactionsProducer.emit(
+        'transaction.status.udpated',
+        new TransactionStatusUpdatedMessage(transaction),
       );
 
       return updatedTransaction;
@@ -94,6 +137,10 @@ export class TransactionsService {
       await queryRunner.rollbackTransaction();
 
       this.logger.error(
+        `Error trying to update transaction: id [${id}], status [${status}]. Error message: ${error.message}`,
+      );
+
+      throw new RpcException(
         `Error trying to update transaction: id [${id}], status [${status}]. Error message: ${error.message}`,
       );
     } finally {

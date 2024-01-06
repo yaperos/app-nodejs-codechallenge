@@ -4,6 +4,8 @@ import configs from '../configs';
 import { MicroservicesClientModule } from './microservices-client/microservices-client.module';
 import { MicroservicesClientService } from './microservices-client/services/microservices-client.service';
 import { ClientProxyFactory } from '@nestjs/microservices';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   controllers: [],
@@ -25,6 +27,12 @@ import { ClientProxyFactory } from '@nestjs/microservices';
       cache: true,
       envFilePath: ['.env'],
       expandVariables: true,
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      host: 'localhost',
+      port: 6379,
     }),
     MicroservicesClientModule,
   ],
