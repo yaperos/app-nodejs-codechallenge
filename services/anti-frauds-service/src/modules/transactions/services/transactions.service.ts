@@ -25,7 +25,7 @@ export class TransactionsService {
           `Transaction with transactionId [${transactionId}] is invalid`,
         );
         this.antiFraudProducer.emit(
-          'transaction_rejected',
+          'transaction.rejected',
           new TransactionRejectedMessage(
             transactionId,
             'Transaction exceed the allowed limit',
@@ -36,7 +36,7 @@ export class TransactionsService {
           `Transaction with transactionId [${transactionId}] is valid`,
         );
         this.antiFraudProducer.emit(
-          'transaction_approved',
+          'transaction.approved',
           new TransactionApprovedMessage(transactionId),
         );
       }

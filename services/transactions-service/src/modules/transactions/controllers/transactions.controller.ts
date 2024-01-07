@@ -10,12 +10,12 @@ import { TransactionStatus } from '../constants/transaction-status.enum';
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
-  @EventPattern('create_transaction')
+  @EventPattern('transaction.creation')
   async create(@Payload() createTransactionDto: CreateTransactionDto) {
     await this.transactionsService.create(createTransactionDto);
   }
 
-  @EventPattern('transaction_rejected')
+  @EventPattern('transaction.rejected')
   async reject(@Payload() rejectTransactionDto: RejectTransactionDto) {
     const { transactionId: id } = rejectTransactionDto;
 
@@ -24,7 +24,7 @@ export class TransactionsController {
     });
   }
 
-  @EventPattern('transaction_approved')
+  @EventPattern('transaction.approved')
   async approve(@Payload() approveTransactionDto: ApproveTransactionDto) {
     const { transactionId: id } = approveTransactionDto;
 

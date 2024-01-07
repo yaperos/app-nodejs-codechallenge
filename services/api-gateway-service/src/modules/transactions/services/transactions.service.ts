@@ -41,7 +41,7 @@ export class TransactionsService {
         value,
       );
 
-      this.gatewayProducer.emit('create_transaction', message);
+      this.gatewayProducer.emit('transaction.creation', message);
 
       this.logger.debug(
         `Initiating transaction creation with: accountExternalIdDebit [${accountExternalIdDebit}], accountExternalIdCredit [${accountExternalIdCredit}], value [${value}]`,
