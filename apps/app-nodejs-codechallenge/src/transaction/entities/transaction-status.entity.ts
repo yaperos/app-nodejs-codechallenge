@@ -23,7 +23,7 @@ export class TransactionStatus {
 
   @OneToMany(() => Transaction, (transaction) => transaction.transactionStatus)
   @Field(() => [Transaction], { nullable: true })
-  transaction: Transaction[];
+  transaction?: Transaction[];
 
   @CreateDateColumn({ type: 'datetime', nullable: false })
   @Field(() => GraphQLISODateTime)

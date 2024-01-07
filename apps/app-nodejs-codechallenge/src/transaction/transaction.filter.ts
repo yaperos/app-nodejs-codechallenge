@@ -15,7 +15,6 @@ export class TransactionFilter<
     const { offset } = context.getMessage();
     const partition = context.getPartition();
     const topic = context.getTopic();
-    // const consumer = context.getConsumer();
 
     const { status, message: errorMessage, stack } = exception;
     const severity = status ? 'warn' : 'error';

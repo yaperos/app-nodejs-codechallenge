@@ -43,7 +43,7 @@ export class Transaction {
     (transactionType) => transactionType.transaction,
   )
   @Field(() => TransactionType)
-  transactionType: TransactionType;
+  transactionType?: TransactionType;
 
   @Column({ type: 'int' })
   @Field(() => Int)
@@ -54,7 +54,7 @@ export class Transaction {
     (transactionStatus) => transactionStatus.transaction,
   )
   @Field(() => TransactionStatus)
-  transactionStatus: TransactionStatus;
+  transactionStatus?: TransactionStatus;
 
   @CreateDateColumn({ type: 'datetime', nullable: false })
   @Field(() => GraphQLISODateTime)

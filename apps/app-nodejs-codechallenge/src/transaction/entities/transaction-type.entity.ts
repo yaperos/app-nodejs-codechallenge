@@ -23,7 +23,7 @@ export class TransactionType {
 
   @OneToMany(() => Transaction, (transaction) => transaction.transactionType)
   @Field(() => [Transaction], { nullable: true })
-  transaction: Transaction[];
+  transaction?: Transaction[];
 
   @CreateDateColumn({ type: 'datetime', nullable: false })
   @Field(() => GraphQLISODateTime)

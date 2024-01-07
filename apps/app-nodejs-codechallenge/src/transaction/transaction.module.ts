@@ -12,12 +12,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    // ConfigModule.forRoot(),
     TypeOrmModule.forFeature([TransactionStatus, Transaction, TransactionType]),
     ClientsModule.registerAsync([
       {
         name: 'ANTI_FRAUD_SERVICE',
-        imports: [ConfigModule], // Asegúrate de importar ConfigModule
+        imports: [ConfigModule],
         useFactory: async (configService: ConfigService) => {
           const kafkaHost = configService.get<string>('KAFKA_HOST');
           const kafkaPort = configService.get<number>('KAFKA_PORT');
@@ -37,7 +36,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             },
           };
         },
-        inject: [ConfigService], // Inyecta el servicio de configuración
+        inject: [ConfigService],
       },
     ]),
   ],

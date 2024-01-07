@@ -66,8 +66,6 @@ describe('ValidateTransactionService', () => {
 
       // Execute the service method
       const result = await service.validationValue(createAntiFraudDto);
-      console.log(result);
-      // Assertions
 
       expect(logValidateTransactionRepository.save).toHaveBeenCalledWith(
         savedRecord,
