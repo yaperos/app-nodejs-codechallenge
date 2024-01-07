@@ -12,7 +12,7 @@ async function bootstrap() {
   const port = config.get('app.port');
   const kafkaHost = config.get('microservices.kafka.host');
   const kafkaPort = config.get('microservices.kafka.port');
-  console.log(`${kafkaHost}:${port}`);
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {

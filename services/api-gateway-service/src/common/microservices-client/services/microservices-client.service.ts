@@ -8,7 +8,7 @@ export class MicroservicesClientService {
   getOptions(): ClientOptions {
     const host = this.configService.get<string>('microservices.kafka.host');
     const port = this.configService.get<number>('microservices.kafka.port');
-    console.log(host, port);
+
     return {
       transport: Transport.KAFKA,
       options: {

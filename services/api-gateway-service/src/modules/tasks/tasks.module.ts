@@ -11,7 +11,7 @@ import * as redisStore from 'cache-manager-redis-store';
       useFactory: (configService: ConfigService) => {
         const host = configService.get('redis.host');
         const port = configService.get('redis.port');
-        console.log(host, port);
+
         return {
           isGlobal: true,
           store: redisStore,
