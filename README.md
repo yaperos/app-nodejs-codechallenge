@@ -20,3 +20,30 @@ Tech stack:
 3. Run `docker compose up`
 4. Run `npm install`
 5. Run `npm run start:prod`
+
+## Workflow
+
+In order to create and get a transaction:
+
+1. Import in your postman workspace `./docs/Transactions.postman_collection.json`
+2. Run `createTransaction` which is in *Create Transaction*. This mutation will start transaction creation. It will retrive the task in progress information.
+3. Copy `data.createTransaction.id` and set it in `transactionTask` which is in *Query Transaction* and run it then. As long polling pattern, you will recive the task with three important properties:
+   - status: Task status (pending, completed).
+   - retryAfter: Time in seconds to retry if the task has not ended.
+   - retryTimes: Retry times before considering the task as not found.
+   - result: The result of the task when it be completed. The completed transaction in this case.
+
+You can check the stack and proces here:
+
+
+## Disclaimers:
+
+Some important developments are pendings:
+
+1. Handle microservices errors
+2. Master-slave pattern on Postgres
+
+Some other development details could be missing due to lack of time.
+
+
+Thanks for your time!
