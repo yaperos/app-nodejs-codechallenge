@@ -1,8 +1,4 @@
-# Yape Code Challenge :rocket:
-
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+# Yape Code Challenge - TORRES CAMA
 
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
@@ -33,12 +29,10 @@ Every transaction with a value greater than 1000 should be rejected.
 # Tech Stack
 
 <ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
+  <li>NestJS</li>
+  <li>PostgresQL</li>
   <li>Kafka</li>    
 </ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
 
 You must have two resources:
 
@@ -68,15 +62,3 @@ You must have two resources:
   "createdAt": "Date"
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
