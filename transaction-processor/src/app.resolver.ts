@@ -1,8 +1,8 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
-import { CreateTransactionInputDto } from './dto/create-transaction.input';
+import { CreateTransactionInputDto } from './dtos/create-transaction.input';
 import { AppService } from './app.service';
-import { CreateTransactionOutputDto } from './dto/create-transaction.output';
-import { TransactionDto } from './dto/transaction.dto';
+import { CreateTransactionOutputDto } from './dtos/create-transaction.output';
+import { TransactionDto } from './dtos/transaction.dto';
 
 @Resolver(() => CreateTransactionInputDto)
 export class AppResolver {

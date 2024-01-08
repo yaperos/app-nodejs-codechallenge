@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Partitioners } from 'kafkajs';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -41,7 +42,7 @@ import { Partitioners } from 'kafkajs';
       },
     ]),
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [AppService, AppResolver],
 })
 export class AppModule {}

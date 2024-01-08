@@ -1,12 +1,11 @@
-import { CreateTransactionInputDto } from './dto/create-transaction.input';
-import { CreateTransactionOutputDto } from './dto/create-transaction.output';
+import { CreateTransactionInputDto } from './dtos/create-transaction.input';
+import { CreateTransactionOutputDto } from './dtos/create-transaction.output';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClientKafka } from '@nestjs/microservices';
 import { Transaction } from './entities/transaction.entity';
-// uuid
-import { randomUUID } from 'crypto';
+import { TransactionStatusDto } from './dtos/transaction-status.dto';
 
 @Injectable()
 export class AppService {
@@ -30,7 +29,8 @@ export class AppService {
       JSON.stringify(transaction),
     );
     const createTransactionOutputDto = new CreateTransactionOutputDto();
-    createTransactionOutputDto.transactionExternalId = randomUUID();
+    createTransactionOutputDto.transactionExternalId =
+      transaction.transactionExternalId;
     createTransactionOutputDto.accountExternalIdDebit =
       transaction.accountExternalIdDebit;
     createTransactionOutputDto.accountExternalIdCredit =
@@ -42,5 +42,21 @@ export class AppService {
 
   public async getAllTransactions(): Promise<Transaction[]> {
     return this.transactionRepository.find();
+  }
+
+  public async transactionStatusUpdate(
+    transactionStatusDto: TransactionStatusDto,
+  ): Promise<void> {
+    const transaction = await this.transactionRepository.findOne({
+      where: {
+        transactionExternalId: transactionStatusDto.transactionExternalId,
+      },
+    });
+    if (!transaction) {
+      console.log('Transaction not found');
+      return;
+    }
+    transaction.status = transactionStatusDto.transactionStatus.name;
+    await this.transactionRepository.save(transaction);
   }
 }

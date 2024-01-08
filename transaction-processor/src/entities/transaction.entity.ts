@@ -2,8 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Transaction {
-  @PrimaryGeneratedColumn()
-  public id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  public transactionExternalId!: string;
 
   @Column()
   public accountExternalIdDebit!: string;
