@@ -1,6 +1,6 @@
 import kafka from '../config/kafka.config';
 import {KafkaMessage} from "../messages/KafkaMessage";
-import {TransactionService} from "../../../domain/services/transaction.service";
+import {TransactionService} from "../../services/transaction.service";
 import {AppDataSource} from "../../database/datasource";
 import {logger} from "../../../domain/bootstrap/logger";
 

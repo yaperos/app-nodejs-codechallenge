@@ -1,4 +1,4 @@
-import {TransactionService} from "../../domain/services/transaction.service";
+import {TransactionService} from "../services/transaction.service";
 import {TransactionDto} from "../../domain/dto/transactionDto";
 
 export class CreateTransactionHandler {
