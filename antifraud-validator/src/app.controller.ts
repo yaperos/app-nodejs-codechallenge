@@ -15,7 +15,7 @@ export class AppController {
     const auditedStatus = this.appService.validateTransaction(message);
     const transactionStatus: TransactionStatusDto = {
       transactionExternalId: message.transactionExternalId,
-      transactionType: { name: 'test' },
+      transactionType: { name: message.transferTypeId.toString() },
       transactionStatus: { name: auditedStatus },
       value: message.value,
       createdAt: new Date().toISOString(),

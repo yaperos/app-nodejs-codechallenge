@@ -10,20 +10,33 @@ import { TransactionStatusDto } from './dtos/transaction-status.dto';
 @Injectable()
 export class AppService {
   public constructor(
-    @InjectRepository(Transaction)
-    private transactionRepository: Repository<Transaction>,
+    @InjectRepository(Transaction, 'shard1Connection')
+    private shard1Repository: Repository<Transaction>,
+    @InjectRepository(Transaction, 'shard2Connection')
+    private shard2Repository: Repository<Transaction>,
     @Inject('KAFKA_SERVICE') private readonly kafkaClient: ClientKafka,
   ) {
-    console.log('this.transactionRepository', this.transactionRepository);
     console.log('this.kafkaClient', this.kafkaClient);
+  }
+
+  private getRepository(transferTypeId: number): Repository<Transaction> {
+    // for architecture, transfer id types are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+    const THRESHOLD = 5;
+    return transferTypeId < THRESHOLD
+      ? this.shard1Repository
+      : this.shard2Repository;
   }
 
   public async create(
     createTransactionDto: CreateTransactionInputDto,
   ): Promise<CreateTransactionOutputDto> {
     console.log('createTransactionDto', createTransactionDto);
-    const transaction = this.transactionRepository.create(createTransactionDto);
-    await this.transactionRepository.save(transaction);
+    const transactionRepository = this.getRepository(
+      createTransactionDto.transferTypeId,
+    );
+
+    const transaction = transactionRepository.create(createTransactionDto);
+    await transactionRepository.save(transaction);
     this.kafkaClient.emit(
       'transaction_created_topic',
       JSON.stringify(transaction),
@@ -41,13 +54,19 @@ export class AppService {
   }
 
   public async getAllTransactions(): Promise<Transaction[]> {
-    return this.transactionRepository.find();
+    const transactions = await this.shard1Repository.find();
+    const transactions2 = await this.shard2Repository.find();
+    return [...transactions, ...transactions2];
   }
 
   public async transactionStatusUpdateApproved(
     transactionStatusDto: TransactionStatusDto,
   ): Promise<void> {
-    const transaction = await this.transactionRepository.findOne({
+    // other logic for approved
+    const transactionRepository = this.getRepository(
+      Number(transactionStatusDto.transactionType.name),
+    );
+    const transaction = await transactionRepository.findOne({
       where: {
         transactionExternalId: transactionStatusDto.transactionExternalId,
       },
@@ -57,12 +76,16 @@ export class AppService {
       return;
     }
     transaction.status = transactionStatusDto.transactionStatus.name;
-    await this.transactionRepository.save(transaction);
+    await transactionRepository.save(transaction);
   }
   public async transactionStatusUpdateRejected(
     transactionStatusDto: TransactionStatusDto,
   ): Promise<void> {
-    const transaction = await this.transactionRepository.findOne({
+    // other logic for rejected
+    const transactionRepository = this.getRepository(
+      Number(transactionStatusDto.transactionType.name),
+    );
+    const transaction = await transactionRepository.findOne({
       where: {
         transactionExternalId: transactionStatusDto.transactionExternalId,
       },
@@ -72,6 +95,6 @@ export class AppService {
       return;
     }
     transaction.status = transactionStatusDto.transactionStatus.name;
-    await this.transactionRepository.save(transaction);
+    await transactionRepository.save(transaction);
   }
 }

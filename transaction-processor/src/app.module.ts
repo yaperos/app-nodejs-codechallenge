@@ -15,17 +15,33 @@ import { AppController } from './app.controller';
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
-    TypeOrmModule.forFeature([Transaction]),
+    // Shard 1 Database Connection
     TypeOrmModule.forRoot({
+      name: 'shard1Connection',
       type: 'postgres',
       host: 'localhost',
-      port: 5432,
+      port: 5433,
       username: 'postgres',
       password: 'postgres',
-      database: 'payment_db',
-      autoLoadEntities: true,
+      database: 'payment_db_shard_1',
+      entities: [Transaction],
       synchronize: true,
     }),
+
+    // Shard 2 Database Connection
+    TypeOrmModule.forRoot({
+      name: 'shard2Connection',
+      type: 'postgres',
+      host: 'localhost',
+      port: 5434,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'payment_db_shard_2',
+      entities: [Transaction],
+      synchronize: true,
+    }),
+    TypeOrmModule.forFeature([Transaction], 'shard1Connection'),
+    TypeOrmModule.forFeature([Transaction], 'shard2Connection'),
     ClientsModule.register([
       {
         name: 'KAFKA_SERVICE',
