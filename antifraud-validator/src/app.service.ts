@@ -15,9 +15,17 @@ export class AppService {
   public async sendTransactionStatus(
     transactionStatus: TransactionStatusDto,
   ): Promise<void> {
-    this.kafkaClient.emit(
-      'transaction_status_topic',
-      JSON.stringify(transactionStatus),
-    );
+    if (transactionStatus.transactionStatus.name === 'rejected') {
+      this.kafkaClient.emit(
+        'transaction_status_topic.rejected',
+        JSON.stringify(transactionStatus),
+      );
+    }
+    if (transactionStatus.transactionStatus.name === 'approved') {
+      this.kafkaClient.emit(
+        'transaction_status_topic.approved',
+        JSON.stringify(transactionStatus),
+      );
+    }
   }
 }

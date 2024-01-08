@@ -44,7 +44,22 @@ export class AppService {
     return this.transactionRepository.find();
   }
 
-  public async transactionStatusUpdate(
+  public async transactionStatusUpdateApproved(
+    transactionStatusDto: TransactionStatusDto,
+  ): Promise<void> {
+    const transaction = await this.transactionRepository.findOne({
+      where: {
+        transactionExternalId: transactionStatusDto.transactionExternalId,
+      },
+    });
+    if (!transaction) {
+      console.log('Transaction not found');
+      return;
+    }
+    transaction.status = transactionStatusDto.transactionStatus.name;
+    await this.transactionRepository.save(transaction);
+  }
+  public async transactionStatusUpdateRejected(
     transactionStatusDto: TransactionStatusDto,
   ): Promise<void> {
     const transaction = await this.transactionRepository.findOne({
