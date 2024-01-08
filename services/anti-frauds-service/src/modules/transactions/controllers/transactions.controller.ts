@@ -1,7 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { TransactionsService } from '../services/transactions.service';
-import { ValidateTransactionDto } from '../dto/validate-transaction.dto';
 import {
   MicroservicesPatterns,
   TransactionCreatedMessageSchema,

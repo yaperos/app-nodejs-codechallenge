@@ -1,8 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ValidateTransactionDto } from '../dto/validate-transaction.dto';
 import { ClientKafka } from '@nestjs/microservices';
-import { TransactionApprovedMessage } from '../messages/transaction-approved.message';
-import { TransactionRejectedMessage } from '../messages/transaction-rejected.message';
 import {
   MessageSerializer,
   MicroservicesPatterns,

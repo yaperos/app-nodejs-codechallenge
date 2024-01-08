@@ -1,9 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { TransactionsService } from '../services/transactions.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { CreateTransactionDto } from '../dto/create-transaction.dto';
-import { ApproveTransactionDto } from '../dto/approve-transaction.dto';
-import { RejectTransactionDto } from '../dto/reject-transaction.dto';
 import { TransactionStatus } from '../constants/transaction-status.enum';
 import {
   MicroservicesPatterns,

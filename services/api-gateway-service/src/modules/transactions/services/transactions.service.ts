@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { CreateTransactionInput } from '../dto/create-transaction.input';
 import { ClientKafka } from '@nestjs/microservices';
-import { RequestedNewTransactionMessage } from '../messages/requested-new-transaction.message';
 import { TasksService } from 'src/modules/tasks/services/tasks.service';
 import { TransactionTaskEntity } from '../entities/transaction-task.entity';
 import {
