@@ -1,0 +1,192 @@
+{
+	"info": {
+		"_postman_id": "a3295940-49f9-4131-be18-210f1fb6bb9f",
+		"name": "Transaction Schema gq",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7771594"
+	},
+	"item": [
+		{
+			"name": "Create Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreateTransaction {\n    createTransaction(input:  {\n            accountExternalIdDebit: \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\"\n            accountExternalIdCredit: \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\"\n            transferTypeId: 1\n            value: 12200\n        }) {\n        accountExternalIdDebit\n        accountExternalIdCredit\n        value\n        createdAt\n        transactionExternalId\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3005/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3005",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create Transaction ok",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateTransaction {\n    createTransaction(input:  {\n            accountExternalIdDebit: \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\"\n            accountExternalIdCredit: \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\"\n            transferTypeId: 1\n            value: 12200\n        }) {\n        accountExternalIdDebit\n        accountExternalIdCredit\n        value\n        createdAt\n        transactionExternalId\n    }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3005/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3005",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "cache-control",
+							"value": "no-store"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "278"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"116-pXWq2j/VeVIzOY5WCQJ3MGFSIf0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 08 Jan 2024 05:03:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"createTransaction\": {\n            \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n            \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n            \"value\": 12200,\n            \"createdAt\": \"2024-01-08T05:03:16.302Z\",\n            \"transactionExternalId\": \"47b0d17c-1b60-41f0-9112-f06970912008\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Query All Transactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetTransactions {\n    getTransactions {\n        accountExternalIdDebit\n        accountExternalIdCredit\n        transferTypeId\n        value\n        status\n        transactionExternalId\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3005/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3005",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create Transaction Varied",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetTransactions {\n    getTransactions {\n        accountExternalIdDebit\n        accountExternalIdCredit\n        transferTypeId\n        value\n        status\n        transactionExternalId\n    }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3005/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3005",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "cache-control",
+							"value": "no-store"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3231"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"c9f-f5m8r4ID3lIaV8aWJpkO80EuAIg\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 08 Jan 2024 05:04:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"getTransactions\": [\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"cd27aab6-a3e3-419a-b4c7-f345397a3a27\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"d456e3dc-4d33-4377-b5fa-63a194340c89\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"5cf6c657-6565-480b-8d12-eecb0c112fb8\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"34e27451-8a6b-4c88-9473-f9f2bc9e5cc8\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"d6d6f758-efe2-4d62-9fd1-7e00dc1cea4e\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"c86eef39-add4-4126-b4a5-3ccb81cc2045\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"9bef7e56-4450-4e33-ac45-539788c986fc\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"ffa9ffae-5a18-49ad-ac13-33b4154b7157\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"pending\",\n                \"transactionExternalId\": \"7b692de4-1e67-481c-a6e0-ddddaed77efd\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"rejected\",\n                \"transactionExternalId\": \"5bf22c54-d83c-4842-8bdc-de9f58f24bf9\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"rejected\",\n                \"transactionExternalId\": \"a4c7cb12-bc3e-4353-8d37-385f172e7c76\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 12200,\n                \"status\": \"rejected\",\n                \"transactionExternalId\": \"47b0d17c-1b60-41f0-9112-f06970912008\"\n            },\n            {\n                \"accountExternalIdDebit\": \"3ED351C6-B3A3-423C-A002-A6AB8772BFB4\",\n                \"accountExternalIdCredit\": \"CCA26FC4-F987-4992-8C90-FD5AA13AAD21\",\n                \"transferTypeId\": 1,\n                \"value\": 100,\n                \"status\": \"approved\",\n                \"transactionExternalId\": \"ea26be14-e00d-44f3-acb3-f092f9dda96d\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		}
+	]
+}
