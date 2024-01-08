@@ -104,3 +104,22 @@ Create Transaction
 
 Query
 ![image](https://github.com/sdykae/app-nodejs-codechallenge/assets/50224521/66126dd2-c307-41d6-9415-dab4a36da94f)
+
+
+
+# Optional
+
+High volume transactions solution case
+
+1. Sharding
+
+Implement sharding by Range-Based Sharding based on `transferTypeId` THRESHOLD, assumming transfer id types are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+
+Ranges 0 - 4 uses shard 1
+Ranges 5 - 9 uses shard 2
+
+![image](https://github.com/sdykae/app-nodejs-codechallenge/assets/50224521/376a417d-f4bf-4831-a59d-6a2c4c482c46)
+
+![image](https://github.com/sdykae/app-nodejs-codechallenge/assets/50224521/a0dffaab-de70-4d2b-b378-c1ed93582ae5)
+
+
