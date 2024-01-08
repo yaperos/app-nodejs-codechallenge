@@ -9,7 +9,11 @@ import { ClientKafka } from '@nestjs/microservices';
 import { RequestedNewTransactionMessage } from '../messages/requested-new-transaction.message';
 import { TasksService } from 'src/modules/tasks/services/tasks.service';
 import { TransactionTaskEntity } from '../entities/transaction-task.entity';
-import { MicroservicesPatterns } from '@yape/microservices';
+import {
+  MessageSerializer,
+  MicroservicesPatterns,
+  TransactionCreationMessageSchema,
+} from '@yape/microservices';
 
 @Injectable()
 export class TransactionsService {
@@ -34,13 +38,14 @@ export class TransactionsService {
     try {
       const task = await this.tasksService.init(3, 10);
 
-      const message = new RequestedNewTransactionMessage(
-        task.id,
-        accountExternalIdDebit,
-        accountExternalIdCredit,
-        tranferTypeId,
-        value,
-      );
+      const message =
+        MessageSerializer.serialize<TransactionCreationMessageSchema>({
+          transactionExternalId: task.id,
+          accountExternalIdDebit,
+          accountExternalIdCredit,
+          tranferTypeId,
+          value,
+        });
 
       this.gatewayProducer.emit(
         MicroservicesPatterns.TRANSACTION_CREATION,

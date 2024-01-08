@@ -5,19 +5,28 @@ import { CreateTransactionDto } from '../dto/create-transaction.dto';
 import { ApproveTransactionDto } from '../dto/approve-transaction.dto';
 import { RejectTransactionDto } from '../dto/reject-transaction.dto';
 import { TransactionStatus } from '../constants/transaction-status.enum';
-import { MicroservicesPatterns } from '@yape/microservices';
+import {
+  MicroservicesPatterns,
+  TransactionApprovedMessageSchema,
+  TransactionCreationMessageSchema,
+  TransactionRejectedMessageSchema,
+} from '@yape/microservices';
 
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @EventPattern(MicroservicesPatterns.TRANSACTION_CREATION)
-  async create(@Payload() createTransactionDto: CreateTransactionDto) {
+  async create(
+    @Payload() createTransactionDto: TransactionCreationMessageSchema,
+  ) {
     await this.transactionsService.create(createTransactionDto);
   }
 
   @EventPattern(MicroservicesPatterns.TRANSACTION_REJECTED)
-  async reject(@Payload() rejectTransactionDto: RejectTransactionDto) {
+  async reject(
+    @Payload() rejectTransactionDto: TransactionRejectedMessageSchema,
+  ) {
     const { transactionId: id } = rejectTransactionDto;
 
     await this.transactionsService.update(id, {
@@ -26,7 +35,9 @@ export class TransactionsController {
   }
 
   @EventPattern(MicroservicesPatterns.TRANSACTION_APPROVED)
-  async approve(@Payload() approveTransactionDto: ApproveTransactionDto) {
+  async approve(
+    @Payload() approveTransactionDto: TransactionApprovedMessageSchema,
+  ) {
     const { transactionId: id } = approveTransactionDto;
 
     await this.transactionsService.update(id, {

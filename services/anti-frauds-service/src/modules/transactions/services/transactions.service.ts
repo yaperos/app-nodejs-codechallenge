@@ -3,7 +3,12 @@ import { ValidateTransactionDto } from '../dto/validate-transaction.dto';
 import { ClientKafka } from '@nestjs/microservices';
 import { TransactionApprovedMessage } from '../messages/transaction-approved.message';
 import { TransactionRejectedMessage } from '../messages/transaction-rejected.message';
-import { MicroservicesPatterns } from '@yape/microservices';
+import {
+  MessageSerializer,
+  MicroservicesPatterns,
+  TransactionApprovedMessageSchema,
+  TransactionRejectedMessageSchema,
+} from '@yape/microservices';
 
 @Injectable()
 export class TransactionsService {
@@ -28,10 +33,10 @@ export class TransactionsService {
 
         this.antiFraudProducer.emit(
           MicroservicesPatterns.TRANSACTION_REJECTED,
-          new TransactionRejectedMessage(
+          MessageSerializer.serialize<TransactionRejectedMessageSchema>({
             transactionId,
-            'Transaction exceed the allowed limit',
-          ),
+            reason: 'Transaction exceed the allowed limit',
+          }),
         );
       } else {
         this.logger.log(
@@ -39,7 +44,9 @@ export class TransactionsService {
         );
         this.antiFraudProducer.emit(
           MicroservicesPatterns.TRANSACTION_APPROVED,
-          new TransactionApprovedMessage(transactionId),
+          MessageSerializer.serialize<TransactionApprovedMessageSchema>({
+            transactionId,
+          }),
         );
       }
     } catch (error) {

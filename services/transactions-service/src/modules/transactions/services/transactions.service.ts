@@ -7,11 +7,14 @@ import {
   KafkaRetriableException,
   RpcException,
 } from '@nestjs/microservices';
-import { TransactionCreatedMessage } from '../messages/transaction-created.message';
 import { UpdateTransactionDto } from '../dto/update-transaction.dto';
-import { TransactionStatusUpdatedMessage } from '../messages/transaction-status-updated.message';
 import { TransactionsTypesService } from 'src/modules/transactions-types/services/transactions-types.service';
-import { MicroservicesPatterns } from '@yape/microservices';
+import {
+  MessageSerializer,
+  MicroservicesPatterns,
+  TransactionCreatedMessageSchema,
+  TransactionStatusUpdatedMessageSchema,
+} from '@yape/microservices';
 
 @Injectable()
 export class TransactionsService {
@@ -50,14 +53,14 @@ export class TransactionsService {
 
       this.transactionsProducer.emit(
         MicroservicesPatterns.TRANSACTION_CREATED,
-        new TransactionCreatedMessage(
-          id,
+        MessageSerializer.serialize<TransactionCreatedMessageSchema>({
+          transactionId: id,
           transactionExternalId,
           accountExternalIdDebit,
           accountExternalIdCredit,
           tranferTypeId,
           value,
-        ),
+        }),
       );
 
       await queryRunner.commitTransaction();
@@ -110,11 +113,6 @@ export class TransactionsService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const updatedTransaction = await queryRunner.manager.save(
-        TransactionEntity,
-        { id, status },
-      );
-
       const transaction = await queryRunner.manager.findOne(TransactionEntity, {
         where: { id },
         relations: {
@@ -122,15 +120,28 @@ export class TransactionsService {
         },
       });
 
+      if (!transaction) {
+        throw new RpcException(`Transaction not found`);
+      }
+
+      const updatedTransaction = await queryRunner.manager.save(
+        TransactionEntity,
+        { id, status },
+      );
+
       await queryRunner.commitTransaction();
 
       this.logger.debug(
         `Transaction successfully updated: id [${id}], status [${status}]`,
       );
 
+      transaction.status = status;
+
       this.transactionsProducer.emit(
         MicroservicesPatterns.TRANSACTION_STATUS_UPDATED,
-        new TransactionStatusUpdatedMessage(transaction),
+        MessageSerializer.serialize<TransactionStatusUpdatedMessageSchema>(
+          transaction as unknown as TransactionStatusUpdatedMessageSchema,
+        ),
       );
 
       return updatedTransaction;

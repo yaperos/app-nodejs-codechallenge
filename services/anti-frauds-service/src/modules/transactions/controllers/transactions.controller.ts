@@ -2,7 +2,10 @@ import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { TransactionsService } from '../services/transactions.service';
 import { ValidateTransactionDto } from '../dto/validate-transaction.dto';
-import { MicroservicesPatterns } from '@yape/microservices';
+import {
+  MicroservicesPatterns,
+  TransactionCreatedMessageSchema,
+} from '@yape/microservices';
 
 @Controller()
 export class TransactionsController {
@@ -11,7 +14,7 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @EventPattern(MicroservicesPatterns.TRANSACTION_CREATED)
-  validate(@Payload() validateTransactionDto: ValidateTransactionDto) {
+  validate(@Payload() validateTransactionDto: TransactionCreatedMessageSchema) {
     return this.transactionsService.validate(validateTransactionDto);
   }
 }
