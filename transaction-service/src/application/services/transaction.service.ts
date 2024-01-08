@@ -1,7 +1,7 @@
 import {Repository} from "typeorm";
-import {AppDataSource} from "../database/datasource";
-import {TransactionEntity} from "../database/entities/transaction.entity";
-import {sendKafkaMessage} from "../kafka/producers/kafka-producer";
+import {AppDataSource} from "../../infrastructure/database/datasource";
+import {TransactionEntity} from "../../infrastructure/database/entities/transaction.entity";
+import {sendKafkaMessage} from "../../infrastructure/kafka/producers/kafka-producer";
 import {Status} from "../../domain/entities/status";
 import {logger} from "../../domain/bootstrap/logger";
 

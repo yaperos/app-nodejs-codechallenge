@@ -1,5 +1,5 @@
-import {CreateTransactionHandler} from "../../handlers/create-transaction-handler";
-import {GetTransactionHandler} from "../../handlers/get-transaction-handler";
+import {CreateTransactionHandler} from "../../../application/handlers/create-transaction-handler";
+import {GetTransactionHandler} from "../../../application/handlers/get-transaction-handler";
 
 const createTransactionHandler = new CreateTransactionHandler();
 const getTransactionHandler = new GetTransactionHandler();

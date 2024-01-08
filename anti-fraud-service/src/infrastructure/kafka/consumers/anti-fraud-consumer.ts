@@ -1,11 +1,11 @@
 import {Transaction} from "../../../domain/entitites/Transaction";
 import kafka from "../config/kafka.config";
-import {AntiFraudUseCase} from "../../../application/use-cases/anti-fraud.usecase";
+import {AntiFraudService} from "../../../application/services/anti-fraud.service";
 import {KafkaService} from "../services/kafka.service";
 
 const consumer = kafka.consumer({groupId: 'mi-grupo'});
 const topic = 'validate-transaction'
-const antiFraudService = new AntiFraudUseCase()
+const antiFraudService = new AntiFraudService()
 const kafkaService = new KafkaService()
 
 export const runConsumer = async () => {

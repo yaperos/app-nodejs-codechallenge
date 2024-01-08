@@ -1,6 +1,6 @@
 import {Transaction} from "../../domain/entitites/Transaction";
 
-export class AntiFraudUseCase {
+export class AntiFraudService {
     validateTransaction(message: Transaction) {
         return message.value <= 1000;
     }
