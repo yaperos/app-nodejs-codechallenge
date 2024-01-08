@@ -80,3 +80,16 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+-----------
+
+# Tests
+
+1. Create transaction
+
+![img.png](img.png)
+
+2. Get Transaction
+
+![img_1.png](img_1.png)
+
