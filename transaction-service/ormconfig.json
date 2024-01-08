@@ -1,0 +1,15 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "yape",
+  "synchronize": true,
+  "logging": true,
+  "entities": ["src/infrastructure/database/entities"],
+  "migrations": ["src/infrastructure/database/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "src/infrastructure/database/migrations"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "transaction-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.6",
+    "apollo-server-express": "^3.13.0",
+    "express": "^4.18.2",
+    "graphql": "^16.8.1",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.2.1",
+    "ts-node": "^10.9.2",
+    "typeorm": "^0.3.19",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "start-transaction-approved-consumer": "ts-node src/infrastructure/kafka/consumers/transaction-approved-consumer.ts",
+    "start-transaction-rejected-consumer": "ts-node src/infrastructure/kafka/consumers/transaction-rejected-consumer.ts"
+  }
+}

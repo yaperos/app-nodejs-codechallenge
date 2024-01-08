@@ -1,0 +1,16 @@
+{
+  "name": "anti-fraud-service",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}
