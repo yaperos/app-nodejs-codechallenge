@@ -11,6 +11,7 @@ import { TransactionCreatedMessage } from '../messages/transaction-created.messa
 import { UpdateTransactionDto } from '../dto/update-transaction.dto';
 import { TransactionStatusUpdatedMessage } from '../messages/transaction-status-updated.message';
 import { TransactionsTypesService } from 'src/modules/transactions-types/services/transactions-types.service';
+import { MicroservicesPatterns } from '@yape/microservices';
 
 @Injectable()
 export class TransactionsService {
@@ -48,7 +49,7 @@ export class TransactionsService {
         createdTransaction;
 
       this.transactionsProducer.emit(
-        'transaction.created',
+        MicroservicesPatterns.TRANSACTION_CREATED,
         new TransactionCreatedMessage(
           id,
           transactionExternalId,
@@ -128,7 +129,7 @@ export class TransactionsService {
       );
 
       this.transactionsProducer.emit(
-        'transaction.status.udpated',
+        MicroservicesPatterns.TRANSACTION_STATUS_UPDATED,
         new TransactionStatusUpdatedMessage(transaction),
       );
 

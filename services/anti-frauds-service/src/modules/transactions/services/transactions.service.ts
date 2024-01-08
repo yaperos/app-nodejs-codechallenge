@@ -3,6 +3,7 @@ import { ValidateTransactionDto } from '../dto/validate-transaction.dto';
 import { ClientKafka } from '@nestjs/microservices';
 import { TransactionApprovedMessage } from '../messages/transaction-approved.message';
 import { TransactionRejectedMessage } from '../messages/transaction-rejected.message';
+import { MicroservicesPatterns } from '@yape/microservices';
 
 @Injectable()
 export class TransactionsService {
@@ -24,8 +25,9 @@ export class TransactionsService {
         this.logger.log(
           `Transaction with transactionId [${transactionId}] is invalid`,
         );
+
         this.antiFraudProducer.emit(
-          'transaction.rejected',
+          MicroservicesPatterns.TRANSACTION_REJECTED,
           new TransactionRejectedMessage(
             transactionId,
             'Transaction exceed the allowed limit',
@@ -36,7 +38,7 @@ export class TransactionsService {
           `Transaction with transactionId [${transactionId}] is valid`,
         );
         this.antiFraudProducer.emit(
-          'transaction.approved',
+          MicroservicesPatterns.TRANSACTION_APPROVED,
           new TransactionApprovedMessage(transactionId),
         );
       }

@@ -1,0 +1,15 @@
+{
+  "name": "@yape/microservices",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "typescript": "latest"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "start:dev": "tsc --watch"
+  }
+}

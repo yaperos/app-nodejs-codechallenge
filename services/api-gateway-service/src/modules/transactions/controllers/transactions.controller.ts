@@ -1,12 +1,13 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
+import { MicroservicesPatterns } from '@yape/microservices';
 import { TasksService } from 'src/modules/tasks/services/tasks.service';
 
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly tasksService: TasksService) {}
 
-  @EventPattern('transaction.status.udpated')
+  @EventPattern(MicroservicesPatterns.TRANSACTION_STATUS_UPDATED)
   async updateTask(@Payload() transaction: any) {
     // TODO: Add dto instead
 

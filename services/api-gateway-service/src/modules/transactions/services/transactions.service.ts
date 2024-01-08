@@ -9,6 +9,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import { RequestedNewTransactionMessage } from '../messages/requested-new-transaction.message';
 import { TasksService } from 'src/modules/tasks/services/tasks.service';
 import { TransactionTaskEntity } from '../entities/transaction-task.entity';
+import { MicroservicesPatterns } from '@yape/microservices';
 
 @Injectable()
 export class TransactionsService {
@@ -41,7 +42,10 @@ export class TransactionsService {
         value,
       );
 
-      this.gatewayProducer.emit('transaction.creation', message);
+      this.gatewayProducer.emit(
+        MicroservicesPatterns.TRANSACTION_CREATION,
+        message,
+      );
 
       this.logger.debug(
         `Initiating transaction creation with: accountExternalIdDebit [${accountExternalIdDebit}], accountExternalIdCredit [${accountExternalIdCredit}], value [${value}]`,
