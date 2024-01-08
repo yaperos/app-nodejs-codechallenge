@@ -26,7 +26,7 @@ Tech stack:
 In order to create and get a transaction:
 
 1. Import in your postman workspace `./docs/Transactions.postman_collection.json`
-2. Run `createTransaction` which is in *Create Transaction*. This mutation will start transaction creation. It will retrive the task in progress information.
+2. Run `createTransaction` which is in *Create Transaction* on the imported collection. This mutation will start transaction creation. It will retrive the task and some useful information.
 3. Copy `data.createTransaction.id` and set it in `transactionTask` which is in *Query Transaction* and run it then. As long polling pattern, you will receive the task with three important properties:
    - status: Task status (pending, completed).
    - retryAfter: Time in seconds to retry if the task has not ended.
@@ -37,7 +37,7 @@ You can check the stack and the process here:
 
 ![image](https://github.com/sjardon/app-nodejs-codechallenge/assets/71879650/5c499ac4-75c9-4c21-b2d2-89d28b389b92)
 
-## Disclaimers:
+## Disclaimers
 
 Some important developments are pendings:
 
@@ -45,6 +45,5 @@ Some important developments are pendings:
 2. Master-slave pattern on Postgres
 
 Some other development details could be missing due to lack of time.
-
 
 Thanks for your time!
