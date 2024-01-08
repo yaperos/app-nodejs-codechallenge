@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "7db4b4fc-5ab9-4c1d-a074-39d1bb93d3d7",
+		"name": "Transactions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12192016"
+	},
+	"item": [
+		{
+			"name": "Query Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\n  transactionTask(id: \"376f565e-6c16-4936-95fe-14dd01c9b883\") {\n    id,\n    status,\n    retryAfter,\n    retryTimes,\n    result {\n  \t\ttransactionExternalId,\n    \ttransactionStatus,\n      transactionType,\n    \tvalue,\n    \tcreatedAt\n  \t},\n    createdAt,\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/graphql",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreateTransactionMutation($toCreateTransaction: CreateTransactionInput!){\n  createTransaction(\n    createTransactionInput: $toCreateTransaction\n  ) {\n    id\n    status\n    createdAt\n  }\n}",
+						"variables": "{\n  \"toCreateTransaction\": {\n      \"accountExternalIdDebit\": \"2\",\n      \"accountExternalIdCredit\": \"2\",\n      \"tranferTypeId\": 4,\n      \"value\": 1\n    } \n}"
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/graphql",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "port",
+			"value": "3000",
+			"type": "string"
+		}
+	]
+}

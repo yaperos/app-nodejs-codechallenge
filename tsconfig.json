@@ -1,0 +1,14 @@
+{
+  "extends": "@repo/typescript-config/base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "yape/my-library": [
+        "libs/my-library/src"
+      ],
+      "yape/my-library/*": [
+        "libs/my-library/src/*"
+      ]
+    }
+  }
+}
