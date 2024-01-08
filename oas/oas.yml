@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  title: API de Transacciones
+  version: 1.0.0
+  description: API para gestionar transacciones financieras
+
+paths:
+  /transactions:
+    post:
+      summary: Crear una nueva transacción
+      requestBody:
+        description: Datos para crear una nueva transacción
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountExternalIdDebit:
+                  type: string
+                  description: ID externo de la cuenta de débito
+                  example: "123e4567-e89b-12d3-a456-426655440000"
+                accountExternalIdCredit:
+                  type: string
+                  description: ID externo de la cuenta de crédito
+                  example: "456789ab-cdef-1234-5678-0000aabb0000"
+                transferTypeId:
+                  type: integer
+                  description: ID del tipo de transferencia
+                  example: 1
+                value:
+                  type: number
+                  description: Valor de la transacción
+                  example: 200
+      responses:
+        '201':
+          description: Transacción creada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionExternalId:
+                    type: string
+                    description: ID externo de la transacción
+                    example: "886a3204-4fec-4ee2-abb1-ef4e2cd53fb7"
+                  transactionStatus:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Estado de la transacción
+                        example: "Pending"
+                  transactionType:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Tipo de transacción
+                        example: "P2P"
+                  value:
+                    type: number
+                    description: Valor de la transacción
+                    example: 200
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: Fecha y hora de creación de la transacción
+                    example: "2024-01-08T09:21:11.428Z"
+
+  /transactions/{transactionId}:
+    get:
+      summary: Obtener detalles de una transacción por ID externo
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          description: ID externo de la transacción
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transacción encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactionExternalId:
+                    type: string
+                    description: ID externo de la transacción
+                    example: "886a3204-4fec-4ee2-abb1-ef4e2cd53fb7"
+                  transactionStatus:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Estado de la transacción
+                        example: "Approved"
+                  transactionType:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Tipo de transacción
+                        example: "P2P"
+                  value:
+                    type: number
+                    description: Valor de la transacción
+                    example: 200
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: Fecha y hora de creación de la transacción
+                    example: "2024-01-08T09:21:11.428Z"
+        '404':
+          description: Transacción no encontrada

@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  transactionExternalId     String    @id @map("_id")
+  transactionStatusId       Int
+  transferTypeId            Int     
+  value                     Float
+  createdAt                 DateTime
+
+  @@map("transactions")
+}
