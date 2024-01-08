@@ -97,3 +97,10 @@ npm run start
 
 3. Example transactions are in postman `Transaction Schema gq.postman_collection`
 
+Create Transaction
+
+![image](https://github.com/sdykae/app-nodejs-codechallenge/assets/50224521/549b48c4-73e6-417f-903e-226032660ef9)
+
+
+Query
+![image](https://github.com/sdykae/app-nodejs-codechallenge/assets/50224521/66126dd2-c307-41d6-9415-dab4a36da94f)
