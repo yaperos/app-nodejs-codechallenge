@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ['airbnb', 'prettier'],
+    extends: ['airbnb-base', 'prettier'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
       ecmaVersion: 2020,
