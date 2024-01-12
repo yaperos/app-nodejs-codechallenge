@@ -1,5 +1,24 @@
 version: "3.7"
 services:
+  # MongoDB para transaction-service y fraud-detection-service
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+
+  # MongoDB para transaction-anti-fraud
+  mongo-anti-fraud:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+
+  # Postgres para transaction-status
   postgres:
     image: postgres:14
     ports:
@@ -7,19 +26,52 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=transaction_status
+
+  # Zookeeper para Kafka
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+      - ZOOKEEPER_CLIENT_PORT=2181
+
+  # Kafka
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on:
+      - zookeeper
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_BROKER_ID=1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
     ports:
-      - 9092:9092
+      - "9092:9092"
+
+  # Microservicio transaction-service
+  #transaction-service:
+  #  build: ./transaction-service
+  #  ports:
+  #    - "4001:4001"
+  #volumes:
+  #  - ./transaction-service:/usr/src/app
+  #  environment:
+  #    - MONGO_URL=mongodb://mongoadmin:secret@mongo:27017
+  #    - KAFKA_BROKER=kafka:29092
+  #  depends_on:
+  #    - mongo
+  #    - kafka
+
+  # Microservicio transaction-anti-fraud
+  #transaction-anti-fraud:
+  #  build: ./fraud-detection-service
+  #  ports:
+  #    - "4000:4000"
+  #volumes:
+  #  - ./fraud-detection-service:/usr/src/app
+  #  environment:
+  #    - MONGO_URL=mongodb://mongoadmin:secret@mongo-anti-fraud:27017
+  #    - KAFKA_BROKER=kafka:29092
+  #  depends_on:
+  #    - mongo-anti-fraud
+  #    - kafka

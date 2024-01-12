@@ -1,6 +1,53 @@
+# Yape Challenge | Transaction Processing System
+
+## Overview
+
+This project implements a distributed transaction processing system with a focus on high availability and fault tolerance. It includes two main microservices for handling transaction storage/status update and fraud detection along with MongoDB and PostgreSQL for data persistence and Apache Kafka for reliable message queuing.
+
+## Prerequisites
+
+To run this project, you will need:
+
+- Docker - [Installation Guide](https://docs.docker.com/get-docker/)
+- Docker Compose - [Installation Guide](https://docs.docker.com/compose/install/)
+
+## Local Development Setup
+
+### 1. Clone the Repository
+
+To get started, clone the repository to your local machine:
+
+```bash
+git clone https://your-repository-url.git
+cd your-repository-directory
+```
+
+### 2. Build and Run the Services
+
+docker-compose up --build -d
+
+### 3. Verify the Services
+
+docker-compose logs
+
+### 4. Verify the Services
+
+Grafana for metrics visualization: http://localhost:3000
+Prometheus for metrics collection: http://localhost:9090
+The microservices and Kafka broker are accessible on their respective ports as defined in the docker-compose.yml.
+
+### 5. Stopping the Services
+
+To stop and remove all the running services:
+
+### 6. Contact
+
+rossi.maxi@gmail.com,
+maximilianokaizen@gmail.com
+
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
@@ -74,9 +121,3 @@ You must have two resources:
 You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
 
 You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
