@@ -1,0 +1,2 @@
+#PUT ALL ENUMS FOLDERS HERE
+src/context/shared/domain/enums/*.ts
