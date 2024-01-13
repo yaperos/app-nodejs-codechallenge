@@ -47,6 +47,13 @@ services:
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
     ports:
       - "9092:9092"
+    volumes:
+      - ./create-topics.sh:/docker-entrypoint-initdb.d/create-topics.sh
+    command:
+      - sh
+      - -c
+      - |
+        /bin/bash /docker-entrypoint-initdb.d/create-topics.sh
 
   # Microservicio transaction-service
   #transaction-service:
