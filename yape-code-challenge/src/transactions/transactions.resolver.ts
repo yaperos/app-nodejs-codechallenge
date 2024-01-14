@@ -7,16 +7,18 @@ import { CreateTransactionDTO } from './dtos/create-transaction.dto';
 export class TransactionsResolver {
   constructor(private transactionsService: TransactionsService) {}
 
-  @Query((returns) => [Transaction])
-  async transactions(): Promise<Transaction[]> {
-    return this.transactionsService.findAll();
-  }
-
   @Mutation((returns) => Transaction)
   async createTransaction(
     @Args('createTransactionInput')
     createTransactionInput: CreateTransactionDTO,
   ): Promise<Transaction> {
     return this.transactionsService.createTransaction(createTransactionInput);
+  }
+
+  @Query(() => Transaction)
+  async transaction(
+    @Args('transactionExternalId') transactionExternalId: string,
+  ): Promise<Transaction> {
+    return this.transactionsService.findOne(transactionExternalId);
   }
 }

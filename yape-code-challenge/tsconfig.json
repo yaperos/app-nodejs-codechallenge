@@ -10,6 +10,10 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@/enums/*": ["src/common/enums/*"],
+      "@/interfaces/*": ["src/common/interfaces/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,

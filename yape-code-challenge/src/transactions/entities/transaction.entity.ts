@@ -1,5 +1,10 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { TransactionStatusEnum } from '@/enums/transaction-status.enum';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+registerEnumType(TransactionStatusEnum, {
+  name: 'TransactionStatusEnum',
+});
 
 @ObjectType()
 @Entity('transaction')
@@ -24,13 +29,15 @@ export class Transaction {
   @Column()
   value: number;
 
+  @Field()
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
+  @Field(() => TransactionStatusEnum)
   @Column({
     type: 'enum',
-    enum: ['pending', 'approved', 'rejected'],
-    default: 'pending',
+    enum: TransactionStatusEnum,
+    default: TransactionStatusEnum.PENDING,
   })
-  status: string;
+  status: TransactionStatusEnum;
 }
