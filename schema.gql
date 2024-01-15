@@ -1,0 +1,83 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionResponseDto {
+  """Id"""
+  id: String!
+
+  """Id externo debito"""
+  accountExternalIdDebit: String!
+
+  """Id externo credito"""
+  accountExternalIdCredit: String!
+
+  """Id transferencia"""
+  tranferTypeId: Int!
+
+  """Valor transaccional"""
+  value: Float!
+
+  """Id externo"""
+  transactionExternalId: String!
+}
+
+type TransactionSearchResponseDto {
+  """Id externo"""
+  transactionExternalId: String!
+
+  """Tipo de transaccion"""
+  transactionType: String!
+
+  """Estado de transaccion"""
+  transactionStatus: String!
+
+  """Valor transaccional"""
+  value: Float!
+
+  """Fecha de creacion"""
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  searchTransactions(transactionSearchRequestDto: TransactionSearchRequestDto!): [TransactionSearchResponseDto!]!
+}
+
+input TransactionSearchRequestDto {
+  transactionExternalId: String
+  transactionType: TransactionTypeInput
+  transactionStatus: TransactionStatusInput
+  value: Float
+  createdAt: DateTime
+}
+
+input TransactionTypeInput {
+  name: String
+}
+
+input TransactionStatusInput {
+  name: String
+}
+
+type Mutation {
+  registerTransaction(transactionDto: TransactionRegisterDto!): TransactionResponseDto!
+}
+
+input TransactionRegisterDto {
+  """iddebito"""
+  accountExternalIdDebit: String!
+
+  """id credito"""
+  accountExternalIdCredit: String!
+
+  """tipo transferencia"""
+  tranferTypeId: Int!
+
+  """valor a transferir"""
+  value: Float!
+}
