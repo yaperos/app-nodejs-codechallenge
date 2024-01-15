@@ -7,7 +7,7 @@ import {
   OnApplicationShutdown,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { KafkaService } from 'src/kafka/kafka.service';
+import { KafkaService } from '@/kafka/kafka.service';
 import { Repository } from 'typeorm';
 import { CreateTransactionDTO } from './dtos/create-transaction.dto';
 import { Transaction } from './entities/transaction.entity';

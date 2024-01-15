@@ -12,7 +12,8 @@
     "baseUrl": "./",
     "paths": {
       "@/enums/*": ["src/common/enums/*"],
-      "@/interfaces/*": ["src/common/interfaces/*"]
+      "@/interfaces/*": ["src/common/interfaces/*"],
+      "@/*": ["src/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

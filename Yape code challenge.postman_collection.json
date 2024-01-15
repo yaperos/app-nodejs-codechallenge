@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "9de13a89-36f4-4c9c-bf72-e07165bfd89b",
+		"name": "Yape code challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28441860",
+		"_collection_link": "https://focuntiback.postman.co/workspace/FocunTi-Back~98433d13-0c4a-487b-8b86-647adc7dd814/collection/28441860-9de13a89-36f4-4c9c-bf72-e07165bfd89b?action=share&source=collection_link&creator=28441860"
+	},
+	"item": [
+		{
+			"name": "Create transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"transactionExternalId\", data.data.createTransaction.transactionExternalId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreateTransaction($input: CreateTransactionDTO!) {\n    createTransaction(createTransactionInput: $input) {\n        transactionExternalId\n        accountExternalIdDebit\n        accountExternalIdCredit\n        value\n    }\n}\n",
+						"variables": "{\n  \"input\": {\n    \"accountExternalIdDebit\": \"123\",\n    \"accountExternalIdCredit\": \"456\",\n    \"transferTypeId\": 1,\n    \"value\": {{value}}\n  }\n}\n"
+					}
+				},
+				"url": "{{baseUrl}}/graphql"
+			},
+			"response": []
+		},
+		{
+			"name": "Get transaction by external id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetTransaction($transactionExternalId: String!) {\n  transaction(transactionExternalId: $transactionExternalId) {\n    transactionExternalId\n    accountExternalIdDebit\n    accountExternalIdCredit\n    transferTypeId\n    value\n    createdAt\n    status\n  }\n}\n",
+						"variables": "{\n  \"transactionExternalId\": \"{{transactionExternalId}}\"\n}\n"
+					}
+				},
+				"url": "{{baseUrl}}/graphql"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "transactionExternalId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "value",
+			"value": "120",
+			"type": "string"
+		}
+	]
+}

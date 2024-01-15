@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionsService } from './transactions.service';
 import { TransactionsResolver } from './transactions.resolver';
 import { Transaction } from './entities/transaction.entity';
-import { KafkaService } from 'src/kafka/kafka.service';
+import { KafkaService } from '@/kafka/kafka.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Transaction])],

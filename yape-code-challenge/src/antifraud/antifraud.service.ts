@@ -2,7 +2,7 @@ import { Injectable, OnApplicationShutdown, Logger } from '@nestjs/common';
 import { KAFKA_TOPICS } from '@/enums/kafka-topics.enum';
 import { TransactionStatusEnum } from '@/enums/transaction-status.enum';
 import { ITransaction } from '@/interfaces/transaction.interface';
-import { KafkaService } from 'src/kafka/kafka.service';
+import { KafkaService } from '@/kafka/kafka.service';
 import { Consumer, Producer } from 'kafkajs';
 
 @Injectable()
