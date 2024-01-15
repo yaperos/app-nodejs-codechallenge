@@ -1,43 +1,43 @@
-import {
-  Injectable,
-  OnModuleInit,
-  OnApplicationShutdown,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Kafka, Producer, Consumer } from 'kafkajs';
 import { ConfigService } from '@nestjs/config';
 import { KAFKA_TOPICS } from '@/enums/kafka-topics.enum';
 
 @Injectable()
-export class KafkaService implements OnModuleInit, OnApplicationShutdown {
+export class KafkaService {
   private readonly logger = new Logger(KafkaService.name);
   private kafka: Kafka;
-  private producer: Producer;
 
   constructor(private configService: ConfigService) {
     this.kafka = new Kafka({
       clientId: 'yape-code-challenge',
       brokers: [this.configService.get<string>('KAFKA_BROKER')],
     });
-    this.producer = this.kafka.producer();
   }
 
-  createConsumer(groupId: string): Consumer {
+  /**
+   * Initializes a Kafka producer and consumer.
+   * @param {string} groupId - The group ID for the consumer.
+   * @returns {{ consumer: Consumer, producer: Producer }} An object containing both the consumer and producer.
+   */
+  initializeProducerAndConsumer(groupId: string): {
+    consumer: Consumer;
+    producer: Producer;
+  } {
     const consumer = this.kafka.consumer({ groupId });
-    this.logger.log(`Consumer created (groupId=${groupId})`);
-    return consumer;
+    const producer = this.kafka.producer();
+    this.logger.log(`Consumer created (groupId=${groupId}). Producer created.`);
+    return { consumer, producer };
   }
 
-  async onModuleInit() {
-    await this.producer.connect();
-  }
-
-  async onApplicationShutdown() {
-    await this.producer.disconnect();
-  }
-
-  async emit(topic: KAFKA_TOPICS, message: object) {
-    await this.producer.send({
+  /**
+   * Emits a new event for kafka
+   * @param {Producer} producer - Producer for your topic
+   * @param {String} topic - Topic name
+   * @param {String} message - New message for the topic
+   */
+  async emit(producer: Producer, topic: KAFKA_TOPICS, message: object) {
+    await producer.send({
       topic,
       messages: [{ value: JSON.stringify(message) }],
     });
@@ -46,6 +46,12 @@ export class KafkaService implements OnModuleInit, OnApplicationShutdown {
     );
   }
 
+  /**
+   * Subscribes to a specific topic
+   * @param {Consumer} consumer - Consumer for your topic
+   * @param {String} topic - Topic name
+   * @param {(message: any) => void} handler - Handler for the new message
+   */
   async subscribe(
     consumer: Consumer,
     topic: string,
