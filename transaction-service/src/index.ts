@@ -1,16 +1,24 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import KafkaConsumerService from '../src/Modules/Transaction/infrastructure/kafka/subscribeToTopic';
+import transactionRoutes from '../src/Modules/Transaction/infrastructure/Routes/TransactionRoutes';
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+app.use(express.json());
+app.use(cors());
+
+const PORT = process.env.PORT || 4001;
+
+/* Routes */
+app.use(transactionRoutes);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Transaction-Service');
 });
-
+/* End of Routes */
 
 KafkaConsumerService.start().catch(console.error);
 

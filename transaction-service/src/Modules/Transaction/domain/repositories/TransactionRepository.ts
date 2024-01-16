@@ -10,7 +10,7 @@ export class TransactionRepository {
   private prisma: PrismaClient;
   private logger: Logger;
  
-  constructor(prisma: PrismaClient, logger: Logger) {
+  constructor(logger: Logger, prisma: PrismaClient) {
     this.prisma = prisma;
     this.logger = logger;
   }
@@ -48,4 +48,36 @@ export class TransactionRepository {
       return createErrorResponse(`Error creating transaction`);
     }
   }
+
+  async getTransactionByUuid(uuid: string): Promise<ResponseDTO> {
+    try {
+        const transaction = await this.prisma.transaction.findFirst({
+            where: { uuid }
+        });;
+        if (transaction) {
+            this.logger.debug(`Transaction found: ${JSON.stringify(transaction)}`);
+            return createSuccessResponse('Transaction found', transaction);
+        } else {
+            this.logger.debug('Transaction not found');
+            return createErrorResponse('Transaction not found');
+        }
+    } catch (error) {
+        this.logger.error(`Error fetching transaction: ${error}`);
+        return createErrorResponse('Error fetching transaction');
+    }
+}
+
+  async updateTransactionStatus(uuid: string, status: string): Promise<ResponseDTO> {
+    try {
+        const transaction = await this.prisma.transaction.update({
+            where: { uuid },
+            data: { status }
+        });
+        return createSuccessResponse('Transaction status updated', transaction);
+    } catch (error) {
+        this.logger.error(`Error updating transaction status: ${error}`);
+        return createErrorResponse('Error updating transaction status');
+    }
+  }
+
 }

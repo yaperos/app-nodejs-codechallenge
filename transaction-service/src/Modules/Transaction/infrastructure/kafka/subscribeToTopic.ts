@@ -1,6 +1,6 @@
 import { Kafka, Consumer } from 'kafkajs';
 import dotenv from 'dotenv';
-import { TransactionStatus } from '../../application/services/transaction-status/transactionStatus';
+import { TransactionStatus } from '../../application/services/transaction-status/transactionStatusService';
 import { TransactionRepository } from '../../domain/repositories/TransactionRepository';
 import { PrismaClient } from '../../../../../prisma/generated/client';
 import { Logger
@@ -21,7 +21,7 @@ class KafkaConsumerService {
     const prismaClient = new PrismaClient();
     const logger = new Logger();
     const kafkaProducerService = new KafkaProducerService();
-    const transactionRepository = new TransactionRepository(prismaClient, logger);
+    const transactionRepository = new TransactionRepository(logger, prismaClient);
     this.consumer = kafka.consumer({ groupId: process.env.KAFKA_GROUP_ID || 'default-group' });
     this.transactionStatus = new TransactionStatus(transactionRepository, logger, kafkaProducerService);
   }
