@@ -1,11 +1,9 @@
 import { Transaction } from "../../../../../Shared/types/transaction";
 import { TransactionRepository } from "../../../domain/repositories/TransactionRepository";
-import { Logger
- } from "../../../../../Shared/infrastructure/Logger";
+import { Logger } from "../../../../../Shared/infrastructure/Logger";
 import KafkaProducerService from "../../../../../Shared/infrastructure/kafka/sendMessage";
 
 export class TransactionStatus {   
-
     private transactionRepository: TransactionRepository;
     private logger: Logger;
     private kafkaProducer: KafkaProducerService; 
@@ -19,12 +17,26 @@ export class TransactionStatus {
     async newTransactionEvent(payload: Transaction) {
         const createdTransaction = await this.transactionRepository.createTransaction(payload);
         if (createdTransaction.success === true) {
+            this.logger.debug(`Result: ${JSON.stringify(createdTransaction, null, 2)}`);
             try {
+                const transactionData = {
+                    transactionExternalId: createdTransaction.data.uuid,
+                    transactionType: {
+                        name: 'Transaction Created' 
+                    },
+                    transactionStatus: {
+                        name: createdTransaction.data.status
+                    },
+                    value: createdTransaction.data.value,
+                    createdAt: new Date(createdTransaction.data.createdAt)
+                };
+
                 const kafkaMessage = {
                     event: "TransactionCreated",
-                    data: createdTransaction.data,
+                    data: transactionData,
                 };
-                this.logger.debug('Transaction creation event sent to Kafka topic.');
+
+                this.logger.debug('Sending transaction creation event to Kafka topic.');
                 await this.kafkaProducer.sendToKafkaService(kafkaMessage);
             } catch (error) {
                 this.logger.error(`Error sending message to Kafka topic: ${error}`);

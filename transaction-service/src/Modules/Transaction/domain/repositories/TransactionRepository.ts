@@ -19,6 +19,17 @@ export class TransactionRepository {
     const uuid = uuidv4();
     this.logger.debug(`Attempting to create transaction with UUID: ${uuid}`);
 
+    let missingFields = '';
+    if (!transaction.accountExternalIdDebit) missingFields += 'accountExternalIdDebit, ';
+    if (!transaction.accountExternalIdCredit) missingFields += 'accountExternalIdCredit, ';
+    if (!transaction.transferTypeId) missingFields += 'transferTypeId, ';
+    if (transaction.value === undefined) missingFields += 'value, ';
+
+    if (missingFields) {
+        missingFields = missingFields.slice(0, -2); 
+        return createErrorResponse(`Missing required fields: ${missingFields}`);
+    }
+
     try {
       const createdTransaction = await this.prisma.transaction.create({
         data: {
