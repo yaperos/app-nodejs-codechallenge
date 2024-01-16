@@ -58,8 +58,8 @@ any number of transactions.
 
 in the transaction-service folder you need run
 
-npx prisma generate --schema=./prisma/postgres-schema.prisma
-prisma migrate dev --name init
+npx prisma generate --schema=./prisma/postgres-schema.prisma 
+npx prisma migrate dev --name init --schema=./prisma/postgres-schema.prisma npm run seed··
 
 ### 6. Contact
 
