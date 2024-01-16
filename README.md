@@ -1,82 +1,25 @@
-# Yape Code Challenge :rocket:
+# Yape Challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Welcome! 
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+I have designed this solution prioritizing the performative aspect of the application. First of all I decided to separate in different services the writing to the database and the input of the new transactions. This allows to unlink the presenter (the service that receives the transactions) of any other responsibility than to receive via REST a new transaction and publish it in a message inside a Kafka queue. These messages will be listened by the interactor, which after saving the transaction with the status PENDING, will publish in another queue the transaction that will be listened by the anti-fraud service, who in turn will rule if it is valid or not, and will publish in a queue that will be listened again by the Interactor that will be in charge of updating the status in the DB.
 
-# Problem
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+In the meantime, the transactions-getter will be in charge of returning the transactions created.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+You can find the details of each REST endpoint in the presenter and interactor swagger.
 
-Every transaction with a value greater than 1000 should be rejected.
+To start, copy the content of each .env.example into the corresponding .env. 
+Then, simply run docker compose up on the root, and all containers will be executed. In the root you can find a Postman collection to quickly create a transaction. By default the transaction-presenter, in charge of creating the transaction, will run on port 3002, and the getter, in charge of getting the transactions, on 3004. 
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+By default, 3 accounts are created, so that you can test the operation of the transactions. These can be used both as sender of the transaction amount and as receiver. The Id's are as follows:
 
-# Tech Stack
+    'cf345b9d-c280-4bc0-b19e-c21d601b8211'
+    'd8d0a0f3-438b-4748-a4b4-c95cc845faee'
+    '3a07e308-39f1-494c-9a4b-c78b7dc3dc5d'
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## Author
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+- [@pcianferoni](https://github.com/pcianferoni)
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.

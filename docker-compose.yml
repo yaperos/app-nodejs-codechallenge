@@ -2,15 +2,21 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: user-db-pg
     ports:
       - "5432:5432"
     environment:
+      - POSTGRES_DB=yape-db-pg
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=postgres  
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,3 +29,53 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:latest
+    hostname: control-center
+    depends_on:
+      - kafka
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      PORT: 9021
+
+  transactions-interactor:
+    build:
+      context: ./transactions-interactor
+    ports:
+      - "3001:3000"
+    depends_on:
+      - postgres
+      - kafka
+
+  transactions-presenter:
+    build:
+      context: ./transactions-presenter
+    ports:
+      - "3002:3000"
+    depends_on:
+      - postgres
+      - kafka
+      - transactions-interactor
+
+  antifraud-service:
+    build:
+      context: ./antifraud-service
+    ports:
+      - "3003:3000"
+    depends_on:
+      - postgres
+      - kafka
+      - transactions-interactor
+
+  transactions-getter-rest:
+    build:
+      context: ./transactions-getter-rest
+    ports:
+      - "3004:3000"
+    depends_on:
+      - postgres
+      - kafka
