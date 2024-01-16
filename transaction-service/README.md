@@ -18,13 +18,21 @@ This project is set up to use TypeScript, ESLint (following Airbnb's style rules
 - sudo bin/kafka-topics.sh --create --topic transactions_anti_fraud --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
 - npm run start:dev
 
+# Test topics (create and read)
+
+sudo bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic transactions --from-beginning
+sudo bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic transactions_anti_fraud --from-beginning
+
+send a mesage with kafka =>
+
+sudo bin/kafka-console-producer.sh --broker-list localhost:9092 --topic transactions
+sudo bin/kafka-console-producer.sh --broker-list localhost:9092 --topic transactions_anti_fraud
+
 # DB
 
 npx prisma generate --schema=./prisma/postgres-schema.prisma
-
-# Linting and Formatting ( ESLint )
-
-npx eslint .
+npx prisma migrate dev --name init --schema=./prisma/postgres-schema.prisma
+npm run seed
 
 # Prettier
 
