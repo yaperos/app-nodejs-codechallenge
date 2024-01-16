@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a distributed transaction processing system with a focus on high availability and fault tolerance. It includes two main microservices for handling transaction storage/status update and fraud detection along with MongoDB and PostgreSQL for data persistence and Apache Kafka for reliable message queuing.
+This project implements a distributed transaction processing system with a focus on high availability and fault tolerance. It includes two main microservices for handling transaction storage/status update and fraud detection along with PostgreSQL for data persistence and Apache Kafka for reliable message queuing.
 
 ## Prerequisites
 
@@ -32,8 +32,6 @@ docker-compose logs
 
 ### 4. Verify the Services
 
-Grafana for metrics visualization: http://localhost:3000
-Prometheus for metrics collection: http://localhost:9090
 The microservices and Kafka broker are accessible on their respective ports as defined in the docker-compose.yml.
 
 ### 5. Stopping the Services
