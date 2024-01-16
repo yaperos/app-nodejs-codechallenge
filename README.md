@@ -18,7 +18,7 @@ To run this project, you will need:
 To get started, clone the repository to your local machine:
 
 ```bash
-git clone https://your-repository-url.git
+git clone https://your-repository-url.git](https://github.com/maximilianokaizen/yape-fork
 cd your-repository-directory
 ```
 
