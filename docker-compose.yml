@@ -9,51 +9,46 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=transaction_status
 
-#  zookeeper:
-#    image: confluentinc/cp-zookeeper:5.5.3
-#    environment:
-#      ZOOKEEPER_CLIENT_PORT: 2181
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.3
+    environment:
+    ZOOKEEPER_CLIENT_PORT: 2181
 
-#  kafka:
-#    image: confluentinc/cp-enterprise-kafka:5.5.3
-#    depends_on:
-#      - zookeeper
-#    environment:
-#      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-#      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092"
-#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
-#      KAFKA_BROKER_ID: 1
-#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-#      KAFKA_JMX_PORT: 9991
-#    ports:
-#      - 9092:9092
+    kafka:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9991
+    ports:
+      - 9092:9092
 
-#  transaction-service:
-#    build: ./transaction-service
-#    ports:
-#      - "4001:4001"
-#    volumes:
-#      - ./transaction-service:/usr/src/app
-#    environment:
-#      - MONGO_URL="mongodb://mongoadmin:secret@mongo:27017"
-#      - KAFKA_BROKER="kafka:29092"
-#    depends_on:
-#      - mongo
-#      - kafka
+  transaction-service:
+    build: ./transaction-service
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./transaction-service:/usr/src/app
+    environment:
+      - KAFKA_BROKER="kafka:29092"
+    depends_on:
+      - mongo
+   
 
-#  transaction-anti-fraud:
-#    build: ./fraud-detection-service
-#    ports:
-#      - "4000:4000"
-#    volumes:
-#      - ./fraud-detection-service:/usr/src/app
-#    environment:
-#      - MONGO_URL="mongodb://mongoadmin:secret@mongo-anti-fraud:27017"
-#      - KAFKA_BROKER="kafka:29092"
-#    depends_on:
-#      - mongo-anti-fraud
-#      - kafka
+  fraud-detection-service:
+    build: ./fraud-detection-service
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./fraud-detection-service:/usr/src/app
+    environment:
+      - MONGO_URL="mongodb://mongoadmin:secret@mongo-anti-fraud:27017"
+      - KAFKA_BROKER="kafka:29092"
+    depends_on:
+      - kafka
 
-secrets:
-  mongo-keyfile:
-    file: ./mongo-keyfile
