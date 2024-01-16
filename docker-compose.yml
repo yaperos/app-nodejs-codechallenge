@@ -1,25 +1,111 @@
 version: "3.7"
 services:
+  transaction-service:
+    container_name: transaction-service
+    image: transaction-service
+    hostname: transaction-service
+    depends_on:
+      - mysql
+      - postgres
+      - kafka
+      - antifraud-service
+    build:
+      dockerfile: Dockerfile
+      context: ./transaction-service
+    ports:
+      - 3000:3000
+    environment:
+      - DB_HOST=mysql
+      - DB_NAME=db_transactions
+      - DB_USER=root
+      - DB_PASSWORD=@admin_123
+      - DB_SYNC=true
+      - DB_LOGGING=false
+      - KAFKA_BROKER=  kafka:9092
+    networks:
+      - transaction-network
+    volumes:
+      - ./transaction-service:/user/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+  
+  antifraud-service:
+    container_name: antifraud-service
+    image: antifraud-service
+    hostname: antifraud-service
+    depends_on:
+      - kafka
+    build:
+      dockerfile: Dockerfile
+      context: ./antifraud-service
+    ports:
+      - 3001:3001
+    environment:
+      - KAFKA_BROKER=  kafka:9092
+    networks:
+      - transaction-network  
+    volumes:
+      - ./antifraud-service:/user/src/app
+      - /usr/src/app/node_modules
+    
+    restart: unless-stopped
+  
+  mysql: 
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    hostname: mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - transaction-network
+    environment:
+      MYSQL_ROOT_PASSWORD: "@admin_123"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  
   postgres:
     image: postgres:14
+    hostname: postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - transaction-network
+  
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    hostname: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - transaction-network
+  
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    container_name: kafka
+    hostname: kafka
+    depends_on: 
+      - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - transaction-network
+      
+
+networks:
+  transaction-network: 
+    driver: bridge
+
+volumes:
+  mysql_data:
