@@ -42,6 +42,7 @@ To stop and remove all the running services:
 
 rossi.maxi@gmail.com,
 maximilianokaizen@gmail.com
+https://www.linkedin.com/in/maximiliano-rossi-145b41b/
 
 
 ### Screenshots
