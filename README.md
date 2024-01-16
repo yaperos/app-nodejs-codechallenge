@@ -4,6 +4,13 @@
 
 This project implements a distributed transaction processing system with a focus on high availability and fault tolerance. It includes two main microservices for handling transaction storage/status update and fraud detection along with PostgreSQL for data persistence and Apache Kafka for reliable message queuing.
 
+I used DDD for architecture. You can see the folder src/modules/ Application, Domain, and infrastructure (I/O) 
+
+## Problems
+
+if your docker-compose not found, you can try using a local apache kafka version. 
+In the transaction-service Readme, you can get step by spept instructions.
+
 ## Prerequisites
 
 To run this project, you will need:
