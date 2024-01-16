@@ -1,7 +1,7 @@
 {
-  "name": "fraud-detection-service",
+  "name": "transaction-service",
   "version": "0.0.1",
-  "description": "Microservice for fraud detection",
+  "description": "Microservice for transaction-service",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
@@ -14,13 +14,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.8.1",
+    "@types/uuid": "^9.0.7",
     "apollo-server-express": "^2.25.0",
-    "dotenv": "^8.2.0",
+    "axios": "^1.6.5",
+    "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
+    "kafkajs": "^2.2.4",
     "prom-client": "^15.1.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
+    "uuid": "^9.0.1",
     "winston": "^3.11.0"
   },
   "devDependencies": {
@@ -38,6 +43,7 @@
     "nodemon": "^2.0.7",
     "nyc": "^15.1.0",
     "prettier": "^3.2.1",
+    "prisma": "^5.8.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^1.1.6",
     "typescript": "^5.3.3"
