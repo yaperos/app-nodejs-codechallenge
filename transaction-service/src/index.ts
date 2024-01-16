@@ -18,6 +18,11 @@ app.use(transactionRoutes);
 app.get('/', (req: Request, res: Response) => {
     res.send('Transaction-Service');
 });
+
+app.get('/health', (req: Request, res: Response) => {
+    res.status(200).json({ status: 'up' });
+});
+
 /* End of Routes */
 
 KafkaConsumerService.start().catch(console.error);

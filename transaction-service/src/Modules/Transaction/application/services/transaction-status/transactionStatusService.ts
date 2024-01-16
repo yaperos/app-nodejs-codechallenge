@@ -14,7 +14,7 @@ export class TransactionStatus {
         this.kafkaProducer = kafkaProducer; 
     }
 
-    async newTransactionEvent(payload: Transaction) {
+    async newTransactionEvent(payload: Transaction, topic? : string, groupId? : string) {
         const createdTransaction = await this.transactionRepository.createTransaction(payload);
         if (createdTransaction.success === true) {
             this.logger.debug(`Result: ${JSON.stringify(createdTransaction, null, 2)}`);

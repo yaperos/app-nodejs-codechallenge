@@ -4,31 +4,30 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-class KafkaProducerService {
+export class KafkaProducerService {
   private logger: Logger;
   private kafka: Kafka;
-  private producer: Producer;  // Tipo corregido
+  private producer: Producer;  
 
   constructor() {
     this.logger = new Logger();
     this.kafka = new Kafka({
-      clientId: process.env.KAFKA_CLIENT_ID || 'my-app',
+      clientId: process.env.KAFKA_CLIENT_ID || 'transaction',
       brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
     });
     this.producer = this.kafka.producer();
   }
 
   async sendToKafkaService(message: unknown, topic?: string, groupId?: string) {
-   
-    const topicToSend = 'transactions_anti_fraud';
-    const groupIdToSend = 'group-default';
+    const topicToSend = process.env.KAFKA_TOPIC|| 'transactions';
+    const groupIdToSend = groupId || process.env.KAFKA_GROUP_ID || 'transactions';
 
     const messageToSend = {
       message,
       topic: topicToSend,
       groupId: groupIdToSend,
     };
-    
+
     try {
       this.logger.debug('Connecting to Kafka...');
       await this.producer.connect();
@@ -48,4 +47,4 @@ class KafkaProducerService {
   }
 }
 
-export default KafkaProducerService;
+

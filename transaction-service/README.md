@@ -11,7 +11,13 @@ This project is set up to use TypeScript, ESLint (following Airbnb's style rules
 
 # Running the Application Locally
 
-npm run start:dev
+- cd /opt/kafka_2.12-3.6.1 (or local kafka version)
+- init zookeper => sudo bin/zookeeper-server-start.sh config/zookeeper.properties
+- npm run start:dev
+
+# DB
+
+npx prisma generate --schema=./prisma/postgres-schema.prisma
 
 # Linting and Formatting ( ESLint )
 
