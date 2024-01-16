@@ -38,6 +38,21 @@ The microservices and Kafka broker are accessible on their respective ports as d
 
 To stop and remove all the running services:
 
+### 6. Tools
+
+Create Transactions
+For create transctions, we have a go script in
+/producer-test, if you have go in your machine
+can use go run main.go -n [1], to create 1, or
+any number of transactions.
+
+### 7 Database
+
+in the transaction-service folder you need run
+
+npx prisma generate --schema=./prisma/postgres-schema.prisma
+prisma migrate dev --name init
+
 ### 6. Contact
 
 rossi.maxi@gmail.com,

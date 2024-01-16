@@ -1,19 +1,5 @@
 version: "3.7"
 services:
-  mongo:
-    image: mongo:4.4
-    command: --replSet rs0 --keyFile /run/secrets/mongo-keyfile
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
-      - MONGO_INITDB_ROOT_PASSWORD=secret
-    volumes:
-      - ./mongo-keyfile:/run/secrets/mongo-keyfile
-      - ./mongo-init:/docker-entrypoint-initdb.d/
-    secrets:
-      - mongo-keyfile
-
   postgres:
     image: postgres:14
     ports:
