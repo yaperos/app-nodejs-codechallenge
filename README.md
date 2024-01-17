@@ -32,6 +32,19 @@ To get started, clone the repository to your local machine:
 git clone https://your-repository-url.git](https://github.com/maximilianokaizen/yape-fork
 cd your-repository-directory
 ```
+
+Up the services 
+
+```bash
+cd /transaction-service/ 
+npm run dev
+```
+
+```bash
+cd /fraud-detection-service/ 
+npm run dev
+```
+
 Rename the .env.example files to .env in both projects.
 
 ### 2. Build and Run the Services
