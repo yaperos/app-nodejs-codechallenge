@@ -32,12 +32,30 @@ To get started, clone the repository to your local machine:
 git clone https://your-repository-url.git](https://github.com/maximilianokaizen/yape-fork
 cd your-repository-directory
 ```
+Up zooker and Apache kafka services
+
+```bash
+cd /opt/kafka_2.12-3.6.1 
+```
+(or your local kafka version directory)
+
 
 Up the services 
 
 ```bash
 cd /transaction-service/ 
 npm run dev
+```
+
+```bash
+sudo bin/zookeeper-server-start.sh config/zookeeper.properties
+sudo bin/kafka-server-start.sh config/server.properties
+```
+Create topics
+
+```bash
+sudo bin/kafka-topics.sh --create --topic transactions --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
+sudo bin/kafka-topics.sh --create --topic transactions_anti_fraud --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
 ```
 
 ```bash
