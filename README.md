@@ -11,6 +11,10 @@ I used DDD for architecture. You can see the folder src/modules/ Application, Do
 if your docker-compose not found, you can try using a local apache kafka version. 
 In the transaction-service Readme, you can get step by step instructions.
 
+## Youtube Video
+
+https://www.youtube.com/watch?v=N3zodsZSVfk&t=1383s
+
 ## Prerequisites
 
 To run this project, you will need:
