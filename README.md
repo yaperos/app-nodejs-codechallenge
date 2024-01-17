@@ -63,14 +63,23 @@ any number of transactions.
 in the transaction-service folder you need run
 
 npx prisma generate --schema=./prisma/postgres-schema.prisma 
-npx prisma migrate dev --name init --schema=./prisma/postgres-schema.prisma npm run seed··
+npx prisma migrate dev --name init --schema=./prisma/postgres-schema.prisma 
+npm run seed
 
-### 6. Contact
+### Curl Commands
+
+curl -X GET "http://localhost:4001/transaction/777630a1-f232-40f6-8ab0-f5e4c6dec950"
+
+curl -X PUT "http://localhost:4001/transaction/" \
+     -H "Content-Type: application/json" \
+     -d '{"uuid": "777630a1-f232-40f6-8ab0-f5e4c6dec950", "status": "approved"}'
+     
+
+###  Contact
 
 rossi.maxi@gmail.com,
 maximilianokaizen@gmail.com
 https://www.linkedin.com/in/maximiliano-rossi-145b41b/
-
 
 ### Screenshots
 
