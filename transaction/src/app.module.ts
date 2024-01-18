@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { TransactionController } from './app.controller';
 import { AppService } from './app.service';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -19,7 +19,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       }
     ])
   ],
-  controllers: [AppController],
+  controllers: [TransactionController],
   providers: [AppService],
 })
 export class AppModule {}
