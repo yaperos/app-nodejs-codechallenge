@@ -15,6 +15,11 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Transaction-Service');
 });
 
+app.get('/health', (req: Request, res: Response) => {
+    res.status(200).json({ status: 'up' });
+});
+
+
 KafkaConsumerService.start().catch(console.error);
 
 app.listen(PORT, () => {
