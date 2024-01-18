@@ -1,6 +1,6 @@
 # Yape Code Challenge :rocket:
 
-¡Bienvenido al Yape Code Challenge! Aquí encontrarás el código hecho por Julio Sarmiento.
+Welcome to the Yape Code Challenge! Here you will find the code made by Julio Sarmiento.
 
 ## Table of Contents
 
@@ -16,21 +16,28 @@
   - [Server, Routes and Plugins](#server-routes-and-plugins)
   - [Controllers](#controllers)
   - [Use Cases](#use-cases)
-- [ATDD](#atdd)
-  - [What is ATDD?](#what-is-atdd)
-  - [The Main Benefits](#the-main-benefits)
-  - [Gherkin](#gherkin)
-- [TDD](#tdd)
-  - [What is TDD?](#what-is-tdd)
-  - [How?](#how)
 - [Pattern](#pattern)
   - [Bounded Context](#bounded-context)
-  - [Mother Object](#mother-object)
-  - [Value Object](#value-object)
+- [Notes](#notes)
 
 
 ## Getting started 
 
+Environment (.env file):
+```
+PORT=3001
+NODE_ENV=dev
+
+#DB
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_NAME=yape
+
+```
+
+How to run:
 ```
 run: npm run dev
 ```
@@ -43,7 +50,7 @@ In your GraphQL GUI, open http://your_host:3001/graphql
 
 ## Resolvers and Queries
 
-En el archivo `transactionResolver.ts`, se han definido resolvers para obtener y crear transacciones:
+In the `transactionResolver.ts` file, resolvers have been defined to get and create transactions:
 
 
 ## Create a new transaction
@@ -73,6 +80,7 @@ query GetTransaction {
     updatedAt
   }
 }
+```
 
 ## Domain Driven Architectures
 
@@ -99,7 +107,7 @@ The application follows the Uncle Bob "[Clean Architecture](https://8thlight.com
 ```
 src
  └ context                          → Application sources
-   └ categories                     → Categories product
+   └ transactions                   → Transactions Context
     └ application                   → Application services layer
       └ use_cases                   → Application business rules
     └ domain                        → Enterprise core business layer such as domain model objects (Aggregates, Entities, Value Objects) and repository interfaces
@@ -144,62 +152,6 @@ It may have a constructor to define its dependencies (concrete implementations -
 
 A use case can call objects in the same layer (such as data repositories) or in the domain layer, but not out...
 
-## ATDD
-
-### What is ATDD?
-
-> Acceptance Test Driven Development (ATDD) involves team members with different perspectives (customer, development, testing) collaborating to write acceptance tests in advance of implementing the corresponding functionality. The collaborative discussions that occur to generate the acceptance test is often referred to as the three amigos, representing the three perspectives of customer (what problem are we trying to solve?), development (how might we solve this problem?), and testing (what about…).
-
-> These acceptance tests represent the user’s point of view and act as a form of requirements to describe how the system will function, as well as serve as a way of verifying that the system functions as intended. In some cases the team automates the acceptance tests.
-
-### The Main Benefits
-
-Since ATDD might be considered a form of TDD, some of the benefits are the same. However, ATDD brings some benefits of its own:
-
-- Quality: With the help of ATDD, teams can ensure that they're delivering the features in a way that matches the users' expectations.
-- Collaboration: ATDD fosters communication and collaboration between technical and nontechnical people inside the organization.
-- Regression suite: The ATDD process results in a comprehensive suite of acceptance tests that can detect whether changes to the codebase result in regressions—that is to say, defects coming back or older features no longer working.
-
-### Gherkin
-
-Gherkin uses a set of special keywords to give structure and meaning to executable specifications. Each keyword is translated to many spoken languages; in this reference we’ll use English [cucumber doc](https://cucumber.io/docs/gherkin/reference/). Gherkin example code:
-
-```
-Feature: Guess the word
-
-  # The first example has two steps
-  Scenario: Maker starts a game
-    When the Maker starts a game
-    Then the Maker waits for a Breaker to join
-
-  # The second example has three steps
-  Scenario: Breaker joins a game
-    Given the Maker has started a game with the word "silky"
-    When the Breaker joins the Maker's game
-    Then the Breaker must guess a word with 5 characters
-```
-
-## TDD
-
-### What is TDD?
-
-> Test-driven development (TDD) is an evolutionary approach to development which combines test-first development, where you write a test before you write just enough production code to fulfil that test, and refactoring. In other words, it’s one way to think through your requirements or design before your write your functional code.
-
-### How?
-
-The first thing you need to understand is that writing code following TDD (discipline) is a (slightly) different approach from simply diving into solving the problem (without a test).
-When reading about TDD you will usually see the expression: "Red, Green, Refactor":
-
-![TDD](https://www.xeridia.com/wp-content/uploads/drupal-files/contenidos/blog/test-driven-development.png)
-
-What this means is that TDD follows a 3-step process:
-
-1. Write a Failing Test - Understand the (user) requirements/story well enough to write a test for what you expect. (the test should fail initially - hence it being "Red")
-
-2. Make the (failing) Test Pass - Write (only) the code you need to make the (failing) test pass, while ensuring your existing/previous tests all still pass (no regressions).
-
-3. Refactor the code you wrote take the time to tidy up the code you wrote to make it simpler (for your future self or colleagues to understand) before you need to ship the current feature, do it.
-
 ## Pattern
 
 > In software engineering, a design pattern is a general repeatable solution to a commonly occurring problem in software design. A design pattern isn't a finished design that can be transformed directly into code. It is a description or template for how to solve a problem that can be used in many different situations.
@@ -210,64 +162,11 @@ What this means is that TDD follows a 3-step process:
 
 ![Example](https://martinfowler.com/bliki/images/boundedContext/sketch.png)
 
-### Mother Object
+## Notes
 
-> An object mother is a kind of class used in testing to help create example objects that you use for testing.
-> When you write tests in a reasonably sized system, you find you have to create a lot of example data. If I want to test a sick pay calculation on an employee, I need an employee. But this isn't just a simple object - I'll need the employee's marital status, number of dependents, some employment and payroll history. Potentially this can be a lot of objects to create. This set data is generally referred to as the test fixture.
+You have to wait 15 seconds for the topic to be created, once the Kafka server is up.
 
-It works as a kind of factory from where the objects for the tests are created. In this case we use faker.
-You can see examples on test folder
-
+With this command, we see the topic data on the Kafka server, in the container name: 'app-nodejs-codechallenge-kafka-1':
 ```
-import { faker } from '@faker-js/faker';
-
-export class MotherCreator {
-  static random() {
-    return faker;
-  }
-}
-```
-
-### Value Object
-
-> Value Objects are a fundamental building block of Domain-Driven Design, and they’re used to model concepts of your Ubiquitous Language in code.
-
-> The Value Object pattern reinforces a concept that is often forgotten in object-oriented principles, especially by those of us used to weakly typed languages: encapsulation.
-
-```
-export abstract class StringValueObject {
-  readonly value: string;
-
-  constructor(value: string) {
-    this.value = value;
-  }
-
-  equalsTo(anotherValue: string): boolean {
-    return this.value === anotherValue;
-  }
-
-  differentTo(anotherValue: string): boolean {
-    return this.value !== anotherValue;
-  }
-
-  toString(): string {
-    return this.value;
-  }
-}
-```
-
-```
-import { StringValueObject } from '../../shared/domain/value-object/StringValueObject';
-import { CategoryBadRequestError } from './errors/CategoryBadRequestError';
-
-export class CategoriesPathParams extends StringValueObject {
-  constructor(value: string) {
-    super(value);
-    this.ensurePathParamsIsThree();
-  }
-
-  private ensurePathParamsIsThree(): void {
-    if (this.differentTo('3')) throw new CategoryBadRequestError('Invalid request');
-  }
-}
+/usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic transactionStatusTopic --from-beginning
 ```
