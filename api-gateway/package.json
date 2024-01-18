@@ -1,0 +1,28 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Api challange",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "dev": "nodemon"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.10.0",
+    "dotenv": "^16.3.1",
+    "graphql": "^16.8.1",
+    "graphql-scalars": "^1.22.4",
+    "kafkajs": "^2.2.4",
+    "log4js": "^6.9.1",
+    "moongose": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.11.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

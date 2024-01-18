@@ -1,16 +1,61 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
+  api:
+    image: api-gw:v1
+    build:
+      context: ./api-gateway
+    depends_on: [kafka, mongodb]
+    volumes:
+      - ./api-gateway/src:/app/src
     ports:
-      - "5432:5432"
+      - 4000:4000
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      KAFKA_BROKER: kafka:29092
+      KAFKA_CLIENT_ID: transaction-process
+      DB_HOST: mongodb
+      DB_USER: root
+      DB_PASSWORD: mongodbpass
+      DB_PORT: 27017
+      DB_NAME: yape-challenge
+      
+  transaction:
+    image: transaction-wk:v1
+    build:
+      context: ./transaction-worker
+    depends_on: [kafka, mongodb]
+    volumes:
+      - ./transaction-worker/src:/app/src
+    environment:
+      KAFKA_BROKER: kafka:29092
+      KAFKA_CLIENT_ID: transaction-process
+      KAFKA_GROUP_ID: transaction-group
+
+  anti-fraud:
+    image: anti-fraud-wk:v1
+    build:
+      context: ./anti-fraud-worker
+    depends_on: [kafka, mongodb]
+    volumes:
+      - ./anti-fraud-worker/src:/app/src
+    environment:
+      KAFKA_BROKER: kafka:29092
+      KAFKA_CLIENT_ID: transaction-process
+      KAFKA_GROUP_ID: anti-fraud-group
+    
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongodbpass
+    ports:
+      - 27018:27017
+      
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]

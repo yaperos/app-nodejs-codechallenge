@@ -1,0 +1,25 @@
+{
+  "name": "worker-transaction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/main.js",
+    "dev": "nodemon"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "kafkajs": "^2.2.4",
+    "log4js": "^6.9.1",
+    "moongose": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.11.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
