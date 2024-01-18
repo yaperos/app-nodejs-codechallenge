@@ -1,12 +1,14 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
+  mysql:
+    image: mysql
     ports:
-      - "5432:5432"
+      - "3306:3306"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password123
+      - MYSQL_ROOT_PASSWORD=password123
+      - MYSQL_DATABASE=transactions
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
