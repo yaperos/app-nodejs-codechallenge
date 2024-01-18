@@ -9,8 +9,11 @@
     "rootDir": ".",
     "strict": true,
     "noEmit": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "noUnusedLocals": true,
+    "skipLibCheck": true,
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {

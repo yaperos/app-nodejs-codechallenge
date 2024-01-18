@@ -7,6 +7,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -20,6 +22,13 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKAJS_NO_PARTITIONER_WARNING: 1
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  command_after_start:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    depends_on: [kafka]
+    volumes:
+      - ./init.sh:/init.sh
+    command: ["sh", "-c", "chmod +x init.sh && ./init.sh"]

@@ -1,2 +1,2 @@
 #PUT ALL ENUMS FOLDERS HERE
-src/context/shared/domain/enums/*.ts
+context/transactions/domain/enums/TransactionStatus.ts
