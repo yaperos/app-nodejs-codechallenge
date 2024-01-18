@@ -1,0 +1,36 @@
+services:
+  Repository.Transaction.TypeORM:
+    class: ../../../context/transactions/infrastructure/repositories/TransactionRepository
+    arguments: []
+
+  UseCase.Transaction.GetTransactionByExternalId:
+    class: ../../../context/transactions/application/uses_cases/find/GetTransactionByExternalId
+    arguments:
+      - '@Repository.Transaction.TypeORM'
+
+  UseCase.Transaction.CreateTransaction:
+    class: ../../../context/transactions/application/uses_cases/create/CreateTransaction
+    arguments:
+      - '@Repository.Transaction.TypeORM'
+  
+  UseCase.Transaction.UpdateTransaction:
+    class: ../../../context/transactions/application/uses_cases/update/UpdateTransaction
+    arguments:
+      - '@Repository.Transaction.TypeORM'
+
+  Service.Transaction:
+    class: ../../../context/transactions/infrastructure/services/TransactionService
+    arguments:
+      - '@UseCase.Transaction.CreateTransaction'
+      - '@UseCase.Transaction.UpdateTransaction'
+      - '@UseCase.Transaction.GetTransactionByExternalId'
+
+  Controller.Transaction.Create:
+    class: ../../controllers/transactions/create/CreateTransactionController
+    arguments:
+      - '@Service.Transaction'
+  
+  Controller.Transaction.Get:
+    class: ../../controllers/transactions/find/GetTransactionByIdController
+    arguments:
+      - '@Service.Transaction'

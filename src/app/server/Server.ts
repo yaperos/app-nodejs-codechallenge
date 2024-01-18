@@ -25,6 +25,7 @@ export class Server {
     this.app.use(
       morgan('[REQUEST METHOD]: :method - [URL]: :url - [STATUS]: :status - [SIZE]: :res[content-length] - [TIME]: :response-time ms'),
     );
+
     const router = Router();
     this.app.use(router, ErrorHandlerResponse);
     this.app.use(router);

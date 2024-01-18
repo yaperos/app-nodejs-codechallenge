@@ -6,7 +6,13 @@ const env = (key: string) => {
 export default {
   PORT: env('PORT') ?? 3000,
   NODE_ENV: env('NODE_ENV') ?? 'dev',
-  MONGODB: env('MONGO_URL'),
+  DB: {
+    HOST: env('DB_HOST'),
+    PORT: +env('DB_PORT')! ?? 3306,
+    USERNAME: env('DB_USERNAME'),
+    PASSWORD: env('DB_PASSWORD'),
+    NAME: env('DB_NAME'),
+  },
   LOGGER_LEVELS: {
     DEBUG: 'debug',
     ERROR: 'error',
