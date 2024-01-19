@@ -1,4 +1,4 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge - Jesus Rodriguez
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
@@ -80,3 +80,82 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Solution
+
+- Clone the project.
+- Copy **.env.example** to **.env**. It will be used as environment variables source.
+
+Run ```docker-compose``` command inside folder.
+
+* Building the containers: ```docker-compose build```
+
+* Starting the services: ```docker-compose up -d```
+
+* Stoping the services: ```docker-compose stop```
+
+By default the api will run under the following port:
+- http://localhost:4000
+
+
+You must have three resources:
+
+1. Resource to create a transaction:
+
+```gql
+mutation Mutation($input: TransactionInput) {
+  createTransaction(input: $input) {
+    code
+    message
+    success
+  }
+}
+```
+```json
+{
+  "input": {
+    "accountExternalIdCredit": "b511ddbe-6a5b-4c31-8db8-a8e8237bd44b",
+    "accountExternalIdDebit": "da24cfb3-71e3-49b4-b408-e85d53c2a5c3",
+    "tranferTypeId": 1,
+    "value": 500
+  }
+}
+```
+
+2. Search a transaction: 
+
+```gql
+query SearchTransaction($transactionId: GUID!) {
+  searchTransaction(transactionId: $transactionId) {
+    message
+    success
+    code
+    result {
+      transactionExternalId
+      tranferTypeId
+      status
+      value
+      createdAt
+    }
+  }
+}
+
+```
+```json
+{
+  "transactionId": "1a920c5c-56ed-4a17-b0cc-cb7a5b2e1091"
+}
+```
+
+2. Get all transactions, limited per ten rows (Optional): 
+```
+query AllTransaction {
+  allTransaction {
+    transactionExternalId
+    tranferTypeId
+    status
+    value
+    createdAt
+  }
+}
+```
