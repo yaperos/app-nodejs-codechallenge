@@ -1,0 +1,16 @@
+{
+  "name": "challenge",
+  "version": "1.0.0",
+  "description": "Yape code challenge",
+  "main": "index.js",
+  "scripts": {
+    "docker:build": "docker-compose -f docker-compose.all.yml build",
+    "docker:up": "docker-compose -f docker-compose.all.yml up -d",
+    "docker:down": "docker-compose -f docker-compose.all.yml down",
+    "docker:run": "npm run docker:up",
+    "docker:stop": "npm run docker:down"
+  },
+  "keywords": [],
+  "author": "Miguel Angel Cueva Lezameta",
+  "license": "ISC"
+}

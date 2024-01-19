@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package transaction;
+
+service Transaction {
+  rpc FindPaginated (FindPaginatedRequest) returns (PaginatedTransactionsResponse) {}
+  rpc FindOne (FindOneRequest) returns (TransactionResponse) {}
+  rpc Create (CreateRequest) returns (TransactionResponse) {}
+}
+
+message FilterData {
+  string field = 1;
+  string operator = 2;
+  string value = 3;
+}
+
+message TransferTypeData {
+  string id = 1;
+  string name = 2;
+}
+
+message TransactionData {
+  string id = 1;
+  TransferTypeData transferType = 2;
+  string validationStatus = 3;
+  double amount = 4;
+  string createdAt = 5;
+}
+
+message TransactionResponse {
+  int32 code = 1;
+  string error = 2;
+  repeated string messages = 3;
+  TransactionData data = 4;
+}
+
+// FindPaginated
+message FindPaginatedRequest {
+  int32 page = 1;
+  int32 limit = 2;
+  string orderBy = 3;
+  string order = 4;
+  repeated FilterData filters = 5;
+}
+
+message PaginatedTransactionsData {
+  repeated TransactionData items = 1;
+  int32 page = 2;
+  int32 limit = 3;
+  int32 pages = 4;
+  int32 total = 5;
+  repeated FilterData filters = 6;
+}
+
+message PaginatedTransactionsResponse {
+  int32 code = 1;
+  string error = 2;
+  repeated string messages = 3;
+  PaginatedTransactionsData data = 4;
+}
+
+// FindOne
+message FindOneRequest {
+  string id = 1;
+}
+
+// Create
+message CreateRequest {
+  string id = 1;
+  string creditAccountExternalId = 2;
+  string debitAccountExternalId = 3;
+  string transferType = 4;
+  double amount = 5;
+}

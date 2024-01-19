@@ -1,0 +1,54 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Transaction Type object"""
+type TransactionTypeOutput {
+  name: String!
+}
+
+"""Transaction Status object"""
+type TransactionStatusOutput {
+  name: String!
+}
+
+"""Transaction object"""
+type TransactionOutput {
+  """Guid"""
+  transactionExternalId: ID!
+  transactionType: TransactionTypeOutput!
+
+  """Guid"""
+  transactionStatus: TransactionStatusOutput!
+
+  """amount"""
+  value: Float!
+
+  """Date"""
+  createdAt: String!
+}
+
+type Query {
+  """Find a transaction by ID"""
+  transaction(transactionExternalId: ID!): TransactionOutput!
+}
+
+type Mutation {
+  """Create a new transaction"""
+  createTransaction(createTransactionInput: CreateTransactionInput!): TransactionOutput!
+}
+
+"""Input used to create transaction"""
+input CreateTransactionInput {
+  """Guid"""
+  accountExternalIdCredit: String!
+
+  """Guid"""
+  accountExternalIdDebit: String!
+
+  """Tranfer type"""
+  tranferTypeId: Int!
+
+  """Amount value"""
+  value: Float!
+}
