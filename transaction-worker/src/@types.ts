@@ -8,10 +8,10 @@ export enum ETopicsTransaction {
     EVENT_TRANSACTION_REJECTED = "EVENT_TRANSACTION_REJECTED"
 }
 
-
 export enum EStatus {
     APPROVED = "APPROVED",
-    REJECTED = "REJECTED"
+    REJECTED = "REJECTED",
+    PENDING = "PENDING"
 }
 
 export interface IPayloadTransactionStatus {

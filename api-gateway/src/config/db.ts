@@ -1,8 +1,19 @@
-import mongoose from 'mongoose';
 import { config } from '.';
+import { Sequelize } from 'sequelize';
+
+const db = new Sequelize(config.DB_NAME, config.DB_USER, config.DB_PASSWORD, {
+    host: config.DB_HOST,
+    dialect: 'postgres',
+    logging: false
+});
 
 export const dbConnect = async () => {
-    await mongoose.connect(
-        `mongodb://${config.DB_USER}:${config.DB_PASSWORD}@${config.DB_HOST}:27017/${config.DB_NAME}?authSource=admin`
-    );
+    try {
+        await db.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('DATABASE ERROR:', error);
+    }
 }
+
+export default db;

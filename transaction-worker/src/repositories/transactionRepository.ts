@@ -1,28 +1,27 @@
-import transactionModel, { ITransaction } from "../models/transactionModel";
+import { randomUUID } from 'crypto';
+import Transaction, { ITransaction } from "../models/transaction";
 import { currentDate } from "../utils/helpers";
 
 class TransactionRepository {
 
     async save(data?: ITransaction) {
-        const transaction = new transactionModel({
-            ...data, createdAt: currentDate()
+        const transaction = await Transaction.create({
+            ...data, transactionExternalId: randomUUID(), createdAt: currentDate()
         });
         
-        await transaction.save();
-
-        return transaction;
+        return transaction.toJSON();
     }
 
     async update(transactionId: string, status: string) {
-        const event = await transactionModel.findOne({ 
-            transactionExternalId: transactionId,
+        const event = await Transaction.findOne({ 
+            where: { transactionExternalId: transactionId }
         });
 
         if (!event) return;
 
-        await transactionModel.findOneAndUpdate(
-            { transactionExternalId: transactionId }, { status }, {new: true}
-        );
+        await Transaction.update({ status }, {
+            where: { transactionExternalId: transactionId }
+        });
     }
 }
 

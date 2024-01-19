@@ -1,5 +1,5 @@
 import logger from "../utils/logger";
-import { ITransaction } from "../models/transactionModel";
+import { ITransaction } from "../models/transaction";
 import transactionRepository from "../repositories/transactionRepository";
 import { ETopicsTransaction, ETypeEventTransaction, IPayloadTransactionStatus } from "../@types";
 import Producer from "./producer";
@@ -17,7 +17,6 @@ export default class Transaction {
             id: transaction.transactionExternalId,
             value: transaction.value
         }
-
         await this.producer.call(payload, ETypeEventTransaction.EVENT_NEW_TRANSACTION_FRAUD);
         logger.info(`[EXECUTED] ${ETypeEventTransaction.EVENT_NEW_TRANSACTION_FRAUD}`)
     }
@@ -29,12 +28,14 @@ export default class Transaction {
     async dispatch(topic: ETopicsTransaction, data: any) {
         switch (topic) {
             case ETopicsTransaction.EVENT_NEW_TRANSACTION:
-                await this.save(data)
+                await this.save(data);
+                break;
 
             case ETopicsTransaction.EVENT_TRANSACTION_APPROVED:
             case ETopicsTransaction.EVENT_TRANSACTION_REJECTED:
                 await this.update(data)   
-                 
+                break;
+
             default:
                 break;
         }

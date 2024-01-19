@@ -4,6 +4,12 @@ export enum ETypeEventTransaction {
     EVENT_NEW_TRANSACTION = "EVENT_NEW_TRANSACTION",
 }
 
+export enum EStatus {
+    APPROVED = "APPROVED",
+    REJECTED = "REJECTED",
+    PENDING = "PENDING"
+}
+
 export interface IPayloadBody {
     value: number,
     id: string

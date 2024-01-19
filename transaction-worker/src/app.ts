@@ -21,6 +21,7 @@ const run = async () => {
         ETopicsTransaction.EVENT_TRANSACTION_APPROVED, 
         ETopicsTransaction.EVENT_TRANSACTION_REJECTED
     ]);
+    
     await consumer.connectAndSuscriber();
 
     await consumer.run({

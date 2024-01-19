@@ -4,13 +4,14 @@ services:
     image: api-gw:v1
     container_name: ${API_GATEWAY_NAME}
     build:
+      target: ${STAGE}
       context: ${API_GATEWAY_PATH}
-    depends_on: [kafka, mongodb]
+    depends_on: [kafka, postgres]
     volumes:
       - ${API_GATEWAY_PATH}/src:/app/src
     ports:
       - ${API_GATEWAY_PORT}:4000
-    restart: on-failure
+    restart: always
     env_file: ./.env
     environment:
       - KAFKA_BROKER=${KAFKA_BROKER}
@@ -25,11 +26,12 @@ services:
     image: transaction-wk:v1
     container_name: ${TRANSACTION_WORKER_NAME}
     build:
+      target: ${STAGE}
       context: ${TRANSACTION_WORKER_PATH}
-    depends_on: [kafka, mongodb]
+    depends_on: [kafka, postgres]
     volumes:
       - ${TRANSACTION_WORKER_PATH}/src:/app/src
-    restart: on-failure
+    restart: always
     env_file: ./.env
     environment:
       - KAFKA_BROKER=${KAFKA_BROKER}
@@ -45,33 +47,36 @@ services:
     image: anti-fraud-wk:v1
     container_name: ${API_FRAUD_WORKER_NAME}
     build:
+      target: ${STAGE}
       context: ${API_FRAUD_WORKER_PATH}
-    depends_on: [kafka, mongodb]
+    depends_on: [kafka]
     volumes:
       - ${API_FRAUD_WORKER_PATH}/src:/app/src
-    restart: on-failure
+    restart: always
     env_file: ./.env
     environment:
       - KAFKA_BROKER=${KAFKA_BROKER}
       - KAFKA_CLIENT_ID=${KAFKA_CLIENT_ID}
       - KAFKA_GROUP_ID=${KAFKA_GROUP_FRAUD_ID}
-    
-  mongodb:
-    image: mongo
-    restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+  
+  postgres:
+    image: postgres:14
     ports:
-      - 27018:27017
-      
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-
+      
   kafka:
-    restart: on-failure
+    restart: always
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
     environment:
