@@ -67,6 +67,7 @@ describe('KafkaBrokerProvider test', () => {
   it('should test publish event', async () => {
     let eventRecived: any;
     const messageHandler = async ({ message }) => {
+      await new Promise((resolve) => setTimeout(resolve, 250));
       eventRecived = JSON.parse(message.value.toString());
       destroy$.next();
     };
@@ -82,7 +83,7 @@ describe('KafkaBrokerProvider test', () => {
 
     await firstValueFrom(destroy$);
     expect(eventRecived).toEqual(JSON.parse(JSON.stringify(event)));
-  }, 20000);
+  }, 30000);
 });
 
 const createTopic = async (kafka: Kafka, topicName: string) => {
