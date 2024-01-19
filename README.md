@@ -34,10 +34,14 @@ DB_PORT=5432
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
 DB_NAME=yape
-
 ```
 
-How to run:
+Run docker container (pg, kafka, zookeeper)
+```
+docker-compose -f docker-compose.yml up -d
+```
+
+How to run app:
 ```
 run: npm run dev
 ```
