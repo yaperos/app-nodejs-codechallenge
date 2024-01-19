@@ -1,7 +1,7 @@
 import { Partitioners } from "kafkajs"
 import { randomUUID } from "crypto"
 import kafka from "../config/kafka"
-import { ETypeEventTransaction, IPayloadTransactionStatus } from "../types";
+import { ETypeEventTransaction, IPayloadTransactionStatus } from "../@types";
 
 
 export default class Producer {

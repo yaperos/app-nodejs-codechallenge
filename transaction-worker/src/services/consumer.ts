@@ -1,7 +1,7 @@
 import { ConsumerRunConfig } from "kafkajs"
 import kafka from "../config/kafka"
 import { config } from "../config"
-import { ETopicsTransaction } from "../types";
+import { ETopicsTransaction } from "../@types";
 
 export default class Consumer {
     private _consumer;

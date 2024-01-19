@@ -2,52 +2,66 @@ version: "3.7"
 services:
   api:
     image: api-gw:v1
+    container_name: ${API_GATEWAY_NAME}
     build:
-      context: ./api-gateway
+      context: ${API_GATEWAY_PATH}
     depends_on: [kafka, mongodb]
     volumes:
-      - ./api-gateway/src:/app/src
+      - ${API_GATEWAY_PATH}/src:/app/src
     ports:
-      - 4000:4000
+      - ${API_GATEWAY_PORT}:4000
+    restart: on-failure
+    env_file: ./.env
     environment:
-      KAFKA_BROKER: kafka:29092
-      KAFKA_CLIENT_ID: transaction-process
-      DB_HOST: mongodb
-      DB_USER: root
-      DB_PASSWORD: mongodbpass
-      DB_PORT: 27017
-      DB_NAME: yape-challenge
+      - KAFKA_BROKER=${KAFKA_BROKER}
+      - KAFKA_CLIENT_ID=${KAFKA_CLIENT_ID}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
       
   transaction:
     image: transaction-wk:v1
+    container_name: ${TRANSACTION_WORKER_NAME}
     build:
-      context: ./transaction-worker
+      context: ${TRANSACTION_WORKER_PATH}
     depends_on: [kafka, mongodb]
     volumes:
-      - ./transaction-worker/src:/app/src
+      - ${TRANSACTION_WORKER_PATH}/src:/app/src
+    restart: on-failure
+    env_file: ./.env
     environment:
-      KAFKA_BROKER: kafka:29092
-      KAFKA_CLIENT_ID: transaction-process
-      KAFKA_GROUP_ID: transaction-group
+      - KAFKA_BROKER=${KAFKA_BROKER}
+      - KAFKA_CLIENT_ID=${KAFKA_CLIENT_ID}
+      - KAFKA_GROUP_ID=${KAFKA_GROUP_TRANS_ID}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
 
   anti-fraud:
     image: anti-fraud-wk:v1
+    container_name: ${API_FRAUD_WORKER_NAME}
     build:
-      context: ./anti-fraud-worker
+      context: ${API_FRAUD_WORKER_PATH}
     depends_on: [kafka, mongodb]
     volumes:
-      - ./anti-fraud-worker/src:/app/src
+      - ${API_FRAUD_WORKER_PATH}/src:/app/src
+    restart: on-failure
+    env_file: ./.env
     environment:
-      KAFKA_BROKER: kafka:29092
-      KAFKA_CLIENT_ID: transaction-process
-      KAFKA_GROUP_ID: anti-fraud-group
+      - KAFKA_BROKER=${KAFKA_BROKER}
+      - KAFKA_CLIENT_ID=${KAFKA_CLIENT_ID}
+      - KAFKA_GROUP_ID=${KAFKA_GROUP_FRAUD_ID}
     
   mongodb:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: mongodbpass
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
     ports:
       - 27018:27017
       
@@ -57,6 +71,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka:
+    restart: on-failure
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
     environment:

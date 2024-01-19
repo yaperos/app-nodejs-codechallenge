@@ -4,7 +4,7 @@ import {
     ETypeEventTransaction, 
     IPayloadBody, 
     IPayloadCall 
-} from "../types";
+} from "../@types";
 import logger from "../logger";
 
 export default class Fraud {

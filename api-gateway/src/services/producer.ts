@@ -17,7 +17,7 @@ export default class Producer {
     }
 
     async call(data: any, topic:ETypeEventTransaction) {   
-       await this.producer.send({
+        await this.producer.send({
             topic: topic,
             messages: [{ key: randomUUID(), value: JSON.stringify(data)}],
         });

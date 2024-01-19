@@ -1,33 +1,44 @@
 export const typeDefs = `#graphql
-  scalar JSON
-  scalar UUID
-  
-  input TransactionInput {
-    accountExternalIdDebit: UUID!
-    accountExternalIdCredit: UUID!
-    tranferTypeId: Int!
-    value: Float!
+  enum TransactionStatus {
+    APPROVED
+    REJECTED
+    PENDING
   }
 
-  type ResponseTransaction {
-    messsage: String
+  input TransactionInput {
+    accountExternalIdDebit: GUID!
+    accountExternalIdCredit: GUID!
+    tranferTypeId: PositiveInt!
+    value: PositiveFloat!
+  }
+
+  type Response {
+    message: String
+    success: Boolean
     code: Int
-    result: JSON
   }
 
   type Transaction {
     transactionExternalId: ID
     tranferTypeId: Int
-    transactionStatus: String
-    value: Int
-    createAd: String
+    status: TransactionStatus
+    value: Float
+    createdAt: DateTime
+  }
+
+  type ResponseTransaction {
+    message: String
+    success: Boolean
+    code: Int
+    result: Transaction
   }
 
   type Mutation {
-    createTransaction(input: TransactionInput): ResponseTransaction
+    createTransaction(input: TransactionInput): Response
   }
   
   type Query {
-    searchTransaction(transactionId: String!): Transaction
+    searchTransaction(transactionId: GUID!): ResponseTransaction!
+    allTransaction: [Transaction]!
   }
 `;

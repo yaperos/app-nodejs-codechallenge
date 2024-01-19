@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config(); 
 import { EachMessagePayload } from 'kafkajs'
 import Consumer from './services/consumer'
-import { ETopicsTransaction } from './types';
+import { ETopicsTransaction } from './@types';
 import Fraud from './services/fraud';
 import Producer from './services/producer';
 import logger from './logger';

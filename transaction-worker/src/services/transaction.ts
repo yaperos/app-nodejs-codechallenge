@@ -1,7 +1,7 @@
-import logger from "../logger";
+import logger from "../utils/logger";
 import { ITransaction } from "../models/transactionModel";
 import transactionRepository from "../repositories/transactionRepository";
-import { ETopicsTransaction, ETypeEventTransaction, IPayloadTransactionStatus } from "../types";
+import { ETopicsTransaction, ETypeEventTransaction, IPayloadTransactionStatus } from "../@types";
 import Producer from "./producer";
 
 export default class Transaction {

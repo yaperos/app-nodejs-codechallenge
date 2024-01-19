@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import { Schema, model } from 'mongoose';
 
-interface ITransaction {
+export interface ITransaction {
     accountExternalIdDebit: string;
     accountExternalIdCredit: string;
     transactionExternalId: string;

@@ -40,7 +40,7 @@ const transactionSchema = new Schema<ITransaction>({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: new Date()
     }
 })
 
