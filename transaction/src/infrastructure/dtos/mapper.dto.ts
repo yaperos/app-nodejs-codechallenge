@@ -4,10 +4,11 @@ import { TransactionEntity } from '../entities/transaction.entity';
 export class MapperDto {
   static domainToEntity(transaction: Transaction): TransactionEntity {
     const transactionEntity = new TransactionEntity();
+    console.log(transaction.data())
     transactionEntity.transactionExternalId = transaction.data().transactionExternalId;
     transactionEntity.accountExternalIdCredit = transaction.data().accountExternalIdCredit;
     transactionEntity.accountExternalIdDebit = transaction.data().accountExternalIdDebit;
-    transactionEntity.tranferTypeId = transaction.data().transferTypeId;
+    transactionEntity.transferTypeId = transaction.data().transferTypeId;
     transactionEntity.value = transaction.data().value;
     transactionEntity.status = transaction.data().status;
     
@@ -18,9 +19,9 @@ export class MapperDto {
     return new Transaction(
         {
             transactionExternalId: transactionEntity.transactionExternalId,
-            accountExternalIdDebit: transactionEntity.accountExternalIdDebit,
-            accountExternalIdCredit: transactionEntity.accountExternalIdCredit,
-            tranferTypeId: transactionEntity.tranferTypeId,
+            accExternalIdDebit: transactionEntity.accountExternalIdDebit,
+            accExternalIdCredit: transactionEntity.accountExternalIdCredit,
+            transferTypeId: transactionEntity.transferTypeId,
             value: transactionEntity.value,
             status: transactionEntity.status
         }

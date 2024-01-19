@@ -1,19 +1,25 @@
 import { AggregateRoot } from "@nestjs/cqrs";
 import { Status } from "./constants.enum";
 
-export type Properties = {
+export type OptionalProperties = {
     readonly transactionExternalId: string;
-    readonly accountExternalIdDebit: string;
-    readonly accountExternalIdCredit: string;
-    readonly tranferTypeId: number;
-    readonly value: number;
     readonly status: number;
-}
+};
+
+export type RequiredProperties = {
+    readonly accExternalIdDebit: string;
+    readonly accExternalIdCredit: string;
+    readonly transferTypeId: number;
+    readonly value: number;
+};
+
+export type Properties = Required<RequiredProperties> & Partial<OptionalProperties>;
 
 export class Transaction extends AggregateRoot {
+
     private readonly transactionExternalId: string;
-    private readonly accountExternalIdDebit: string;
-    private readonly accountExternalIdCredit: string;
+    private readonly accExternalIdDebit: string;
+    private readonly accExternalIdCredit: string;
     private readonly transferTypeId: number;
     private readonly value: number;
     private readonly status: number;
@@ -30,13 +36,18 @@ export class Transaction extends AggregateRoot {
     data() {
         return {
             transactionExternalId: this.transactionExternalId,
-            accountExternalIdDebit: this.accountExternalIdDebit,
-            accountExternalIdCredit: this.accountExternalIdCredit,
+            accountExternalIdDebit: this.accExternalIdDebit,
+            accountExternalIdCredit: this.accExternalIdCredit,
             transferTypeId: this.transferTypeId,
             value: this.value,
             status: this.status,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt
         };
+    }
+
+    update(dataUpdate: Partial<OptionalProperties>) {
+        Object.assign(this, dataUpdate);
+        this.updatedAt = new Date();
     }
 }

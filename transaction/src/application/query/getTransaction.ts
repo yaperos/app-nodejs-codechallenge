@@ -17,7 +17,6 @@ export class GetTransactionHandler implements IQueryHandler<GetTransaction, Tran
     ){}
 
     async execute(query: GetTransaction): Promise<TransactionGetDto>{
-        console.log(query)
         const opTransaction = await this.repository.findById(query.trExternalId);
         return TransactionGetDto.domainToGetResponse(opTransaction);
     }

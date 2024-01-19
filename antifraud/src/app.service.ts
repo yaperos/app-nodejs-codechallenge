@@ -12,7 +12,7 @@ export class AppService {
     const {transactionExternalId, value} = transaction;
     const status = value > 1000 ? Status.Rejected : Status.Approved;
     
-    return this.clientKafka.emit('update-tr', 
+    return this.clientKafka.emit('transaction-update', 
       JSON.stringify({transactionExternalId, status})
     );
   }

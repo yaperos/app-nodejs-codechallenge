@@ -12,7 +12,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
     accountExternalIdCredit: string;
   
     @Column('int')
-    tranferTypeId: number;
+    transferTypeId: number;
   
     @Column('float')
     value: number;

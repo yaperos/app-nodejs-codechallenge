@@ -9,6 +9,9 @@ async function bootstrap() {
     options: {
       client: {
         brokers: ['localhost:9092']
+      },
+      consumer: {
+        groupId: 'transaction-consumer'
       }
     }
   } as MicroserviceOptions);

@@ -15,7 +15,6 @@ export class TransactionInfrastructure implements TransactionRepository{
     }
 
     async findById(transactionExternalId: string): Promise<Transaction> {
-        console.log(transactionExternalId)
         const entityTr = await AppService.instConn.getRepository(TransactionEntity)
                                 .findOne({where: { transactionExternalId }});
         return MapperDto.entityToDomain(entityTr);        
