@@ -1,82 +1,80 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# Technological stack
+  The challenge was solved using Nest.js framework with microservices. The transaction was built using hexagonal architecture and cqrs for scalability issues. The anti-fraud microservice also uses nest.js.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+# Prerequisites
+  Check that you have this installed on your system:
+  1. Node.js (^18)
+  2. Docker 
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+# Setup
+  1. Go to root directory and run `docker compose up` command to start containers.
+  2. In directory `antifraud` use `npm install` or `yarn install` to install dependencies.
+  3. In directory `transaction` use `npm install` or `yarn install` to install dependencies.
+  4. In directory `transaction` create .env file with the following variables.
+    
+  ```
+  SERVER_PORT=3000
+  MYSQL_HOST=localhost
+  MYSQL_PORT=3306
+  MYSQL_USERNAME=user
+  MYSQL_PASSWORD=password123
+  MYSQL_DATABASE=transactions
+  ```
 
-# Problem
+  5. Run both using `npm run start:dev` or `yarn start:dev`.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+# Usage 
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+  First let's make a transaction, the target route is `http://localhost:3000`: 
 
-Every transaction with a value greater than 1000 should be rejected.
+    1. Open an API platform  like Postman, Insomnia, etc. 
+    2. Configure the request with the endpoint ` http://localhost:3000/transactions `, method POST. 
+    3. In request body use raw, and content-type JSON.
+    4. Use this JSON object (example):
+      
+  ```
+  {
+    "accountExternalIdDebit": "444a-222b-33g3-63ac",
+    "accountExternalIdCredit": "44a-222b-33g3-63ac",
+    "transferTypeId": 1,
+    "value": 230
+  }
+  ```
+    5. Send the request and see the response, if all is ok you see object response with the `transactionExternalId`,
+        we will use it later for the get query. The response should be something like this:
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+  ```
+  {
+    "transactionExternalId": "7a4e04cd-0724-490e-9e2b-65f24bf39b62",
+    "accountExternalIdDebit": "444a-222b-33g3-63ac",
+    "accountExternalIdCredit": "44a-222b-33g3-63ac",
+    "value": 230,
+    "status": 1
+  }
+  ```
+  Now we check the status of the transaction in DB, for that, we use the following steps:
 
-# Tech Stack
+    1. Configure the request with the endpoint ` http://localhost:3000/transactions/{transactionExternalId} `, method GET.
+    2. Send Request, for this part just ensure that the `transactionExternalId` is correct. 
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+  Finally we can see the object response of the transaction with the status resolved. 
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+  ```
+    {
+      "transactionExternalId": "7a4e04cd-0724-490e-9e2b-65f24bf39b62",
+      "transactionType": {
+        "name": 1
+      },
+      "transactionStatus": {
+        "name": "Approved"
+      },
+      "value": 230,
+      "createdAt": "2024-01-19T22:04:44.922Z"
+    }
+  ```
 
-You must have two resources:
 
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+    
+       
