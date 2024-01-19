@@ -1,6 +1,6 @@
 import { TransactionCreatedEvent } from 'src/modules/transaction/domain/transaction-created.event';
 
-import { TransactionCreatedEventMother } from './mothers/transaction-created-event.Mother';
+import { TransactionCreatedEventMother } from './mothers/transaction-created-event.mother';
 
 describe('TransactionCreatedEvent test', () => {
   it('should be instantiated correctly', () => {

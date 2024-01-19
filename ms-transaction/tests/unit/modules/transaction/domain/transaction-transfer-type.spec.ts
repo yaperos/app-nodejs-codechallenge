@@ -5,7 +5,7 @@ import {
 } from 'src/modules/transaction/domain/transaction-transfer-type';
 
 import { WordMother } from '../../shared/domain/mothers';
-import { TransactionTransferTypeMother } from './mothers/transaction-transfer-type.Mother';
+import { TransactionTransferTypeMother } from './mothers/transaction-transfer-type.mother';
 
 describe('TransactionTransferType test', () => {
   it('should throw an error for invalid value', () => {

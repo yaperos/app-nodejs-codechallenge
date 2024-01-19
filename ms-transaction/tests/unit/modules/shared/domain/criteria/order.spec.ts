@@ -1,7 +1,7 @@
 import { Order } from 'src/modules/shared/domain/criteria/order';
 
-import { OrderByMother } from './mothers/order-by.Mother';
-import { OrderTypeMother } from './mothers/order-type.Mother';
+import { OrderByMother } from './mothers/order-by.mother';
+import { OrderTypeMother } from './mothers/order-type.mother';
 
 describe('Order test', () => {
   it('should instance from values', () => {

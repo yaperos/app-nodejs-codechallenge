@@ -4,7 +4,7 @@ import { TransactionCacheService } from 'src/modules/transaction/domain/services
 import { StringMother } from 'tests/unit/modules/shared/domain/mothers';
 import { MockAggregateCacheService } from 'tests/unit/modules/shared/domain/services/mock-aggregate-cache.service';
 
-import { TransactionMother } from '../mothers/transaction.Mother';
+import { TransactionMother } from '../mothers/transaction.mother';
 
 describe('TransactionCacheService test', () => {
   const mockAggregateCacheService = new MockAggregateCacheService();

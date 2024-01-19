@@ -6,7 +6,7 @@ import { UuidMother } from '../../shared/domain/mothers';
 import { MockEventBrokerService } from '../../shared/domain/services/mock-event-broker.service';
 import { MockTransactionRepository } from '../domain/mock-transaction.repository';
 import { TransactionCreatedEventMother } from '../domain/mothers/events/transaction-created-event.mother';
-import { TransactionMother } from '../domain/mothers/transaction.Mother';
+import { TransactionMother } from '../domain/mothers/transaction.mother';
 import { MockTransactionCacheService } from '../domain/services/mock-transaction-cache.service';
 
 describe('TransactionCreator UseCase', () => {

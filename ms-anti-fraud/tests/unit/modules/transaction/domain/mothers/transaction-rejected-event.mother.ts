@@ -4,7 +4,7 @@ import {
   UuidMother,
 } from 'tests/unit/modules/shared/domain/mothers';
 
-import { TransactionIdMother } from './transaction-id.Mother';
+import { TransactionIdMother } from './transaction-id.mother';
 
 export class TransactionRejectedEventMother {
   static create({

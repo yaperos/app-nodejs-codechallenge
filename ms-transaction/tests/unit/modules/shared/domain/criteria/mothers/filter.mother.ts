@@ -1,8 +1,8 @@
 import { Filter } from 'src/modules/shared/domain/criteria/filter';
 
-import { FilterFieldMother } from './filter-field.Mother';
-import { FilterOperatorMother } from './filter-operator.Mother';
-import { FilterValueMother } from './filter-value.Mother';
+import { FilterFieldMother } from './filter-field.mother';
+import { FilterOperatorMother } from './filter-operator.mother';
+import { FilterValueMother } from './filter-value.mother';
 
 export class FilterMother {
   static create({

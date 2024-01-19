@@ -1,7 +1,7 @@
 import { Order } from 'src/modules/shared/domain/criteria/order';
 
-import { OrderByMother } from './order-by.Mother';
-import { OrderTypeMother } from './order-type.Mother';
+import { OrderByMother } from './order-by.mother';
+import { OrderTypeMother } from './order-type.mother';
 
 export class OrderMother {
   static create({

@@ -7,7 +7,7 @@ import {
 } from 'src/modules/transaction/domain/transaction.repository';
 import { TransactionCriteria } from 'src/modules/transaction/domain/transaction-criteria';
 import { TypeOrmTransactionEntity } from 'src/modules/transaction/infrastructure/persistence/typeorm-transaction.entity';
-import { TransactionMother } from 'tests/unit/modules/transaction/domain/mothers/transaction.Mother';
+import { TransactionMother } from 'tests/unit/modules/transaction/domain/mothers/transaction.mother';
 import { DataSource } from 'typeorm';
 
 import { application, sleep } from '../hooks.steps';

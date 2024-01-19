@@ -1,8 +1,8 @@
 import { Filter, FilterProps } from 'src/modules/shared/domain/criteria/filter';
 
-import { FilterFieldMother } from './mothers/filter-field.Mother';
-import { FilterOperatorMother } from './mothers/filter-operator.Mother';
-import { FilterValueMother } from './mothers/filter-value.Mother';
+import { FilterFieldMother } from './mothers/filter-field.mother';
+import { FilterOperatorMother } from './mothers/filter-operator.mother';
+import { FilterValueMother } from './mothers/filter-value.mother';
 
 describe('Filter test', () => {
   it('should instance from values', () => {

@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { TransactionOutput } from 'src/modules/transaction/application/dtos/transaction.output';
 import { TransactionCacheInterceptor } from 'src/modules/transaction/infrastructure/interceptors/transaction-cache.interceptor';
 
-import { TransactionMother } from '../domain/mothers/transaction.Mother';
+import { TransactionMother } from '../domain/mothers/transaction.mother';
 import { MockTransactionCacheService } from '../domain/services/mock-transaction-cache.service';
 
 describe('TransactionCacheInterceptor test', () => {

@@ -1,6 +1,6 @@
-import { FilterMother } from './mothers/filter.Mother';
-import { OrderMother } from './mothers/order.Mother';
-import { PaginationMother } from './mothers/pagination.Mother';
+import { FilterMother } from './mothers/filter.mother';
+import { OrderMother } from './mothers/order.mother';
+import { PaginationMother } from './mothers/pagination.mother';
 import { TestCriteria } from './test-criteria';
 
 describe('Criteria test', () => {

@@ -1,5 +1,5 @@
-import { FilterMother } from '../domain/criteria/mothers/filter.Mother';
-import { PaginationMother } from '../domain/criteria/mothers/pagination.Mother';
+import { FilterMother } from '../domain/criteria/mothers/filter.mother';
+import { PaginationMother } from '../domain/criteria/mothers/pagination.mother';
 import { TestCriteria } from '../domain/criteria/test-criteria';
 import { IntegerMother } from '../domain/mothers';
 import { PaginatedTests } from '../domain/paginated-tests';

@@ -3,9 +3,9 @@ import { PaginationLimit } from 'src/modules/shared/domain/criteria/pagination-l
 import { PaginationPage } from 'src/modules/shared/domain/criteria/pagination-page';
 
 import { IntegerMother } from '../mothers';
-import { PaginationMother } from './mothers/pagination.Mother';
-import { PaginationLimitMother } from './mothers/pagination-limit.Mother';
-import { PaginationPageMother } from './mothers/pagination-page.Mother';
+import { PaginationMother } from './mothers/pagination.mother';
+import { PaginationLimitMother } from './mothers/pagination-limit.mother';
+import { PaginationPageMother } from './mothers/pagination-page.mother';
 
 describe('Pagination test', () => {
   it('should test default instance', () => {

@@ -1,6 +1,6 @@
-import { DateMother } from './date.Mother';
-import { IntegerMother } from './integer.Mother';
-import { StringMother } from './string.Mother';
+import { DateMother } from './date.mother';
+import { IntegerMother } from './integer.mother';
+import { StringMother } from './string.mother';
 
 export class ObjectMother {
   static random(): any {

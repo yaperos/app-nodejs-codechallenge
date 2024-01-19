@@ -4,8 +4,8 @@ import {
   UuidMother,
 } from 'tests/unit/modules/shared/domain/mothers';
 
-import { TransactionAmountMother } from './transaction-amount.Mother';
-import { TransactionIdMother } from './transaction-id.Mother';
+import { TransactionAmountMother } from './transaction-amount.mother';
+import { TransactionIdMother } from './transaction-id.mother';
 
 export class TransactionCreatedEventMother {
   static create({

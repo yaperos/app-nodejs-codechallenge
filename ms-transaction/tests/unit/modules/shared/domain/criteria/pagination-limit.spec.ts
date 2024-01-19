@@ -1,7 +1,7 @@
 import { PaginationLimit } from 'src/modules/shared/domain/criteria/pagination-limit';
 import { InvalidArgumentError } from 'src/modules/shared/domain/errors/invalid-argument.error';
 
-import { PaginationLimitMother } from './mothers/pagination-limit.Mother';
+import { PaginationLimitMother } from './mothers/pagination-limit.mother';
 
 describe('PaginationLimit test', () => {
   it('should throw an error for invalid value', () => {

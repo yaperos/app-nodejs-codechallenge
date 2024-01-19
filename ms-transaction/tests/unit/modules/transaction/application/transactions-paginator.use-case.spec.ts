@@ -4,7 +4,7 @@ import { Transactions } from 'src/modules/transaction/domain/transactions';
 
 import { IntegerMother } from '../../shared/domain/mothers';
 import { MockTransactionRepository } from '../domain/mock-transaction.repository';
-import { TransactionMother } from '../domain/mothers/transaction.Mother';
+import { TransactionMother } from '../domain/mothers/transaction.mother';
 
 describe('TransactionPaginator UseCase', () => {
   const transactionRepository = new MockTransactionRepository();

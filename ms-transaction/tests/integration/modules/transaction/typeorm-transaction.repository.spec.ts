@@ -8,7 +8,7 @@ import { Transactions } from 'src/modules/transaction/domain/transactions';
 import { TypeOrmTransactionEntity as TransactionEntity } from 'src/modules/transaction/infrastructure/persistence/typeorm-transaction.entity';
 import { TypeOrmTransactionRepository as TransactionRepository } from 'src/modules/transaction/infrastructure/persistence/typeorm-transaction.repository';
 import { UuidMother } from 'tests/unit/modules/shared/domain/mothers';
-import { TransactionMother } from 'tests/unit/modules/transaction/domain/mothers/transaction.Mother';
+import { TransactionMother } from 'tests/unit/modules/transaction/domain/mothers/transaction.mother';
 import { DataSource } from 'typeorm';
 
 import { TypeOrmTestingModule } from '../../base';

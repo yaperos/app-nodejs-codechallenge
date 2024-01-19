@@ -3,7 +3,7 @@ import { TransactionCriteria } from 'src/modules/transaction/domain/transaction-
 import { TransactionNotFoundError } from 'src/modules/transaction/domain/transaction-not-found.error';
 
 import { MockTransactionRepository } from '../domain/mock-transaction.repository';
-import { TransactionMother } from '../domain/mothers/transaction.Mother';
+import { TransactionMother } from '../domain/mothers/transaction.mother';
 
 describe('TransactionFinder UseCase', () => {
   const transactionRepository = new MockTransactionRepository();

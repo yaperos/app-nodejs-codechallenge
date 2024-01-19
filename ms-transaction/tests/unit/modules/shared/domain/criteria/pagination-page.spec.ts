@@ -1,7 +1,7 @@
 import { PaginationPage } from 'src/modules/shared/domain/criteria/pagination-page';
 import { InvalidArgumentError } from 'src/modules/shared/domain/errors/invalid-argument.error';
 
-import { PaginationPageMother } from './mothers/pagination-page.Mother';
+import { PaginationPageMother } from './mothers/pagination-page.mother';
 
 describe('PaginationPage test', () => {
   it('should throw an error for invalid value', () => {

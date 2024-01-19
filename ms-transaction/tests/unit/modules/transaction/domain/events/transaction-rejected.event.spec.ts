@@ -1,6 +1,6 @@
 import { TransactionRejectedEvent } from 'src/modules/transaction/domain/events/transaction-rejected.event';
 
-import { TransactionRejectedEventMother } from '../mothers/events/transaction-rejected-event.Mother';
+import { TransactionRejectedEventMother } from '../mothers/events/transaction-rejected-event.mother';
 
 describe('TransactionRejectedEvent test', () => {
   it('should be instantiated correctly', () => {

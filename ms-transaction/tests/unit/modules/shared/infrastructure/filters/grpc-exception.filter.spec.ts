@@ -14,7 +14,7 @@ import {
 import { GrpcExceptionFilter } from 'src/modules/shared/infrastructure/filters/grpc-exception.filter';
 
 import { StringMother } from '../../domain/mothers';
-import { ObjectMother } from '../../domain/mothers/object.Mother';
+import { ObjectMother } from '../../domain/mothers/object.mother';
 import { TestObjectNotFoundError } from '../../domain/test-object-not-found.error';
 
 describe('GrpcExceptionFilter test', () => {

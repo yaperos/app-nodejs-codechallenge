@@ -1,11 +1,11 @@
 import { Transaction } from 'src/modules/transaction/domain/transaction';
 import { DateMother } from 'tests/unit/modules/shared/domain/mothers';
 
-import { TransactionAccountExternalIdMother } from './transaction-account-external-id.Mother';
-import { TransactionAmountMother } from './transaction-amount.Mother';
-import { TransactionIdMother } from './transaction-id.Mother';
-import { TransactionTransferTypeMother } from './transaction-transfer-type.Mother';
-import { TransactionValidationStatusMother } from './transaction-validation-status.Mother';
+import { TransactionAccountExternalIdMother } from './transaction-account-external-id.mother';
+import { TransactionAmountMother } from './transaction-amount.mother';
+import { TransactionIdMother } from './transaction-id.mother';
+import { TransactionTransferTypeMother } from './transaction-transfer-type.mother';
+import { TransactionValidationStatusMother } from './transaction-validation-status.mother';
 
 export class TransactionMother {
   static create({

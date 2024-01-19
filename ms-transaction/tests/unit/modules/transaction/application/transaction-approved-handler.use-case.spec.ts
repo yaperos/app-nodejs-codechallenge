@@ -8,8 +8,8 @@ import { UuidMother } from '../../shared/domain/mothers';
 // import { MockEventBrokerService } from '../../shared/domain/services/mock-event-broker.service';
 import { MockTransactionRepository } from '../domain/mock-transaction.repository';
 import { TransactionApprovedEventMother } from '../domain/mothers/events/transaction-approved-event.mother';
-// import { TransactionUpdatedEventMother } from '../domain/mothers/events/transaction-updated-event.Mother';
-import { TransactionMother } from '../domain/mothers/transaction.Mother';
+// import { TransactionUpdatedEventMother } from '../domain/mothers/events/transaction-updated-event.mother';
+import { TransactionMother } from '../domain/mothers/transaction.mother';
 import { MockTransactionCacheService } from '../domain/services/mock-transaction-cache.service';
 
 describe('TransactionApprovedHandler UseCase', () => {

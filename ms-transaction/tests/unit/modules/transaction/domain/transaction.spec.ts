@@ -1,12 +1,12 @@
 import { Transaction } from 'src/modules/transaction/domain/transaction';
 
 import { DateMother } from '../../shared/domain/mothers';
-import { TransactionMother } from './mothers/transaction.Mother';
-import { TransactionAccountExternalIdMother } from './mothers/transaction-account-external-id.Mother';
-import { TransactionAmountMother } from './mothers/transaction-amount.Mother';
-import { TransactionIdMother } from './mothers/transaction-id.Mother';
-import { TransactionTransferTypeMother } from './mothers/transaction-transfer-type.Mother';
-import { TransactionValidationStatusMother } from './mothers/transaction-validation-status.Mother';
+import { TransactionMother } from './mothers/transaction.mother';
+import { TransactionAccountExternalIdMother } from './mothers/transaction-account-external-id.mother';
+import { TransactionAmountMother } from './mothers/transaction-amount.mother';
+import { TransactionIdMother } from './mothers/transaction-id.mother';
+import { TransactionTransferTypeMother } from './mothers/transaction-transfer-type.mother';
+import { TransactionValidationStatusMother } from './mothers/transaction-validation-status.mother';
 
 describe('Transaction test', () => {
   it('should be instantiated correctly', () => {

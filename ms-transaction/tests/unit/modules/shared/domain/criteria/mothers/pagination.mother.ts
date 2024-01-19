@@ -1,7 +1,7 @@
 import { Pagination } from 'src/modules/shared/domain/criteria/pagination';
 
-import { PaginationLimitMother } from './pagination-limit.Mother';
-import { PaginationPageMother } from './pagination-page.Mother';
+import { PaginationLimitMother } from './pagination-limit.mother';
+import { PaginationPageMother } from './pagination-page.mother';
 
 export class PaginationMother {
   static create({
