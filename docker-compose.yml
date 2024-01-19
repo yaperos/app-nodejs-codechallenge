@@ -1,5 +1,26 @@
 version: "3.7"
 services:
+  antifraud:
+    build:
+      context: .
+      dockerfile: ./apps/antifraud/Dockerfile
+      target: development
+    command: npm run start:dev antifraud
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/usr/src/app
+  transactions:
+    build:
+      context: .
+      dockerfile: ./apps/transactions/Dockerfile
+      target: development
+    command: npm run start:dev transactions
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+
   postgres:
     image: postgres:14
     ports:
