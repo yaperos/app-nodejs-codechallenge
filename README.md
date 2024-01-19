@@ -1,82 +1,76 @@
-# Yape Code Challenge :rocket:
+## Introduction
+The Yape Code Challenge Application is a Node.js application built with the NestJS framework. It is
+designed to handle financial transactions, with features including transaction creation, retrieval,
+automatic status updates, and listing all transactions. The application integrates with Kafka for
+message handling and uses PostgreSQL as its database.
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Getting Started
+### Prerequisites
+- Node.js
+- Docker and Docker Compose
+- PostgreSQL
+- Kafka
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+### Installation
+1. **Clone the Repository**: Clone the project repository to your local machine.
+ ```sh
+ git clone https://github.com/leoquin26/app-nodejs-codechallenge.git
+ ```
+2. **Navigate to the Project Directory**:
+ ```sh
+ cd app-nodejs-codechallenge
+ ```
+3. **Install Dependencies**:
+ ```sh
+ npm install
+ ```
+4. **Start PostgreSQL and Kafka**:
+ Using Docker Compose, start the PostgreSQL and Kafka services.
+ ```sh
+ docker-compose up -d
+ ```
+5. **Run Database Migrations**:
+ ```sh
+ npx prisma migrate dev
+ ```
+6. **Start the Application**:
+ ```sh
+ npm run start
+ ```
+## API Endpoints
+### Create Transaction
+- **Method**: POST
+- **URL**: `/transactions`
+- **Body**:
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+ ```json
+ {
+ "accountExternalIdDebit": "string",
+ "accountExternalIdCredit": "string",
+ "tranferTypeId": 1,
+ "value": 120
+ }
+ ```
 
-# Problem
+- **Description**: Creates a new transaction. Transactions with a value greater than 1000 are
+automatically set to 'rejected'. Transactions with a value of 1000 or less are set to 'pending' and later
+updated to 'approved' after 1 minute.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### Get Transaction
+- **Method**: GET
+- **URL**: `/transactions/:id`
+- **Description**: Retrieves details of a specific transaction by its ID.
+### Get All Transactions
+- **Method**: GET
+- **URL**: `/transactions`
+- **Description**: Retrieves a list of all transactions.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
-
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+## How the Application Works
+- **Transaction Handling**: When a transaction is created, it is saved to the database with an initial
+status. If the transaction amount is over 1000, it is immediately marked as 'rejected'. Otherwise, it is
+marked as 'pending' and automatically updated to 'approved' after 1 minute using a scheduled task.
+ 
+- **Kafka Integration**: The application integrates with Kafka, which can be used for message
+passing between different services (e.g., for anti-fraud checks).
+- **Scheduled Task**: A background task runs periodically to update the status of pending
+transactions that meet specific criteria.
