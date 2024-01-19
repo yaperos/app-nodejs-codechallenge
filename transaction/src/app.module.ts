@@ -3,6 +3,8 @@ import { TransactionController } from './app.controller';
 import { AppService } from './app.service';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { GetTransactionHandler } from './application/query/getTransaction';
+import { TransactionInfrastructure } from './infrastructure/transaction.infrastructure';
 
 @Module({
   imports: [
@@ -20,6 +22,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ])
   ],
   controllers: [TransactionController],
-  providers: [AppService],
+  providers: [AppService, GetTransactionHandler, TransactionInfrastructure]
 })
 export class AppModule {}

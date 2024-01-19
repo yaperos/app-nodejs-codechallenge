@@ -10,12 +10,13 @@ export class TransactionController {
   constructor(
     private readonly appService: AppService,
     private readonly command: CommandBus,
-    private readonly query: QueryBus
+    private readonly queryB: QueryBus
   ) {}
 
   @Get(':transactionId')
   async getTransaction(@Param() userParams:TransactionDto){
-    const query = new GetTransaction(userParams.transactionExternalId);
-    return await this.query.execute (query);
+    const query = new GetTransaction(userParams.transactionId);
+    console.log(query);
+    return await this.queryB.execute(query);
   }
 }

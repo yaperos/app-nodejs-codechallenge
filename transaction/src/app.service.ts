@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, EntityManager } from 'typeorm';
+import { TransactionEntity } from './infrastructure/entities/transaction.entity';
 
 let conn: EntityManager;
 @Injectable()
@@ -9,15 +10,17 @@ export class AppService {
   async onModuleInit(){
 
     try{
-      this.dataSource = await new DataSource({
-        type: 'mysql',
+      const properties = {
+        autoLoadEntities: true, 
         synchronize: true,
         host: process.env.MYSQL_HOST,
         port: Number(process.env.MYSQL_PORT),
-        username: process.env.MYSQL_USERNAME,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE
-      }).initialize();
+        username: 'user',
+        password: 'password123',
+        database: 'transactions',
+        logging: true
+      }
+      this.dataSource = await new DataSource({type: "mysql",  ...properties, entities: [TransactionEntity] }).initialize();
     }
     catch(e){
       console.log(`Error: ${e}`)

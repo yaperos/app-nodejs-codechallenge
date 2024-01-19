@@ -1,7 +1,7 @@
 import { Get, Inject, Query } from "@nestjs/common";
 import { IQuery, IQueryHandler, QueryHandler } from "@nestjs/cqrs";
-import { TransactionRepository } from "src/domain/transaction.repository";
-import { TransactionInfrastructure } from "src/infrastructure/transaction.infrastructure";
+import { TransactionRepository } from "../../domain/transaction.repository";
+import { TransactionInfrastructure } from "../../infrastructure/transaction.infrastructure";
 import { TransactionGetDto } from "../dtos/transactionGet.dto";
 
 
@@ -17,6 +17,7 @@ export class GetTransactionHandler implements IQueryHandler<GetTransaction, Tran
     ){}
 
     async execute(query: GetTransaction): Promise<TransactionGetDto>{
+        console.log(query)
         const opTransaction = await this.repository.findById(query.trExternalId);
         return TransactionGetDto.domainToGetResponse(opTransaction);
     }
