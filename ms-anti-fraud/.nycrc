@@ -1,0 +1,11 @@
+{
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "src/**/index.ts",
+    "src/**/*.module.ts",
+    "src/config/*"
+  ]
+}
