@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AntifraudService } from './antifraud.service';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AntifraudController {
@@ -8,5 +9,10 @@ export class AntifraudController {
   @Get()
   getHello(): string {
     return this.antifraudService.getHello();
+  }
+
+  @EventPattern('transaction_created')
+  transactionValidator(@Payload() data: any) {
+    this.antifraudService.transactionValidator(data);
   }
 }

@@ -20,7 +20,6 @@
     "test:e2e": "jest --config ./apps/transactions/test/jest-e2e.json"
   },
   "dependencies": {
-    
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/microservices": "^10.3.0",
@@ -74,7 +73,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^default/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+    }
   }
 }

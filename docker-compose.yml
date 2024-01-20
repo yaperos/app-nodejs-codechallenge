@@ -6,6 +6,8 @@ services:
       dockerfile: ./apps/antifraud/Dockerfile
       target: development
     command: npm run start:dev antifraud
+    depends_on:
+      - kafka
     ports:
       - '3001:3001'
     volumes:
@@ -16,6 +18,8 @@ services:
       dockerfile: ./apps/transactions/Dockerfile
       target: development
     command: npm run start:dev transactions
+    depends_on:
+      - kafka
     ports:
       - '3000:3000'
     volumes:
