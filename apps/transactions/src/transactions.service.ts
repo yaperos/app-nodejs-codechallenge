@@ -16,8 +16,12 @@ export class TransactionsService {
     @Inject(ANTIFRAUD_SERVICE) private readonly antifraudClient: ClientKafka,
   ) {}
 
-  getHello(): string {
-    return 'Hello World!';
+  async getTransaction(id: string) {
+    return await this.transactionRepository.findOne({
+      where: {
+        transactionId: id,
+      },
+    });
   }
 
   async createTransaction(createTransaction: CreateTransactionDto) {

@@ -1,16 +1,16 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { TransactionStatusDto } from './dto/transaction-status.dto';
 
-@Controller()
+@Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
-  @Get()
-  getHello(): string {
-    return this.transactionsService.getHello();
+  @Get(':id')
+  async getTransaction(@Param('id') id: string) {
+    return await this.transactionsService.getTransaction(id);
   }
 
   @Post()
