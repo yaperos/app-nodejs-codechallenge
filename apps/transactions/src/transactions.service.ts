@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { ANTIFRAUD_SERVICE } from 'default/common/constants';
 import { ClientKafka } from '@nestjs/microservices';
-import { TransactionCreatedEvent } from './events/transaction-created.event';
+import { TransactionStatusDto } from './dto/transaction-status.dto';
+/* import { TransactionCreatedEvent } from './events/transaction-created.event'; */
 
 @Injectable()
 export class TransactionsService {
@@ -21,25 +22,30 @@ export class TransactionsService {
 
   async createTransaction(createTransaction: CreateTransactionDto) {
     try {
-      const createdTransaction = await this.transactionRepository.save(
-        createTransaction,
-      );
+      const createdTransaction =
+        await this.transactionRepository.save(createTransaction);
       console.log('create transactuion', createdTransaction);
-      const {
-        accountExternalIdDebit,
-        accountExternalIdCredit,
-        transferTypeId,
-        value,
-      } = createTransaction;
-
+      const { transactionId, value } = createdTransaction;
       this.antifraudClient.emit(
         'transaction_created',
-        JSON.stringify(createTransaction),
+        JSON.stringify({ transactionId, value }),
       );
 
       return createdTransaction;
     } catch (error) {
       return null;
     }
+  }
+
+  async updateTransactionStatus(data: TransactionStatusDto) {
+    let verifiedTransaction = await this.transactionRepository.findOne({
+      where: { transactionId: data.transactionId },
+    });
+    verifiedTransaction = { ...verifiedTransaction, ...data };
+    console.log(
+      'updateTransactionStatus result in service',
+      verifiedTransaction,
+    );
+    return await this.transactionRepository.save(verifiedTransaction);
   }
 }
