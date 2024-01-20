@@ -1,25 +1,55 @@
 version: "3.7"
 services:
   postgres:
-    image: postgres:14
+    image: postgres:16.1
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./transactiondb.sql:/docker-entrypoint-initdb.d/migration.sql
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: 
+      - zookeeper
+    ports:
+      - "9093:9092"
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+
+  anti-fraud-service:
+    build: ./anti-fraud-service
     ports:
-      - 9092:9092
+      - "3001:3000"
+    environment:
+      KAFKA_BROKER: kafka:9093
+      KAFKA_CLIENT_ID: antiFraudService
+      KAFKA_GROUP_ID: antiFraudGroup
+    depends_on:
+      - kafka
+
+  transaction-service:
+    build: ./transaction-service
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - "3002:3000"
+    environment:
+      KAFKA_BROKER: kafka:9093
+      KAFKA_CLIENT_ID: transaction_service
+      KAFKA_GROUP_ID: transaction_group
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: transactiondb

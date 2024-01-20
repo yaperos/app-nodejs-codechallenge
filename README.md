@@ -6,6 +6,8 @@ Don't forget that the proper way to submit your work is to fork the repo and cre
 
 - [Problem](#problem)
 - [Tech Stack](#tech_stack)
+- [Getting Started](#getting-started)
+- [Testing Endpoints](#testing-endpoints)
 - [Send us your challenge](#send_us_your_challenge)
 
 # Problem
@@ -68,6 +70,62 @@ You must have two resources:
   "createdAt": "Date"
 }
 ```
+
+## Getting Started
+
+To initialize your development environment, run:
+
+```bash
+docker-compose up
+```
+This command will start all the necessary services.
+
+## Testing Endpoints
+
+Once the services are running, you can test the transaction functionality.
+
+**Creating a Transaction**
+
+POST to `http://localhost:3002/transactions` with the following payload:
+
+```json
+{
+  "accountExternalIdDebit": "123e4567-e89b-12d3-a456-426614174000",
+  "accountExternalIdCredit": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "transferTypeId": 1,
+  "value": 123
+}
+```
+
+You should receive a response like:
+
+```json
+{
+  "transactionExternalId": "609373d2-d8f8-4965-aa90-aeea5289c1af",
+  "accountExternalIdDebit": "123e4567-e89b-12d3-a456-426614174000",
+  "accountExternalIdCredit": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "value": 123,
+  "createdAt": "2024-01-20T14:41:31.931Z",
+  "transferType": { "name": "Tipo1" },
+  "transactionStatus": { "name": "pending" }
+}
+```
+
+**Retrieving a Transaction**
+GET `http://localhost:3002/transactions/609373d2-d8f8-4965-aa90-aeea5289c1af` to retrieve the transaction details. The response will be:
+
+```json
+{
+  "transactionExternalId": "609373d2-d8f8-4965-aa90-aeea5289c1af",
+  "accountExternalIdDebit": "123e4567-e89b-12d3-a456-426614174000",
+  "accountExternalIdCredit": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "value": "123.00",
+  "createdAt": "2024-01-20T14:41:31.931Z",
+  "transferType": { "name": "Tipo1" },
+  "transactionStatus": { "name": "approved" }
+}
+```
+
 
 ## Optional
 
