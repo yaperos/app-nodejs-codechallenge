@@ -16,6 +16,7 @@ export class TransactionsService {
   }
 
   async createTransaction(createTransaction: CreateTransactionDto) {
+    console.log('create transactuion', createTransaction);
     return await this.transactionRepository.save(createTransaction);
   }
 }

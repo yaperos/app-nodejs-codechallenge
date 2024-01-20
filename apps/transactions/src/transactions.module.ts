@@ -16,6 +16,7 @@ import { Transaction } from './entity/transaction.entity';
       entities: [Transaction],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([Transaction]),
   ],
   controllers: [TransactionsController],
   providers: [TransactionsService],

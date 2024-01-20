@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { TRANSACTION_STATUS } from '../constants/transactions.constants';
 
 @Entity()
 export class Transaction {
@@ -16,4 +17,11 @@ export class Transaction {
 
   @Column()
   value: number;
+
+  @Column({
+    type: 'enum',
+    enum: TRANSACTION_STATUS,
+    default: TRANSACTION_STATUS.PENDING,
+  })
+  status: TRANSACTION_STATUS;
 }
