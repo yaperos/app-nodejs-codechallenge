@@ -25,7 +25,7 @@
         "usernamehw.errorlens",
         "mtxr.sqltools",
         "mtxr.sqltools-driver-pg",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
       ],
       "settings": {
         "files.trimFinalNewlines": true,
@@ -34,18 +34,18 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.codeActionsOnSave": {
-          "source.organizeImports": "always"
+          "source.organizeImports": "always",
         },
         "sqltools.connections": [
           {
             "name": "Local",
             "driver": "PostgreSQL",
-            "connectString": "postgresql://postgres:postgres@db:5432/postgres"
-          }
-        ]
-      }
-    }
-  }
+            "connectString": "postgresql://postgres:postgres@db:5432/postgres",
+          },
+        ],
+      },
+    },
+  },
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"
