@@ -1,10 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { TRANSACTION_STATUS } from '../constants/transactions.constants';
 
 @Entity()
 export class Transaction {
   @PrimaryGeneratedColumn('uuid')
-  transactionId: string;
+  transactionExternalId: string;
 
   @Column({ type: 'uuid' })
   accountExternalIdDebit: string;
@@ -24,4 +29,7 @@ export class Transaction {
     default: TRANSACTION_STATUS.PENDING,
   })
   status: TRANSACTION_STATUS;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

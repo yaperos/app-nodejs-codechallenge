@@ -2,7 +2,7 @@ import { IsNumber, IsUUID } from 'class-validator';
 
 export class TransactionToValidate {
   @IsUUID()
-  transactionId: string;
+  transactionExternalId: string;
 
   @IsNumber()
   value: number;

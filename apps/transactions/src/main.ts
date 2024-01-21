@@ -20,6 +20,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.startAllMicroservices();
-  await app.listen(3002);
+  await app.listen(3000);
 }
 bootstrap();

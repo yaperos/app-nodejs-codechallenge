@@ -3,6 +3,7 @@ import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { TransactionStatusDto } from './dto/transaction-status.dto';
+import { Transaction } from './entity/transaction.entity';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -14,13 +15,16 @@ export class TransactionsController {
   }
 
   @Post()
-  async createTransaction(@Body() createTransaction: CreateTransactionDto) {
+  async createTransaction(
+    @Body() createTransaction: CreateTransactionDto,
+  ): Promise<Transaction> {
     return await this.transactionsService.createTransaction(createTransaction);
   }
 
   @EventPattern('transaction_validated')
-  async updateTransactionStatus(@Payload() data: TransactionStatusDto) {
-    console.log('updateTransactionStatus', data);
+  async updateTransactionStatus(
+    @Payload() data: TransactionStatusDto,
+  ): Promise<Transaction> {
     return await this.transactionsService.updateTransactionStatus(data);
   }
 }
