@@ -4,6 +4,7 @@ export class CreateTransactionDto {
   @ApiProperty({
     description: 'Id of debit account',
     type: String,
+    format: 'uuid',
     example: 'cbc722da-0dea-42c0-82a4-444a50ae7764',
   })
   accountExternalIdDebit: string;
@@ -11,6 +12,7 @@ export class CreateTransactionDto {
   @ApiProperty({
     description: 'Id of credit account',
     type: String,
+    format: 'uuid',
     example: '7205cf35-79cb-4a09-b477-82b71ff29a18',
   })
   accountExternalIdCredit: string;
