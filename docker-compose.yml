@@ -26,7 +26,6 @@ services:
       kafka:
         condition: service_healthy
 
-
   db:
     image: postgres:latest
     restart: unless-stopped
