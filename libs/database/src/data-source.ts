@@ -3,7 +3,6 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 config();
-console.log(__dirname);
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
