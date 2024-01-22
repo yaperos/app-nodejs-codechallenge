@@ -27,6 +27,7 @@
         "mtxr.sqltools-driver-pg",
         "esbenp.prettier-vscode",
         "jeppeandersen.vscode-kafka",
+        "rangav.vscode-thunder-client",
       ],
       "settings": {
         "files.trimFinalNewlines": true,
