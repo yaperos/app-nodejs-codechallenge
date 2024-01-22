@@ -1,12 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionService } from './transaction.service';
 
-@Controller()
+@Controller('transaction')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
-  @Get()
-  getHello(): string {
-    return this.transactionService.getHello();
+  @Post()
+  @ApiOperation({ summary: 'Create a transaction' })
+  @ApiResponse({
+    status: 201,
+    description: 'The transaction has been successfully created.',
+  })
+  async createTransaction(@Body() data: CreateTransactionDto) {
+    return this.transactionService.createTransaction(data);
   }
 }
