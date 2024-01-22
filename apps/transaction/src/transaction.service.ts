@@ -1,6 +1,6 @@
 import { Transaction } from '@app/database/entities/transaction';
-import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
@@ -8,11 +8,13 @@ import { GetTransactionDto } from './dto/get-transaction.dto';
 
 @Injectable()
 export class TransactionService {
-  @Inject()
-  private readonly configService: ConfigService;
+  private readonly logger = new Logger(TransactionService.name);
 
   @InjectRepository(Transaction)
   private readonly transactionRepository: Repository<Transaction>;
+
+  @Inject('ANTI-FRAUD-SERVICE')
+  private antiFraudService: ClientKafka;
 
   async createTransaction(data: CreateTransactionDto) {
     const transaction = new Transaction();
@@ -21,6 +23,14 @@ export class TransactionService {
     transaction.value = data.value;
     const createdTransaction =
       await this.transactionRepository.save(transaction);
+
+    // this.antiFraudService
+    //   .send('transaction-created', transaction)
+    //   .subscribe((result) => {
+    //     transaction.status = result;
+    //     this.transactionRepository.save(transaction);
+    //     this.logger.log('transaction updated');
+    //   });
 
     const dto = new GetTransactionDto();
     dto.id = createdTransaction.id;
