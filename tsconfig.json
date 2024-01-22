@@ -20,6 +20,8 @@
     "paths": {
       "@app/database": ["libs/database/src"],
       "@app/database/*": ["libs/database/src/*"],
+      "@app/events": ["libs/events/src"],
+      "@app/events/*": ["libs/events/src/*"],
     },
   },
 }

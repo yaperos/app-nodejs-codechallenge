@@ -84,7 +84,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1"
+      "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1",
+      "^@app/events(|/.*)$": "<rootDir>/libs/events/src/$1"
     }
   },
   "lint-staged": {
