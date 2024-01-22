@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  transaction:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: make run-transaction
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      KAFKA_BROKER: kafka:9092
+    ports:
+      - 3000:3000
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  anti-fraud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: make run-anti-fraud
+    environment:
+      KAFKA_BROKER: kafka:9092
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      interval: 2s
+      timeout: 60s
+      retries: 30
+
+volumes:
+  postgres-data:
