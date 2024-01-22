@@ -1,3 +1,4 @@
+import { TransactionCreatedEvent } from '@app/events/transaction/transaction-created';
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AntiFraudService } from './anti-fraud.service';
@@ -9,7 +10,7 @@ export class AntiFraudController {
   constructor(private readonly antiFraudService: AntiFraudService) {}
 
   @MessagePattern('transaction-created')
-  verifyTransactionValue(@Payload() value: string): string {
-    return this.antiFraudService.verify(value);
+  verifyTransactionValue(@Payload() event: TransactionCreatedEvent): string {
+    return this.antiFraudService.verify(event);
   }
 }

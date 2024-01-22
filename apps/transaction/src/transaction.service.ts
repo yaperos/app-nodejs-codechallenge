@@ -35,7 +35,7 @@ export class TransactionService {
     event.value = createdTransaction.value;
 
     this.antiFraudService
-      .send('transaction-created', event.value)
+      .send('transaction-created', JSON.stringify(event))
       .subscribe((result) => {
         transaction.status = result;
         this.transactionRepository.save(transaction);
