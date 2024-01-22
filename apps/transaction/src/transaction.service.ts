@@ -1,4 +1,5 @@
 import { Transaction } from '@app/database/entities/transaction';
+import { TransactionCreatedEvent } from '@app/events/transaction/transaction-created';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,6 +17,10 @@ export class TransactionService {
   @Inject('ANTI-FRAUD-SERVICE')
   private antiFraudService: ClientKafka;
 
+  async onModuleInit() {
+    this.antiFraudService.subscribeToResponseOf('transaction-created');
+  }
+
   async createTransaction(data: CreateTransactionDto) {
     const transaction = new Transaction();
     transaction.accountExternalIdDebit = data.accountExternalIdDebit;
@@ -24,13 +29,18 @@ export class TransactionService {
     const createdTransaction =
       await this.transactionRepository.save(transaction);
 
-    // this.antiFraudService
-    //   .send('transaction-created', transaction)
-    //   .subscribe((result) => {
-    //     transaction.status = result;
-    //     this.transactionRepository.save(transaction);
-    //     this.logger.log('transaction updated');
-    //   });
+    const event = new TransactionCreatedEvent();
+    event.accountExternalIdDebit = createdTransaction.accountExternalIdDebit;
+    event.accountExternalIdCredit = createdTransaction.accountExternalIdCredit;
+    event.value = createdTransaction.value;
+
+    this.antiFraudService
+      .send('transaction-created', event.value)
+      .subscribe((result) => {
+        transaction.status = result;
+        this.transactionRepository.save(transaction);
+        this.logger.log('transaction updated');
+      });
 
     const dto = new GetTransactionDto();
     dto.id = createdTransaction.id;

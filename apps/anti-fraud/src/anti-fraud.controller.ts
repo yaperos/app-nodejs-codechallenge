@@ -1,12 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AntiFraudService } from './anti-fraud.service';
 
 @Controller()
 export class AntiFraudController {
+  private readonly logger = new Logger(AntiFraudController.name);
+
   constructor(private readonly antiFraudService: AntiFraudService) {}
 
-  @Get()
-  getHello(): string {
-    return this.antiFraudService.getHello();
+  @MessagePattern('transaction-created')
+  verifyTransactionValue(@Payload() value: string): string {
+    return this.antiFraudService.verify(value);
   }
 }
