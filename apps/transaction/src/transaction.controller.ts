@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { GetTransactionDto } from './dto/get-transaction.dto';
@@ -32,7 +32,7 @@ export class TransactionController {
     format: 'uuid',
     example: '60c06d21-9fd2-4de6-89b6-c196c66e9aa2',
   })
-  async getTransactionById(id: string) {
+  async getTransactionById(@Param('id') id: string) {
     return this.transactionService.getTransactionById(id);
   }
 }
