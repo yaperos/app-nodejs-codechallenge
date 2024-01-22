@@ -4,7 +4,6 @@
   "sourceRoot": "apps/yape/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
     "tsConfigPath": "apps/yape/tsconfig.app.json"
   },
   "monorepo": true,
