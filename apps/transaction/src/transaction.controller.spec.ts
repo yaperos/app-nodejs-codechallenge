@@ -3,22 +3,26 @@ import { TransactionController } from './transaction.controller';
 import { TransactionService } from './transaction.service';
 
 describe('TransactionController', () => {
-  let transactionController: TransactionController;
+  let controller: TransactionController;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [TransactionController],
-      providers: [TransactionService],
+      providers: [
+        {
+          provide: TransactionService,
+          useValue: {
+            createTransaction: jest.fn(),
+            getTransactionById: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
-    transactionController = app.get<TransactionController>(
-      TransactionController,
-    );
+    controller = module.get<TransactionController>(TransactionController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(transactionController.getHello()).toBe('Hello World!');
-    });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
   });
 });
