@@ -1,0 +1,34 @@
+{
+  "name": "yapekafkacore",
+  "version": "0.0.1",
+  "description": "Kafka connection standard for yape",
+  "main": "dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json"
+  },
+  "keywords": [
+    "yape",
+    "kafka",
+    "lib"
+  ],
+  "author": "Geovanny G. Arguello",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.2",
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsc-files": "^1.1.4",
+    "typescript": "^5.3.3"
+  }
+}
