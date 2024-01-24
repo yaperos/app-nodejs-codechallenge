@@ -1,25 +1,41 @@
-version: "3.7"
+version: "3.1"
+
 services:
-  postgres:
-    image: postgres:14
+  kafka:
+    image: docker.io/bitnami/kafka:3.6
+    hostname: localhost
     ports:
-      - "5432:5432"
+      - "9092:9092"
+      - "9093:9093"
+    volumes:
+      - "kafka_data:/bitnami"
     environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+  postgres: 
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=transaction_status
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-  kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+  pgadmin:
+    image: dpage/pgadmin4
     ports:
-      - 9092:9092
+      - 5050:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=root@pgadmin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+volumes:
+  kafka_data:
+    driver: local
+  yape_mongodb:
