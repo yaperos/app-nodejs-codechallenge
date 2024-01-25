@@ -1,19 +1,13 @@
 import 'dotenv/config';
 
 export const ConfigEnv = {
+  serviceTag: process.env.SERVICE_TAG || 'ms-transaction',
   port: process.env.PORT || 4000,
-  kafka: {
-    clientId: process.env.KAFKA_CLIENT_ID,
-    brokers: process.env.KAFKA_BROKERS.split(',')
-      .map((broker) => broker.trim())
-      .filter(Boolean),
-  },
-  topics: {
-    transaction: process.env.KAFKA_TOPIC_TRANSACTION || 'transaction-local',
-    transactionRequest:
-      process.env.KAFKA_TOPIC_TRANSACTION_REQUEST ||
-      'transaction-request-local',
-    transactionStatus:
-      process.env.KAFKA_TOPIC_TRANSACTION_STATUS || 'transaction-status-local',
+  db: {
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 5432,
+    username: process.env.DB_USERNAME || 'postgres',
+    password: process.env.DB_PASSWORD || 'postgres',
+    database: process.env.DB_DATABASE || 'transaction_status',
   },
 };
