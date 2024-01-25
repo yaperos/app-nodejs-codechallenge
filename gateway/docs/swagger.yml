@@ -1,0 +1,65 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: Transaction API
+  description: API for managing transactions
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /transactions:
+    post:
+      tags:
+        - Transactions
+      summary: Create a transaction
+      description: Creates a new transaction
+      parameters:
+        - in: body
+          name: transaction
+          description: Transaction to create
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        200:
+          description: Transaction created
+  /transactions/massive:
+    post:
+      tags:
+        - Transactions
+      summary: Create massive transactions
+      description: Creates multiple transactions
+      parameters:
+        - in: body
+          name: transactions
+          description: Array of transactions to create
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Transaction"
+      responses:
+        200:
+          description: Transactions created
+definitions:
+  Transaction:
+    type: object
+    properties:
+      accountExternalIdDebit:
+        type: string
+        format: uuid
+      accountExternalIdCredit:
+        type: string
+        format: uuid
+      transferTypeId:
+        type: integer
+        minimum: 1
+        maximum: 3
+      value:
+        type: number
+        format: float
+    required:
+      - accountExternalIdDebit
+      - accountExternalIdCredit
+      - transferTypeId
+      - value
