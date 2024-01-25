@@ -1,6 +1,7 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
+import { TransactionConsumerModule } from './modules/transaction-consumer/transaction-consumer.module';
 import { TransferType } from './modules/transactions/entities/transaction-type.entity';
 import { Transaction } from './modules/transactions/entities/transaction.entity';
 import { TransactionsModule } from './modules/transactions/transactions.module';
@@ -22,6 +23,7 @@ import { ConfigEnv } from './config';
       entities: [Transaction, TransferType],
     }),
     TransactionsModule,
+    TransactionConsumerModule,
   ],
   exports: [TypeOrmModule],
 })

@@ -1,14 +1,14 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
-import { TransferType } from './entities/transaction-type.entity';
-import { Transaction } from './entities/transaction.entity';
-import { KafkaService } from './services/kafka.service';
 import { TransactionsService } from './services/transactions.service';
 import { TransferTypeService } from './services/transferType.service';
+import { TransferType } from './entities/transaction-type.entity';
+import { Transaction } from './entities/transaction.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Transaction, TransferType])],
-  providers: [KafkaService, TransactionsService, TransferTypeService],
+  providers: [TransactionsService, TransferTypeService],
+  exports: [TransactionsService],
 })
 export class TransactionsModule {}

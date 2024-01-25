@@ -3,7 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 
-import { CreateTransactionDto } from '../dtos/create-transaction.dto';
+import {
+  CreateTransactionDto,
+  UpdateTransactionStatusDto,
+} from '../dtos/create-transaction.dto';
 import { Transaction, TransactionStatus } from '../entities/transaction.entity';
 
 @Injectable()
@@ -22,6 +25,14 @@ export class TransactionsService {
     await TransactionPublisher.publish({
       transactionId: newRecord.id,
       value: newRecord.value,
+    });
+  }
+
+  async processTransactionStatus(transactionDto: UpdateTransactionStatusDto) {
+    const { transactionId: id, status } = transactionDto;
+
+    await this.transactionsRepository.update(id, {
+      status: status.toLowerCase(),
     });
   }
 }
