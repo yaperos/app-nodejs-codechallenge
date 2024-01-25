@@ -1,7 +1,12 @@
 import createError from "http-errors";
-import { Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
-function ErrorHandler(err, { method, originalUrl }, res: Response, _next) {
+function ErrorHandler(
+  err: { status: number; message: any; type: any },
+  { method, originalUrl }: Request,
+  res: Response,
+  _next: NextFunction
+) {
   if ("status" in err) {
     console.error(
       "[ERROR:GLOBAL]",
