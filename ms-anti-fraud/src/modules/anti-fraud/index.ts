@@ -1,0 +1,1 @@
+export { AntiFraudService } from "./service";
