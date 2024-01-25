@@ -16,11 +16,13 @@
   "author": "Geovanny G. Arguello",
   "license": "ISC",
   "dependencies": {
+    "@yape-challenge/kafka": "../common/YapeKafkaCore",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
     "helmet": "^7.1.0",
     "http-errors": "^2.0.0",
     "joi": "^17.12.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "uuid": "^9.0.1"
   }
 }
