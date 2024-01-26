@@ -1,0 +1,25 @@
+{
+  "name": "ms-error-report",
+  "version": "1.0.0",
+  "description": "Service for receiving messages with errors.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "debug": "node --inspect src/index.js"
+  },
+  "keywords": [
+    "yape",
+    "kafka",
+    "error",
+    "microservice"
+  ],
+  "author": "Geovanny G. Arguello",
+  "license": "ISC",
+  "dependencies": {
+    "@yape-challenge/kafka": "../common/YapeKafkaCore",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0"
+  }
+}
