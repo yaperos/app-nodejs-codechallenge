@@ -1,16 +1,17 @@
 import { KafkaConnection } from './core/KafkaConnection';
 import { BasePublisher } from './core/BasePublisher';
 import { BaseConsumer } from './core/BaseConsumer';
+import { IErrorMessage } from './interfaces';
 import { ConfigEnv } from './config';
 
-function createPublisher(topicConfig: string) {
+function createPublisher<T = any>(topicConfig: string) {
   const instance = KafkaConnection.getInstance(topicConfig);
-  return new BasePublisher(instance);
+  return new BasePublisher<T>(instance);
 }
 
-function createConsumerFactory(topicConfig: string) {
+function createConsumerFactory<T = any>(topicConfig: string) {
   const instance = KafkaConnection.getInstance(topicConfig);
-  return (groupTag: string) => new BaseConsumer(instance, groupTag);
+  return (groupTag: string) => new BaseConsumer<T>(instance, groupTag);
 }
 
 export const TransactionPublisher = createPublisher(ConfigEnv.topics.transaction);
@@ -22,5 +23,5 @@ export const TransactionRequestConsumerFactory = createConsumerFactory(ConfigEnv
 export const TransactionStatusPublisher = createPublisher(ConfigEnv.topics.transactionStatus);
 export const TransactionStatusConsumerFactory = createConsumerFactory(ConfigEnv.topics.transactionStatus);
 
-export const TransactionErrorPublisher = createPublisher(ConfigEnv.topics.transactionError);
-export const TransactionErrorConsumerFactory = createConsumerFactory(ConfigEnv.topics.transactionError);
+export const TransactionErrorPublisher = createPublisher<IErrorMessage>(ConfigEnv.topics.transactionError);
+export const TransactionErrorConsumerFactory = createConsumerFactory<IErrorMessage>(ConfigEnv.topics.transactionError);
