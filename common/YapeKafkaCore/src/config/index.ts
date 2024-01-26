@@ -9,7 +9,7 @@ export const ConfigEnv = {
       .filter(Boolean),
   },
   topics: {
-    transaction: process.env.KAFKA_TOPIC_TRANSACTION || "transaction-local",
+    verifyTransaction: process.env.KAFKA_TOPIC_VERIFY_TRANSACTION || "verify-transaction-local",
     transactionRequest:
       process.env.KAFKA_TOPIC_TRANSACTION_REQUEST ||
       "transaction-request-local",
