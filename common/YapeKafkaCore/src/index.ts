@@ -1,7 +1,10 @@
+import {
+  IErrorMessage, ITransactionRequestMessage,
+  ITransactionStatusMessage, IVerifyTransactionMessage
+} from './interfaces';
 import { KafkaConnection } from './core/KafkaConnection';
 import { BasePublisher } from './core/BasePublisher';
 import { BaseConsumer } from './core/BaseConsumer';
-import { IErrorMessage } from './interfaces';
 import { ConfigEnv } from './config';
 
 function createPublisher<T = any>(topicConfig: string) {
@@ -14,14 +17,14 @@ function createConsumerFactory<T = any>(topicConfig: string) {
   return (groupTag: string) => new BaseConsumer<T>(instance, groupTag);
 }
 
-export const TransactionPublisher = createPublisher(ConfigEnv.topics.transaction);
-export const TransactionConsumerFactory = createConsumerFactory(ConfigEnv.topics.transaction);
+export const VerifyTransactionPublisher = createPublisher<IVerifyTransactionMessage>(ConfigEnv.topics.verifyTransaction);
+export const VerifyTransactionConsumerFactory = createConsumerFactory<IVerifyTransactionMessage>(ConfigEnv.topics.verifyTransaction);
 
-export const TransactionRequestPublisher = createPublisher(ConfigEnv.topics.transactionRequest);
-export const TransactionRequestConsumerFactory = createConsumerFactory(ConfigEnv.topics.transactionRequest);
+export const TransactionRequestPublisher = createPublisher<ITransactionRequestMessage>(ConfigEnv.topics.transactionRequest);
+export const TransactionRequestConsumerFactory = createConsumerFactory<ITransactionRequestMessage>(ConfigEnv.topics.transactionRequest);
 
-export const TransactionStatusPublisher = createPublisher(ConfigEnv.topics.transactionStatus);
-export const TransactionStatusConsumerFactory = createConsumerFactory(ConfigEnv.topics.transactionStatus);
+export const TransactionStatusPublisher = createPublisher<ITransactionStatusMessage>(ConfigEnv.topics.transactionStatus);
+export const TransactionStatusConsumerFactory = createConsumerFactory<ITransactionStatusMessage>(ConfigEnv.topics.transactionStatus);
 
 export const TransactionErrorPublisher = createPublisher<IErrorMessage>(ConfigEnv.topics.transactionError);
 export const TransactionErrorConsumerFactory = createConsumerFactory<IErrorMessage>(ConfigEnv.topics.transactionError);
