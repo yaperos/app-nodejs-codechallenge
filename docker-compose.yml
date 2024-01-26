@@ -28,6 +28,16 @@ services:
       - POSTGRES_DB=transaction_status
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
   pgadmin:
     image: dpage/pgadmin4
     ports:
@@ -60,4 +70,5 @@ services:
 volumes:
   kafka_data:
     driver: local
-  yape_mongodb:
+  mongo-data:
+    driver: local
