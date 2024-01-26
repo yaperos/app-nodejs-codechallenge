@@ -1,6 +1,7 @@
 import {
   TransactionConsumerFactory,
   TransactionStatusPublisher,
+  TransactionErrorPublisher,
 } from "@yape-challenge/kafka";
 
 import { IRequestVerifyTransaction, TTransactionStatus } from "./interfaces";
@@ -9,17 +10,25 @@ import { ConfigEnv } from "../../config";
 class AntiFraudService {
   static async init() {
     await TransactionConsumerFactory(ConfigEnv.serverTag).subscribe(
-      async (message: IRequestVerifyTransaction) => {
-        const { transactionId, value } = message;
-        const status = AntiFraudService.verifyTransaction(value);
-
+      async ({ transactionId, value }: IRequestVerifyTransaction) => {
         try {
+          const status = AntiFraudService.verifyTransaction(value);
+
           await TransactionStatusPublisher.publish({
             transactionId,
             status,
           });
         } catch (error) {
-          console.error("transactionId", transactionId, "value", value, error);
+          console.error("[AntiFraudService]", "transactionId", transactionId);
+
+          await TransactionErrorPublisher.publish({
+            transactionId,
+            error: {
+              message: error.message,
+              name: error.name,
+              stack: error.stack,
+            },
+          });
         }
       }
     );
