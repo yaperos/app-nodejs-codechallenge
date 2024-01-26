@@ -1,19 +1,19 @@
-const router = require("express").Router();
+const router = require('express').Router();
 
-const { MassiveTransactionSchema, TransactionSchema } = require("./schemas");
-const { SchemaValidator } = require("../../middlewares/SchemaValidator");
-const { TransactionController } = require("./controller");
+const { MassiveTransactionSchema, TransactionSchema } = require('./schemas');
+const { SchemaValidator } = require('../../middlewares/SchemaValidator');
+const { TransactionController } = require('./controller');
 
 router.post(
-  "/",
+  '/',
   [SchemaValidator(TransactionSchema)],
-  TransactionController.createTransaction
+  TransactionController.createTransaction,
 );
 
 router.post(
-  "/massive",
+  '/massive',
   [SchemaValidator(MassiveTransactionSchema)],
-  TransactionController.createMassiveTransactions
+  TransactionController.createMassiveTransactions,
 );
 
 module.exports.TransactionRouter = router;
