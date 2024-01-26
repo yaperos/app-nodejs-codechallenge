@@ -20,7 +20,7 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-  postgres: 
+  postgres:
     image: postgres
     ports:
       - 5432:5432
@@ -35,6 +35,28 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=root@pgadmin.com
       - PGADMIN_DEFAULT_PASSWORD=root
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3666:3000"
+    depends_on:
+      - loki
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=secret # Establece tu propia contraseña segura
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./promtail-config.yaml:/etc/promtail/docker-config.yaml:ro # Montar el archivo de configuración
+    command: -config.file=/etc/promtail/docker-config.yaml
 volumes:
   kafka_data:
     driver: local
