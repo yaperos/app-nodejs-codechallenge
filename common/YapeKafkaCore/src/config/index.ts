@@ -15,5 +15,7 @@ export const ConfigEnv = {
       "transaction-request-local",
     transactionStatus:
       process.env.KAFKA_TOPIC_TRANSACTION_STATUS || "transaction-status-local",
+    transactionError:
+      process.env.KAFKA_TOPIC_TRANSACTION_ERROR || "transaction-error-local",
   },
 };

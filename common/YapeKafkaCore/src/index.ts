@@ -21,3 +21,6 @@ export const TransactionRequestConsumerFactory = createConsumerFactory(ConfigEnv
 
 export const TransactionStatusPublisher = createPublisher(ConfigEnv.topics.transactionStatus);
 export const TransactionStatusConsumerFactory = createConsumerFactory(ConfigEnv.topics.transactionStatus);
+
+export const TransactionErrorPublisher = createPublisher(ConfigEnv.topics.transactionError);
+export const TransactionErrorConsumerFactory = createConsumerFactory(ConfigEnv.topics.transactionError);
