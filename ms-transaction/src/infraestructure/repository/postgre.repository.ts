@@ -27,11 +27,7 @@ export class PostgresRepository implements TransactionRepository {
     });
     this.logger.log(id);
     if(!res){  
-       this.logger.log('daentrro',res);
       return new  NotFoundException('No se encontro la transaction');
-    }
-    else{
-      this.logger.log('danoentrro',res);
     }
     return res;
   }

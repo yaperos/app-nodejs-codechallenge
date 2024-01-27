@@ -1,49 +1,36 @@
 import { Kafka, EachMessagePayload } from 'kafkajs';
 import { kafkaConfig } from './kafka.config';
 import { producer } from './kafka.producer';
+import { AMOUNT_MAX, Status, TransactionData, topics } from '../../../helper/type.helper';
+import { TransactionValidCase } from '../../../application/transaction';
 
 const kafka = new Kafka(kafkaConfig);
 const consumer = kafka.consumer({ groupId: 'transactionTopicId' });
-
+const trxValid=new TransactionValidCase();
 
 export const runConsumer = async () => {
   await consumer.connect();
-  await consumer.subscribe({ topic: 'transactionTopic' });
+  await consumer.subscribe({ topic: topics.TOPIC_CONSUMER });
 
   await consumer.run({
     eachMessage: async (payload: EachMessagePayload) => {
         const messageValue = payload.message.value;
+        const topicToProduce = topics.TOPIC_PRODUCER;
         await producer.connect();
         if (messageValue !== null && messageValue !== undefined) {
-          console.log('Received message Consumer:', messageValue.toString());
           const messageText = messageValue.toString();
           const data=JSON.parse(messageText);
-          const topicToProduce = 'transactionValidateTopic';
-          console.log('data',data);
-          const id=data.id;
           const value=data.value;
-          if(value<1000){
-              const dataSend={
-                id:id,
-                newStatus:'APPROVED'
-              }
-              const dataString=JSON.stringify(dataSend);
-              await producer.send({
-                topic:topicToProduce,
-                messages:[{value:dataString}]
-              });
+          let newStatus:Status=trxValid.validTransaction(value);
+          const dataSend:TransactionData={
+            id:data.id,
+            newStatus:newStatus
           }
-          else{
-            const dataSend={
-              id:id,
-              newStatus:'REJECT'
-            }
-            const dataString=JSON.stringify(dataSend);
-            await producer.send({
-              topic:topicToProduce,
-              messages:[{value:dataString}]
-            });
-          }
+          const dataString=JSON.stringify(dataSend);
+          await producer.send({
+            topic:topicToProduce,
+            messages:[{value:dataString}]
+          });
           await producer.disconnect(); 
         }
     },
