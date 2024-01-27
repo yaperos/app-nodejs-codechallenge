@@ -9,6 +9,10 @@ export enum EReportedBy {
   MS_ANTI_FRAUD = "ms-anti-fraud",
 }
 
+export enum EErrorType {
+  TRANSACTION = "transaction",
+}
+
 export interface IRequestVerifyTransaction {
   transactionId: string;
   value: number;

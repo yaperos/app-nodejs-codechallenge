@@ -5,6 +5,7 @@ import {
 } from "@yape-challenge/kafka";
 
 import {
+  EErrorType,
   EReportedBy,
   ETransactionStatus,
   IRequestVerifyTransaction,
@@ -50,6 +51,7 @@ class AntiFraudService {
   ) {
     try {
       await TransactionErrorPublisher.publish({
+        errorType: EErrorType.TRANSACTION,
         reportedBy: EReportedBy.MS_ANTI_FRAUD,
         transactionId,
         error: {
