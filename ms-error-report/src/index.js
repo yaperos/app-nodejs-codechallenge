@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const { NotFoundErrorHandler } = require("./middlewares/NotFoundErrorHandler");
 const { ErrorHandler } = require("./middlewares/ErrorHandler");
 const { ErrorReportService } = require("./modules/errors");
+const { RetryService } = require('./modules/retry');
 const { ConfigEnv } = require("./config");
 
 const app = express();
@@ -22,4 +23,5 @@ app.use(ErrorHandler);
 app.listen(ConfigEnv.port, () => {
   console.log(`Server running on port ${ConfigEnv.port}`);
   ErrorReportService.init();
+  RetryService.init();
 });
