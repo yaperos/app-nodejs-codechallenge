@@ -12,7 +12,7 @@ import { TransactionModel } from './infraestructure/model/transaction.model';
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     TypeOrmModule.forFeature([TransactionModel]),
-    InfraestructureModule
+    InfraestructureModule,
   ],
   providers: [TransactionUseCase, PostgresRepository],
 })

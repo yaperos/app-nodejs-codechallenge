@@ -29,16 +29,15 @@ export class KafkajsConsumer implements IConsumer {
     await this.consumer.subscribe(this.topic);
     console.log('consumer suscribe', Date.now() - produceStartTime, 'ms');
     await this.consumer.run({
-        eachMessage: async ({ topic, partition, message }) => {
-            const produceStartTime = Date.now();
-            const prefix = `${topic}[${partition} | ${message.offset}] / ${message.timestamp}`
-            console.log(`- ${prefix} ${message.key}#${message.value}`)
-            console.log('consumer suscribex', Date.now() - produceStartTime, 'ms');
-          },
-      });
-      console.log('consumer run2', Date.now() - produceStartTime, 'ms');
+      eachMessage: async ({ topic, partition, message }) => {
+        const produceStartTime = Date.now();
+        const prefix = `${topic}[${partition} | ${message.offset}] / ${message.timestamp}`;
+        console.log(`- ${prefix} ${message.key}#${message.value}`);
+        console.log('consumer suscribex', Date.now() - produceStartTime, 'ms');
+      },
+    });
+    console.log('consumer run2', Date.now() - produceStartTime, 'ms');
   }
-
 
   async connect() {
     try {

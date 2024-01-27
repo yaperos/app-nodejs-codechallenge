@@ -21,17 +21,28 @@ export const runConsumer = async () => {
           const topicToProduce = 'transactionValidateTopic';
           console.log('data',data);
           const id=data.id;
-          const value=data.id;
+          const value=data.value;
           if(value<1000){
               const dataSend={
                 id:id,
-                newStatus:'aproved'
+                newStatus:'APPROVED'
               }
               const dataString=JSON.stringify(dataSend);
               await producer.send({
                 topic:topicToProduce,
                 messages:[{value:dataString}]
               });
+          }
+          else{
+            const dataSend={
+              id:id,
+              newStatus:'REJECT'
+            }
+            const dataString=JSON.stringify(dataSend);
+            await producer.send({
+              topic:topicToProduce,
+              messages:[{value:dataString}]
+            });
           }
           await producer.disconnect(); 
         }

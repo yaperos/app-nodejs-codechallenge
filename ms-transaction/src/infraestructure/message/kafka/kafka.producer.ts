@@ -3,13 +3,15 @@ import { Kafka, Message, Producer } from 'kafkajs';
 import { IProducer } from 'src/helper/type.helper';
 import { sleep } from 'src/helper/utils.helper';
 
-
 export class KafkajsProducer implements IProducer {
   private readonly kafka: Kafka;
   private readonly producer: Producer;
   private readonly logger: Logger;
 
-  constructor(private readonly topic: string, broker: string) {
+  constructor(
+    private readonly topic: string,
+    broker: string,
+  ) {
     this.kafka = new Kafka({
       brokers: ['localhost:9092'],
     });

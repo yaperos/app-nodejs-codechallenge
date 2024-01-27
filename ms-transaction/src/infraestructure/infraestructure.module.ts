@@ -7,8 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { KafkaModuleCustom } from './message/kafka/kafka.module';
 
 @Module({
-    imports:[TypeOrmModule.forFeature([TransactionModel]), KafkaModuleCustom],
-    providers: [TransactionUseCase, PostgresRepository],
-    controllers:[TransactionController]
+  imports: [TypeOrmModule.forFeature([TransactionModel]), KafkaModuleCustom],
+  providers: [TransactionUseCase, PostgresRepository],
+  controllers: [TransactionController],
 })
 export class InfraestructureModule {}

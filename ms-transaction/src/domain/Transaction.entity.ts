@@ -1,10 +1,10 @@
-import { Status } from "src/helper/const.helper";
+import { Status } from 'src/helper/const.helper';
 
-export interface TransactionEntity{
-    id?:number;
-    accountExternalIdDebit:string;
-    accountExternalIdCredit:string;
-    tranferTypeId:number;
-    value:number;
-    status:Status;
+export interface TransactionEntity {
+  id?: number;
+  accountExternalIdDebit: string;
+  accountExternalIdCredit: string;
+  tranferTypeId: number;
+  value: number;
+  status: Status;
 }
