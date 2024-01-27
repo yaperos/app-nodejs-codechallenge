@@ -1,6 +1,8 @@
 import {
   IErrorMessage, ITransactionRequestMessage,
-  ITransactionStatusMessage, IVerifyTransactionMessage
+  ITransactionRequestRetryMessage,
+  ITransactionStatusMessage, IVerifyTransactionMessage,
+  TTransactionMessage
 } from './interfaces';
 import { KafkaConnection } from './core/KafkaConnection';
 import { BasePublisher } from './core/BasePublisher';
@@ -21,7 +23,8 @@ export const VerifyTransactionPublisher = createPublisher<IVerifyTransactionMess
 export const VerifyTransactionConsumerFactory = createConsumerFactory<IVerifyTransactionMessage>(ConfigEnv.topics.verifyTransaction);
 
 export const TransactionRequestPublisher = createPublisher<ITransactionRequestMessage>(ConfigEnv.topics.transactionRequest);
-export const TransactionRequestConsumerFactory = createConsumerFactory<ITransactionRequestMessage>(ConfigEnv.topics.transactionRequest);
+export const TransactionRequestRetryPublisher = createPublisher<ITransactionRequestRetryMessage>(ConfigEnv.topics.transactionRequest);
+export const TransactionRequestConsumerFactory = createConsumerFactory<TTransactionMessage>(ConfigEnv.topics.transactionRequest);
 
 export const TransactionStatusPublisher = createPublisher<ITransactionStatusMessage>(ConfigEnv.topics.transactionStatus);
 export const TransactionStatusConsumerFactory = createConsumerFactory<ITransactionStatusMessage>(ConfigEnv.topics.transactionStatus);
