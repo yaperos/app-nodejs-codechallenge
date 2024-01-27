@@ -9,4 +9,9 @@ module.exports.ConfigEnv = {
     user: process.env.DB_USER ?? "",
     password: process.env.DB_PASSWORD ?? "",
   },
+  redis: {
+    host: process.env.REDIS_HOST ?? "localhost",
+    port: process.env.REDIS_PORT ?? 6379,
+    queue: process.env.REDIS_QUEUE ?? "retry_queue",
+  },
 };
