@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "debug": "node --inspect src/index.js",
+    "debug": "node --watch --inspect src/index.js",
     "lint": "eslint src/**/*.js"
   },
   "keywords": [
