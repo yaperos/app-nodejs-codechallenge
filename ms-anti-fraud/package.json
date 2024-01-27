@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run lint && rm -rf dist && tsc -p tsconfig.json",
     "start": "node ./dist/index.js",
-    "dev": "node --require ts-node/register ./src/index.ts --config ./tsconfig.json"
+    "dev": "node --watch --require ts-node/register ./src/index.ts --config ./tsconfig.json"
   },
   "keywords": [
     "microservice",
