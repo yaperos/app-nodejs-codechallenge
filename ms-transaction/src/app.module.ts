@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { InfraestructureModule } from './infraestructure/infraestructure.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import typeOrmConfig from './infraestructure/db/postgres';

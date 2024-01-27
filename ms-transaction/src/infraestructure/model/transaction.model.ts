@@ -4,14 +4,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TransactionTypeModel } from './typeTransaction.model';
 
 @Entity('Transaction')
 export class TransactionModel implements TransactionEntity {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ length: 50 })
   accountExternalIdDebit: string;
@@ -21,6 +25,9 @@ export class TransactionModel implements TransactionEntity {
 
   @Column()
   tranferTypeId: number;
+
+  @ManyToOne(() => TransactionTypeModel) // Especifica el tipo del modelo relacionado
+  tranferType: TransactionTypeModel; 
 
   @Column()
   value: number;

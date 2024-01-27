@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { TransactionModel } from '../model/transaction.model';
+import { TransactionTypeModel } from '../model/typeTransaction.model';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -10,8 +11,7 @@ const typeOrmConfig: TypeOrmModuleOptions = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASS,
   database: process.env.POSTGRES_DATABASE,
-  entities: [TransactionModel],
-  synchronize: true,
+  entities: [TransactionModel,TransactionTypeModel]
 };
 
 export default typeOrmConfig;

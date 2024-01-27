@@ -18,11 +18,12 @@ export class PostgresRepository implements TransactionRepository {
     return this.trxRepository.save(newTrx);
   }
 
-  async findTrx(id: number): Promise<any> {
+  async findTrx(id: string): Promise<any> {
     const res = await this.trxRepository.findOne({
       where: {
         id,
       },
+      relations: ['tranferType'],
     });
     this.logger.log(id);
     if(!res){  
@@ -35,7 +36,7 @@ export class PostgresRepository implements TransactionRepository {
     return res;
   }
 
-  async updated(id: number, status: string) {
+  async updateStatus(id: string, status: string) {
     const updatedTrx = await this.trxRepository.findOne({ where: { id } });
     if (status == Status.APPROVED) {
       updatedTrx.status = Status.APPROVED;

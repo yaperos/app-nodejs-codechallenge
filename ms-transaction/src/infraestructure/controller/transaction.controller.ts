@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, ParseUUIDPipe, Post, UsePipes } from '@nestjs/common';
 import { TransactionUseCase } from 'src/application/transaction';
 import { TransactionRequest, TransactionResponse } from 'src/helper/type.helper';
 import { ProducerService } from '../message/kafka/producer.service';
@@ -27,8 +27,8 @@ export class TransactionController {
 
   @Get(':id')
   async getTransaction(  
-    @Param('id', new ParseIntPipe())
-    id: number
+    @Param('id', new ParseUUIDPipe())
+    id: string
     ):Promise<TransactionResponse> {
     const result = await this.transactionUseCase.findTrx(id);
     return result;
@@ -38,5 +38,5 @@ export class TransactionController {
   handleMyEvent(data: any): void {
     this.transactionUseCase.updateStatus(data.id, data.newStatus);
     this.logger.log('data recibida',data);
-  }
+  } 
 }
