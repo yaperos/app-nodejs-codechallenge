@@ -10,4 +10,6 @@ export const ConfigEnv = {
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_DATABASE || 'transaction_status',
   },
+  generateError: process.env.GENERATE_ERROR === 'true',
+  probabilityOfError: parseFloat(process.env.PROBABILITY_OF_ERROR) || 0.01,
 };

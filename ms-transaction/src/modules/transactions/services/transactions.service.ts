@@ -12,6 +12,7 @@ import {
   UpdateTransactionStatusDto,
 } from '../dtos/create-transaction.dto';
 import { Transaction, TransactionStatus } from '../entities/transaction.entity';
+import { ConfigEnv } from 'src/config';
 
 @Injectable()
 export class TransactionsService {
@@ -28,7 +29,7 @@ export class TransactionsService {
 
       transactionExists =
         await this.transactionsRepository.save(newTransaction);
-      // throw new Error('Transaction failed');
+      this.randomFailure();
       await VerifyTransactionPublisher.publish({
         transactionId: transactionExists.id,
         value: transactionExists.value,
@@ -66,7 +67,7 @@ export class TransactionsService {
         );
         return;
       }
-      // throw new Error('Transaction failed');
+      this.randomFailure();
       await VerifyTransactionPublisher.publish({
         transactionId: transactionExists.id,
         value: transactionExists.value,
@@ -139,6 +140,14 @@ export class TransactionsService {
         correlationId: transaction.correlationId,
         error: publishError,
       });
+    }
+  }
+
+  randomFailure() {
+    if (!ConfigEnv.generateError) return;
+    // probability debe estar entre 0 y 1, donde 1 es 100% de probabilidad de fallo
+    if (Math.random() < ConfigEnv.probabilityOfError) {
+      throw new Error('Automatically generated error for testing purposes');
     }
   }
 }
