@@ -1,3 +1,5 @@
+import { Status } from "./const.helper";
+
 export type TransactionRequest = {
   accountExternalIdDebit: string;
   accountExternalIdCredit: string;
@@ -27,4 +29,10 @@ export interface IConsumer {
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
   consume: (message: any) => Promise<void>;
+}
+
+
+export interface TransactionData {
+  id: string;
+  newStatus: Status;
 }

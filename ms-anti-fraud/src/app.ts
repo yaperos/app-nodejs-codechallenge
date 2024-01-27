@@ -5,7 +5,6 @@ import { runConsumer } from './infraestructure/message/kafka/kafka.consumer';
 
 dotenv.config();
 
-
 const app=new Server();
 
 app.init();

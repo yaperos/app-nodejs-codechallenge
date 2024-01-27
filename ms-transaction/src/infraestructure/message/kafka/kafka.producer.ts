@@ -10,7 +10,6 @@ export class KafkajsProducer implements IProducer {
 
   constructor(
     private readonly topic: string,
-    broker: string,
   ) {
     this.kafka = new Kafka({
       brokers: ['localhost:9092'],
@@ -28,7 +27,6 @@ export class KafkajsProducer implements IProducer {
       await this.producer.connect();
     } catch (err) {
       this.logger.error('Failed to connect to Kafka.', err);
-      await sleep(5000);
       await this.connect();
     }
   }

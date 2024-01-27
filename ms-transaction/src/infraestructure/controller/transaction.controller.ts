@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, ParseIntPipe, ParseUUIDPipe, Post, UsePipes } from '@nestjs/common';
 import { TransactionUseCase } from 'src/application/transaction';
-import { TransactionRequest, TransactionResponse } from 'src/helper/type.helper';
+import { TransactionData, TransactionRequest, TransactionResponse } from 'src/helper/type.helper';
 import { ProducerService } from '../message/kafka/producer.service';
 import { EventPattern } from '@nestjs/microservices';
 import { Logger } from '@nestjs/common';
@@ -35,7 +35,7 @@ export class TransactionController {
   }
 
   @EventPattern('transactionValidateTopic')
-  handleMyEvent(data: any): void {
+  handleMyEvent(data: TransactionData): void {
     this.transactionUseCase.updateStatus(data.id, data.newStatus);
     this.logger.log('data recibida',data);
   } 
