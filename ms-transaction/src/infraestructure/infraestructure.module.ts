@@ -4,10 +4,10 @@ import { PostgresRepository } from './repository/postgre.repository';
 import { TransactionUseCase } from 'src/application/transaction';
 import { TransactionModel } from './model/transaction.model';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { KafkaModule } from './message/kafka/kafka.module';
+import { KafkaModuleCustom } from './message/kafka/kafka.module';
 
 @Module({
-    imports:[TypeOrmModule.forFeature([TransactionModel]), KafkaModule],
+    imports:[TypeOrmModule.forFeature([TransactionModel]), KafkaModuleCustom],
     providers: [TransactionUseCase, PostgresRepository],
     controllers:[TransactionController]
 })

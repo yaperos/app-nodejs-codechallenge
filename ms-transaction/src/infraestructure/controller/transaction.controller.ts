@@ -3,6 +3,7 @@ import { TransactionUseCase } from "src/application/transaction";
 import { TransactionRequest } from "src/helper/type.helper";
 import { ProducerService } from "../message/kafka/producer.service";
 import { ConsumerService } from "../message/kafka/consumer.service";
+import { EventPattern } from "@nestjs/microservices";
 
 @Controller('transaction')
 export class TransactionController{
@@ -21,19 +22,7 @@ export class TransactionController{
         const jsonString = JSON.stringify(result);
         await this.producerService.produce('transactionTopic', {
             value: jsonString,
-          });
-        
-
-        await this.consumerService.consume( 
-            { topic: { topics: ['transactionTopic']}, 
-            config: { groupId: 'transaction-consumer' }, 
-            onMessage: async (message) => {
-                /*console.log( 'message=>',message,typeof(message.value));*/
-                    console.log(message);
-                    /* throw new Error('Test error!'); */
-                }
-            });
-
+         });
 
         return result;
     }
@@ -42,6 +31,11 @@ export class TransactionController{
     async getTransaction(@Param('id')id :number){
        const result =await this.transactionUseCase.findTrx(id);
        return result;
+    }
+
+    @EventPattern('transactionValidateTopic')
+    handleMyEvent(data: any): void {
+        console.log('event pattern', data.id);
     }
 
 }

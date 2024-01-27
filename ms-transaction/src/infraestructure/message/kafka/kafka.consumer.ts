@@ -6,10 +6,6 @@ import {
   Kafka,
   KafkaMessage,
 } from 'kafkajs';
-import * as retry from 'async-retry';
-
-
-
 import { IConsumer } from 'src/helper/type.helper';
 import { sleep } from 'src/helper/utils.helper';
 
@@ -32,27 +28,6 @@ export class KafkajsConsumer implements IConsumer {
     const produceStartTime = Date.now();
     await this.consumer.subscribe(this.topic);
     console.log('consumer suscribe', Date.now() - produceStartTime, 'ms');
-/*     await this.consumer.run({
-      eachMessage: async ({ message, partition }) => {
-        this.logger.debug(`Processing message partition: ${partition}`);
-        try {
-          await retry(async () => onMessage(message), {
-            retries: 0,
-            onRetry: (error, attempt) =>
-              this.logger.error(
-                `Error consuming message, executing retry ${attempt}/3...`,
-                error,
-              ),
-          });
-        } catch (err) {
-          this.logger.error(
-            'Error consuming message. Adding to dead letter queue...',
-            err,
-          );
-          await this.addMessageToDlq(message);
-        }
-      },
-    }); */
     await this.consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
             const produceStartTime = Date.now();
@@ -64,13 +39,6 @@ export class KafkajsConsumer implements IConsumer {
       console.log('consumer run2', Date.now() - produceStartTime, 'ms');
   }
 
-  private async addMessageToDlq(message: KafkaMessage) {
-    console.log(message);
-/*     await this.databaseService
-      .getDbHandle()
-      .collection('dlq')
-      .insertOne({ value: message.value, topic: this.topic.topics }); */
-  }
 
   async connect() {
     try {
