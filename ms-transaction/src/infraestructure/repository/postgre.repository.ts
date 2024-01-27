@@ -3,7 +3,7 @@ import { TransactionEntity } from 'src/domain/Transaction.entity';
 import { TransactionRepository } from 'src/domain/Transaction.repository';
 import { TransactionModel } from '../model/transaction.model';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Logger } from '@nestjs/common';
+import { HttpException, Logger, NotFoundException } from '@nestjs/common';
 import { Status } from 'src/helper/const.helper';
 
 export class PostgresRepository implements TransactionRepository {
@@ -24,6 +24,14 @@ export class PostgresRepository implements TransactionRepository {
         id,
       },
     });
+    this.logger.log(id);
+    if(!res){  
+       this.logger.log('daentrro',res);
+      return new  NotFoundException('No se encontro la transaction');
+    }
+    else{
+      this.logger.log('danoentrro',res);
+    }
     return res;
   }
 

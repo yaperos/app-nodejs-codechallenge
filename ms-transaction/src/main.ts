@@ -3,14 +3,15 @@ import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
+import { ValidationPipe } from '@nestjs/common';
 dotenv.config();
 
 async function bootstrap() {
-  // Crear el microservicio HTTP
+  
   const httpApp = await NestFactory.create(AppModule);
-  await httpApp.listen(3005); // Puedes cambiar el puerto según tus necesidades
+  httpApp.useGlobalPipes(new ValidationPipe());
+  await httpApp.listen(3005); 
 
-  // Crear el microservicio Kafka
   const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {

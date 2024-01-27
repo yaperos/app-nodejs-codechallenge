@@ -1,29 +1,35 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes } from '@nestjs/common';
 import { TransactionUseCase } from 'src/application/transaction';
-import { TransactionRequest } from 'src/helper/type.helper';
+import { TransactionRequest, TransactionResponse } from 'src/helper/type.helper';
 import { ProducerService } from '../message/kafka/producer.service';
 import { EventPattern } from '@nestjs/microservices';
+import { Logger } from '@nestjs/common';
+import { CreateTransactionDto } from './transaction.validation';
 
 @Controller('transaction')
 export class TransactionController {
+  private readonly logger = new Logger('transactionController');
   constructor(
     private readonly transactionUseCase: TransactionUseCase,
     private readonly producerService: ProducerService,
   ) {}
 
   @Post()
-  async registerTransaction(@Body() data: TransactionRequest) {
+  async registerTransaction(@Body() data: CreateTransactionDto) {
     const result = await this.transactionUseCase.registerTrx(data);
     const jsonString = JSON.stringify(result);
+    this.logger.log('data emitida',result);
     await this.producerService.produce('transactionTopic', {
       value: jsonString,
     });
-
     return result;
   }
 
   @Get(':id')
-  async getTransaction(@Param('id') id: number) {
+  async getTransaction(  
+    @Param('id', new ParseIntPipe())
+    id: number
+    ):Promise<TransactionResponse> {
     const result = await this.transactionUseCase.findTrx(id);
     return result;
   }
@@ -31,6 +37,6 @@ export class TransactionController {
   @EventPattern('transactionValidateTopic')
   handleMyEvent(data: any): void {
     this.transactionUseCase.updateStatus(data.id, data.newStatus);
-    console.log('done', data);
+    this.logger.log('data recibida',data);
   }
 }
