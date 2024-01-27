@@ -11,7 +11,22 @@ export class TransactionRequestService implements OnModuleInit {
   onModuleInit() {
     const consumer = TransactionRequestConsumerFactory(ConfigEnv.serviceTag);
     consumer.subscribe((message) => {
-      this.transactionService.processTransactionRequest(message);
+      const { type } = message;
+      switch (type) {
+        case 'new_transaction':
+          this.transactionService.processTransactionRequest(message);
+          break;
+        case 'transaction_retry':
+          this.transactionService.processTransactionRetry(message);
+          break;
+        default:
+          console.error(
+            'Unknown transaction request message type',
+            JSON.stringify({
+              message,
+            }),
+          );
+      }
     });
   }
 }

@@ -8,6 +8,10 @@ export class CreateTransactionDto {
   value: number;
 }
 
+export class RetryTransactionDto {
+  transactionId: string;
+}
+
 export class UpdateTransactionStatusDto {
   transactionId: string;
   status: TTransactionStatus;

@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 
 import {
   CreateTransactionDto,
+  RetryTransactionDto,
   UpdateTransactionStatusDto,
 } from '../dtos/create-transaction.dto';
 import { Transaction, TransactionStatus } from '../entities/transaction.entity';
@@ -27,7 +28,7 @@ export class TransactionsService {
 
       transactionExists =
         await this.transactionsRepository.save(newTransaction);
-
+      // throw new Error('Transaction failed');
       await VerifyTransactionPublisher.publish({
         transactionId: transactionExists.id,
         value: transactionExists.value,
@@ -40,7 +41,43 @@ export class TransactionsService {
 
       if (transactionExists?.id) {
         await this.handleTransactionError(transactionExists.id, error);
+        return;
       }
+      if (transaction.correlationId) {
+        await this.handleUnrecordedTransactions(transaction, error);
+        return;
+      }
+    }
+  }
+
+  async processTransactionRetry(transaction: RetryTransactionDto) {
+    try {
+      console.log('Processing transaction retry', { transaction });
+      const transactionExists = await this.transactionsRepository.findOne({
+        where: {
+          id: transaction.transactionId,
+          status: TransactionStatus.PENDING,
+        },
+      });
+
+      if (!transactionExists) {
+        console.log(
+          `Transaction ${transaction.transactionId} not found or not in PENDING status.`,
+        );
+        return;
+      }
+      // throw new Error('Transaction failed');
+      await VerifyTransactionPublisher.publish({
+        transactionId: transactionExists.id,
+        value: transactionExists.value,
+      });
+    } catch (error) {
+      console.error('Error processing transaction retry', {
+        error,
+        transactionId: transaction.transactionId,
+      });
+
+      await this.handleTransactionError(transaction.transactionId, error);
     }
   }
 
@@ -65,6 +102,7 @@ export class TransactionsService {
   private async handleTransactionError(transactionId: string, error: any) {
     try {
       await TransactionErrorPublisher.publish({
+        errorType: 'transaction',
         reportedBy: 'ms-transaction',
         transactionId,
         error: {
@@ -76,6 +114,29 @@ export class TransactionsService {
     } catch (publishError) {
       console.error('Failed to publish transaction error', {
         transactionId,
+        error: publishError,
+      });
+    }
+  }
+  private async handleUnrecordedTransactions(
+    transaction: CreateTransactionDto,
+    error: any,
+  ) {
+    try {
+      await TransactionErrorPublisher.publish({
+        errorType: 'unrecordedTransaction',
+        reportedBy: 'ms-transaction',
+        correlationId: transaction.correlationId,
+        error: {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+        },
+        unrecordedTransaction: transaction,
+      });
+    } catch (publishError) {
+      console.error('Failed to publish unrecorded transaction error', {
+        correlationId: transaction.correlationId,
         error: publishError,
       });
     }
