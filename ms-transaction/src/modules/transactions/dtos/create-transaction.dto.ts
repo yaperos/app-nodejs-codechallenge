@@ -1,4 +1,4 @@
-import { TransactionStatus } from '../entities/transaction.entity';
+import { TTransactionStatus } from '../entities/transaction.entity';
 
 export class CreateTransactionDto {
   accountExternalIdDebit: string;
@@ -10,5 +10,5 @@ export class CreateTransactionDto {
 
 export class UpdateTransactionStatusDto {
   transactionId: string;
-  status: TransactionStatus;
+  status: TTransactionStatus;
 }

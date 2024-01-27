@@ -13,7 +13,10 @@ export enum TransactionStatus {
   PENDING = 'pending',
   APPROVED = 'approved',
   REJECTED = 'rejected',
+  ERROR = 'error',
 }
+
+export type TTransactionStatus = `${TransactionStatus}`;
 
 @Entity()
 export class Transaction {

@@ -1,4 +1,7 @@
-import { TransactionPublisher } from '@yape-challenge/kafka';
+import {
+  VerifyTransactionPublisher,
+  TransactionErrorPublisher,
+} from '@yape-challenge/kafka';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -17,22 +20,64 @@ export class TransactionsService {
   ) {}
 
   async processTransactionRequest(transaction: CreateTransactionDto) {
-    const newTransaction = this.transactionsRepository.create(transaction);
-    newTransaction.status = TransactionStatus.PENDING;
+    let transactionExists: Transaction | null = null;
+    try {
+      const newTransaction = this.transactionsRepository.create(transaction);
+      newTransaction.status = TransactionStatus.PENDING;
 
-    const newRecord = await this.transactionsRepository.save(newTransaction);
+      transactionExists =
+        await this.transactionsRepository.save(newTransaction);
 
-    await TransactionPublisher.publish({
-      transactionId: newRecord.id,
-      value: newRecord.value,
-    });
+      await VerifyTransactionPublisher.publish({
+        transactionId: transactionExists.id,
+        value: transactionExists.value,
+      });
+    } catch (error) {
+      console.error('Error processing transaction request', {
+        error,
+        transaction,
+      });
+
+      if (transactionExists?.id) {
+        await this.handleTransactionError(transactionExists.id, error);
+      }
+    }
   }
 
-  async processTransactionStatus(transactionDto: UpdateTransactionStatusDto) {
-    const { transactionId: id, status } = transactionDto;
+  async processTransactionStatus({
+    transactionId: id,
+    status,
+  }: UpdateTransactionStatusDto) {
+    try {
+      await this.transactionsRepository.update(id, {
+        status: status.toLowerCase(),
+      });
+    } catch (error) {
+      console.error('Error processing transaction status', {
+        error,
+        transactionId: id,
+        status,
+      });
+      await this.handleTransactionError(id, error);
+    }
+  }
 
-    await this.transactionsRepository.update(id, {
-      status: status.toLowerCase(),
-    });
+  private async handleTransactionError(transactionId: string, error: any) {
+    try {
+      await TransactionErrorPublisher.publish({
+        reportedBy: 'ms-transaction',
+        transactionId,
+        error: {
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+        },
+      });
+    } catch (publishError) {
+      console.error('Failed to publish transaction error', {
+        transactionId,
+        error: publishError,
+      });
+    }
   }
 }
