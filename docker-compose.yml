@@ -38,6 +38,10 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
   pgadmin:
     image: dpage/pgadmin4
     ports:
