@@ -18,16 +18,15 @@ export class PostgresRepository implements TransactionRepository {
     return this.trxRepository.save(newTrx);
   }
 
-  async findTrx(id: string): Promise<any> {
+  async findTrx(id: string): Promise<TransactionModel> {
     const res = await this.trxRepository.findOne({
       where: {
         id,
       },
       relations: ['tranferType'],
     });
-    this.logger.log(id);
-    if(!res){  
-      return new  NotFoundException('No se encontro la transaction');
+    if (!res) {
+      throw new NotFoundException('No se encontro la transaction');
     }
     return res;
   }

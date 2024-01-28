@@ -16,7 +16,7 @@ export type TransactionResponse = {
     name: string;
   };
   value: number;
-  createdAt: string;
+  createdAt: Date;
 };
 
 export interface IProducer {
