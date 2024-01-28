@@ -2,6 +2,8 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
     ports:
       - "5435:5432"
     environment:
