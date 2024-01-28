@@ -4,7 +4,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -26,7 +25,7 @@ export class TransactionModel implements TransactionEntity {
   @Column()
   tranferTypeId: number;
 
-  @ManyToOne(() => TransactionTypeModel) // Especifica el tipo del modelo relacionado
+  @ManyToOne(() => TransactionTypeModel) 
   tranferType: TransactionTypeModel; 
 
   @Column()
