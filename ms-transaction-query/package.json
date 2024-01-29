@@ -1,0 +1,41 @@
+{
+  "name": "ms-transaction-query",
+  "version": "1.0.0",
+  "description": "Only for transaction queries",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "debug": "node --watch --inspect src/index.js",
+    "lint": "eslint src/**/*.js"
+  },
+  "keywords": [
+    "yape",
+    "api",
+    "transaction",
+    "queries",
+    "microservice"
+  ],
+  "author": "Geovanny G. Arguello",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "http-errors": "^2.0.0",
+    "joi": "^17.12.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/http-errors": "^2.0.4",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.11.7",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1"
+  }
+}
