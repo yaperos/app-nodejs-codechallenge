@@ -13,7 +13,13 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: [ zookeeper ]
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 10
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -23,3 +29,43 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - cache:/data
+  transactions:
+    build:
+      context: ms-transactions/.
+      dockerfile: Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+      cache:
+        condition: service_started
+    environment:
+      - BROKERS=kafka:29092
+      - PORT=3000
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=postgres
+      - DB_HOST=postgres
+      - CLIENT_ID=transactions
+      - REDIS_HOST=redis://cache:6379
+      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    ports:
+      - 3000:3000
+  anti-fraud:
+    build: ms-antifraud/.
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      - BROKERS=kafka:29092
+      - CLIENT_ID=anti-fraud
+volumes:
+  cache:
+    driver: local
