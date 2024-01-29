@@ -7,12 +7,45 @@ basePath: /api/v1
 schemes:
   - http
 paths:
+  /auth:
+    post:
+      tags:
+        - Auth
+      summary: Generate Authentication Token
+      description: Generates a JWT token for user authentication
+      parameters:
+        - in: body
+          name: body
+          description: User email to generate token
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                example: fake@gmail.com
+      responses:
+        200:
+          description: Authentication token generated successfully
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+        400:
+          description: Bad request, email is required
+        500:
+          description: Internal server error
   /transactions:
     post:
       tags:
         - Transactions
       summary: Create a transaction
       description: Creates a new transaction
+      security:
+        - BearerAuth: []
       parameters:
         - in: body
           name: transaction
@@ -23,24 +56,73 @@ paths:
       responses:
         200:
           description: Transaction created
-  /transactions/massive:
-    post:
+    get:
       tags:
         - Transactions
-      summary: Create massive transactions
-      description: Creates multiple transactions
+      summary: Get a list of transactions
+      description: Retrieves a list of transactions based on query parameters
+      security:
+        - BearerAuth: []
       parameters:
-        - in: body
-          name: transactions
-          description: Array of transactions to create
-          required: true
+        - in: query
+          name: limit
+          description: Limit the number of transactions returned
+          required: false
+          type: integer
+          format: int32
+        - in: query
+          name: page
+          description: Page number of the transactions list
+          required: false
+          type: integer
+          format: int32
+        - in: query
+          name: sortBy
+          description: Sorting criteria in the format 'field,(asc|desc)'
+          required: false
+          type: string
+        - in: query
+          name: transactionType.name
+          description: Name of the transaction type
+          required: false
+          type: string
+        - in: query
+          name: transactionStatus.name
+          description: Status of the transaction ('pending', 'approved', 'rejected', 'error')
+          required: false
+          type: string
+        - in: query
+          name: createdAt
+          description: Date when the transaction was created
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: fields
+          description: Specify fields to be returned in the response. Valid values are 'transactionStatus.name', 'transactionType.name', 'value', 'createdAt', 'transactionExternalId'.
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+      responses:
+        200:
+          description: List of transactions
           schema:
             type: array
             items:
-              $ref: "#/definitions/Transaction"
-      responses:
-        200:
-          description: Transactions created
+              $ref: "#/definitions/GetTransaction"
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+securityDefinitions:
+  BearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
 definitions:
   Transaction:
     type: object
@@ -63,3 +145,23 @@ definitions:
       - accountExternalIdCredit
       - transferTypeId
       - value
+  GetTransaction:
+    type: object
+    properties:
+      transactionExternalId:
+        type: string
+      transactionType:
+        type: object
+        properties:
+          name:
+            type: string
+      transactionStatus:
+        type: object
+        properties:
+          name:
+            type: string
+      value:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
