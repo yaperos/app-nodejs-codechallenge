@@ -11,6 +11,12 @@ class MongoDB {
     minimize: false,
   };
 
+  /**
+   * Gets the existing MongoDB connection or creates a new one if it doesn't exist.
+   * 
+   * @returns {mongoose.Connection} The MongoDB connection instance.
+   * @throws {Error} Throws an error if the connection cannot be established.
+   */
   static getConnection() {
     try {
       if (this.#connection) return this.#connection;

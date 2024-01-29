@@ -24,11 +24,30 @@ class TransactionService {
     this.#URL = URL;
   }
 
+  /**
+   * Converts raw field names into their corresponding SQL column names.
+   * 
+   * @param {string[]} rawFields - The list of raw field names to be converted.
+   * @returns {string[]} An array of SQL column names.
+   * @private
+   */
   #getFields(rawFields) {
     if (!rawFields || !rawFields.length) return [this.#mapperFields.transactionExternalId];
     return rawFields.map((field) => this.#mapperFields[field]);
   }
 
+  /**
+   * Retrieves a list of transactions based on the provided options.
+   * 
+   * @param {Object} options - The options to filter, sort, and paginate the transactions.
+   * @param {number} [options.limit=10] - The maximum number of transactions to retrieve. Defaults to 10 if not provided.
+   * @param {number} [options.page=1] - The page number for pagination. Pagination starts at page 1.
+   * @param {string} [options.sortBy] - The field and order to sort by, formatted as "field,order". For example, "createdAt,DESC".
+   * @param {Object} [options.filterBy] - The filtering criteria, with key-value pairs representing the field to filter by and its value.
+   * @param {string[]} [options.fields] - An array of field names to include in the response. Fields are mapped to database columns.
+   * @returns {Promise<Object>} A promise that resolves to an object containing the transaction data and HATEOAS links. The `data` part of the response includes an array of formatted transactions, while `links` contains pagination-related links.
+   * @async
+   */
   async getTransactions(options) {
     const {
       limit,
@@ -79,6 +98,14 @@ class TransactionService {
     return { data, links };
   }
 
+  /**
+   * Formats a raw transaction object into a more readable format.
+   * 
+   * @param {Object} transaction - The raw transaction object to be formatted.
+   * @returns {Object} The formatted transaction object.
+   * @private
+   * @static
+   */
   static #formatTransaction(transaction) {
     const fieldMappings = {
       transaction_external_id: 'transactionExternalId',
@@ -109,6 +136,13 @@ class TransactionService {
     return formattedTransaction;
   }
 
+  /**
+   * Generates HATEOAS (Hypermedia as the Engine of Application State) links for pagination.
+   * 
+   * @param {Object} params - Parameters for generating links.
+   * @returns {Object} An object containing the HATEOAS links.
+   * @private
+   */
   #generateHATEOASLinks({
     page, limit, total, sortBy, filterBy, fields,
   }) {

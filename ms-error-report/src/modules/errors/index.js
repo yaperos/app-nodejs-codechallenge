@@ -30,6 +30,13 @@ class ErrorReportService {
     );
   }
 
+  /**
+   * Processes errors associated with unrecorded transactions.
+   * 
+   * @param {Object} message - The message containing details about the unrecorded transaction error.
+   * @static
+   * @async
+   */
   static async processUnrecordedTransaction(message) {
     try {
       console.log("Processing unrecorded transaction", JSON.stringify(message));
@@ -46,12 +53,19 @@ class ErrorReportService {
     }
   }
 
+  /**
+   * Processes transaction errors and performs retries or updates based on specific conditions.
+   * 
+   * @param {Object} message - The message containing details about the transaction error.
+   * @static
+   * @async
+   */
   static async processTransactionError(message) {
     try {
       console.log("Processing transaction error", JSON.stringify(message));
       const { reportedBy, errorType, error, transactionId } = message;
       const existingRecord = await ErrorReportModel.findOne({ transactionId }).lean();
-  
+
       if (!existingRecord) {
         await ErrorReportModel.create({
           reportedBy,
@@ -75,7 +89,7 @@ class ErrorReportService {
       } else {
         await ErrorReportModel.updateOne({ transactionId }, { $inc: { attempts: 1 } });
       }
-  
+
       if (!existingRecord || existingRecord.attempts < 3) {
         await RetryService.scheduleRetry(transactionId, existingRecord ? existingRecord.attempts + 1 : 1);
       }
@@ -84,7 +98,7 @@ class ErrorReportService {
     }
   }
 }
-  
+
 
 module.exports = {
   ErrorReportService,

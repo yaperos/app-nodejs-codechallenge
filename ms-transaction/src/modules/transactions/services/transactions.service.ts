@@ -21,6 +21,13 @@ export class TransactionsService {
     private transactionsRepository: Repository<Transaction>,
   ) {}
 
+  /**
+   * Processes a new transaction request.
+   * 
+   * @param {CreateTransactionDto} transaction - The transaction data to be processed.
+   * @returns {Promise<void>}
+   * @async
+   */
   async processTransactionRequest(transaction: CreateTransactionDto) {
     let transactionExists: Transaction | null = null;
     try {
@@ -51,6 +58,13 @@ export class TransactionsService {
     }
   }
 
+  /**
+   * Processes a transaction retry.
+   * 
+   * @param {RetryTransactionDto} transaction - The transaction data for the retry.
+   * @returns {Promise<void>}
+   * @async
+   */
   async processTransactionRetry(transaction: RetryTransactionDto) {
     try {
       console.log('Processing transaction retry', { transaction });
@@ -82,6 +96,13 @@ export class TransactionsService {
     }
   }
 
+  /**
+   * Updates the status of a transaction.
+   * 
+   * @param {UpdateTransactionStatusDto} updateTransactionStatusDto - The DTO containing transaction ID and the new status.
+   * @returns {Promise<void>}
+   * @async
+   */
   async processTransactionStatus({
     transactionId: id,
     status,
@@ -100,6 +121,15 @@ export class TransactionsService {
     }
   }
 
+  /**
+   * Handles errors related to a transaction by publishing them.
+   * 
+   * @param {string} transactionId - The ID of the transaction.
+   * @param {any} error - The error object.
+   * @returns {Promise<void>}
+   * @private
+   * @async
+   */
   private async handleTransactionError(transactionId: string, error: any) {
     try {
       await TransactionErrorPublisher.publish({
@@ -119,6 +149,16 @@ export class TransactionsService {
       });
     }
   }
+
+  /**
+   * Handles errors for unrecorded transactions by publishing them.
+   * 
+   * @param {CreateTransactionDto} transaction - The transaction data.
+   * @param {any} error - The error object.
+   * @returns {Promise<void>}
+   * @private
+   * @async
+   */
   private async handleUnrecordedTransactions(
     transaction: CreateTransactionDto,
     error: any,
@@ -143,6 +183,11 @@ export class TransactionsService {
     }
   }
 
+  /**
+   * Simulates random failures based on a configured probability, used for testing purposes.
+   * 
+   * @private
+   */
   randomFailure() {
     if (!ConfigEnv.generateError) return;
     // probability debe estar entre 0 y 1, donde 1 es 100% de probabilidad de fallo
