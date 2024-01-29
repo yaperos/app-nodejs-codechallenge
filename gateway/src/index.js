@@ -14,6 +14,7 @@ const { ErrorHandler } = require('./middlewares/ErrorHandler');
 const { ConfigEnv } = require('./config');
 
 const { TransactionRouter } = require('./modules/transactions');
+const { AuthRouter } = require('./modules/auth');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get('/helth-check', (_req, res, _next) => {
 });
 
 app.use('/api/v1/transactions', TransactionRouter);
+app.use('/api/v1/auth', AuthRouter);
 
 app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
