@@ -1,5 +1,7 @@
 # Documento de Análisis de Requisitos para Yape Code Challenge
 
+*Por Geovanny Gabirle Arguello Costta*
+
 ## Tabla de Contenidos
 
 1. [Introducción](#introducción)
