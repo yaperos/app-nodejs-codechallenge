@@ -8,6 +8,4 @@ const TransactionSchema = Joi.object({
   value: Joi.number().positive().required(),
 });
 
-const MassiveTransactionSchema = Joi.array().items(TransactionSchema);
-
-module.exports = { TransactionSchema, MassiveTransactionSchema };
+module.exports = { TransactionSchema };

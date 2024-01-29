@@ -12,18 +12,13 @@ async function createTransaction(req, res, next) {
   }
 }
 
-async function createMassiveTransactions(req, res, next) {
+async function getTransaction(req, res, next) {
   try {
-    const { body } = req;
+    const { query } = req;
 
-    const groupId = await TransactionService.publishMasiveTransaction(body);
+    const transaction = await TransactionService.getTransaction(query);
 
-    res.status(201).json({
-      message: 'Massive transactions created',
-      data: {
-        correlationId: groupId,
-      },
-    });
+    res.status(200).json({ ...transaction });
   } catch (error) {
     next(error);
   }
@@ -31,5 +26,5 @@ async function createMassiveTransactions(req, res, next) {
 
 module.exports.TransactionController = {
   createTransaction,
-  createMassiveTransactions,
+  getTransaction,
 };
