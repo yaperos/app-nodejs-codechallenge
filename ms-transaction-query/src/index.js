@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
+const { initializeDatabase } = require('./modules/database');
 const { NotFoundErrorHandler } = require('./middlewares/NotFoundErrorHandler');
 const { ErrorHandler } = require('./middlewares/ErrorHandler');
 const { ConfigEnv } = require('./config');
@@ -21,4 +22,5 @@ app.use(NotFoundErrorHandler);
 
 app.listen(ConfigEnv.port, () => {
   console.log(`Server running on port ${ConfigEnv.port}`);
+  initializeDatabase();
 });
