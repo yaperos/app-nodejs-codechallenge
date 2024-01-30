@@ -47,6 +47,7 @@ This project focuses on developing and implementing a robust anti-fraud microser
 **Zookeeper**: We utilize Apache Zookeeper for managing our Kafka cluster. Zookeeper plays a critical role in coordinating the Kafka brokers and ensuring reliable messaging. It is essential for maintaining the cluster's state, configuration, synchronization, and naming registry.
     
 <img src="https://pngimg.com/d/mysql_PNG9.png" width="200" height="200">
+
 <img src="https://logowik.com/content/uploads/images/prisma2244.jpg" width="300" height="200">
 
 **MySQL Database with Prisma ORM**: For data persistence, we rely on a MySQL database, known for its reliability and widespread use. We integrate Prisma ORM (Object-Relational Mapping) to interact with the database. Prisma ORM offers a powerful query builder, type safety, and an intuitive approach to database management, streamlining our data handling processes.
@@ -118,6 +119,7 @@ npm run prisma:seed
 You can test the transaction creation by creating a new External transaction.
 This type of transaction is ment to transfer money between 2 external account that are not present in our system so it will not check if those accounts exist.
 The request would be:
+
 POST http://localhost:3000/transactions
 
 headers: (no headers required yet)
@@ -129,6 +131,7 @@ body:
   "tranferTypeId": 2,
   "value": 120.12
 }
+
 Its very important to write transfer type with id 2 (external).
 
 Else if you want to try with an internal transaction you can execute the next request:
