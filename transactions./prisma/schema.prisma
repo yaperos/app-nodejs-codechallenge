@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId        String      @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email String @unique
+
+  name String?
+
+  balances Balance[]
+
+  @@map("users")
+}
+
+model Balance {
+  balanceId       String            @id @default(uuid())
+  userId          String            @unique
+  createdAt       DateTime          @default(now())
+  deletedAt       DateTime?
+  updatedAt       DateTime          @updatedAt
+  // =================
+  user            User              @relation(fields: [userId], references: [userId])
+  debitTransactions      Transaction[]      @relation("DebitRelation")
+  creditTransactions     Transaction[]      @relation("CreditRelation")
+  balanceSnapshot BalanceSnapshot[]
+  // =================
+
+  @@map("balances")
+}
+
+model BalanceSnapshot {
+  snapshotID        String             @id @default(uuid())
+  amount            Decimal
+  from              DateTime
+  to                DateTime?
+  balanceID         String
+  createdAt         DateTime           @default(now())
+  deletedAt         DateTime?
+  snapshotAmount    Decimal            @default(0)
+  // =================
+  balance           Balance            @relation(fields: [balanceID], references: [balanceId])
+  transactions Transaction[]
+}
+
+model Transaction {
+  transactionId                      String               @id @default(uuid())
+  amount                  Decimal?
+  account_id_debit        String?
+  account_id_credit        String?
+  external_account_id_debit String?
+  external_account_id_credit  String?
+  createdAt               DateTime @default(now())
+  deletedAt               DateTime?
+  snapshotId              String?
+  transactionTypeId              String?
+  // =================
+   debit                  Balance?            @relation("DebitRelation", fields: [account_id_debit], references: [balanceId])
+  credit                 Balance?            @relation("CreditRelation", fields: [account_id_credit], references: [balanceId])
+ balanceSnapshot         BalanceSnapshot?     @relation(fields: [snapshotId], references: [snapshotID])
+ transactionType         TransactionType?     @relation(fields: [transactionTypeId], references: [transactionTypeId])
+ transactionStatus         TransactionStatus[]     
+}
+
+model TransactionType {
+  transactionTypeId        String             @id @default(uuid())
+  name            String
+  createdAt         DateTime           @default(now())
+  deletedAt         DateTime?
+  // =================
+  transactions Transaction[]
+}
+
+model TransactionStatus {
+  TransactionStatusId        String             @id @default(uuid())
+  from         DateTime           @default(now())
+  To         DateTime?        
+  transactionId String
+  statusTransactionId String
+  // =================
+  transaction Transaction @relation(fields: [transactionId], references: [transactionId])
+  transactionStatus StatusTransaction @relation(fields: [statusTransactionId], references: [StatusTransactionId])
+}
+model StatusTransaction {
+  StatusTransactionId        String             @id @default(uuid())
+  name            String
+  description String?
+  createdAt         DateTime           @default(now())
+  deletedAt         DateTime?
+  // =================
+  transactionStatus         TransactionStatus[] 
+}
