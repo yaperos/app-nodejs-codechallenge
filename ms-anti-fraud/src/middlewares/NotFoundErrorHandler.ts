@@ -3,7 +3,7 @@ import createError from "http-errors";
 
 const NOT_FOUND_CODE = 404;
 
-function NotFoundErrorHandler(req: Request, res: Response, next: NextFunction) {
+function NotFoundErrorHandler(_req: Request, res: Response, _next: NextFunction) {
   res.status(NOT_FOUND_CODE).send(createError(NOT_FOUND_CODE));
 }
 
