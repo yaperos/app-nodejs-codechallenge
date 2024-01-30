@@ -20,7 +20,7 @@ export type TTransactionStatus = `${TransactionStatus}`;
 
 @Entity()
 export class Transaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'uuid' })
