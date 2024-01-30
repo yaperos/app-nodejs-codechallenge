@@ -21,6 +21,7 @@
 10. [Criterios de Aceptación y Pruebas](#criterios-de-aceptación-y-pruebas)
 11. [Conclusiones y Reflexiones Finales](#conclusiones-y-reflexiones-finales)
 12. [Reflexión Personal y Compromiso](#reflexión-personal-y-compromiso)
+13. [Instrucciones de Uso](./documents/instructions-for-use.md)
 
 ## Introducción
 
@@ -424,6 +425,8 @@ El uso de JWT para la autenticación, junto con un sistema robusto de recuperaci
 Este proyecto no es solo la solución a un reto; **es una carta de presentación**, una demostración palpable de *amor* por la ingeniería y una muestra de la dedicación que puedo aportar a Yape. Cada elemento ha sido construido con la visión de no solo cumplir con los requisitos, sino de exceder las expectativas, estableciendo un estándar de lo que soy capaz de entregar.
 
 Al considerar este trabajo, uno puede ver claramente la combinación de **pasión**, **precisión** y **profundidad técnica** que **caracteriza** mi enfoque del **desarrollo de software** y la solución de problemas complejos, se pretende no solo demostrar una habilidad técnica refinada sino también transmitir el nivel de compromiso y pasión por el desarrollo de soluciones de software que sean robustas, escalables y, sobre todo, construidas con un propósito claro y una dedicación que va más allá de las expectativas.
+
+## [Instrucciones de Uso](./documents/instructions-for-use.md)
 
 ---
 Gracias por llegar hasta aquí.
