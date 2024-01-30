@@ -7,18 +7,21 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    networks:
-      - net1
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    ports:
+      - "9000:9000" 
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:29092" 
+      JVM_OPTS: "-Xms32M -Xmx64M"
+    depends_on:
+      - "kafka"
 
   kafka:
     image: confluentinc/cp-kafka:5.5.3
-    hostname: kafka
-    container_name: kafka
-    depends_on:
-      - zookeeper
     ports:
       - "9092:9092"
-      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -29,8 +32,6 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_JMX_PORT: 9991
-    networks:
-      - net1
 
   dev-db:
     image: mysql:8
@@ -47,32 +48,6 @@ services:
     networks:
       - net1
 
-  antifraud-microservice:
-    image: antifraud-microservice  
-    restart: unless-stopped
-    environment:
-      KAFKA_BROKER: "kafka:29092"  
-    depends_on:
-      - "kafka"
-      - "zookeeper"
-      - "dev-db"
-    networks:
-      - net1
-
-  transactions-microservice:
-    image: transaction-microservice  
-    ports:
-      - 3000:3000
-    restart: unless-stopped
-    environment:
-      KAFKA_BROKER: "kafka:29092"  
-      DATABASE_URL: mysql://root:Pazw0rd@dev-db:3306/public
-    depends_on:
-      - "kafka"
-      - "zookeeper"
-      - "dev-db"
-    networks:
-      - net1
 
 networks:
   net1:
