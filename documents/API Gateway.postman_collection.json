@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "94854a67-b037-496c-86d2-bfa8159dc149",
+		"name": "API Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30297803"
+	},
+	"item": [
+		{
+			"name": "POST.getToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"if (jsonData.token) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", jsonData.token);\r",
+							"} else {\r",
+							"    console.log(\"Token not found in response\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"fake@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_GATEWAY_URL}}{{BASE_URL}}/auth",
+					"host": [
+						"{{API_GATEWAY_URL}}{{BASE_URL}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST.createTransaction",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{ACCESS_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountExternalIdDebit\": \"517a29e7-e27f-4133-b5e7-bbe0e532595a\",\r\n  \"accountExternalIdCredit\": \"ea4cfef8-d1dd-4812-a6dc-b3d9c4f60d17\",\r\n  \"transferTypeId\": 3,\r\n  \"value\": 1004.95\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_GATEWAY_URL}}{{BASE_URL}}/transactions",
+					"host": [
+						"{{API_GATEWAY_URL}}{{BASE_URL}}"
+					],
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET.transaction",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{ACCESS_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{API_GATEWAY_URL}}{{BASE_URL}}/transactions?limit=10&page=1&fields=transactionStatus.name&fields=transactionType.name&fields=value&fields=createdAt&fields=transactionExternalId",
+					"host": [
+						"{{API_GATEWAY_URL}}{{BASE_URL}}"
+					],
+					"path": [
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10",
+							"description": "Limit the number of transactions returned"
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Page number of the transactions list"
+						},
+						{
+							"key": "sortBy",
+							"value": "ASC",
+							"description": "Sorting criteria in the format 'field,(asc|desc)'",
+							"disabled": true
+						},
+						{
+							"key": "transactionType.name",
+							"value": null,
+							"description": "Name of the transaction type",
+							"disabled": true
+						},
+						{
+							"key": "transactionStatus.name",
+							"value": null,
+							"description": "Status of the transaction ('pending', 'approved', 'rejected', 'error')",
+							"disabled": true
+						},
+						{
+							"key": "createdAt",
+							"value": null,
+							"description": "Date when the transaction was created",
+							"disabled": true
+						},
+						{
+							"key": "fields",
+							"value": "transactionStatus.name",
+							"description": "Specify fields to be returned in the response. Valid values are 'transactionStatus.name', 'transactionType.name', 'value', 'createdAt', 'transactionExternalId'."
+						},
+						{
+							"key": "fields",
+							"value": "transactionType.name"
+						},
+						{
+							"key": "fields",
+							"value": "value"
+						},
+						{
+							"key": "fields",
+							"value": "createdAt"
+						},
+						{
+							"key": "fields",
+							"value": "transactionExternalId"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
