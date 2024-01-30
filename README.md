@@ -74,8 +74,7 @@ El uso del monorepo permite un enfoque cohesivo para el manejo de múltiples ser
 ├── ms-anti-fraud
 ├── ms-error-report
 ├── ms-transaction
-├── ms-transaction-query
-└── promtail-config.yaml
+└── ms-transaction-query
 ```
 
 ### Prácticas de Desarrollo
