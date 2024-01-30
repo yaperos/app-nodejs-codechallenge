@@ -1,0 +1,305 @@
+version: "3.8"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.3
+    container_name: zookeeper
+    hostname: zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181      
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    healthcheck:
+      test: nc -z localhost 2181 || exit -1
+      interval: 10s
+      timeout: 10s
+      retries: 12
+      start_period: 10s
+    # volumes:
+    #   - vol-zookeeper-data:/data
+    #   - vol-zookeeper-datalog:/datalog
+    networks:
+      - net-yape
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    restart: no
+    depends_on: 
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1    
+    ports:
+      - 9092:9092
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1024M
+    healthcheck:
+      test: kafka-topics --bootstrap-server kafka:9092 --list
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 10s
+    networks:
+      - net-yape
+
+  mysql-server:
+    image: mysql:8
+    container_name: mysql-server
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: sergio
+      MYSQL_PASSWORD: 12345
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: retodb
+    volumes:
+      - vol-mysql:/var/lib/mysql
+    networks:
+      - net-yape
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 8s
+
+  mysql-client:
+    image: phpmyadmin
+    container_name: mysql-client
+    environment:
+      PMA_ARBITRARY: 1
+    ports:
+      - "8082:80"
+    restart: unless-stopped
+    networks:
+      - net-yape
+    depends_on:
+      mysql-server:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "curl", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 8s   
+
+  mongo-server:
+    image: mongo:4
+    container_name: mongo-server
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sergio
+      MONGO_INITDB_ROOT_PASSWORD: 12345
+      MONGO_INITDB_DATABASE: retodb
+    volumes:
+      - vol-mongo:/data/db
+    networks:
+      - net-yape
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mongo',
+          '--quiet',
+          '127.0.0.1/test',
+          '--eval',
+          "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  mongo-client:
+    image: mongo-express:1.0.0-18-alpine3.18
+    container_name: mongo-client
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: sergio
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 12345
+      ME_CONFIG_BASICAUTH_USERNAME: sergio
+      ME_CONFIG_BASICAUTH_PASSWORD: 12345
+      ME_CONFIG_MONGODB_SERVER: mongo-server
+      ME_CONFIG_MONGODB_PORT: 27017
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    networks:
+      - net-yape
+    depends_on:
+      mongo-server:
+        condition: service_healthy
+
+  transaction:
+    build:
+      context: ./transaction
+      dockerfile: Dockerfile
+    image: transaction
+    container_name: transaction
+    restart: unless-stopped
+    ports:
+      - "8000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_PORT=3306
+      - DATABASE_HOST=mysql-server
+      - DATABASE_USER=sergio
+      - DATABASE_PASS=12345
+      - DATABASE_NAME=retodb
+      - MONGO_PORT=27017
+      - MONGO_USER=sergio
+      - MONGO_PASS=12345
+      - MONGO_HOST=mongo-server
+      - MONGO_NAME=retodb
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_TOPIC=transaction
+      - KAFKA_TOPIC_STATUS=transaction-status
+    networks:
+      - net-yape
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/v1/healthcheck"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      mysql-server:
+        condition: service_healthy
+      mongo-server:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  anti-fraud:
+    build:
+      context: ./anti-fraud
+      dockerfile: Dockerfile
+    image: anti-fraud
+    container_name: anti-fraud
+    restart: unless-stopped
+    environment:
+      - PORT=4000
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_TOPIC=transaction
+      - KAFKA_TOPIC_STATUS=transaction-status
+      - VALUE_MAX=1000
+      - URL_ENDPOINT_UPDATE_STATUS=http://transaction:3000/v1/transaction/update
+    networks:
+      - net-yape
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/healthcheck"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      transaction:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  kafka_ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka_ui
+    restart: unless-stopped    
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+    environment:
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    networks:
+      - net-yape
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 5s
+
+  # kafdrop:
+  #   image: obsidiandynamics/kafdrop
+  #   container_name: kafdrop
+  #   restart: unless-stopped
+  #   ports:
+  #     - 9000:9000
+  #   environment:
+  #     KAFKA_BROKERCONNECT: "kafka:29092"
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.25'
+  #         memory: 128M
+  #   networks:
+  #     - net-yape
+
+volumes:
+  vol-zookeeper-data:
+    name: vol-zookeeper-data
+  vol-zookeeper-datalog:
+    name: vol-zookeeper-datalog
+  vol-mysql:
+    name: vol-mysql
+  vol-mongo:
+    name: vol-mongo
+
+networks:
+  net-yape:
+    driver: bridge
+    name: net-yape
