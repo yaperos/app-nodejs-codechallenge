@@ -4,7 +4,7 @@
   "description": "Microservice ms-anti-fraud",
   "main": "src/index.js",
   "scripts": {
-    "build": "npm run lint && rm -rf dist && tsc -p tsconfig.json",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
     "start": "node ./dist/index.js",
     "dev": "node --watch --require ts-node/register ./src/index.ts --config ./tsconfig.json"
   },

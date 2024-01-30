@@ -4,6 +4,7 @@
   "description": "Service for receiving messages with errors.",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "debug": "node --watch --inspect src/index.js"
   },
