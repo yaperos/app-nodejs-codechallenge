@@ -8,30 +8,28 @@ The database structure is the following:
 erDiagram
     User ||--o{ Balance : "has many"
     User {
-        string userId PK
-        DateTime createdAt
-        DateTime updatedAt
-        string email UNIQUE
-        string name
+        userId string PK
+        createdAt DateTime
+        updatedAt DateTime
+        email string 
+        name string
     }
 
-    Balance ||--o{ Transaction : "debitTransactions"
-    Balance ||--o{ Transaction : "creditTransactions"
     Balance ||--o{ BalanceSnapshot : "has many"
     Balance {
-        string balanceId PK
-        string userId FK
-        DateTime createdAt
-        DateTime deletedAt
-        DateTime updatedAt
+        balanceId string PK
+        userId string FK
+        createdAt DateTime
+        deletedAt DateTime
+        updatedAt DateTime
     }
 
     BalanceSnapshot {
-        string snapshotID PK
-        Decimal amount
-        DateTime from
-        DateTime to
-        string balanceID FK
+        snapshotID string PK
+        amount Decimal
+        from DateTime
+        to DateTime
+        balanceID string FK
     }
 
     Transaction ||--o{ TransactionStatus : "has many"
@@ -40,43 +38,42 @@ erDiagram
     Transaction }|--o{ BalanceSnapshot : "balanceSnapshot"
     Transaction }|--o{ TransactionType : "transactionType"
     Transaction {
-        string transactionId PK
-        Decimal amount
-        string account_id_debit FK
-        string account_id_credit FK
-        string external_account_id_debit
-        string external_account_id_credit
-        DateTime createdAt
-        DateTime deletedAt
-        string snapshotId FK
-        string transactionTypeId FK
+        transactionId string PK
+        amount Decimal
+        account_id_debit string FK
+        account_id_credit string FK
+        external_account_id_debit string
+        external_account_id_credit string
+        createdAt DateTime
+        deletedAt DateTime
+        snapshotId string FK
+        transactionTypeId string FK
     }
 
-    TransactionType ||--o{ Transaction : "has many"
     TransactionType {
-        string transactionTypeId PK
-        string name
-        DateTime createdAt
-        DateTime deletedAt
+        transactionTypeId string PK
+        name string
+        createdAt DateTime
+        deletedAt DateTime
     }
 
     TransactionStatus }|--|| Transaction : "transaction"
     TransactionStatus }|--|| StatusTransaction : "statusTransaction"
     TransactionStatus {
-        string TransactionStatusId PK
-        DateTime from
-        DateTime To
-        string transactionId FK
-        string statusTransactionId FK
+        TransactionStatusId string PK
+        from DateTime
+        To DateTime
+        transactionId string FK
+        statusTransactionId string FK
     }
 
     StatusTransaction ||--o{ TransactionStatus : "has many"
     StatusTransaction {
-        string StatusTransactionId PK
-        string name
-        string description
-        DateTime createdAt
-        DateTime deletedAt
+        StatusTransactionId string PK
+        name string
+        description string
+        createdAt DateTime
+        deletedAt DateTime
     }
 
 ```
