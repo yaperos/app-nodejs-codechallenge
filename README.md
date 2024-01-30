@@ -1,6 +1,6 @@
 # Documento de Análisis de Requisitos para Yape Code Challenge
 
-*Por Geovanny Gabirle Arguello Costta*
+Preparado por: [*Geovanny Gabriel Arguello Costta*](https://www.linkedin.com/in/giothcode)
 
 ## Tabla de Contenidos
 
