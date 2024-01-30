@@ -46,8 +46,6 @@ This project focuses on developing and implementing a robust anti-fraud microser
 
 **Zookeeper**: We utilize Apache Zookeeper for managing our Kafka cluster. Zookeeper plays a critical role in coordinating the Kafka brokers and ensuring reliable messaging. It is essential for maintaining the cluster's state, configuration, synchronization, and naming registry.
     
-<img src="https://pngimg.com/d/mysql_PNG9.png" width="200" height="200">
-
 <img src="https://logowik.com/content/uploads/images/prisma2244.jpg" width="300" height="200">
 
 **MySQL Database with Prisma ORM**: For data persistence, we rely on a MySQL database, known for its reliability and widespread use. We integrate Prisma ORM (Object-Relational Mapping) to interact with the database. Prisma ORM offers a powerful query builder, type safety, and an intuitive approach to database management, streamlining our data handling processes.
