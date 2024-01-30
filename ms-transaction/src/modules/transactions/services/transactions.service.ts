@@ -23,7 +23,7 @@ export class TransactionsService {
 
   /**
    * Processes a new transaction request.
-   * 
+   *
    * @param {CreateTransactionDto} transaction - The transaction data to be processed.
    * @returns {Promise<void>}
    * @async
@@ -60,7 +60,7 @@ export class TransactionsService {
 
   /**
    * Processes a transaction retry.
-   * 
+   *
    * @param {RetryTransactionDto} transaction - The transaction data for the retry.
    * @returns {Promise<void>}
    * @async
@@ -98,7 +98,7 @@ export class TransactionsService {
 
   /**
    * Updates the status of a transaction.
-   * 
+   *
    * @param {UpdateTransactionStatusDto} updateTransactionStatusDto - The DTO containing transaction ID and the new status.
    * @returns {Promise<void>}
    * @async
@@ -123,7 +123,7 @@ export class TransactionsService {
 
   /**
    * Handles errors related to a transaction by publishing them.
-   * 
+   *
    * @param {string} transactionId - The ID of the transaction.
    * @param {any} error - The error object.
    * @returns {Promise<void>}
@@ -152,7 +152,7 @@ export class TransactionsService {
 
   /**
    * Handles errors for unrecorded transactions by publishing them.
-   * 
+   *
    * @param {CreateTransactionDto} transaction - The transaction data.
    * @param {any} error - The error object.
    * @returns {Promise<void>}
@@ -185,7 +185,7 @@ export class TransactionsService {
 
   /**
    * Simulates random failures based on a configured probability, used for testing purposes.
-   * 
+   *
    * @private
    */
   randomFailure() {
