@@ -21,6 +21,9 @@ The system is divided into two main microservices:
 
 Both microservices communicate via Kafka, ensuring a decoupled architecture and real-time data processing.
 
+![alt text](https://github.com/diegobaesv/app-nodejs-codechallenge/blob/main/diagram_solution.jpeg?raw=true)
+
+
 ## Running the Project
 
 ### Prerequisites:
