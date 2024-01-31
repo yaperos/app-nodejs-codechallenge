@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from './modules/app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
@@ -9,16 +9,14 @@ async function bootstrap() {
     {
       transport: Transport.KAFKA,
       options: {
-        consumer: {
-          groupId: 'ms-antifraud-consumer'
-        },
         client: {
-          brokers: [
-            'localhost:9092'
-          ]
+          brokers: ['localhost:9092'],
+        },
+        consumer: {
+          groupId: 'ms-antifraud-consumer',
         }
       }
-    },
+    }
   );
   await app.listen();
 
