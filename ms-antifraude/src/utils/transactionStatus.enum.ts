@@ -1,0 +1,1 @@
+export const TransactionStatusEnum = ['pending', 'approved', 'rejected'] as const;

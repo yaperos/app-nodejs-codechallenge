@@ -1,82 +1,59 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Titulo : Prueba Tecnica Yape con NestJS TypeORM GraphQL Kafka 
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+NOTA: Hay un diagrama al mismo nivel desde este readme para poder apreciar la arquitectura que se uso para la implementacion de esta prueba Tecnica
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
 
-# Problem
+Estructura del Proyecto
+El proyecto se divide en dos microservicios:
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+ms-transaction: Este microservicio se encarga de la creación y recuperación de transacciones.
+ms-antifraud: Microservicio anti-fraude que valida transacciones y actualiza su estado.
+Tecnologías Utilizadas
+NestJS: Utilizado como el marco de aplicación principal para desarrollar los microservicios. Proporciona una estructura modular y escalable.
+TypeORM: ORM (Object-Relational Mapping) utilizado para interactuar con la base de datos y modelar las entidades de transacción.
+GraphQL: Implementado para proporcionar una interfaz flexible para la creación y recuperación de transacciones.
+Kafka: Sistema de mensajería utilizado para facilitar la comunicación entre los microservicios y mantener la consistencia de datos.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
 
-Every transaction with a value greater than 1000 should be rejected.
+Dependecias: 
+- KafkaJS
+- TypeORM
+- Graphql con Apolo
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+Solucion:
 
-# Tech Stack
+1.- Primero comentar que se utilizo una sencilla arquitectura de N capas para resolver esta Prueba tecnica en donde se enfoco la comunicacion de ambos microservicios con Kafka
+2.- Se utilizo el esquema de CODE FIRST de GraphQL para poder crear nuestro RESOLVERS y crear nuestras Mutations para la creacion de las transacciones 
+RUTA: http://localhost:3000/graphql
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+Json de Mutation :
+mutation {
+  createTransaction(createTransactionInput: {
+    accountExternalIdCredit: "someCreditId",
+    accountExternalIdDebit: "someDebitId",
+    tranferTypeId: 1,
+    value: 953
+  }) {
+    transactionExternalId
+    value
+    createdAt
+  }
 }
-```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+RESPONSE: {
+  "data": {
+    "createTransaction": {
+      "transactionExternalId": "98439c07-c5ca-4c18-837e-681cb6ae278a",
+      "value": 953,
+      "createdAt": "2024-01-31T07:07:00.506Z"
+    }
+  }
 }
-```
 
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+3.- Luego se procedio a instalar las dependencias de TYPEORM para poder crear nuestro servicios en donde primero se verifico que estos servicios funcionen correctamente con GRAPHQL y los resolvers.
+4.- Se implemento la configuracion de Kafka en donde se implmentaron los CONSUMERS Y PRODUCERS siendo el topico que enviara la transaccion al antifraude "transaction-emitter" y el que se encargara de regresar el evento con el status corregido el topico "topicofantrifraud"
+5.- Luego de configurar los topicos y bien el modulo de kafka pasamos a implemnetar esa logica de emitir en el microservicio de ms-transactions en donde produciremos el evento para el ms-antifraud en donde ahi con el metodo consumer recibiremos los topicos de esa red de mensajeria para Luego
+poder evaluarlo y luego de evaluarlo poder emitir en la red del topico de topicofantrifraud la transaccion con el status de rechazado o aprobado
+6. Finalmente cuando recibimos en el ms-transaction en la linea del topico "topicofantrifraud" utilizando el servicio Update de TYPEORM cambiamos el status al que nos dio la evaluacion del ms-antifraud logrando asi una comunicacion Efectiva y Exitosa
