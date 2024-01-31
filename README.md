@@ -11,7 +11,7 @@ The complete tech Stack includes:
 -  Docker && Docker compose for containerization.
   
 ## Contents
-- [Getting started](#getting-started)
+- [About the requiremente](#about-the-requirement)
 
 ## About the requirement
 Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status. For now, we have only three transaction statuses:
