@@ -22,6 +22,11 @@ Dependecias:
 - TypeORM
 - Graphql con Apolo
 
+En el proyecto de ms-transactions utlizaremos este comando para instalar las dependecias:
+npm install kafkajs typeorm @nestjs/graphql apollo-server-express
+en el proyecto de ms-antifraud solo necesitaremso el kafkajs:
+npm install kafkajs
+
 Solucion:
 
 1.- Primero comentar que se utilizo una sencilla arquitectura de N capas para resolver esta Prueba tecnica en donde se enfoco la comunicacion de ambos microservicios con Kafka
