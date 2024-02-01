@@ -183,6 +183,9 @@ Finally you can start the service again and check its status one last time.
 
 
 
+## Notes
+
+some console logs at the moment of mq interactions between services have been left off for debugging and testing purposed. should be removed once in production.
 <!-- ROADMAP -->
 ## Roadmap
 
@@ -193,8 +196,8 @@ Finally you can start the service again and check its status one last time.
 - [ ] Add Debit Account funds verification
 - [ ] Add Payouts
 - [ ] Add webhook for transaction approval
-- [ ] Add CI/CD
-- [ ] Add HelthCheck between microservices
+- [/] Add CI/CD
+- [X] Add HelthCheck between microservices
 
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
@@ -203,10 +206,6 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 
 
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
