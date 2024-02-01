@@ -1,5 +1,7 @@
 import {
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { Decimal } from '@prisma/client/runtime/library';
@@ -8,6 +10,8 @@ import {
   CreateBalanceDto,
   EditBalanceDto,
 } from './dto';
+import { Prisma } from '@prisma/client';
+import { async } from 'rxjs';
 
 @Injectable()
 export class BalanceService {
@@ -48,7 +52,6 @@ export class BalanceService {
       throw new Error('Balance not found');
     }
 
-    // Filtering and summing approved debit transactions
     const totalDebits = balance.debitTransactions
       .filter((transaction) =>
         transaction.transactionStatus.some(
@@ -89,18 +92,40 @@ export class BalanceService {
   }
 
   async createBalance(dto: CreateBalanceDto) {
-    const balance =
-      await this.prisma.balance.create({
-        data: {
-          user: {
-            connect: {
-              userId: dto.userId,
+    try {
+      const balance =
+        await this.prisma.balance.create({
+          data: {
+            user: {
+              connect: {
+                userId: dto.userId,
+              },
             },
           },
-        },
-      });
+        });
 
-    return balance;
+      return balance;
+    } catch (error) {
+      if (
+        error instanceof
+          Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new HttpException(
+          'No corresponding User record found for provided userId',
+          HttpStatus.BAD_REQUEST,
+        );
+      } else {
+        console.error(
+          'Failed to create balance:',
+          error,
+        );
+        throw new HttpException(
+          'Failed to create balance',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    }
   }
   async deleteBalanceById(balanceId: string) {
     await this.prisma.balance.update({
