@@ -12,11 +12,12 @@ import {
   ValidationPipe,
   HttpCode,
   HttpStatus,
-  Put
+  Put,
+  ParseIntPipe
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { ApiTransactionService } from './api-transaction.service';
-import { CreateTransaction, TransactionM, UpdateTransaction } from '@app/common/domain/model/transaction.model';
+import { CreateTransaction, CreateTransferType, TransactionM, TransferType, UpdateTransaction, UpdateTransferType } from '@app/common/domain/model/transaction.model';
 
 @Controller('api-transaction')
 export class ApiTransactionController {
@@ -63,6 +64,51 @@ export class ApiTransactionController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.apiTransactionService.remove(+id);
+    return this.apiTransactionService.remove(id);
   }
+
+  @Get('/transferTypes/all')
+  findAllTransferTypes() {
+    return this.apiTransactionService.findAllTransferTypes();
+  }
+
+  @Get('/transferTypes/:id')
+  findOneTransferType(@Param('id',ParseIntPipe) id: number) {
+    return this.apiTransactionService.findOneTransferType(id);
+  }
+
+  @Post('/transferTypes')
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+    type: TransactionM,
+  })
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
+  @UseInterceptors(ClassSerializerInterceptor)
+  async createTransferType(
+    @Body() createDTO: CreateTransferType,
+  ): Promise<TransferType> {
+    const transferType = await this.apiTransactionService.createTransferType(
+      createDTO,
+    );
+    return transferType;
+  }
+
+  @Put('/transferTypes/:id')
+  updateTransferType(@Param('id',ParseIntPipe) id: number, @Body() updateTransferTypeDto: UpdateTransferType) {
+    return this.apiTransactionService.updateTransferType(+id, updateTransferTypeDto);
+  }
+
+  @Delete('/transferTypes/:id')
+  removeTransferType(@Param('id',ParseIntPipe) id: number) {
+    return this.apiTransactionService.removeTransferType(+id);
+  }
+
+
 }

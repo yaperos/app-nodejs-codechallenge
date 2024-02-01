@@ -1,13 +1,264 @@
 _type: export
 __export_format: 4
-__export_date: 2024-02-01T00:35:37.283Z
+__export_date: 2024-02-01T20:34:26.120Z
 __export_source: insomnia.desktop.app:v8.6.0
 resources:
-  - _id: req_c0f65e04f71642c6987a67d697b63983
+  - _id: req_104d58f10b7146f698ff7e861ddf33c9
+    parentId: fld_aa34128e35df4cef970bb337895eecbd
+    modified: 1706814588038
+    created: 1706808341955
+    url: http://localhost:3000/api-transaction/transferTypes/:id
+    name: Delete TransferType
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706808341955
+    isPrivate: false
+    pathParameters:
+      - name: id
+        value: "1"
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_aa34128e35df4cef970bb337895eecbd
     parentId: wrk_f5d21796c95f4188b3402836b2ee7919
-    modified: 1706737271493
+    modified: 1706807629043
+    created: 1706807576260
+    name: TransferTypes
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1706807576260
+    _type: request_group
+  - _id: wrk_f5d21796c95f4188b3402836b2ee7919
+    parentId: null
+    modified: 1703224743321
+    created: 1703224743321
+    name: My Collection
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_7c4b47d5de6b4c1fad41c7417fc40a13
+    parentId: fld_aa34128e35df4cef970bb337895eecbd
+    modified: 1706808833914
+    created: 1706807534296
+    url: http://localhost:3000/api-transaction/transferTypes/:id
+    name: Update TransferType
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        		"name": "pending"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706807626945
+    isPrivate: false
+    pathParameters:
+      - name: id
+        value: 65bbd4a2dd25981d97da92b6
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d1cd79e4c37841659363665a9b3486da
+    parentId: fld_aa34128e35df4cef970bb337895eecbd
+    modified: 1706808322217
+    created: 1706807546208
+    url: http://localhost:3000/api-transaction/transferTypes/all
+    name: GetAll TransferTypes
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706807626895
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d3254049d96140eabf6801e7b7272ea8
+    parentId: fld_aa34128e35df4cef970bb337895eecbd
+    modified: 1706809384209
+    created: 1706807540338
+    url: http://localhost:3000/api-transaction/transferTypes/:id
+    name: GetOne TransferType
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706807626845
+    isPrivate: false
+    pathParameters:
+      - name: id
+        value: "1"
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_3d4e2550659f4ef0b9c0ba3d578f36fe
+    parentId: fld_aa34128e35df4cef970bb337895eecbd
+    modified: 1706819610329
+    created: 1706807558369
+    url: http://localhost:3000/api-transaction/transferTypes/
+    name: Create TransferType
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+            "transferTypeId": 2,
+            "name": "Type 2"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706807626745
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_5313a37b0438492e88e9ffb3b4985065
+    parentId: fld_5d15a5a6973848eab7e2ca13d2e9e2ea
+    modified: 1706808282006
+    created: 1706808258262
+    url: http://localhost:3000/api-transaction/:id
+    name: Delete Transaction
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706808258262
+    isPrivate: false
+    pathParameters:
+      - name: id
+        value: 65bbd3b92a9b770bcd4ee6e3
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_5d15a5a6973848eab7e2ca13d2e9e2ea
+    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
+    modified: 1706807568435
+    created: 1706807568435
+    name: Transactions
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1706807568435
+    _type: request_group
+  - _id: req_6c9c4235d44c4203932d24a79639ec74
+    parentId: fld_5d15a5a6973848eab7e2ca13d2e9e2ea
+    modified: 1706819626955
+    created: 1706576404456
+    url: http://localhost:3000/api-transaction
+    name: Create Transaction
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+            "tranferTypeId": 2,
+            "value": 1259
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706807588954
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1b8521d477ea485db231159b45861e9e
+    parentId: fld_5d15a5a6973848eab7e2ca13d2e9e2ea
+    modified: 1706807597842
+    created: 1706721853701
+    url: http://localhost:3000/api-transaction/all
+    name: GetAll Transactions
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706807588854
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_c0f65e04f71642c6987a67d697b63983
+    parentId: fld_5d15a5a6973848eab7e2ca13d2e9e2ea
+    modified: 1706807595343
     created: 1706728579348
-    url: http://localhost:3000/api-transaction/65bab60af26668024157b6f7
+    url: http://localhost:3000/api-transaction/:id
     name: Update Transaction
     description: ""
     method: PUT
@@ -24,9 +275,11 @@ resources:
       - name: User-Agent
         value: insomnia/8.6.0
     authentication: {}
-    metaSortKey: -1706728579348
+    metaSortKey: -1706807588754
     isPrivate: false
-    pathParameters: []
+    pathParameters:
+      - name: id
+        value: 65bab60af26668024157b6f7
     settingStoreCookies: true
     settingSendCookies: true
     settingDisableRenderRequestBody: false
@@ -34,19 +287,11 @@ resources:
     settingRebuildPath: true
     settingFollowRedirects: global
     _type: request
-  - _id: wrk_f5d21796c95f4188b3402836b2ee7919
-    parentId: null
-    modified: 1703224743321
-    created: 1703224743321
-    name: My Collection
-    description: ""
-    scope: collection
-    _type: workspace
   - _id: req_6e68fd8b09c64c09bfb567b4fe6053c4
-    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
-    modified: 1706725680445
+    parentId: fld_5d15a5a6973848eab7e2ca13d2e9e2ea
+    modified: 1706819640759
     created: 1706723716254
-    url: http://localhost:3000/api-transaction/65b9ea2d8fea774a91018250
+    url: http://localhost:3000/api-transaction/:id
     name: GetOne Transaction
     description: ""
     method: GET
@@ -56,65 +301,11 @@ resources:
       - name: User-Agent
         value: insomnia/8.6.0
     authentication: {}
-    metaSortKey: -1706723716254
+    metaSortKey: -1706807588654
     isPrivate: false
-    pathParameters: []
-    settingStoreCookies: true
-    settingSendCookies: true
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingFollowRedirects: global
-    _type: request
-  - _id: req_1b8521d477ea485db231159b45861e9e
-    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
-    modified: 1706723712232
-    created: 1706721853701
-    url: http://localhost:3000/api-transaction/all
-    name: GetAll Transactions
-    description: ""
-    method: GET
-    body: {}
-    parameters: []
-    headers:
-      - name: User-Agent
-        value: insomnia/8.6.0
-    authentication: {}
-    metaSortKey: -1706721853701
-    isPrivate: false
-    pathParameters: []
-    settingStoreCookies: true
-    settingSendCookies: true
-    settingDisableRenderRequestBody: false
-    settingEncodeUrl: true
-    settingRebuildPath: true
-    settingFollowRedirects: global
-    _type: request
-  - _id: req_6c9c4235d44c4203932d24a79639ec74
-    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
-    modified: 1706745988001
-    created: 1706576404456
-    url: http://localhost:3000/api-transaction
-    name: Create Transaction
-    description: ""
-    method: POST
-    body:
-      mimeType: application/json
-      text: |-
-        {
-            "tranferTypeId": 1,
-            "value": 1259
-        }
-    parameters: []
-    headers:
-      - name: Content-Type
-        value: application/json
-      - name: User-Agent
-        value: insomnia/8.6.0
-    authentication: {}
-    metaSortKey: -1706576404456
-    isPrivate: false
-    pathParameters: []
+    pathParameters:
+      - name: id
+        value: 65bc002bae9c3fab3a3bcfea
     settingStoreCookies: true
     settingSendCookies: true
     settingDisableRenderRequestBody: false

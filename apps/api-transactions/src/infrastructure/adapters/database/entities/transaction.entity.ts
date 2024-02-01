@@ -1,11 +1,11 @@
 import { TransactionStatuses } from "@app/common/domain/model/transaction.model";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document, SchemaType } from 'mongoose';
+import { Document } from 'mongoose';
 
 @Schema()
 export class Transaction extends Document{
     @Prop()
-    name: String;
+    name: string;
 
     @Prop()
     accountExternalIdDebit: string;
