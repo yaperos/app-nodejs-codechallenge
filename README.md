@@ -91,6 +91,12 @@ The complete tech Stack includes:
  2. Update Transaction: http://localhost:3000/api-transaction/:id
  3. Get a single Transaction: http://localhost:3000/api-transaction/:id
  4. Get all Transactions: http://localhost:3000/api-transaction/all
+ 5. Delete Transaction: http://localhost:3000/api-transaction/:id
+ 6. Create Transfer Type: http://localhost:3000/api-transaction/transferTypes/
+ 7. Update Transfer Type: http://localhost:3000/api-transaction/transferTypes/:id
+ 8. Get a single Transfer Type: http://localhost:3000/api-transaction/transferTypes/:id
+ 9. Get all Transfer Types: http://localhost:3000/api-transaction/transferTypes/all
+ 10. Delete Transfer Type: http://localhost:3000/api-transaction/transferTypes/:id
 
  ## Service functionality
  1. The api-transaction exposes an endpoint for creating a transaction.
