@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AdaptersModule } from './infrastructure/adapters/adapters.module';
 import config from '../../../config';
-import { ApiTransactionModule } from '../src/core/application/api-transaction/api-transaction.module';
+import { ApiAntifraudModule } from '../src/core/application/api-antifraud/api-antifraud.module';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { ApiTransactionModule } from '../src/core/application/api-transaction/ap
       load: [config]
     }),
     AdaptersModule,
-    ApiTransactionModule
+    ApiAntifraudModule
   ],
   controllers: [AppController],
   providers: [AppService],

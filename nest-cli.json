@@ -24,6 +24,24 @@
       "compilerOptions": {
         "tsConfigPath": "apps/api-anti-fraud/tsconfig.app.json"
       }
+    },
+    "kafka-client": {
+      "type": "library",
+      "root": "libs/kafka-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/kafka-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/kafka-client/tsconfig.lib.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
     }
   }
 }

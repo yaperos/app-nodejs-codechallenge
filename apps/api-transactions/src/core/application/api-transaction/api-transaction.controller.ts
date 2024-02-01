@@ -9,27 +9,24 @@ import {
   Post,
   UseInterceptors,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
+  HttpCode,
+  HttpStatus,
+  Put
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { ApiTransactionService } from './api-transaction.service';
-import { CreateTransaction, Transaction } from '../../domain/model/transaction.model';
+import { CreateTransaction, TransactionM, UpdateTransaction } from '@app/common/domain/model/transaction.model';
 
 @Controller('api-transaction')
 export class ApiTransactionController {
   constructor(private readonly apiTransactionService: ApiTransactionService) { }
 
-
-  @Get()
-  getHello() {
-    return this.apiTransactionService.getHello();
-  }
-
   @Post()
   @ApiResponse({
     status: 201,
     description: 'The record has been successfully created.',
-    type: Transaction,
+    type: TransactionM,
   })
   @UsePipes(
     new ValidationPipe({
@@ -39,30 +36,31 @@ export class ApiTransactionController {
     }),
   )
   @UseInterceptors(ClassSerializerInterceptor)
-  async createRequester(
+  async createTransaction(
     @Body() createDTO: CreateTransaction,
-  ): Promise<Transaction> {
+  ): Promise<TransactionM> {
     const transaction = await this.apiTransactionService.CreateTransaction(
       createDTO,
     );
-    return new Transaction(transaction);
+    return new TransactionM(transaction);
   }
 
-  @Get()
+  @Get('/all')
   findAll() {
     return this.apiTransactionService.findAll();
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.ACCEPTED)
   findOne(@Param('id') id: string) {
-    return this.apiTransactionService.findOne(+id);
+    return this.apiTransactionService.findOne(id);
   }
-  /*
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateApiTransactionDto: UpdateApiTransactionDto) {
-      return this.apiTransactionService.update(+id, updateApiTransactionDto);
-    }
-  */
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateApiTransactionDto: UpdateTransaction) {
+    return this.apiTransactionService.update(id, updateApiTransactionDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.apiTransactionService.remove(+id);

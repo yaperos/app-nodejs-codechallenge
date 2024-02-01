@@ -1,0 +1,142 @@
+_type: export
+__export_format: 4
+__export_date: 2024-02-01T00:35:37.283Z
+__export_source: insomnia.desktop.app:v8.6.0
+resources:
+  - _id: req_c0f65e04f71642c6987a67d697b63983
+    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
+    modified: 1706737271493
+    created: 1706728579348
+    url: http://localhost:3000/api-transaction/65bab60af26668024157b6f7
+    name: Update Transaction
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        		"transactionStatus": "pending"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706728579348
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_f5d21796c95f4188b3402836b2ee7919
+    parentId: null
+    modified: 1703224743321
+    created: 1703224743321
+    name: My Collection
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_6e68fd8b09c64c09bfb567b4fe6053c4
+    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
+    modified: 1706725680445
+    created: 1706723716254
+    url: http://localhost:3000/api-transaction/65b9ea2d8fea774a91018250
+    name: GetOne Transaction
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706723716254
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1b8521d477ea485db231159b45861e9e
+    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
+    modified: 1706723712232
+    created: 1706721853701
+    url: http://localhost:3000/api-transaction/all
+    name: GetAll Transactions
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706721853701
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_6c9c4235d44c4203932d24a79639ec74
+    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
+    modified: 1706745988001
+    created: 1706576404456
+    url: http://localhost:3000/api-transaction
+    name: Create Transaction
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+            "tranferTypeId": 1,
+            "value": 1259
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.6.0
+    authentication: {}
+    metaSortKey: -1706576404456
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_a1931e82a9cd58b93156813fb7e75451ad974d9c
+    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
+    modified: 1703224743324
+    created: 1703224743324
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1703224743324
+    _type: environment
+  - _id: jar_a1931e82a9cd58b93156813fb7e75451ad974d9c
+    parentId: wrk_f5d21796c95f4188b3402836b2ee7919
+    modified: 1703224743326
+    created: 1703224743326
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar

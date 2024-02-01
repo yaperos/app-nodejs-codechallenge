@@ -1,6 +1,6 @@
 FROM node:18-alpine3.16
 
-WORKDIR /app
+WORKDIR /api-transactions/src/main
 
 COPY package.json package-lock.json ./
 
@@ -10,4 +10,4 @@ COPY . .
 
 RUN npm run build
 
-CMD ["node", "dist/api-transactions"]
+CMD ["node", "dist/apps/api-transactions/main.js"]

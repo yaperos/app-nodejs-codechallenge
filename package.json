@@ -8,7 +8,10 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node -r dotenv/config dist/apps/api-transaction/main"
+    "start:prod": "node -r dotenv/config dist/apps/api-transaction/main",
+    "start:transactions": "nest start api-transactions",
+    "start:antifraud": "nest start api-anti-fraud",
+    "start:both": "concurrently \"npm run start:transactions\" \"npm run start:antifraud\""
   },
   "keywords": [],
   "author": "Pamela Ramirez Arrunategui",
@@ -25,11 +28,17 @@
     "@nestjs/platform-express": "^10.3.1",
     "@nestjs/schedule": "^4.0.0",
     "@nestjs/swagger": "^7.2.0",
+    "@nestjs/testing": "^10.3.1",
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.7",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dayjs": "^1.11.10",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "joi": "^17.12.1",
     "kafkajs": "^2.2.4",
     "kafkajs-snappy": "^1.1.0",
@@ -40,12 +49,7 @@
     "snappy": "^7.2.2",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
-    "eslint": "^8.0.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0"
+    "typescript": "^5.3.3"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -53,7 +57,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -61,7 +65,19 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/kafka-client(|/.*)$": "<rootDir>/libs/kafka-client/src/$1",
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+    }
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "concurrently": "^8.2.2"
   }
 }

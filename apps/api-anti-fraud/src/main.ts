@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { ApiAntiFraudModule } from './api-anti-fraud.module';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ApiAntiFraudModule);
-  await app.listen(3000);
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3010);
 }
 bootstrap();
