@@ -64,13 +64,13 @@ The complete tech Stack includes:
     MONGODB_PORT=27017
     MONGODB_CONNECTION="mongodb"
  2. The following steps should be applied in order to start the services.
-    2.1. Clone the repository locally.
-    2.2. There is an Insomnia_collection.yaml file inside the repository which is ready to be imported for testing the api transaction endpoints.
-    2.3. In a terminal(in the root path of the local repository), run the commands:
-      2.4.1. docker-compose -f docker-compose.yml up -d 
-      2.4.2. npm i
-      2.4.3. npm run start:both
-    2.4. Followed those steps, both applications will be running in parallel.
+    - Clone the repository locally.
+    - There is an Insomnia_collection.yaml file inside the repository which is ready to be imported for testing the api transaction endpoints.
+    - In a terminal(in the root path of the local repository), run the commands:
+      - docker-compose -f docker-compose.yml up -d 
+      - npm i
+      - npm run start:both
+    - Followed those steps, both applications will be running in parallel.
 
 
  4. 
