@@ -2,7 +2,13 @@
 This Monoreporepository fulfills the yape code challenge requirements, and contains two microservices for validating finantial transactions.   
 ## Contents
 - [About the requirement](#about-the-requirement)
-
+- [Tech Stack](#tech-stack)
+- [Useful Tools](#usesful-tools)
+- [Getting Started](#getting-started)
+- [Available Endpoints](#available-endpoints)
+- [Service functionality](#service-functionality)
+- [Important Notes](#important-notes)
+  
 ## About the requirement
 Every time a financial transaction is created, it must be validated by the anti-fraud microservice, and then the same service should send a message back to update the transaction status. Currently, there are only three valid transaction statuses:
 
@@ -85,9 +91,19 @@ The complete tech Stack includes:
  2. Update Transaction: http://localhost:3000/api-transaction/:id
  3. Get a single Transaction: http://localhost:3000/api-transaction/:id
  4. Get all Transactions: http://localhost:3000/api-transaction/all
+
+ ## Service functionality
+ 1. The api-transaction exposes an endpoint for creating a transaction.
+ 2. Once the transaction is created with a *pending* status, this information is saved to mongoDB (database: yape / collection: transactions)
+ 3. At the same time, the information of the new transaction is sent to kafka (topic: transactions)
+ 4. While the api-anti-fraud is running, this service is listening the same kafka topic: *transactions*.
+ 5. Once a new message appears (new transaction sent in step 3), the anti fraud service validates the transaction and decides the next status, either *approved* or *rejected* based on the unique business rule. 
+ 6. The final status is sent by the anti fraud service to a new kafka topic: *Validatedtransactions*.
+ 7. While the api-transaction is running, this service is listening the same kafka topic: *Validatedtransactions*.
+ 8. Once a new message appears (transaction updated in step 6), the transactions service updates this status to the transactions collection in mongoDB.
     
  ## Important Notes:
  1. *Kafdrop* will be running in http://localhost:9000 url afterwards the docker yaml file is executed.
  2. The kafka service takes its time for creating the topics, and reading messages.  
  
-
+ 
