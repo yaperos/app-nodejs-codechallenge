@@ -31,22 +31,22 @@ This project focuses on developing and implementing a robust anti-fraud microser
 
 ### Built With
 
-<img src="https://static-00.iconduck.com/assets.00/nestjs-icon-1024x1020-34exj0g6.png" width="200" height="200">
+<img src="https://static-00.iconduck.com/assets.00/nestjs-icon-1024x1020-34exj0g6.png" width="100" height="100">
 
 **NestJS Framework**: We utilize NestJS, a progressive Node.js framework for building efficient and scalable server-side applications. It is an excellent choice for this project due to its powerful combination of TypeScript and object-oriented programming principles.
     
-<img src="https://static-00.iconduck.com/assets.00/typescript-icon-icon-1024x1024-vh3pfez8.png" width="200" height="200">
+<img src="https://static-00.iconduck.com/assets.00/typescript-icon-icon-1024x1024-vh3pfez8.png" width="100" height="100">
 
 **TypeScript**: The entire codebase is written in TypeScript, a language that builds on JavaScript by adding static type definitions. TypeScript's strong typing allows us to catch errors early in the development process, enhancing code quality and maintainability.
-<img src="https://icons.iconarchive.com/icons/pictogrammers/material/512/apache-kafka-icon.png" width="200" height="200">
+<img src="https://icons.iconarchive.com/icons/pictogrammers/material/512/apache-kafka-icon.png" width="100" height="100">
 
 **Kafka for Inter-Service Communication**: Apache Kafka, a distributed event streaming platform, is employed for communication between microservices. Kafka provides high-throughput, fault-tolerant messaging, and enables decoupling of data streams and systems.
 
-<img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/apache_zookeeper_logo_icon_169571.png" width="200" height="200">
+<img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/apache_zookeeper_logo_icon_169571.png" width="100" height="100">
 
 **Zookeeper**: We utilize Apache Zookeeper for managing our Kafka cluster. Zookeeper plays a critical role in coordinating the Kafka brokers and ensuring reliable messaging. It is essential for maintaining the cluster's state, configuration, synchronization, and naming registry.
     
-<img src="https://logowik.com/content/uploads/images/prisma2244.jpg" width="300" height="200">
+<img src="https://logowik.com/content/uploads/images/prisma2244.jpg" width="300" height="100">
 
 **MySQL Database with Prisma ORM**: For data persistence, we rely on a MySQL database, known for its reliability and widespread use. We integrate Prisma ORM (Object-Relational Mapping) to interact with the database. Prisma ORM offers a powerful query builder, type safety, and an intuitive approach to database management, streamlining our data handling processes.
     
