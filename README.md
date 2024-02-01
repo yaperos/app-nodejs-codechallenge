@@ -1,82 +1,86 @@
-# Yape Code Challenge :rocket:
-
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+# Explicación de la solución
+Se implementaron dos microservicios: uno para gestionar transacciones y actualizar la base de datos, y otro para validar transacciones contra fraudes (donde si una transacción era mayor a 1000 era "rechazada" y en caso contrario "aprobada"). Se empleó Kafka para la comunicación entre ellos, garantizando asíncronía y tolerancia a fallos. La arquitectura permite escalabilidad y mejora del rendimiento.
+Para tener aún mejor rendimiento y menor carga en los servidores se utilizo GraphQL para solo traer la información necesaria para cada operación.
 
 <ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
+  <li>A traves de GraphQL se crea una transaccción</li>
+  <li>Desde el primer microservicio (transacción) se guarda la transacción en la base de datos</li>
+  <li>Desde el primer microservicio  (transacción) utilizando kafka se publica un mensaje en el topic "antifraud-request"</li>
+  <li>Desde el segundo microservicio  (antifraude) utilizando kafka se subscribe al topic "antifraud-request"</li>
+  <li>Desde el segundo microservicio  (antifraude) se evalua la transacción si es mayor a 1000</li>
+  <li>Desde el segundo microservicio  (antifraude) utilizando kafka se publica un mensaje en el topic "antifraud-pull"</li>
+  <li>Desde el primer microservicio  (transacción) utilizando kafka se subscribe al topic "antifraud-pull"</li>
+  <li>Desde el primer microservicio  (transacción) se actualiza el registro de esa transacción con el status de respuesta</li>
 </ol>
 
-Every transaction with a value greater than 1000 should be rejected.
+# Diagrama de flujo de la solución
 
 ```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+sequenceDiagram
+    GraphQL->>+MS Transaction: Crea la Transacción
+    MS Transaction->>+Database: Guardar Transacción| 
+    MS Transaction->>+Kafka: Crea el mensaje de Transación en el topic "antifraud-request"
+    MS Transaction->>+GraphQL: Responde los datos de la transacción creada
+    MS Anti-Fraud->>+Kafka: Se subscribe a kafka en el topic "antifraud-request"
+    MS Anti-Fraud->>+ Kafka: evalue el monto de la transacción si esta es > 1000  
+    MS Anti-Fraud->>+ Kafka: Crea el mensaje Respuesta de evaluación en el topic "antifraud-pull" 
+    MS Transaction->>+Kafka: Se subscribe a kafka en el topic "antifraud-pull" 
+    MS Transaction ->>+Database: Actualiza en el registro de la transacción con la respuesta del antifraude
 ```
 
-# Tech Stack
 
+# Herramientas utilizadas
+Las tecnologias que se usaron fueronh
 <ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
+   <li>NodeJs</li>
+   <li>Nestjs</li>
+   <li>TypeOrm</li>
+   <li>GraphQL</li>
+   <li>Kafka</li>
+   <li>PostgreSQL</li>
 </ol>
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+# Requemientos previos del proyecto
+<ol>
+   <li>Node.js versión minima v18.14.2</li>
+   <li>Docker</li>
+</ol>
 
-You must have two resources:
+# Instrucciones de Configuración y Ejecución
 
-1. Resource to create a transaction that must containt:
+## Configuración del Proyecto
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
+### Paso 1: Iniciar Servicios Docker
+En la raíz del proyecto, ejecuta el siguiente comando para iniciar los servicios Docker:
 
-2. Resource to retrieve a transaction
+docker-compose up
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+### Paso 2: Configuración del Servicio de Antifraude
+<ol>
+  <li>Dirígete a la carpeta antifraude.</li>
+  <li>Instala las dependencias ejecutando:
+       npm install
+</li>
+  <li>Inicia el servicio con el siguiente comando:
+       npm run start
+  </li>  
+</ol>
 
-## Optional
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+### Paso 3: Configuración del Servicio de Transacción
+<ol>
+  <li>Dirígete a la carpeta transaction</li>
+  <li>Instala las dependencias ejecutando:
+       npm install
+</li>
+  <li>Inicia el servicio con el siguiente comando:
+       npm run start
+  </li>  
+</ol>
 
-You can use Graphql;
+### Paso 4: Importar la colección postman para pruebas
+Desde postman seleccione la opción de importar y arrastre el siguiente archivo colocado en la raiz del proyecto
+Prueba Yape GPL.postman_collection.json
 
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+### Notas Adicionales
+Si encuentras algún problema durante la configuración o ejecución, consulta la documentación del proyecto o comunícate con el equipo de desarrollo para obtener ayuda.

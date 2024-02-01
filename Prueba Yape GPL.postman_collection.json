@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "e6ae525e-083d-4d1b-a4b8-69a3e6b3ab5d",
+		"name": "Prueba Yape GPL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5411826"
+	},
+	"item": [
+		{
+			"name": "Ghaphql Transaction Query",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"query { findAllTransactions { id, accountExternalIdDebit, accountExternalIdCredit, tranferTypeId, amount, status } }\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ghaphql Transaction Mutacion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"mutation evaluarTransaccion($transaccionReq: TransferInput!) { evaluarTransaccion(transaccionReq: $transaccionReq) { id tranferTypeId amount status } }\",\r\n    \"variables\": {\r\n        \"transaccionReq\": {\r\n            \"accountExternalIdDebit\": \"123456789\",\r\n            \"accountExternalIdCredit\": \"987654321\",\r\n            \"tranferTypeId\": 1,\r\n            \"value\": 15500.00\r\n        }\r\n    }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

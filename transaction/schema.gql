@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @upper on FIELD_DEFINITION
+
+"""transaction"""
+type Transaction {
+  id: ID!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Float!
+  status: String!
+  amount: Float!
+}
+
+type Query {
+  findAllTransactions: [Transaction!]!
+}
+
+type Mutation {
+  evaluarTransaccion(transaccionReq: TransferInput!): Transaction!
+}
+
+input TransferInput {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Float!
+  value: Float!
+}

@@ -22,4 +22,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
+<<<<<<< HEAD
       - 9092:9092
+=======
+      - 9092:9092
+>>>>>>> main
