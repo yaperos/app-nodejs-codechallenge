@@ -29,7 +29,7 @@ export class ApiAntifraudService {
     }
 
     async validateTransaction(value: number): Promise<boolean> {
-        if (value < 1000) return true
+        if (value <= 1000) return true
         return false
     }
     
