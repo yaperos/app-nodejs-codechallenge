@@ -68,7 +68,7 @@ The complete tech Stack includes:
       "value": 120,
       "createdAt": "Date"
     }
-```
+    ```
 
  ## Getting started
  1. The following environment file (.env at the root path) is required for the proper functioning of the services.
