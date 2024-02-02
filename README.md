@@ -45,13 +45,18 @@ The complete tech Stack includes:
 
  There should be two resources:
  1. Resource to create a transaction:
+    ```json
     {
       "accountExternalIdDebit": "Guid",
       "accountExternalIdCredit": "Guid",
       "tranferTypeId": 1,
       "value": 120
     }
- 3. Resource to retrieve a transaction:
+    ```
+
+ 2. Resource to retrieve a transaction:
+
+    ```json
     {
       "transactionExternalId": "Guid",
       "transactionType": {
@@ -63,6 +68,7 @@ The complete tech Stack includes:
       "value": 120,
       "createdAt": "Date"
     }
+    ```
 
  ## Getting started
  1. The following environment file (.env at the root path) is required for the proper functioning of the services.
@@ -91,14 +97,10 @@ The complete tech Stack includes:
  2. Update Transaction: http://localhost:3000/api-transaction/:id
  3. Get a single Transaction: http://localhost:3000/api-transaction/:id
  4. Get all Transactions: http://localhost:3000/api-transaction/all
- 5. Delete Transaction: http://localhost:3000/api-transaction/:id
- 6. Create Transfer Type: http://localhost:3000/api-transaction/transferTypes/
- 7. Update Transfer Type: http://localhost:3000/api-transaction/transferTypes/:id
- 8. Get a single Transfer Type: http://localhost:3000/api-transaction/transferTypes/:id
- 9. Get all Transfer Types: http://localhost:3000/api-transaction/transferTypes/all
- 10. Delete Transfer Type: http://localhost:3000/api-transaction/transferTypes/:id
 
  ## Service functionality
+ ![image](https://github.com/PamelaRamirezA/app-nodejs/assets/70154058/d7e2eec7-623b-44f5-86b4-d38f896ea639)
+
  1. The api-transaction exposes an endpoint for creating a transaction.
  2. Once the transaction is created with a *pending* status, this information is saved to mongoDB (database: yape / collection: transactions)
  3. At the same time, the information of the new transaction is sent to kafka (topic: transactions)
@@ -111,5 +113,4 @@ The complete tech Stack includes:
  ## Important Notes:
  1. *Kafdrop* will be running in http://localhost:9000 url afterwards the docker yaml file is executed.
  2. The kafka service takes its time for creating the topics, and reading messages.  
- 
  
