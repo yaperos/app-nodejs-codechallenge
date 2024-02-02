@@ -45,13 +45,18 @@ The complete tech Stack includes:
 
  There should be two resources:
  1. Resource to create a transaction:
+    ```json
     {
       "accountExternalIdDebit": "Guid",
       "accountExternalIdCredit": "Guid",
       "tranferTypeId": 1,
       "value": 120
     }
- 3. Resource to retrieve a transaction:
+    ```
+
+ 2. Resource to retrieve a transaction:
+
+    ```json
     {
       "transactionExternalId": "Guid",
       "transactionType": {
@@ -63,6 +68,7 @@ The complete tech Stack includes:
       "value": 120,
       "createdAt": "Date"
     }
+```
 
  ## Getting started
  1. The following environment file (.env at the root path) is required for the proper functioning of the services.
