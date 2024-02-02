@@ -99,6 +99,8 @@ The complete tech Stack includes:
  4. Get all Transactions: http://localhost:3000/api-transaction/all
 
  ## Service functionality
+ ![image](https://github.com/PamelaRamirezA/app-nodejs/assets/70154058/d7e2eec7-623b-44f5-86b4-d38f896ea639)
+
  1. The api-transaction exposes an endpoint for creating a transaction.
  2. Once the transaction is created with a *pending* status, this information is saved to mongoDB (database: yape / collection: transactions)
  3. At the same time, the information of the new transaction is sent to kafka (topic: transactions)
