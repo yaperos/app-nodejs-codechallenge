@@ -1,18 +1,54 @@
-version: "3.7"
+version: "3.8"
 services:
-  postgres:
-    image: postgres:14
+  mongo:
+    image: mongo
+    container_name: mongo
     ports:
-      - "5432:5432"
+      - "27017:27017"
+    restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      MONGO_INITDB_ROOT_USERNAME: $MONGODB_USER
+      MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
+  transaction:
+    build:
+      context: .
+      dockerfile: ./apps/transaction-ms/Dockerfile
+      target: development
+    container_name: transaction
+    env_file:
+      - ./apps/transaction-ms/.env
+    depends_on:
+      - mongo
+      - zookeeper
+      - kafka
+      - anti-fraud
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+  anti-fraud:
+    build:
+      context: .
+      dockerfile: ./apps/anti-fraud-ms/Dockerfile
+      target: development
+    container_name: anti-fraud
+    env_file:
+      - ./apps/anti-fraud-ms/.env
+    depends_on:
+      - zookeeper
+      - kafka
+    volumes:
+      - .:/app
+      - /app/node_modules
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    container_name: kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
