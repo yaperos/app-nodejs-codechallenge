@@ -101,7 +101,7 @@ Due to the nature of the business, the response time to a query about the status
 
 ## Notes
 
-- Both projects have implemented clean architect (onion architect + hegonal architect)
+- Both projects have implemented clean architect (onion architect + hegonal architect) and Domain Design Driven (DDD)
 - Both projects use clean code
 - Both projects have implemented their Dockerfile optimized
 - Both projects have implemented ESLint
@@ -112,7 +112,8 @@ Due to the nature of the business, the response time to a query about the status
 
 ## Future improvements
 
-- "Infrastructure as code" can improve the deployment times. I recommend to evaluate "Pulumi".
+- "Infrastructure as code" can improve the deployment times towards the clouds. I recommend to evaluate "Pulumi".
 - Implement Kubernetes' manifests:
-  - Pods, Services, Secrets, ConfigMaps: Transaction, Anti-Fraud, Database clients, Kafka UI and Sonarqube.
+  - Pods, Services, Secrets, ConfigMaps, Deployments: Transaction, Anti-Fraud, Database clients, Kafka UI and Sonarqube.
+  - Namespaces, Probes.
   - Statefulset: Kafka, MongoDB, MySQL
