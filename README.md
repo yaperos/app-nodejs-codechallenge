@@ -101,7 +101,7 @@ Due to the nature of the business, the response time to a query about the status
 
 ## Notes
 
-- Both projects have implemented clean architect (onion architect + hegonal architect) and Domain Design Driven (DDD)
+- Both projects have implemented clean architect (onion architect + hexagonal architect) and Domain Design Driven (DDD)
 - Both projects use clean code
 - Both projects have implemented their Dockerfile optimized
 - Both projects have implemented ESLint
