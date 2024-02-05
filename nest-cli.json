@@ -1,0 +1,38 @@
+{
+  "monorepo": true,
+  "root": "apps/transaction-ms",
+  "sourceRoot": "apps/transaction-ms/src",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/transaction-ms/tsconfig.app.json"
+  },
+  "projects": {
+    "transaction-ms": {
+      "type": "application",
+      "root": "apps/transaction-ms",
+      "entryFile": "main",
+      "sourceRoot": "apps/transaction-ms/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transaction-ms/tsconfig.app.json"
+      }
+    },
+    "anti-fraud-ms": {
+      "type": "application",
+      "root": "apps/anti-fraud-ms",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud-ms/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud-ms/tsconfig.app.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    }
+  }
+}
