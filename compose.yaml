@@ -137,6 +137,18 @@ services:
       mongo-server:
         condition: service_healthy
 
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - 16686:16686
+      - 4318:4318
+      - 4317:4317
+    environment:
+      LOG_LEVEL: debug
+    networks:
+      - net-yape
+
   transaction:
     build:
       context: ./transaction
@@ -161,6 +173,8 @@ services:
       - KAFKA_BROKER=kafka:29092
       - KAFKA_TOPIC=transaction
       - KAFKA_TOPIC_STATUS=transaction-status
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318
+      - JAEGER_GRCP=http://jaeger:4317
     networks:
       - net-yape
     healthcheck:
@@ -190,7 +204,8 @@ services:
       - KAFKA_TOPIC=transaction
       - KAFKA_TOPIC_STATUS=transaction-status
       - VALUE_MAX=1000
-      - URL_ENDPOINT_UPDATE_STATUS=http://transaction:3000/v1/transaction/update
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318
+      - JAEGER_GRCP=http://jaeger:4317
     networks:
       - net-yape
     healthcheck:
@@ -216,6 +231,15 @@ services:
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    networks:
+      - net-yape
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+      - "9092:9092"
     networks:
       - net-yape
 

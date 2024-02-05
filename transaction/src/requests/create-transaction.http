@@ -1,9 +1,9 @@
-POST http://localhost:3000/v1/transaction/
+POST http://localhost:8000/v1/transaction/
 content-type: application/json
 
 {
     "accountExternalIdDebit": "e9db395e-b014-47ba-9d8f-6c6f5ccc4c3d",
     "accountExternalIdCredit": "50b63370-c95b-4cee-917b-36e06e0ec88a",
     "transferTypeId": 1,
-    "value": 800
+    "value": 1800
 }

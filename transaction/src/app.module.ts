@@ -1,12 +1,11 @@
-import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
-import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
-import { TransactionModule } from './modules/transaction/infrastructure/presentation/transaction.module';
-import { ThrottlerModule } from '@nestjs/throttler';
-import { HealthModule } from "./modules/health/health.module"
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ThrottlerModule } from '@nestjs/throttler';
+
+import { HealthModule } from './modules/health/health.module';
+import { TransactionModule } from './modules/transaction/infrastructure/presentation/transaction.module';
 
 @Module({
   imports: [
@@ -17,13 +16,15 @@ import { ConfigModule } from '@nestjs/config';
     }),
     TransactionModule,
     HealthModule,
-    ThrottlerModule.forRoot([{
-      ttl: 60000,
-      limit: 10,
-    }]),
-    ConfigModule.forRoot()
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
+    ConfigModule.forRoot(),
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

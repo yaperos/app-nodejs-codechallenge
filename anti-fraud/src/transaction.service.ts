@@ -6,11 +6,16 @@ import { TransactionKafkaService } from './modules/transaction/infrastructure/se
 
 @Injectable()
 export class TransactionService {
-    constructor(private readonly http: HttpService, private readonly transactionKafkaService: TransactionKafkaService) { }
+  constructor(
+    private readonly http: HttpService,
+    private readonly transactionKafkaService: TransactionKafkaService,
+  ) {}
 
-    updateStatus(transactionId: string, status: string) {
-        console.log("UPDATE STATUS", AppService.kafka_topic_status, { key: transactionId, value: { transactionId, status } })
-        this.transactionKafkaService.sentStatus(transactionId, status)
-        //return this.http.post(AppService.url_endpoint_update_status, { transactionId, status })
-    }
+  updateStatus(transactionId: string, status: string) {
+    console.log('UPDATE STATUS', AppService.kafka_topic_status, {
+      key: transactionId,
+      value: { transactionId, status },
+    });
+    this.transactionKafkaService.sentStatus(transactionId, status);
+  }
 }

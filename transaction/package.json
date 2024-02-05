@@ -1,5 +1,5 @@
 {
-  "name": "new-reto-yape",
+  "name": "retoyape",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -14,10 +14,17 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
+    "test:cache": "jest --clearCache",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "sonar": "node sonar-project.js -X"
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
   },
   "dependencies": {
     "@apollo/server": "^4.10.0",
@@ -33,11 +40,17 @@
     "@nestjs/swagger": "^7.2.0",
     "@nestjs/terminus": "^10.2.0",
     "@nestjs/throttler": "^5.1.1",
+    "@opentelemetry/exporter-trace-otlp-grpc": "^0.48.0",
+    "@opentelemetry/instrumentation-express": "^0.35.0",
+    "@opentelemetry/instrumentation-http": "^0.48.0",
+    "@opentelemetry/instrumentation-nestjs-core": "^0.34.0",
+    "@opentelemetry/sdk-node": "^0.48.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cors": "^2.8.5",
     "graphql": "^16.8.1",
     "helmet": "^7.1.0",
+    "jest-sonar-reporter": "^2.0.0",
     "kafkajs": "^2.2.4",
     "mongoose": "^8.1.0",
     "mysql2": "^3.7.1",
@@ -49,7 +62,7 @@
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
-    "@nestjs/testing": "^10.0.0",
+    "@nestjs/testing": "^10.3.1",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
@@ -60,7 +73,11 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.5.0",
+    "jest-extended": "^4.0.2",
+    "jest-html-reporter": "^3.10.2",
+    "jest-html-reporters": "^3.1.7",
     "prettier": "^3.0.0",
+    "sonarqube-scanner": "^3.3.0",
     "source-map-support": "^0.5.21",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
@@ -75,15 +92,46 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
+    "bail": true,
+    "verbose": true,
+    "setupFilesAfterEnv": [
+      "jest-extended"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "reporters": [
+      "default",
+      [
+        "jest-html-reporters",
+        {
+          "publicPath": "reports",
+          "filename": "test.v2.html"
+        }
+      ],
+      [
+        "jest-html-reporter",
+        {
+          "pageTitle": "Test API",
+          "outputPath": "reports/test.v1.html"
+        }
+      ]
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!**/node_modules/**",
+      "!src/**/*.entity.ts"
+    ],
+    "coverageReporters": [
+      "json",
+      "text",
+      "html",
+      "lcov"
+    ],
+    "coverageDirectory": "coverage",
+    "testEnvironment": "node",
+    "testResultsProcessor": "jest-sonar-reporter",
+    "testMatch": [
+      "<rootDir>/src/**/*.spec.ts"
+    ],
+    "preset": "ts-jest"
   }
 }

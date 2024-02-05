@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Kafka, KafkaMessage } from 'kafkajs';
-import { AppService } from 'src/app.service';
+import { Kafka, KafkaMessage, Partitioners } from 'kafkajs';
+
+import { AppService } from '../../app.service';
 
 @Injectable()
 export class KafkaService {
@@ -12,11 +13,12 @@ export class KafkaService {
     this.kafka = new Kafka({
       brokers: [AppService.kafka_broker],
     });
-    this.producer = this.kafka.producer();
+    this.producer = this.kafka.producer({
+      createPartitioner: Partitioners.LegacyPartitioner,
+    });
     this.consumer = this.kafka.consumer({
       groupId: 'group-transaction-status',
     });
-    //this.connectConsumer();
   }
 
   private async connectConsumer() {
