@@ -4,11 +4,11 @@ sonarqubeScanner(
   {
     serverUrl: 'http://localhost:9000',
     options: {
-      'sonar.projectKey': 'antifraud',
-      'sonar.projectName': 'antifraud',
+      'sonar.projectKey': '',
+      'sonar.projectName': '',
       'sonar.sources': 'src',
       'sonar.tests': 'src',
-      'sonar.token': 'sqp_cee6cdd0518779efddfea1a1685299acb405b082',
+      'sonar.token': '',
       'sonar.inclusions': 'src/**/*.ts',
       'sonar.test.inclusions':
         'src/**/*.spec.ts,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx',

@@ -7,7 +7,7 @@ import { AppModule } from './app.module';
 import tracer from './modules/core/distribution/tracer';
 
 async function bootstrap() {
-  await tracer.start();
+  tracer.start();
 
   const app = await NestFactory.create(AppModule);
 

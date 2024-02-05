@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import tracer from './modules/core/distribution/tracer';
 
 async function bootstrap() {
-  await tracer.start();
+  tracer.start();
 
   const app = await NestFactory.create(AppModule);
   app.enableCors();
