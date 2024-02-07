@@ -1,0 +1,11 @@
+.idea
+
+# compiled output
+dist
+node_modules
+
+# Project ignoring section:
+.env
+
+# OS
+.DS_Store

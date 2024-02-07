@@ -1,82 +1,45 @@
-# Yape Code Challenge :rocket:
+# Prueba
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Servicios
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+1. **PostgreSQL**
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+   - Descripción: Base de datos relacional utilizada escritura
 
-# Problem
+2. **MongoDB**
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+   - Descripción: Base de datos NoSQL utilizada para lectura
+   - cliente ui: http://localhost:8080
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+3. **Zookeeper**
 
-Every transaction with a value greater than 1000 should be rejected.
+4. **Kafka**
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+   - Descripción: Plataforma de streaming distribuido utilizado para emitir eventos entre los ms
 
-# Tech Stack
+5. **Transacciones**
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+   - Descripción: Servicio que recibe y procesa transacciones, emite eventos de transacciones creadas, soporta
+     idempotencia en la creacion.
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+6. **Anti-Fraude**
 
-You must have two resources:
+   - Descripción: Servicio que escucha eventos de creación de transacciones, evalúa y emite rechazos o aporvaciones
+     dependiendo de alguna regla.
 
-1. Resource to create a transaction that must containt:
+7. **Migraciones**
+   - Descripción: Servicio que ejecuta automáticamente las migraciones de la base de datos de transacciones.
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
+### Configuración del Entorno
 
-2. Resource to retrieve a transaction
+Asegúrate de tener Docker instalado en tu máquina.
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+### Ejecución del Proyecto
 
-## Optional
+- docker compose up
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+### Acceso a la Aplicación
 
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+- Base URL: http://localhost:3000/transaction
+- GraphQL URL: http://localhost:3000/graphql
+- Documentación de la API REST: http://localhost:3000/transaction/doc
