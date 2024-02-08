@@ -1,23 +1,25 @@
 # Yape Code Challenge :rocket:
+## Table of Contents
+- [Yape Code Challenge :rocket:](#yape-code-challenge-rocket)
+  - [Table of Contents](#table-of-contents)
+  - [Candidate Information](#candidate-information)
+  - [Problem](#problem)
+  - [Tech Stack](#tech-stack)
+  - [Resources](#resources)
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Candidate Information
+- **Name**: David Andrés Garza Medina
+- **LinkedId Profile**: https://www.linkedin.com/in/david-garza-medina/
+- **Personal Website**: https://davidgarza.me/
+- **Email**: contact@davidgarza.me
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
+## Problem
 Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+For now, there are only three transaction statuses:
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+1. Pending
+2. Approved
+3. Rejected
 
 Every transaction with a value greater than 1000 should be rejected.
 
@@ -30,19 +32,13 @@ Every transaction with a value greater than 1000 should be rejected.
     Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
 ```
 
-# Tech Stack
+## Tech Stack
+1. **Backend**: Node.js with Express.js as the framework and Sequelize as ORM.
+2. **Database**: PostgreSQL.
+3. **Message Broker**: Kafka.
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
+## Resources
+1. Transaction creation:
 
 ```json
 {
@@ -53,7 +49,7 @@ You must have two resources:
 }
 ```
 
-2. Resource to retrieve a transaction
+2. Transaction retrieval:
 
 ```json
 {
@@ -68,15 +64,3 @@ You must have two resources:
   "createdAt": "Date"
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
