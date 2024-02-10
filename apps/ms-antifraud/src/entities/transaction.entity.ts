@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TransactionType } from './transaction-type.entity';
 import { TransactionStatus } from './transaction-status.entity';
 
@@ -8,28 +8,26 @@ export class Transaction {
   @PrimaryGeneratedColumn('uuid') 
   transactionExternalId: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 36, nullable: false })
   accountExternalIdDebit: string;
 
-  @Column() 
+  @Column({ type: 'varchar', length: 36, nullable: false })
   accountExternalIdCredit: string;
 
-  @Column()
-  transferTypeId: number;
-
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   value: number;
 
-  @Column() 
-  createdAt: Date = new Date();
-
-  @Column()
-  updatedAt: Date;
-
-  @ManyToOne(type => TransactionType)  
+  @ManyToOne(() => TransactionType, { eager: true })
+  @JoinColumn({ name: 'transferTypeId' })
   transactionType: TransactionType;
 
-  @ManyToOne(type => TransactionStatus)
+  @ManyToOne(() => TransactionStatus, { eager: true })
+  @JoinColumn({ name: 'transferStatusId' })
   transactionStatus: TransactionStatus;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 }
