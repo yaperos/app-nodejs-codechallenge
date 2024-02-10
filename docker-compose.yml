@@ -7,6 +7,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=dbyape
+    volumes:
+      - ./data:/var/lib/postgresql/data
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +26,18 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  ms-antifraud:
+    build: 
+      context: ./apps/ms-antifraud
+      dockerfile: Dockerfile
+    volumes:
+      - ./apps/ms-antifraud:/usr/src/app
+    ports:
+     - 3000:3000
+    environment:
+      - DB_HOST=postgres  
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=dbyape
+    command: ["npm", "run", "start:dev"]

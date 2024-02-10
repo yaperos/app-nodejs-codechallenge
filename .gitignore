@@ -102,3 +102,62 @@ dist
 
 # TernJS port file
 .tern-port
+
+### ms-antifraud > .gitignore
+
+# compiled output
+apps/ms-antifraud/dist
+apps/ms-antifraud/node_modules
+apps/ms-antifraud/build
+
+# Logs
+apps/ms-antifraud/logs
+apps/ms-antifraud/*.log
+apps/ms-antifraud/npm-debug.log*
+apps/ms-antifraud/pnpm-debug.log*
+apps/ms-antifraud/yarn-debug.log*
+apps/ms-antifraud/yarn-error.log*
+apps/ms-antifraud/lerna-debug.log*
+
+# OS
+apps/ms-antifraud/.DS_Store
+
+# Tests
+apps/ms-antifraud/coverage
+apps/ms-antifraud/.nyc_output
+
+# IDEs and editors
+apps/ms-antifraud/.idea
+apps/ms-antifraud/.project
+apps/ms-antifraud/.classpath
+apps/ms-antifraud/.c9/
+apps/ms-antifraud/*.launch
+apps/ms-antifraud/.settings/
+apps/ms-antifraud/*.sublime-workspace
+
+# IDE - VSCode
+apps/ms-antifraud/.vscode/*
+apps/ms-antifraud/!.vscode/settings.json
+apps/ms-antifraud/!.vscode/tasks.json
+apps/ms-antifraud/!.vscode/launch.json
+apps/ms-antifraud/!.vscode/extensions.json
+
+# dotenv environment variable files
+apps/ms-antifraud/.env
+apps/ms-antifraud/.env.development.local
+apps/ms-antifraud/.env.test.local
+apps/ms-antifraud/.env.production.local
+apps/ms-antifraud/.env.local
+
+# temp directory
+apps/ms-antifraud/.temp
+apps/ms-antifraud/.tmp
+
+# Runtime data
+apps/ms-antifraud/pids
+apps/ms-antifraud/*.pid
+apps/ms-antifraud/*.seed
+apps/ms-antifraud/*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+apps/ms-antifraud/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
