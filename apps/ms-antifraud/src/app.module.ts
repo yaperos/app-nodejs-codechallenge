@@ -3,6 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphqlModule } from './graphql/graphql.module';
+import { KafkaConsumerService } from './graphql/kafka-consumer.service';
+import { TransactionService } from './graphql/transaction.service';
+import { Transaction } from './entities/transaction.entity';
 
 @Module({
   imports: [
@@ -18,9 +21,15 @@ import { GraphqlModule } from './graphql/graphql.module';
       entities: [__dirname + '/entities/*.entity.{js,ts}'],
       migrations: [__dirname + '/migrations/*.{js,ts}'],
     }),
-    GraphqlModule
+    GraphqlModule,
+    TypeOrmModule.forFeature([Transaction]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TransactionService, KafkaConsumerService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly kafkaConsumerService: KafkaConsumerService) {
+    this.kafkaConsumerService.connect();
+    this.kafkaConsumerService.run();
+  }
+}

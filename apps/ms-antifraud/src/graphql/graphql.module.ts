@@ -5,6 +5,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Transaction } from './../entities/transaction.entity';
 import { TransactionResolver } from './transaction.resolver';
 import { TransactionService } from './transaction.service';
+import { KafkaService } from './kafka.service';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { TransactionService } from './transaction.service';
     }),
     TypeOrmModule.forFeature([Transaction]),
   ],
-  providers: [TransactionResolver, TransactionService],
+  providers: [TransactionResolver, TransactionService, KafkaService],
 })
 export class GraphqlModule {}

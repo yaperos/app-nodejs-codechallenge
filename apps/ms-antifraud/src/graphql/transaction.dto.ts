@@ -1,4 +1,4 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { TransactionType } from 'src/entities/transaction-type.entity';
 import { TransactionStatus } from 'src/entities/transaction-status.entity';
 

@@ -17,9 +17,15 @@ export class Transaction {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   value: number;
 
+  @Column({ type: 'int', nullable: false })
+  transferTypeId: number
+
   @ManyToOne(() => TransactionType, { eager: true })
   @JoinColumn({ name: 'transferTypeId' })
   transactionType: TransactionType;
+
+  @Column({ type: 'int', nullable: false })
+  transferStatusId: number;
 
   @ManyToOne(() => TransactionStatus, { eager: true })
   @JoinColumn({ name: 'transferStatusId' })
