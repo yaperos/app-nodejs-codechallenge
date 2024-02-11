@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/gateway-graphql/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/gateway-graphql/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/gateway-graphql",
+  "projects": {
+    "gateway-graphql": {
+      "type": "application",
+      "root": "apps/gateway-graphql",
+      "entryFile": "main",
+      "sourceRoot": "apps/gateway-graphql/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gateway-graphql/tsconfig.app.json"
+      }
+    },
+    "transaction-ms": {
+      "type": "application",
+      "root": "apps/transaction-ms",
+      "entryFile": "main",
+      "sourceRoot": "apps/transaction-ms/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transaction-ms/tsconfig.app.json"
+      }
+    },
+    "anti-fraud-ms": {
+      "type": "application",
+      "root": "apps/anti-fraud-ms",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud-ms/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud-ms/tsconfig.app.json"
+      }
+    },
+    "utils": {
+      "type": "library",
+      "root": "libs/utils",
+      "entryFile": "index",
+      "sourceRoot": "libs/utils/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/utils/tsconfig.lib.json"
+      }
+    }
+  }
+}

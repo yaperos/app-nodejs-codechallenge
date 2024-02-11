@@ -1,0 +1,4 @@
+export const MAX_VALUE = 1000;
+export const TRANSACTION_CLIENT = 'TRANSACTION_CLIENT';
+export const STATUS_REJECT = 'REJECTED';
+export const STATUS_APPROVED = 'APPROVED';
