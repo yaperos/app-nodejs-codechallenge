@@ -17,7 +17,7 @@
 
 ## 💾 Diagram Challenge Yape <a name = "diagram"></a>
 
-<img width=800px height=400px src="resources/diagram_challenge.png" alt="Design Database">
+<img width=800px height=400px src="resources/diagram_challenge.svg" alt="Design Database">
 
 
 ## 💾 Design Database ER <a name = "design_database"></a>
