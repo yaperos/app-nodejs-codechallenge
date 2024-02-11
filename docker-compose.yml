@@ -41,4 +41,9 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - DB_NAME=dbyape
+      - KAFKA_CLIENT_ID=ms-antifraud
+      - KAFKA_BROKER_1=kafka:29092
+      - KAFKA_TRANSACTIONS_GROUP=transactions-consumer
+      - KAFKA_TRANSACTIONS_TOPIC=yape.transactions
+      - FRAUD_THRESHOLD_AMOUNT=1000
     command: ["npm", "run", "start:dev"]

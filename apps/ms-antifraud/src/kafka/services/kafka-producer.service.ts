@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { Kafka, Producer, ProducerRecord } from 'kafkajs';
 
 @Injectable()
-export class KafkaService {
+export class KafkaProducerService {
   private producer: Producer;
 
   constructor() {
     const kafka = new Kafka({
-      clientId: 'client1',
-      brokers: ['kafka:29092']
+      clientId: process.env.KAFKA_CLIENT_ID,
+      brokers: [process.env.KAFKA_BROKER_1],
       
     });
 
@@ -24,7 +24,7 @@ export class KafkaService {
   }
 
   async sendTransactionToTopic(transactionData: any): Promise<void> {
-    const topic = 'yape.transactions';
+    const topic = process.env.KAFKA_TRANSACTIONS_TOPIC;
 
     await this.producer.connect();
 

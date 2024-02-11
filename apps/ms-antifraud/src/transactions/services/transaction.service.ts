@@ -1,15 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Transaction } from '../entities/transaction.entity';
-import { TransactionDto } from './transaction.dto';
-import { CreateTransactionInput } from './transaction.input';
-
-enum Statuses {
-  'pending' = 1,
-  'rejected' = 2,
-  'approved' = 3,
-}
+import { Transaction } from '../../common/entities/transaction.entity';
+import { TransactionDto } from '../../common/dto/transaction.dto';
+import { CreateTransactionInput } from '../../common/dto/transaction.input';
+import { TransactionStatuses } from '../../common/enums/transaction-statuses.enum';
+import { NewTransactionPayload } from 'src/common/types/transaction.interface';
 
 @Injectable()
 export class TransactionService {
@@ -25,17 +21,17 @@ export class TransactionService {
   async updateTransaction(transactionData: TransactionDto, transactionStatus: string): Promise<void> {
     await this.transactionRepository.update(
       { transactionExternalId: transactionData.transactionExternalId },
-      { transferStatusId: Statuses[transactionStatus] },
+      { transferStatusId: TransactionStatuses[transactionStatus] },
     );
   }
 
   async storeTransaction(transactionData: CreateTransactionInput): Promise<TransactionDto> {
-    const payload = {
+    const payload: NewTransactionPayload = {
       accountExternalIdDebit: transactionData.accountExternalIdDebit,
       accountExternalIdCredit: transactionData.accountExternalIdCredit,
       transferTypeId: transactionData.transferTypeId,
       value: transactionData.value,
-      transferStatusId: Statuses.pending,
+      transferStatusId: TransactionStatuses.pending,
     };
 
     const result = await this.transactionRepository.insert(payload);

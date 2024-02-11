@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PagesController } from './pages/controllers/pages.controller';
+import { PagesService } from './pages/services/pages.service';
 import { GraphqlModule } from './graphql/graphql.module';
-import { KafkaConsumerService } from './graphql/kafka-consumer.service';
-import { TransactionService } from './graphql/transaction.service';
-import { Transaction } from './entities/transaction.entity';
+import { Transaction } from './common/entities/transaction.entity';
+import { KafkaConsumerService } from './kafka/services/kafka-consumer.service';
+import { TransactionService } from './transactions/services/transaction.service';
 
 @Module({
   imports: [
@@ -18,14 +18,14 @@ import { Transaction } from './entities/transaction.entity';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [__dirname + '/entities/*.entity.{js,ts}'],
-      migrations: [__dirname + '/migrations/*.{js,ts}'],
+      entities: [__dirname + '/common/entities/*.entity.{js,ts}'],
+      migrations: [__dirname + '/database/migrations/*.{js,ts}'],
     }),
     GraphqlModule,
     TypeOrmModule.forFeature([Transaction]),
   ],
-  controllers: [AppController],
-  providers: [AppService, TransactionService, KafkaConsumerService],
+  controllers: [PagesController],
+  providers: [PagesService, TransactionService, KafkaConsumerService],
 })
 export class AppModule {
   constructor(private readonly kafkaConsumerService: KafkaConsumerService) {

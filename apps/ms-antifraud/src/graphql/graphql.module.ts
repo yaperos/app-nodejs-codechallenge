@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Transaction } from './../entities/transaction.entity';
-import { TransactionResolver } from './transaction.resolver';
-import { TransactionService } from './transaction.service';
-import { KafkaService } from './kafka.service';
+import { Transaction } from '../common/entities/transaction.entity';
+import { TransactionResolver } from './resolvers/transaction.resolver';
+import { TransactionService } from '../transactions/services/transaction.service';
+import { KafkaProducerService } from '../kafka/services/kafka-producer.service';
 
 @Module({
   imports: [
@@ -15,6 +15,6 @@ import { KafkaService } from './kafka.service';
     }),
     TypeOrmModule.forFeature([Transaction]),
   ],
-  providers: [TransactionResolver, TransactionService, KafkaService],
+  providers: [TransactionResolver, TransactionService, KafkaProducerService],
 })
 export class GraphqlModule {}

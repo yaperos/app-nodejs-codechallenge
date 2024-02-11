@@ -1,6 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
-import InitSeeder from './seeds/init.seeder';
+import InitSeeder from './database/seeds/init.seeder';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 const options = {
@@ -12,8 +12,8 @@ const options = {
   database: process.env.DB_NAME,
   autoLoadEntities: true,
   synchronize: true,
-  entities: [__dirname + '/entities/*.entity.{js,ts}'],
-  migrations: [__dirname + '/migrations/*.{js,ts}'],
+  entities: [__dirname + '/common/entities/*.entity.{js,ts}'],
+  migrations: [__dirname + '/database/migrations/*.{js,ts}'],
   seeds: [InitSeeder],
 };
 

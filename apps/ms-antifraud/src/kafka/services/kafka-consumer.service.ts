@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Kafka, Consumer } from 'kafkajs';
-import { TransactionService } from './transaction.service';
-import { TransactionDto } from './transaction.dto';
+import { TransactionService } from '../../transactions/services/transaction.service';
+import { TransactionDto } from '../../common/dto/transaction.dto';
 
 @Injectable()
 export class KafkaConsumerService {
@@ -9,11 +9,11 @@ export class KafkaConsumerService {
 
   constructor(private readonly transactionService: TransactionService) {
     const kafka = new Kafka({
-      clientId: 'consumer-client',
-      brokers: ['kafka:29092'],
+      clientId: process.env.KAFKA_CLIENT_ID,
+      brokers: [process.env.KAFKA_BROKER_1],
     });
 
-    this.consumer = kafka.consumer({ groupId: 'group1' });
+    this.consumer = kafka.consumer({ groupId: process.env.KAFKA_TRANSACTIONS_GROUP });
   }
 
   async connect(): Promise<void> {
@@ -21,7 +21,7 @@ export class KafkaConsumerService {
   }
 
   async subscribeToTopic(): Promise<void> {
-    await this.consumer.subscribe({ topic: 'yape.transactions', fromBeginning: true });
+    await this.consumer.subscribe({ topic: process.env.KAFKA_TRANSACTIONS_TOPIC, fromBeginning: true });
   }
 
   async run(): Promise<void> {
@@ -33,7 +33,7 @@ export class KafkaConsumerService {
         
         const transactionData: TransactionDto = JSON.parse(message.value.toString());
     
-        const isFraudulent = transactionData.value > 1000;
+        const isFraudulent = transactionData.value > parseInt(process.env.FRAUD_THRESHOLD_AMOUNT) ;
     
         const transactionStatus = isFraudulent ? 'rejected' : 'approved';
     

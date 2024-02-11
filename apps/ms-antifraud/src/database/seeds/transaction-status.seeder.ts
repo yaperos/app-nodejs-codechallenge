@@ -1,6 +1,6 @@
 import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
-import { TransactionStatus } from '../entities/transaction-status.entity';
+import { TransactionStatus } from '../../common/entities/transaction-status.entity';
 
 export default class TransactionStatusSeeder implements Seeder {
   public async run(
