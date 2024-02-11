@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TransactionController } from './controllers/transaction.controller';
-import { TransactionService } from './services/transaction-ms.service';
+import { TransactionService } from './services/transaction.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionStatus } from './entities/transaction-status.entity';
@@ -8,6 +8,7 @@ import { TransactionType } from './entities/transaction-type.entity';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionStatusService } from './services/transaction-status.service';
 import { TransactionTypeService } from './services/transaction-type.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -33,6 +34,24 @@ import { TransactionTypeService } from './services/transaction-type.service';
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([Transaction, TransactionType, TransactionStatus]),
+    ClientsModule.register([
+      {
+        name: 'KAFKA_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'anti-fraud-ms',
+            brokers: ['localhost:9092'],
+          },
+          producer: {
+            allowAutoTopicCreation: true,
+          },
+          consumer: {
+            groupId: 'anti-fraud-consumer-group',
+          },
+        },
+      },
+    ]),
   ],
   controllers: [TransactionController],
   providers: [

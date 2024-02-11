@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Logger,
+  Param,
+  Post,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -9,13 +17,29 @@ import {
 } from '@nestjs/swagger';
 import { Transaction } from '../entities/transaction.entity';
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
-import { TransactionService } from '../services/transaction-ms.service';
+import { TransactionService } from '../services/transaction.service';
 import { FindOneParams } from '../dtos/find-transaction.dto';
+import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 
 @ApiTags('transaction')
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(
+    private readonly transactionService: TransactionService,
+    @Inject('KAFKA_SERVICE') private kafka: ClientKafka,
+  ) {}
+
+  async onModuleInit() {
+    Logger.log('Connecting to Kafka', TransactionController.name);
+    await this.kafka.connect();
+    Logger.log('Connected to Kafka', TransactionController.name);
+  }
+
+  @MessagePattern('anti-fraud-response')
+  getAntiFraudResponse(@Payload() message) {
+    Logger.log('Received message', message);
+    this.transactionService.updateStatus(message.id, message.status);
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a transaction' })
@@ -45,9 +69,15 @@ export class TransactionController {
     description: 'The status or type of the transaction is not valid',
   })
   @ApiBody({ type: CreateTransactionDto })
-  createTransaction(
-    @Body() createTransactionDto: CreateTransactionDto,
-  ): Promise<Transaction> {
-    return this.transactionService.create(createTransactionDto);
+  async createTransaction(@Body() createTransactionDto: CreateTransactionDto) {
+    const createdTransaction: Transaction =
+      await this.transactionService.create(createTransactionDto);
+    this.kafka.emit(
+      'transactions',
+      JSON.stringify({
+        id: createdTransaction.transactionExternalId,
+        value: createdTransaction.value,
+      }),
+    );
   }
 }

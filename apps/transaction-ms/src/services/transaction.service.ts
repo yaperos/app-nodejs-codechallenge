@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { TransactionTypeService } from './transaction-type.service';
-import { TransactionStatuses } from '../enums/transaction-status.enum';
 import { TransactionStatusService } from './transaction-status.service';
 
 @Injectable()
@@ -53,13 +52,6 @@ export class TransactionService {
     if (!transactionType)
       throw new BadRequestException('Transaction type not found');
 
-    const transactionStatus = await this.transactionStatusService.findOne(
-      TransactionStatuses.PENDING,
-    );
-
-    if (!transactionStatus)
-      throw new BadRequestException('Transaction status not found');
-
     const transaction = new Transaction();
     transaction.transactionExternalId = uuid();
     transaction.accountExternalIdDebit =
@@ -68,7 +60,28 @@ export class TransactionService {
       createTransactionDto.accountExternalIdCredit;
     transaction.transactionType = transactionType;
     transaction.value = createTransactionDto.value;
+    return await this.repository.save(transaction);
+  }
+
+  async updateStatus(
+    transactionExternalId: string,
+    transactionStatusName: string,
+  ): Promise<Transaction> {
+    const transaction = await this.repository.findOne({
+      where: { transactionExternalId },
+    });
+
+    if (!transaction) throw new BadRequestException('Transaction not found');
+
+    const transactionStatus = await this.transactionStatusService.findOne(
+      transactionStatusName,
+    );
+
+    if (!transactionStatus)
+      throw new BadRequestException('Transaction status not found');
+
     transaction.transactionStatus = transactionStatus;
+
     return await this.repository.save(transaction);
   }
 }

@@ -3,9 +3,11 @@ import { TransactionMsModule } from './transaction-ms.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(TransactionMsModule);
+  const port = app.get(ConfigService).get('TRANSACTION_MS_PORT', 3000);
 
   const config = new DocumentBuilder()
     .setTitle('Transaction Microservice')
@@ -28,6 +30,6 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3000);
+  await app.listen(port);
 }
 bootstrap();

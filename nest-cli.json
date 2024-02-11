@@ -36,6 +36,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/transaction-ms/tsconfig.app.json"
       }
+    },
+    "anti-fraud-ms": {
+      "type": "application",
+      "root": "apps/anti-fraud-ms",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud-ms/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud-ms/tsconfig.app.json"
+      }
     }
   }
 }
