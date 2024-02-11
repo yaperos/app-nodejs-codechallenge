@@ -18,6 +18,7 @@ export class AntiFraudMsController {
 
   @MessagePattern('transactions')
   getTransactions(@Payload() message) {
+    Logger.log('Received message', message);
     const response: AntiFraudResponse =
       this.antiFraudMsService.validateTransaction(message);
     this.kafka.emit('anti-fraud-response', JSON.stringify(response));

@@ -4,6 +4,7 @@ import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(AntiFraudMsModule, {
+    name: 'KAFKA_SERVICE',
     transport: Transport.KAFKA,
     options: {
       client: {
