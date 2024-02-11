@@ -1,4 +1,4 @@
-import { IsDecimal, IsInt, IsNotEmpty, IsUUID, Min } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsUUID, Min } from 'class-validator';
 
 export class CreateTransactionDto {
   @IsUUID()
@@ -13,7 +13,7 @@ export class CreateTransactionDto {
   @IsNotEmpty()
   transactionTypeId: number;
 
-  @IsDecimal({ decimal_digits: '2' })
+  @IsNumber()
   @IsNotEmpty()
   @Min(0.01)
   value: number;

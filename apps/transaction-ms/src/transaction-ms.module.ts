@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TransactionMsController } from './transaction-ms.controller';
-import { TransactionMsService } from './transaction-ms.service';
+import { TransactionController } from './controllers/transaction.controller';
+import { TransactionService } from './services/transaction-ms.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionStatus } from './entities/transaction-status.entity';
 import { TransactionType } from './entities/transaction-type.entity';
 import { Transaction } from './entities/transaction.entity';
+import { TransactionStatusService } from './services/transaction-status.service';
+import { TransactionTypeService } from './services/transaction-type.service';
 
 @Module({
   imports: [
@@ -32,7 +34,11 @@ import { Transaction } from './entities/transaction.entity';
     }),
     TypeOrmModule.forFeature([Transaction, TransactionType, TransactionStatus]),
   ],
-  controllers: [TransactionMsController],
-  providers: [TransactionMsService],
+  controllers: [TransactionController],
+  providers: [
+    TransactionService,
+    TransactionStatusService,
+    TransactionTypeService,
+  ],
 })
 export class TransactionMsModule {}
