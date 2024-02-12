@@ -9,34 +9,18 @@ import { Transaction } from './entities/transaction.entity';
 import { TransactionStatusService } from './services/transaction-status.service';
 import { TransactionTypeService } from './services/transaction-type.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import typeorm from './config/typeorm';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [typeorm],
+    }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('POSTGRES_HOST', 'localhost'),
-        port: +configService.get('POSTGRES_PORT', '3306'),
-        username: configService.get('POSTGRES_USER', 'postgres'),
-        password: configService.get('POSTGRES_PASSWORD', 'postgres'),
-        database: configService.get(
-          'POSTGRES_DATABASE',
-          'app-nodejs-codechallenge',
-        ),
-        autoLoadEntities: true,
-        entities: ['dist/**/*.entity{.ts,.js}'],
-        logging: configService.get('POSTGRES_LOGGING') === 'true',
-        cache: {
-          type: 'redis',
-          options: {
-            host: configService.get('REDIS_HOST', 'localhost'),
-            port: +configService.get('REDIS_PORT', 6379),
-          },
-        },
-      }),
       inject: [ConfigService],
+      useFactory: async (configService: ConfigService) =>
+        configService.get('typeorm'),
     }),
     TypeOrmModule.forFeature([Transaction, TransactionType, TransactionStatus]),
     ClientsModule.register([

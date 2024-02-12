@@ -115,22 +115,32 @@ This is to avoid unnecessary database queries.
 
 ## How to run
 
-1. Clone the repository and navigate to the project folder
+1. Clone the repository and navigate to the root folder
 
 ```bash
 git clone
 cd app-nodejs-codechallenge
 ```
 
-2. Run the following command to install the dependencies:
+2. Fill in the environment variables in the .env file
+
+```bash
+copy .env.example .env
+```
+
+3. Run the following command to install dependencies:
 
 ```bash
 yarn
 ```
 
-3. Run SQL dump that is located in `./database/dump.sql` inside a new database. Its name might be _app-nodejs-codechallenge_
+4. Run DB Migrations over database
 
-4. Run the following commands to start the services:
+```bash
+yarn migration:run
+```
+
+5. Run the following commands to start the services:
 
 ```bash
 yarn transaction-ms

@@ -19,7 +19,13 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/app-nodejs-codechallenge/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/app-nodejs-codechallenge/test/jest-e2e.json",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "migration:run": "yarn typeorm migration:run -d ./apps/transaction-ms/src/config/typeorm.ts",
+    "migration:generate": "yarn typeorm -d ./apps/transaction-ms/src/config/typeorm.ts migration:generate",
+    "migration:create": "yarn typeorm migration:create ./apps/transaction-ms/src/migrations/migration",
+    "migration:revert": "yarn typeorm -d ./apps/transaction-ms/src/config/typeorm.ts migration:revert",
+    "migration:show": "yarn typeorm -d ./apps/transaction-ms/src/config/typeorm.ts migration:show"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.2.1",
