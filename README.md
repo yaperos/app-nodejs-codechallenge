@@ -80,11 +80,17 @@ The communication between the services is done through Kafka, where the Transact
 
 ## Transaction Service
 
-The Transaction Service is a REST API that exposes two endpoints:
+The Transaction Service is a hybrid app that uses NestJS and TypeORM. It has two endpoints:
 
-1. POST /transactions: responsible for creating a transaction.
+1. POST /transaction: responsible for creating a transaction.
 
-2. GET /transactions/{id}: responsible for retrieving a transaction.
+2. GET /transaction/{id}: responsible for retrieving a transaction.
+
+The service also sends a message to Kafka when a transaction is created.
+
+Transaction Service will be available by default at the following URL: http://localhost:3000
+
+Swagger documentation is available at the following URL: http://localhost:3000/api/transaction-ms
 
 ## Anti-Fraud Service
 
@@ -103,23 +109,4 @@ The database used in this solution is PostgreSQL.
 ```bash
 yarn transaction-ms
 yarn anti-fraud-ms
-```
-
-2. The services will be available at the following URLs:
-
-- Transaction Service: http://localhost:3000
-- Anti-Fraud Service: http://localhost:3001
-
-3. You can use the following curl commands to test the services:
-
-- Create a transaction:
-
-```bash
-curl -X POST -H "Content-Type: application/json" -d '{"accountExternalIdDebit": "Guid", "accountExternalIdCredit": "Guid", "tranferTypeId": 1, "value": 120}' http://localhost:3000/transactions
-```
-
-- Retrieve a transaction:
-
-```bash
-curl -X GET http://localhost:3000/transactions/{id}
 ```

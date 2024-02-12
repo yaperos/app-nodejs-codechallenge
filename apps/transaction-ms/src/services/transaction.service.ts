@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Transaction } from '../entities/transaction.entity';
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { TransactionTypeService } from './transaction-type.service';
 import { TransactionStatusService } from './transaction-status.service';
@@ -67,20 +67,31 @@ export class TransactionService {
     transactionExternalId: string,
     transactionStatusName: string,
   ): Promise<Transaction> {
-    const transaction = await this.repository.findOne({
-      where: { transactionExternalId },
-    });
+    return await this.repository.manager.transaction(
+      async (entityManager: EntityManager) => {
+        const transaction = await entityManager
+          .createQueryBuilder(Transaction, 'transaction')
+          .where('transaction.transactionExternalId = :id', {
+            id: transactionExternalId,
+          })
+          .setLock('pessimistic_write')
+          .getOne();
 
-    if (!transaction) throw new BadRequestException('Transaction not found');
+        if (!transaction)
+          throw new BadRequestException('Transaction not found');
 
-    const transactionStatus = await this.transactionStatusService.findOne(
-      transactionStatusName,
+        const transactionStatus = await this.transactionStatusService.findOne(
+          transactionStatusName,
+        );
+
+        if (!transactionStatus)
+          throw new BadRequestException('Transaction status not found');
+
+        transaction.transactionStatus = transactionStatus;
+        await entityManager.save(transaction);
+
+        return transaction;
+      },
     );
-
-    if (!transactionStatus)
-      throw new BadRequestException('Transaction status not found');
-
-    transaction.transactionStatus = transactionStatus;
-    return await this.repository.save(transaction);
   }
 }
