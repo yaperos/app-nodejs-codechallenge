@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { TransactionMsModule } from './transaction-ms.module';
+import { MsModule } from './ms.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(TransactionMsModule);
+  const app = await NestFactory.create(MsModule);
   await app.listen(3000);
 }
 bootstrap();

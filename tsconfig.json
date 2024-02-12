@@ -19,6 +19,13 @@
       "noFallthroughCasesInSwitch": false,
       "esModuleInterop": true,
       "resolveJsonModule": true,
-      "paths": { }
+      "paths": {
+        "@app/common": [
+          "libs/common/src"
+        ],
+        "@app/common/*": [
+          "libs/common/src/*"
+        ],
+      }
     }
   }

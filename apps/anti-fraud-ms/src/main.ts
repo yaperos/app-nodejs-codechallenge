@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AntiFraudMsModule } from './anti-fraud-ms.module';
+import { MsModule } from './ms.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AntiFraudMsModule);
+  const app = await NestFactory.create(MsModule);
   await app.listen(3000);
 }
 bootstrap();

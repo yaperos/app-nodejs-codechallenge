@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
-import configuration from './config/configuration';
-import { TransactionMsController } from './transaction-ms.controller';
-import { TransactionMsService } from './transaction-ms.service';
+import configuration from './infrastructure/config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TransactionModule } from './infrastructure/modules/transaction.module';
 
 @Module({
   imports: [
@@ -25,8 +24,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       }),
       inject: [ConfigService],
     }),
+    TransactionModule,
   ],
-  controllers: [TransactionMsController],
-  providers: [TransactionMsService],
 })
-export class TransactionMsModule {}
+export class MsModule {}
