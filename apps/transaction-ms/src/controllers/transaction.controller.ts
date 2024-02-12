@@ -37,7 +37,6 @@ export class TransactionController {
 
   @MessagePattern('anti-fraud-response')
   getAntiFraudResponse(@Payload() message) {
-    Logger.log('Received message', message);
     this.transactionService.updateStatus(message.id, message.status);
   }
 

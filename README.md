@@ -1,13 +1,5 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
 # Problem
 
 Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
@@ -75,8 +67,89 @@ You can use any approach to store transaction data but you should consider that 
 
 You can use Graphql;
 
-# Send us your challenge
+# Solution
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## Architecture
 
-If you have any questions, please let us know.
+The solution is based on a microservices architecture, where we have the following services:
+
+1. Transaction Service: responsible for creating and retrieving transactions.
+2. Anti-Fraud Service: responsible for validating transactions and updating their status.
+
+The communication between the services is done through Kafka, where the Transaction Service sends a message to the Anti-Fraud Service to validate the transaction and the Anti-Fraud Service sends a message back to the Transaction Service to update the transaction status.
+
+## Transaction Service
+
+The Transaction Service is a REST API that exposes two endpoints:
+
+1. POST /transactions: responsible for creating a transaction.
+
+```json
+{
+  "accountExternalIdDebit": "Guid",
+  "accountExternalIdCredit": "Guid",
+  "tranferTypeId": 1,
+  "value": 120
+}
+```
+
+2. GET /transactions/{id}: responsible for retrieving a transaction.
+
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionType": {
+    "name": ""
+  },
+  "transactionStatus": {
+    "name": ""
+  },
+  "value": 120,
+  "createdAt": "Date"
+}
+```
+
+## Anti-Fraud Service
+
+The Anti-Fraud Service is a Kafka consumer that listens to the transaction created event and validates the transaction. If the transaction value is greater than 1000, the status is set to rejected, otherwise, it is set to approved.
+
+## Database
+
+The database used in this solution is PostgreSQL.
+
+## How to run
+
+To run the solution, you need to have Docker and Docker Compose installed on your machine.
+
+1. Run the following commands to start the services:
+
+```bash
+
+yarn transaction-ms
+
+yarn anti-fraud-ms
+
+```
+
+2. The services will be available at the following URLs:
+
+- Transaction Service: http://localhost:3000
+- Anti-Fraud Service: http://localhost:3001
+
+3. You can use the following curl commands to test the services:
+
+- Create a transaction:
+
+```bash
+
+curl -X POST -H "Content-Type: application/json" -d '{"accountExternalIdDebit": "Guid", "accountExternalIdCredit": "Guid", "tranferTypeId": 1, "value": 120}' http://localhost:3000/transactions
+
+```
+
+- Retrieve a transaction:
+
+```bash
+
+curl -X GET http://localhost:3000/transactions/{id}
+
+```

@@ -28,8 +28,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         autoLoadEntities: true,
         entities: ['dist/**/*.entity{.ts,.js}'],
         logging: configService.get('POSTGRES_LOGGING') === 'true',
-        bigNumberStrings: false,
-        supportBigNumbers: true,
       }),
       inject: [ConfigService],
     }),

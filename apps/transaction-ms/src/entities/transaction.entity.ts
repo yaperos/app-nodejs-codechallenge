@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { TransactionType } from './transaction-type.entity';
 import { TransactionStatus } from './transaction-status.entity';
-import { ApiHideProperty } from '@nestjs/swagger';
+import { ColumnDecimalTransformer } from '../transformers/column-decimal.transformer';
 
 @Entity()
 export class Transaction {
@@ -24,7 +24,12 @@ export class Transaction {
   @JoinColumn({ name: 'transactiontypeid' })
   transactionType: TransactionType;
 
-  @Column({ type: 'decimal', precision: 18, scale: 2 })
+  @Column({
+    type: 'decimal',
+    precision: 18,
+    scale: 2,
+    transformer: new ColumnDecimalTransformer(),
+  })
   value: number;
 
   @ManyToOne(() => TransactionStatus)
@@ -37,14 +42,4 @@ export class Transaction {
     name: 'createdat',
   })
   createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-    select: false,
-    name: 'updatedat',
-  })
-  @ApiHideProperty()
-  updatedAt: Date;
 }

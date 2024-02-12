@@ -4,9 +4,25 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 import { ConfigService } from '@nestjs/config';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(TransactionMsModule);
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: 'anti-fraud-ms',
+        brokers: ['localhost:9092'],
+      },
+      producer: {
+        allowAutoTopicCreation: true,
+      },
+      consumer: {
+        groupId: 'anti-fraud-consumer-group',
+      },
+    },
+  });
   const port = app.get(ConfigService).get('TRANSACTION_MS_PORT', 3000);
 
   const config = new DocumentBuilder()
@@ -31,5 +47,6 @@ async function bootstrap() {
   );
 
   await app.listen(port);
+  await app.startAllMicroservices();
 }
 bootstrap();

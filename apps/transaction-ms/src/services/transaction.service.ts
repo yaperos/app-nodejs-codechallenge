@@ -81,7 +81,6 @@ export class TransactionService {
       throw new BadRequestException('Transaction status not found');
 
     transaction.transactionStatus = transactionStatus;
-
     return await this.repository.save(transaction);
   }
 }
