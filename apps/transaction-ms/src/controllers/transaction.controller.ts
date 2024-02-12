@@ -20,6 +20,7 @@ import { CreateTransactionDto } from '../dtos/create-transaction.dto';
 import { TransactionService } from '../services/transaction.service';
 import { FindOneParams } from '../dtos/find-transaction.dto';
 import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
+import { AntiFraudResponse } from '../interfaces/anti-fraud-response';
 
 @ApiTags('transaction')
 @Controller('transaction')
@@ -33,11 +34,6 @@ export class TransactionController {
     Logger.log('Connecting to Kafka', TransactionController.name);
     await this.kafka.connect();
     Logger.log('Connected to Kafka', TransactionController.name);
-  }
-
-  @MessagePattern('anti-fraud-response')
-  getAntiFraudResponse(@Payload() message) {
-    this.transactionService.updateStatus(message.id, message.status);
   }
 
   @Get(':id')
@@ -78,5 +74,10 @@ export class TransactionController {
         value: createdTransaction.value,
       }),
     );
+  }
+
+  @MessagePattern('anti-fraud-response')
+  getAntiFraudResponse(@Payload() message: AntiFraudResponse) {
+    this.transactionService.updateStatus(message.id, message.status);
   }
 }

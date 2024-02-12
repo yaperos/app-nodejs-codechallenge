@@ -100,6 +100,20 @@ The Anti-Fraud Service is a Kafka consumer that listens to the transaction creat
 
 The database used in this solution is PostgreSQL.
 
+### Entity Relationship Diagram (ERD)
+
+![alt text](database/erd.png)
+
+### Redis Store
+
+Redis Store is set up to cache the following data:
+
+- transaction statuses for 1 day
+- transaction types for 1 day
+- transactions requested by id for 1 minute
+
+This is to avoid unnecessary database queries.
+
 ## How to run
 
 1. Run SQL dump that is located in the `./database` folder in 'app-nodejs-codechallenge' database

@@ -13,6 +13,10 @@ export class TransactionStatusService {
   async findOne(name: string): Promise<TransactionStatus> {
     return await this.repository.findOne({
       where: { name },
+      cache: {
+        id: `transaction-status-${name}`,
+        milliseconds: 1440 * 60 * 1000,
+      },
     });
   }
 }

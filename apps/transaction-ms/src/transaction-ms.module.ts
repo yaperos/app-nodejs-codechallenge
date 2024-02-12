@@ -28,6 +28,13 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         autoLoadEntities: true,
         entities: ['dist/**/*.entity{.ts,.js}'],
         logging: configService.get('POSTGRES_LOGGING') === 'true',
+        cache: {
+          type: 'redis',
+          options: {
+            host: configService.get('REDIS_HOST', 'localhost'),
+            port: +configService.get('REDIS_PORT', 6379),
+          },
+        },
       }),
       inject: [ConfigService],
     }),
