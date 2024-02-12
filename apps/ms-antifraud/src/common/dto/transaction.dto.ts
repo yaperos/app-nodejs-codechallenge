@@ -1,6 +1,6 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { TransactionType } from 'src/common/entities/transaction-type.entity';
-import { TransactionStatus } from 'src/common/entities/transaction-status.entity';
+import { ObjectType, Field } from '@nestjs/graphql';
+import { TransactionType } from '../entities/transaction-type.entity';
+import { TransactionStatus } from '../entities/transaction-status.entity';
 
 @ObjectType()
 export class TransactionDto {
