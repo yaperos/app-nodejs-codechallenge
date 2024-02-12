@@ -110,7 +110,6 @@ Redis Store is set up to cache the following data:
 
 - transaction statuses for 1 day
 - transaction types for 1 day
-- transactions requested by id for 1 minute
 
 This is to avoid unnecessary database queries.
 

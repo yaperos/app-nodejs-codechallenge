@@ -35,10 +35,6 @@ export class TransactionService {
         transactionType: true,
         transactionStatus: true,
       },
-      cache: {
-        id: `transaction-${transactionExternalId}`,
-        milliseconds: 60 * 1000,
-      },
     });
 
     if (!transaction) throw new BadRequestException('Transaction not found');
