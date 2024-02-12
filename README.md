@@ -116,9 +116,22 @@ This is to avoid unnecessary database queries.
 
 ## How to run
 
-1. Run SQL dump that is located in the `./database` folder in 'app-nodejs-codechallenge' database
+1. Clone the repository and navigate to the project folder
 
-2. Run the following commands to start the services:
+```bash
+git clone
+cd app-nodejs-codechallenge
+```
+
+2. Run the following command to install the dependencies:
+
+```bash
+yarn
+```
+
+2. Run SQL dump that is located in the `./database` folder in 'app-nodejs-codechallenge' database
+
+3. Run the following commands to start the services:
 
 ```bash
 yarn transaction-ms
