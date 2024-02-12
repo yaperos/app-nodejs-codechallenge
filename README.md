@@ -84,30 +84,7 @@ The Transaction Service is a REST API that exposes two endpoints:
 
 1. POST /transactions: responsible for creating a transaction.
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
 2. GET /transactions/{id}: responsible for retrieving a transaction.
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
 
 ## Anti-Fraud Service
 
@@ -119,16 +96,13 @@ The database used in this solution is PostgreSQL.
 
 ## How to run
 
-To run the solution, you need to have Docker and Docker Compose installed on your machine.
+1. Run SQL dump that is located in the `./database` folder in 'app-nodejs-codechallenge' database
 
-1. Run the following commands to start the services:
+2. Run the following commands to start the services:
 
 ```bash
-
 yarn transaction-ms
-
 yarn anti-fraud-ms
-
 ```
 
 2. The services will be available at the following URLs:
@@ -141,15 +115,11 @@ yarn anti-fraud-ms
 - Create a transaction:
 
 ```bash
-
 curl -X POST -H "Content-Type: application/json" -d '{"accountExternalIdDebit": "Guid", "accountExternalIdCredit": "Guid", "tranferTypeId": 1, "value": 120}' http://localhost:3000/transactions
-
 ```
 
 - Retrieve a transaction:
 
 ```bash
-
 curl -X GET http://localhost:3000/transactions/{id}
-
 ```
