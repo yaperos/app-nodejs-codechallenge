@@ -129,9 +129,9 @@ cd app-nodejs-codechallenge
 yarn
 ```
 
-2. Run SQL dump that is located in the `./database` folder in 'app-nodejs-codechallenge' database
+3. Run SQL dump that is located in `./database/dump.sql` inside a new database. Its name might be _app-nodejs-codechallenge_
 
-3. Run the following commands to start the services:
+4. Run the following commands to start the services:
 
 ```bash
 yarn transaction-ms
