@@ -9,7 +9,9 @@ import { AntiFraudModule } from './infrastructure/modules/anti-fraud.module';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        //
+        KAFKA_URI: Joi.string().required(),
+        KAFKA_ANTI_FRAUD_CONSUMER: Joi.string().required(),
+        LIMIT_AMOUNT: Joi.number().required(),
       }),
       envFilePath: './apps/anti-fraud-ms/.env',
       load: [configuration],

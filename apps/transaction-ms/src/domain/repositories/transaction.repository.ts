@@ -1,4 +1,4 @@
-import { StatusStrings } from '@app/common/constants/constants';
+import { StatusStrings } from '@app/common/constants';
 import { Transaction } from '../model/transaction.model';
 
 export interface TransactionRepository {

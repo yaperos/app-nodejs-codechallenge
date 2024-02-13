@@ -12,16 +12,27 @@ import { TransactionRepository } from '../../domain/repositories/transaction.rep
 import { TransactionTypeService } from '../../domain/services/transaction-type.service';
 import { TransactionTypeMemoryRepository } from '../repositories/transaction-type-memory.repository';
 import { TransactionTypeRepository } from '../../domain/repositories/transaction-type.repository';
+import { ClientKafka } from '@nestjs/microservices';
+import { KafkaModule } from '@app/common';
 
 const transactionProvider: Provider = {
   provide: Token.TRANSACTION,
   useFactory: (
     transactionRepo: TransactionRepository,
     transactionTypeService: TransactionTypeService,
+    transactionSender: ClientKafka,
   ) => {
-    return new TransactionService(transactionRepo, transactionTypeService);
+    return new TransactionService(
+      transactionRepo,
+      transactionTypeService,
+      transactionSender,
+    );
   },
-  inject: [TransactionMongoRepository, Token.TRANSACTION_TYPE],
+  inject: [
+    TransactionMongoRepository,
+    Token.TRANSACTION_TYPE,
+    Token.TRANSACTION_CLIENT,
+  ],
 };
 
 const transactionTypeProvider: Provider = {
@@ -37,6 +48,8 @@ const transactionTypeProvider: Provider = {
     MongooseModule.forFeature([
       { name: TransactionDb.getClassName(), schema: TransactionSchema },
     ]),
+    KafkaModule,
+    KafkaModule.register(Token.TRANSACTION_CLIENT),
   ],
   controllers: [TransactionController],
   providers: [

@@ -1,4 +1,4 @@
-import { Status } from '@app/common/constants/constants';
+import { Status } from '@app/common/constants';
 
 export interface AntiFraud {
   transactionId: string;

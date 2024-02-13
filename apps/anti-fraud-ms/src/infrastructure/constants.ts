@@ -1,3 +1,3 @@
 export const enum Token {
-  TRANSACTION = 'transactionService',
+  TRANSACTION_CLIENT = 'antiFraudService',
 }

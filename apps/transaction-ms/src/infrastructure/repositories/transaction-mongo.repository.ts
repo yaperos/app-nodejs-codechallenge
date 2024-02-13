@@ -2,7 +2,7 @@ import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transaction } from '../../domain/model/transaction.model';
 import { TransactionRepository } from '../../domain/repositories/transaction.repository';
 import { Model, ObjectId, Types, UpdateWriteOpResult, now } from 'mongoose';
-import { Status, StatusStrings } from '@app/common/constants/constants';
+import { Status, StatusStrings } from '@app/common/constants';
 
 @Schema({ timestamps: true })
 export class TransactionDb {

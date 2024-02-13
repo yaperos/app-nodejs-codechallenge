@@ -12,6 +12,8 @@ import { TransactionModule } from './infrastructure/modules/transaction.module';
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
         TRANSACTION_TYPES: Joi.string().required(),
+        KAFKA_URI: Joi.string().required(),
+        KAFKA_TRANSACTION_CONSUMER: Joi.string().required(),
       }),
       envFilePath: './apps/transaction-ms/.env',
       load: [configuration],

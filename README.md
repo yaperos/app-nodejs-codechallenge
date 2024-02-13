@@ -80,3 +80,42 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Resolution
+
+Copy `.env.example` file to `.env` each other microservice
+> Note: Edit values as needed
+
+
+##### Start containers
+Generate the containers
+```sh
+docker-compose up -d
+```
+
+##### Stop containers
+Stop the containers
+```sh
+docker-compose stop
+```
+
+##### Container Logs
+```sh
+docker-compose logs -f --tail 100 {SERVICE_NAME}
+```
+
+##### Local endpoints
+```sh
+POST http://localhost:3000/transactions
+Body: {
+    "accountExternalIdDebit": "550e8400-e29b-41d4-a716-446655440444",
+    "accountExternalIdCredit": "550e8400-e29b-41d4-a716-446655440555",
+    "tranferTypeId": 3,
+    "value": 2000.50
+}
+
+
+GET http://localhost:3000/transactions/:id
+
+
+```
