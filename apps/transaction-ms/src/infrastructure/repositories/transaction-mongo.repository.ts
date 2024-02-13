@@ -1,8 +1,8 @@
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transaction } from '../../domain/model/transaction.model';
 import { TransactionRepository } from '../../domain/repositories/transaction.repository';
-import { Model, ObjectId, now } from 'mongoose';
-import { Status } from '@app/common/constants/constants';
+import { Model, ObjectId, Types, UpdateWriteOpResult, now } from 'mongoose';
+import { Status, StatusStrings } from '@app/common/constants/constants';
 
 @Schema({ timestamps: true })
 export class TransactionDb {
@@ -38,6 +38,17 @@ export class TransactionMongoRepository implements TransactionRepository {
     @InjectModel(TransactionDb.getClassName())
     private transactionModel: Model<TransactionDb>,
   ) {}
+
+  async updateStatusById(id: string, status: StatusStrings): Promise<void> {
+    const result: UpdateWriteOpResult = await this.transactionModel.updateOne(
+      { _id: new Types.ObjectId(id) },
+      { status },
+    );
+
+    if (result.modifiedCount <= 0) {
+      throw new Error();
+    }
+  }
 
   async save(transactionData: Transaction): Promise<Transaction> {
     const createdTransaction = new this.transactionModel(transactionData);

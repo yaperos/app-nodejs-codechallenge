@@ -3,3 +3,5 @@ export const enum Status {
   APPROVED = 'approved',
   REJECTED = 'rejected',
 }
+
+export type StatusStrings = `${Status}`;
