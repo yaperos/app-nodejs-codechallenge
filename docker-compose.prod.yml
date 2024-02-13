@@ -7,7 +7,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=yapedb
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data
@@ -36,10 +36,11 @@ services:
   transaction:
     build:
       context: ./transaction
+      target: prod
     depends_on:
       - postgres
     ports:
-      - "3000:3000"
+      - 3000:3000
     networks:
       - yape-network
 
