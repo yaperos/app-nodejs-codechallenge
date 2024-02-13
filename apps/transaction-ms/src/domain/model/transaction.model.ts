@@ -5,7 +5,7 @@ export interface Transaction {
   accountExternalIdDebit: string;
   accountExternalIdCredit: string;
   transactionTypeId: number;
-  status: Status;
+  status?: Status;
   amount: number;
   createdAt?: Date;
 }

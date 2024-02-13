@@ -38,9 +38,14 @@ export class TransactionMongoRepository implements TransactionRepository {
     @InjectModel(TransactionDb.getClassName())
     private transactionModel: Model<TransactionDb>,
   ) {}
-  save(transaction: Transaction): Promise<Transaction> {
-    throw new Error('Method not implemented.');
+
+  async save(transactionData: Transaction): Promise<Transaction> {
+    const createdTransaction = new this.transactionModel(transactionData);
+    const transactionDb = await createdTransaction.save();
+
+    return this.toModel(transactionDb);
   }
+
   async findById(id: string): Promise<Transaction | undefined> {
     const transactionDb = await this.transactionModel.findById(id);
 

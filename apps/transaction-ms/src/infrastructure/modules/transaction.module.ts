@@ -15,10 +15,13 @@ import { TransactionTypeRepository } from '../../domain/repositories/transaction
 
 const transactionProvider: Provider = {
   provide: Token.TRANSACTION,
-  useFactory: (transactionRepo: TransactionRepository) => {
-    return new TransactionService(transactionRepo);
+  useFactory: (
+    transactionRepo: TransactionRepository,
+    transactionTypeService: TransactionTypeService,
+  ) => {
+    return new TransactionService(transactionRepo, transactionTypeService);
   },
-  inject: [TransactionMongoRepository],
+  inject: [TransactionMongoRepository, Token.TRANSACTION_TYPE],
 };
 
 const transactionTypeProvider: Provider = {
