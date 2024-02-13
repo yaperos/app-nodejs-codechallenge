@@ -9,6 +9,9 @@ import {
   TransactionSchema,
 } from '../repositories/transaction-mongo.repository';
 import { TransactionRepository } from '../../domain/repositories/transaction.repository';
+import { TransactionTypeService } from '../../domain/services/transaction-type.service';
+import { TransactionTypeMemoryRepository } from '../repositories/transaction-type-memory.repository';
+import { TransactionTypeRepository } from '../../domain/repositories/transaction-type.repository';
 
 const transactionProvider: Provider = {
   provide: Token.TRANSACTION,
@@ -18,6 +21,14 @@ const transactionProvider: Provider = {
   inject: [TransactionMongoRepository],
 };
 
+const transactionTypeProvider: Provider = {
+  provide: Token.TRANSACTION_TYPE,
+  useFactory: (transactionTypeRepo: TransactionTypeRepository) => {
+    return new TransactionTypeService(transactionTypeRepo);
+  },
+  inject: [TransactionTypeMemoryRepository],
+};
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -25,6 +36,11 @@ const transactionProvider: Provider = {
     ]),
   ],
   controllers: [TransactionController],
-  providers: [transactionProvider, TransactionMongoRepository],
+  providers: [
+    transactionProvider,
+    TransactionMongoRepository,
+    transactionTypeProvider,
+    TransactionTypeMemoryRepository,
+  ],
 })
 export class TransactionModule {}

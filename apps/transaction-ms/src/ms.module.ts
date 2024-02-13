@@ -10,9 +10,8 @@ import { TransactionModule } from './infrastructure/modules/transaction.module';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        database: Joi.object({
-          uri: Joi.string().required(),
-        }),
+        MONGODB_URI: Joi.string().required(),
+        TRANSACTION_TYPES: Joi.string().required(),
       }),
       envFilePath: './apps/transaction-ms/.env',
       load: [configuration],

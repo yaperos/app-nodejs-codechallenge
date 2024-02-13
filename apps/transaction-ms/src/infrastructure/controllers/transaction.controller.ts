@@ -1,42 +1,28 @@
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Inject,
-  Param,
-  Res,
-} from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { TransactionService } from '../../domain/services/transaction.service';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Connection, STATES } from 'mongoose';
-import { Response } from 'express';
 import { Token } from '../constants';
+import { TransactionTypeService } from '../../domain/services/transaction-type.service';
+import {
+  ResponseTransactionDto,
+  getTransactionResponseDto,
+} from '../dto/response-transaction.dto';
 
-@Controller('trans')
+@Controller('transactions')
 export class TransactionController {
   constructor(
     @Inject(Token.TRANSACTION)
     private readonly transactionService: TransactionService,
-    @InjectConnection() private readonly connection: Connection,
+    @Inject(Token.TRANSACTION_TYPE)
+    private readonly transactionTypeService: TransactionTypeService,
   ) {}
 
-  @Get()
-  getHello(@Res() res: Response): unknown {
-    if (this.connection.readyState !== STATES.connected) {
-      // this.logger.warn(`Ready state = ${STATES[this.connection.readyState]}`);
-
-      return res
-        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .json({ db: { status: 'down' } });
-    }
-    res.json({ db: { status: 'up' } });
-    // return 'This action returns all cats';
-  }
-
   @Get(':id')
-  async getTransaction(@Param('id') id: string): Promise<unknown> {
-    const transaction = await this.transactionService.getById(id);
+  async getOne(@Param('id') id: string): Promise<ResponseTransactionDto> {
+    const transaction = await this.transactionService.getOne(id);
+    const transactionType = await this.transactionTypeService.findOne(
+      transaction.transactionTypeId,
+    );
 
-    return { data: transaction } as unknown;
+    return getTransactionResponseDto(transaction, transactionType);
   }
 }
