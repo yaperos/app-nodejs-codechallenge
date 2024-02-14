@@ -1,4 +1,7 @@
 import { Module } from "@nestjs/common";
+import CommonModule from "./common/common.module";
 
-@Module({})
+@Module({
+  imports: [CommonModule],
+})
 export default class AppModule {}
