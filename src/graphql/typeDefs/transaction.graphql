@@ -1,0 +1,37 @@
+scalar Date
+
+type Transaction {
+  id: String!
+  tranferTypeId: String!
+  status: String!
+  value:  Float!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  createdAt:  Date!
+  updatedAt:  Date!
+}
+
+
+input TransactionInput {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: String
+  value: Float
+  id: String
+}
+
+input TransactionInputUpdate{
+  id: String
+  status: String
+}
+
+
+type Query {
+  transaction(id: String!): Transaction
+  transactions: [Transaction]
+}
+
+type Mutation {
+  createdTransaction(input: TransactionInput!): Transaction
+  updatedTransaction(input: TransactionInputUpdate!): Transaction
+}
