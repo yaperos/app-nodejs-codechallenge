@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "0baeecea-8a27-403f-8539-e2a70bbd0f8d",
+		"name": "Yape - Test - Transaction",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5697982"
+	},
+	"item": [
+		{
+			"name": "Query",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"query { findAllTransactions { id, accountExternalIdDebit, accountExternalIdCredit, tranferTypeId, value, status, createdAt } }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Query",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"query\": \"query { findAllTransactions { id, accountExternalIdDebit, accountExternalIdCredit, tranferTypeId, value, status, createdAt } }\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "cache-control",
+							"value": "no-store"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5573"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"15c5-Z5QdZZJXGIJ6zfatLy422nGgc88\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 13 Feb 2024 18:33:48 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"findAllTransactions\": [\n            {\n                \"id\": \"9\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 2500,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T22:58:52.897Z\"\n            },\n            {\n                \"id\": \"10\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 2500,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T23:05:27.145Z\"\n            },\n            {\n                \"id\": \"11\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 2500,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T23:22:27.133Z\"\n            },\n            {\n                \"id\": \"12\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 2500,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T23:42:26.072Z\"\n            },\n            {\n                \"id\": \"5\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 98,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-12T22:30:57.175Z\"\n            },\n            {\n                \"id\": \"13\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-12T23:42:38.873Z\"\n            },\n            {\n                \"id\": \"15\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-12T23:58:50.933Z\"\n            },\n            {\n                \"id\": \"16\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-12T23:59:05.360Z\"\n            },\n            {\n                \"id\": \"17\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T00:02:51.624Z\"\n            },\n            {\n                \"id\": \"18\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T00:13:44.163Z\"\n            },\n            {\n                \"id\": \"19\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T00:45:40.061Z\"\n            },\n            {\n                \"id\": \"20\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T00:53:08.771Z\"\n            },\n            {\n                \"id\": \"21\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T01:00:13.956Z\"\n            },\n            {\n                \"id\": \"22\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T01:03:19.717Z\"\n            },\n            {\n                \"id\": \"23\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T01:29:31.765Z\"\n            },\n            {\n                \"id\": \"24\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T05:10:49.195Z\"\n            },\n            {\n                \"id\": \"25\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T05:37:27.823Z\"\n            },\n            {\n                \"id\": \"26\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T05:39:28.756Z\"\n            },\n            {\n                \"id\": \"27\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T05:48:25.693Z\"\n            },\n            {\n                \"id\": \"6\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 98,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T22:37:54.235Z\"\n            },\n            {\n                \"id\": \"7\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 98,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T22:47:34.437Z\"\n            },\n            {\n                \"id\": \"2\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 98,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T21:45:46.577Z\"\n            },\n            {\n                \"id\": \"3\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 98,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T22:18:38.470Z\"\n            },\n            {\n                \"id\": \"8\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 98,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T22:58:38.479Z\"\n            },\n            {\n                \"id\": \"1\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 98,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T21:36:49.605Z\"\n            },\n            {\n                \"id\": \"14\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T23:52:39.503Z\"\n            },\n            {\n                \"id\": \"4\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 98,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-12T22:30:12.173Z\"\n            },\n            {\n                \"id\": \"29\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 2800,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-13T16:18:49.036Z\"\n            },\n            {\n                \"id\": \"28\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 12,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T06:01:33.001Z\"\n            },\n            {\n                \"id\": \"30\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 28,\n                \"status\": \"APPROVED\",\n                \"createdAt\": \"2024-02-13T16:18:56.635Z\"\n            },\n            {\n                \"id\": \"31\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 28,\n                \"status\": \"PENDING\",\n                \"createdAt\": \"2024-02-13T18:32:56.515Z\"\n            },\n            {\n                \"id\": \"32\",\n                \"accountExternalIdDebit\": \"75486215\",\n                \"accountExternalIdCredit\": \"94356781\",\n                \"tranferTypeId\": 1,\n                \"value\": 2800,\n                \"status\": \"REJECTED\",\n                \"createdAt\": \"2024-02-13T18:33:15.173Z\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\": \"mutation evaluarTransaccion($transaccionReq: TransferInput!) { evaluarTransaccion(transaccionReq: $transaccionReq) { id tranferTypeId value status } }\",\r\n    \"variables\": {\r\n        \"transaccionReq\": {\r\n            \"accountExternalIdDebit\": \"75486215\",\r\n            \"accountExternalIdCredit\": \"94356781\",\r\n            \"tranferTypeId\": 1,\r\n            \"value\": 2800\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Transaction - Pending",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"query\": \"mutation evaluarTransaccion($transaccionReq: TransferInput!) { evaluarTransaccion(transaccionReq: $transaccionReq) { id tranferTypeId value status } }\",\r\n    \"variables\": {\r\n        \"transaccionReq\": {\r\n            \"accountExternalIdDebit\": \"75486215\",\r\n            \"accountExternalIdCredit\": \"94356781\",\r\n            \"tranferTypeId\": 1,\r\n            \"value\": 28\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "cache-control",
+							"value": "no-store"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "92"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"5c-iRh1Nv5JYeA74UdZzZ7poom/UYM\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 13 Feb 2024 18:32:56 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"evaluarTransaccion\": {\n            \"id\": \"31\",\n            \"tranferTypeId\": 1,\n            \"value\": 28,\n            \"status\": \"PENDING\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Transaction - Rejected",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"query\": \"mutation evaluarTransaccion($transaccionReq: TransferInput!) { evaluarTransaccion(transaccionReq: $transaccionReq) { id tranferTypeId value status } }\",\r\n    \"variables\": {\r\n        \"transaccionReq\": {\r\n            \"accountExternalIdDebit\": \"75486215\",\r\n            \"accountExternalIdCredit\": \"94356781\",\r\n            \"tranferTypeId\": 1,\r\n            \"value\": 2800\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "cache-control",
+							"value": "no-store"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "95"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"5f-NHLR/rcg7fhtYSUYq9S5HQIFO80\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 13 Feb 2024 18:33:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"evaluarTransaccion\": {\n            \"id\": \"32\",\n            \"tranferTypeId\": 1,\n            \"value\": 2800,\n            \"status\": \"REJECTED\"\n        }\n    }\n}"
+				}
+			]
+		}
+	]
+}
