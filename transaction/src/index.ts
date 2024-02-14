@@ -1,12 +1,19 @@
 import express from 'express';
+import { configuration } from './config/configuration';
+import { databaseConnection } from './config/database';
+import { startServer } from './server';
 
-const app = express();
-const port = 3000;
+async function bootstrap() {
+  const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello Express!');
-});
+  await databaseConnection.initialize();
+  console.log('Connected to the database');
 
-app.listen(port, () => {
-  console.log(`Express server is listening at http://localhost:${port} 🚀`);
-});
+  await startServer(app);
+
+  app.listen(configuration.port, () => {
+    console.log(`Express server is listening at http://localhost:${configuration.port} 🚀`);
+  });
+}
+
+bootstrap();
