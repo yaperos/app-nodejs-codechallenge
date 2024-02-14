@@ -11,7 +11,7 @@ import { AntiFraudModule } from './infrastructure/modules/anti-fraud.module';
       validationSchema: Joi.object({
         KAFKA_URI: Joi.string().required(),
         KAFKA_ANTI_FRAUD_CONSUMER: Joi.string().required(),
-        LIMIT_AMOUNT: Joi.number().required(),
+        LIMIT_AMOUNT: Joi.number().default(1000),
       }),
       envFilePath: './apps/anti-fraud-ms/.env',
       load: [configuration],
