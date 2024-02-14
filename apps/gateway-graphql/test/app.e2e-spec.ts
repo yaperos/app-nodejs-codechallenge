@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { GatewayGraphqlModule } from './../src/gateway-graphql.module';
+import { AppModule } from './../src/gateway-graphql.module';
 
 describe('GatewayGraphqlController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [GatewayGraphqlModule],
+      imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();

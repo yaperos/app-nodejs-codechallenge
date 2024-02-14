@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsValidTypeTransferId } from '@transaction/src/contexts/shared/decorators/isValidTypeTransferId';
+import { IsValidTypeTransferId } from '../../../shared/decorators/isValidTypeTransferId';
 import { IsDefined, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 
 @InputType()

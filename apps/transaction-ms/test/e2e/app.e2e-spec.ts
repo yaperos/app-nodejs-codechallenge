@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { TransactionMsModule } from './../src/transaction-ms.module';
+import { TransactionMsModule } from '../../src/transaction-ms.module';
 
 describe('TransactionMsController (e2e)', () => {
   let app: INestApplication;

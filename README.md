@@ -152,6 +152,24 @@ Variables
 
 <img width=800px height=400px src="resources/4.png" alt="Endpoints">
 
+## 🔧 Running the tests <a name = "tests"></a>
+
+run the tests
+
+```
+
+npm run test
+
+```
+
+or
+
+```
+
+yarn test
+
+```
+
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [NodeJs](https://nodejs.org/en/) - Server Environment
