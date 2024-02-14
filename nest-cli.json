@@ -1,10 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/transactions/src",
   "compilerOptions": {
-    "deleteOutDir": true,
-    "webpack": true
+    "webpack": true,
+    "tsConfigPath": "apps/transactions/tsconfig.app.json"
   },
   "projects": {
     "common": {
@@ -15,6 +15,17 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "transactions": {
+      "type": "application",
+      "root": "apps/transactions",
+      "entryFile": "main",
+      "sourceRoot": "apps/transactions/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transactions/tsconfig.app.json"
+      }
     }
-  }
+  },
+  "monorepo": true,
+  "root": "apps/transactions"
 }
