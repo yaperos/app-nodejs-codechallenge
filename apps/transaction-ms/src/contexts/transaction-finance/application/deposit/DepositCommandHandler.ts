@@ -7,13 +7,14 @@ import { TRANSACTION_REPOSITORY } from '../../token_repository.di';
 import { TransactionModel } from '@transaction/src/contexts/transaction-finance/domain/models/transaction.model';
 import { ClientKafka } from '@nestjs/microservices';
 import { IS_VALID_TRANSACTION_MESSAGE_PATTERN } from 'utils/utils/constants-global';
+import { ANTI_FRAUD_CLIENT } from '@transaction/src/contexts/shared/domain/constants';
 
 @CommandHandler(DepositCommand)
 export class DepositCommandHandler implements ICommandHandler<DepositCommand> {
   constructor(
     @Inject(TRANSACTION_REPOSITORY)
     private readonly transactionRepository: TransactionRepository,
-    @Inject('ANTI_FRAUD_CLIENT')
+    @Inject(ANTI_FRAUD_CLIENT)
     private readonly emitEvent: ClientKafka,
   ) {}
 

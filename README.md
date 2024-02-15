@@ -1,9 +1,31 @@
+<p align="left"><a href="https://www.typescriptlang.org/docs/" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/TypeScript.svg" /></a>&nbsp;<a href="https://nodejs.org/en/docs/" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/NodeJS-Dark.svg" /></a>&nbsp;<a href="https://yarnpkg.com/api/" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Yarn-Dark.svg" /></a>&nbsp;<a href="https://docs.docker.com" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Docker.svg" /></a>&nbsp;<a href="https://www.postgresql.org/docs/" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/PostgreSQL-Dark.svg" /></a>&nbsp;<a href="https://github.com/motdotla/dotenv#readme" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Dotenv-Dark.svg" /></a>&nbsp;<a href="https://eslint.org/docs/latest/" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Eslint-Dark.svg" /></a>&nbsp;<a href="https://jestjs.io/docs/getting-started" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Jest.svg" /></a>&nbsp;<a href="https://docs.nestjs.com" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/NestJS-Dark.svg" /></a>&nbsp;<a href="https://prettier.io/docs/en/index.html" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Prettier-Dark.svg" /></a>&nbsp;<a href="https://www.prisma.io/docs/" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Prisma.svg" /></a>&nbsp;<a href="https://www.apollographql.com/" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Apollo.svg" /></a>&nbsp;<a href="https://rxjs.dev/guide/overview" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Rxjs-Dark.svg" /></a>&nbsp;<a href="https://webpack.js.org/concepts/" target="_blank"><img height="50" src="https://raw.githubusercontent.com/jpb06/jpb06/master/icons/Webpack-Dark.svg" /></a></p>
+
+## ⚡ Requirements
+
+You will need the following to use this:
+
+| Item                                                                                                           | Description                                              | Documentation                                 |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | --------------------------------------------- |
+| <img height="20" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" /> nodejs | As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications.                                                     | <https://nodejs.org/en/>                      |
+| <img height="20" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" /> Docker | We will use docker to launch a postgres instance and kafka         | <https://www.docker.com/get-started>          |
+| <img height="20" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/yarn/yarn-original.svg" /> yarn       | We will use yarn as the package manager for this project | <https://yarnpkg.com/getting-started/install> |
+
 # Yape Code Challenge :rocket:
 
 <p align="center">
   Use of NestJs with microservices Graphql Apollo Federation, broker message Kafka, hexagonal + DDD architecture, dependency injection and very good practices.
     <br>
 </p>
+
+## ⚡ Project structure
+
+### 🎉 Apps
+
+| Name        | Description                                                                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 🚀 Gateway-graphql   |This application is an API gateway that uses Apollo Federation 2, allowing you to connect to other applications that expose a GraphQL API through introspection, bringing the information of each API. At the moment it only connects to one, which is the one that exposes the transaction app. |
+| 🚀 Transaction-ms | This application is the core of the business currently since it is responsible for administering and managing each transaction by sending events and receiving events through Kafka. This application has a Postgres database and manages it using Prisma ORM.                       |
+| 🚀 Anti-fraud-ms | This application allows you to listen to all transactions and react by sending state change events for said transactions.                       |
 
 ## 📝 Table of Contents
 
