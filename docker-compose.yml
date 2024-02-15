@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 services:
   postgres:
     image: postgres:14
@@ -7,6 +7,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=yape_transactions
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -22,4 +25,28 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - "9092:9092"
+
+  # Optional
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:29092"
+    depends_on:
+      - "kafka"
+
+  # Optional
+  pgadmin:
+    image: dpage/pgadmin4:8.2
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@pgadmin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin@pgadmin.com
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres

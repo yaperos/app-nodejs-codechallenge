@@ -42,36 +42,36 @@ We do provide a `Dockerfile` to help you get started with a dev environment.
 
 You must have two resources:
 
-1. Resource to create a transaction that must containt:
+1. Resource to create a transaction that must contain:
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
+    ```json
+    {
+      "accountExternalIdDebit": "Guid",
+      "accountExternalIdCredit": "Guid",
+      "transferTypeId": 1,
+      "value": 120
+    }
+    ```
 
 2. Resource to retrieve a transaction
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
+    ```json
+    {
+    "transactionExternalId": "Guid",
+    "transactionType": {
     "name": ""
-  },
-  "transactionStatus": {
+    },
+    "transactionStatus": {
     "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+    },
+    "value": 120,
+    "createdAt": "Date"
+    }
+    ```
 
 ## Optional
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+You can use any approach to store transaction data, but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
 
 You can use Graphql;
 
