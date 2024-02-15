@@ -18,7 +18,7 @@ export class AppController {
     return this.transactionService.createTransaction(transactionRequest)
   }
 
-  @Post('search/:transactionId')
+  @Get('search/:transactionId')
   searchTransaction(@Param('transactionId') transactionId) {
     return this.transactionService.searchTransaction(transactionId)
   }

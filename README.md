@@ -2,81 +2,63 @@
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+# Solution
+To run application, you need to do
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+```bash
+docker volume create --name mongodb_repl_data1 -d local
+docker volume create --name mongodb_repl_data2 -d local
+docker volume create --name mongodb_repl_data3 -d local
 
-# Problem
+docker-compose up -d
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+docker exec -it mongo0 mongosh --port 30000
+config={"_id":"rs0","members":[{"_id":0,"host":"mongo0:30000"},{"_id":1,"host":"mongo1:30001"},{"_id":2,"host":"mongo2:30002"}]}
+rs.initiate(config);
 ```
 
-# Tech Stack
+Next, You edit the host of the machine to be able to route to locahost
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```bash
+127.0.0.1 localhost mongo0 mongo1 mongo2
 ```
 
-2. Resource to retrieve a transaction
+Finally to run application enter to folders and execute app
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+```bash
+cd api-transaction && npm i && npm run start:dev
+cd api-anti-fraud && npm i && npm run start:dev
+cd api-gtw-payment && npm i && npm run start:dev
 ```
 
-## Optional
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+# Test
+Execute APIs
 
-You can use Graphql;
+- URL: POST http://localhost:3000/init (Generate transaction)
 
-# Send us your challenge
+```bash
+curl --request POST \
+  --url http://localhost:3000/init \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "accountExternalIdDebit": "2e2bc33b-02b0-4535-9839-f0fc3c87e79c",
+  "accountExternalIdCredit": "58b5e981-dbbf-4572-9ca6-91aa799d3140",
+  "tranferTypeId": 2,
+  "value": 230
+}'
+```
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+- URL: GET http://localhost:3000/search/2e2bc33b-02b0-4535-9839-f0fc3c87e79c (Search transaction)
 
-If you have any questions, please let us know.
+```bash
+curl --request GET \
+  --url http://localhost:3000/search/2e2bc33b-02b0-4535-9839-f0fc3c87e79c
+```
+
+# Aditional Information
+
+We have a variable client in transaction since we did load tests with loadtest to split the queries to different containers of the transaction microservice.
+We are also using MongoDB with replicaSets to get closer to a Mongo Atlas, to take advantage of the optimization of queries and writes with this type of database.
+
+**Stack Tech:**  Nestjs, Kafka, Mongo Atlas, Docker
