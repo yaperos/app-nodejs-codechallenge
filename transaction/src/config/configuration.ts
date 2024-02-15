@@ -12,4 +12,8 @@ export const configuration = {
     password: process.env.DB_PASSWORD,
     synchronize: process.env.NODE_ENV === 'dev',
   },
+  kafka: {
+    client: 'transaction-app',
+    broker: process.env.KAFKA_HOST,
+  },
 };
