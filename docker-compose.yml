@@ -52,6 +52,24 @@ services:
       timeout: 10s
       retries: 10
   
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile
+      target: development
+    command: npm run start:dev api-gateway
+    env_file:
+      - ./apps/api-gateway/.env
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+  
   transactions:
     build:
       context: .

@@ -24,6 +24,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/transactions/tsconfig.app.json"
       }
+    },
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,
