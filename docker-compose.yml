@@ -88,5 +88,23 @@ services:
       postgres:
         condition: service_healthy
 
+  anti-fraud:
+    build:
+      context: .
+      dockerfile: ./apps/anti-fraud/Dockerfile
+      target: development
+    command: npm run start:dev anti-fraud
+    env_file:
+      - ./apps/transactions/.env
+    ports:
+      - 3002:3002
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres-data:

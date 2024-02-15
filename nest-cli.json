@@ -33,6 +33,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
+    },
+    "anti-fraud": {
+      "type": "application",
+      "root": "apps/anti-fraud",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,
