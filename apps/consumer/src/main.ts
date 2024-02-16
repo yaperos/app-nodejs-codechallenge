@@ -33,6 +33,8 @@ const bootstrap = async () => {
     },
   } as MicroserviceOptions);
 
+  await app.startAllMicroservices();
+
   Logger.log("Run consumer!");
 };
 
