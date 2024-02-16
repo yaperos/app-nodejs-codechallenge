@@ -1,17 +1,18 @@
-import { DataSource, DataSourceOptions } from "typeorm";
 import * as dotenv from "dotenv";
+import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 dotenv.config();
 
-export const dataSourceOptions: DataSourceOptions = {
+import Transaction from "../../transaction/entities/transaction.entity";
+
+const dataSourceOptions: TypeOrmModuleOptions = {
   type: "postgres",
   host: process.env.DB_HOST,
   port: +process.env.DB_PORT,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: ["apps/**/src/**/entities/*.entity{.ts,.js}"],
+  entities: [Transaction],
   synchronize: process.env.DB_SYNCHRONIZE === "true" || true,
 };
 
-const dataSource = new DataSource(dataSourceOptions);
-export default dataSource;
+export default dataSourceOptions;
