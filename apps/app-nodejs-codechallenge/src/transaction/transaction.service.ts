@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import Transaction from "./entities/transaction.entity";
 import { Repository } from "typeorm";
 import { IPaginationOptions, paginate } from "nestjs-typeorm-paginate";
+import CreateTransactionDto from "./dto/create-transaction.dto";
 
 @Injectable()
 export default class TransactionService {
@@ -19,5 +20,10 @@ export default class TransactionService {
       limit,
       route: "transactions",
     });
+  };
+
+  public createTransaction = async (dto: CreateTransactionDto) => {
+    const transaction = this.transactionRepository.create(dto);
+    return this.transactionRepository.save(transaction);
   };
 }
