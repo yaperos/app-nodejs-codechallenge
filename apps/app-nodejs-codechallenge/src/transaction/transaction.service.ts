@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Transaction from "./entities/transaction.entity";
 import { Repository } from "typeorm";
@@ -40,11 +40,17 @@ export default class TransactionService {
     accountExternalIdCredit,
     ...restData
   }: CreateTransactionDto) => {
-    new CreateTransactionDto(accountExternalIdDebit, accountExternalIdCredit);
+    if (
+      (!accountExternalIdDebit && !accountExternalIdCredit) ||
+      (accountExternalIdDebit && accountExternalIdCredit)
+    )
+      throw new BadRequestException(
+        "Exactly one of accountExternalIdDebit or accountExternalIdCredit must be provided, not both.",
+      );
 
     const transaction = this.transactionRepository.create({
       transactionExternalId: accountExternalIdDebit || accountExternalIdCredit,
-      transferTypeId: accountExternalIdDebit ? 1 : 0,
+      transferTypeId: accountExternalIdDebit ? 1 : 2,
       ...restData,
     });
     return this.transactionRepository.save(transaction);
