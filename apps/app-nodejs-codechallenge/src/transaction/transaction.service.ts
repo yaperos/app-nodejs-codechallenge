@@ -61,7 +61,12 @@ export default class TransactionService {
       ...restData,
     });
     await this.transactionRepository.save(transaction);
-    this.kafka.emit(this.topic, { value: transaction.value });
+    this.kafka.emit(this.topic, {
+      value: {
+        id: transaction.transactionExternalId,
+        value: transaction.value,
+      },
+    });
     return { message: "Transaction registered", ok: true };
   };
 }
