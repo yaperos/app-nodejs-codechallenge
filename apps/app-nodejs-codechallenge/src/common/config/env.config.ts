@@ -16,7 +16,7 @@ const JoiValidation = Joi.object({
   KAFKA_HOST: Joi.string().required(),
   KAFKA_ID: Joi.string().required(),
   KAFKA_PRODUCER_NAME: Joi.string().required(),
-  KAFKA_TOPIC: Joi.string().required(),
+  KAFKA_TOPIC_CREATED: Joi.string().required(),
 });
 
 export default JoiValidation;
