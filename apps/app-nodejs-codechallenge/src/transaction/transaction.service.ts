@@ -15,27 +15,24 @@ export default class TransactionService {
   public listTransactions = async () => {
     const transactions = await this.transactionRepository.find();
 
-    // return transactions.map(
-    //   ({
-    //     accountExternalIdCredit,
-    //     accountExternalIdDebit,
-    //     statusTransaction,
-    //     transferTypeId,
-    //     id,
-    //     ...restData
-    //   }) => ({
-    //     transactionExternalId:
-    //       accountExternalIdCredit || accountExternalIdDebit,
-    //     transactionType:
-    //       transferTypeId === 1 ? { name: "Debit" } : { name: "Credit" },
-    //     transactionStatus: {
-    //       name: Object.values(StatusEnum).find(
-    //         (statusTransaction) => statusTransaction,
-    //       ),
-    //     },
-    //     ...restData,
-    //   }),
-    // );
+    return transactions.map(
+      ({
+        transactionExternalId,
+        statusTransaction,
+        transferTypeId,
+        ...restData
+      }) => ({
+        transactionExternalId,
+        transactionType:
+          transferTypeId === 1 ? { name: "Debit" } : { name: "Credit" },
+        transactionStatus: {
+          name: Object.values(StatusEnum).find(
+            (statusTransaction) => statusTransaction,
+          ),
+        },
+        ...restData,
+      }),
+    );
   };
 
   public createTransaction = async ({
