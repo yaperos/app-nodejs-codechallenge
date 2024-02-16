@@ -17,27 +17,32 @@ The proposed solution implements a monorepo with three applications using the Ne
 ## How to run it?
 To make the running process easier, I've created a Makefile with some utilities.
 
-1. Generate `.env` files based on the `.env.example` ones
+1. Install dependencies:
+  ```bash
+  npm i
+  ```
+
+2. Generate `.env` files based on the `.env.example` ones
   ```bash
   make env-generate
   ```
-2. Initiate Docker based on the `docker-compose.yml` file
+3. Initiate Docker based on the `docker-compose.yml` file
   ```bash
   make docker-start
   ```
-3. Push migrations and run database seed
+4. Push migrations and run database seed
   ```bash
   make init-db
   ```
-4. Run transaction service
+5. Run transaction service
   ```bash
   make run-transaction
   ```
-5. Run anti fraud service
+6. Run anti fraud service
   ```bash
   make run-anti-raud
   ```
-6. Run gateway
+7. Run gateway
   ```bash
   make run-gateway
   ```
