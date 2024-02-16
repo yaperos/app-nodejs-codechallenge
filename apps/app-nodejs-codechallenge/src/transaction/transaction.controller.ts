@@ -1,7 +1,12 @@
-import { Controller } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
 import TransactionService from "./transaction.service";
 
-@Controller("transaction")
+@Controller("transactions")
 export default class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
+
+  @Get()
+  public async listTransactions() {
+    return await this.transactionService.listTransactions();
+  }
 }

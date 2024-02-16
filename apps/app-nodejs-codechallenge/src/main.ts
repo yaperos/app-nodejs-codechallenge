@@ -10,7 +10,7 @@ const bootstrap = async () => {
   const port = configService.get<number>("APP_PORT", 3000);
 
   await app.listen(port);
-  Logger.log(`Run app in http://localhost:${port}`);
+  Logger.log(`Run app in http://localhost:${port}/`);
 };
 
 (async () => {
