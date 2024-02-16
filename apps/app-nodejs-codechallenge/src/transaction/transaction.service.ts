@@ -22,8 +22,19 @@ export default class TransactionService {
     });
   };
 
-  public createTransaction = async (dto: CreateTransactionDto) => {
-    const transaction = this.transactionRepository.create(dto);
+  public createTransaction = async ({
+    accountExternalIdDebit,
+    accountExternalIdCredit,
+    ...restData
+  }: CreateTransactionDto) => {
+    new CreateTransactionDto(accountExternalIdDebit, accountExternalIdCredit);
+
+    const transaction = this.transactionRepository.create({
+      accountExternalIdDebit,
+      accountExternalIdCredit,
+      transferTypeId: accountExternalIdDebit ? 1 : 0,
+      ...restData,
+    });
     return this.transactionRepository.save(transaction);
   };
 }
