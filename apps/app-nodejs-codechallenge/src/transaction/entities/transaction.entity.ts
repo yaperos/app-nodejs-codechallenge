@@ -1,31 +1,14 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, CreateDateColumn, Entity } from "typeorm";
 import { StatusEnum } from "../enums/status.enum";
 
 @Entity("transactions")
 export default class Transaction {
-  @PrimaryGeneratedColumn("uuid")
-  readonly id: string;
-
   @Column({
     type: "uuid",
-    nullable: true,
-    unique: true,
-    name: "account_external_id_debit",
+    primary: true,
+    name: "account_external_id",
   })
-  accountExternalIdDebit: string;
-
-  @Column({
-    type: "uuid",
-    nullable: true,
-    unique: true,
-    name: "account_external_id_credit",
-  })
-  accountExternalIdCredit: string;
+  transactionExternalId: string;
 
   @Column({ type: "int", name: "transfer_type_id" })
   transferTypeId: number;

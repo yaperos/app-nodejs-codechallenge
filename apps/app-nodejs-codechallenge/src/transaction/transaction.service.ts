@@ -15,27 +15,27 @@ export default class TransactionService {
   public listTransactions = async () => {
     const transactions = await this.transactionRepository.find();
 
-    return transactions.map(
-      ({
-        accountExternalIdCredit,
-        accountExternalIdDebit,
-        statusTransaction,
-        transferTypeId,
-        id,
-        ...restData
-      }) => ({
-        transactionExternalId:
-          accountExternalIdCredit || accountExternalIdDebit,
-        transactionType:
-          transferTypeId === 1 ? { name: "Debit" } : { name: "Credit" },
-        transactionStatus: {
-          name: Object.values(StatusEnum).find(
-            (statusTransaction) => statusTransaction,
-          ),
-        },
-        ...restData,
-      }),
-    );
+    // return transactions.map(
+    //   ({
+    //     accountExternalIdCredit,
+    //     accountExternalIdDebit,
+    //     statusTransaction,
+    //     transferTypeId,
+    //     id,
+    //     ...restData
+    //   }) => ({
+    //     transactionExternalId:
+    //       accountExternalIdCredit || accountExternalIdDebit,
+    //     transactionType:
+    //       transferTypeId === 1 ? { name: "Debit" } : { name: "Credit" },
+    //     transactionStatus: {
+    //       name: Object.values(StatusEnum).find(
+    //         (statusTransaction) => statusTransaction,
+    //       ),
+    //     },
+    //     ...restData,
+    //   }),
+    // );
   };
 
   public createTransaction = async ({
@@ -46,8 +46,7 @@ export default class TransactionService {
     new CreateTransactionDto(accountExternalIdDebit, accountExternalIdCredit);
 
     const transaction = this.transactionRepository.create({
-      accountExternalIdDebit,
-      accountExternalIdCredit,
+      transactionExternalId: accountExternalIdDebit || accountExternalIdCredit,
       transferTypeId: accountExternalIdDebit ? 1 : 0,
       ...restData,
     });
