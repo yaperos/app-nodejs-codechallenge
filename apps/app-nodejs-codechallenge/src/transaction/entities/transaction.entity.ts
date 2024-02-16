@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { StatusEnum } from "../enums/status.enum";
 
 @Entity("transactions")
@@ -35,4 +40,7 @@ export default class Transaction {
     name: "status_transaction",
   })
   statusTransaction: StatusEnum;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
