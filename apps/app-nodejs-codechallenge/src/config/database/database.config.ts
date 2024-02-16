@@ -2,8 +2,6 @@ import * as dotenv from "dotenv";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 dotenv.config();
 
-import Transaction from "../../transaction/entities/transaction.entity";
-
 const dataSourceOptions: TypeOrmModuleOptions = {
   type: "postgres",
   host: process.env.DB_HOST,
@@ -11,8 +9,8 @@ const dataSourceOptions: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [Transaction],
   synchronize: process.env.DB_SYNCHRONIZE === "true" || true,
+  autoLoadEntities: true,
 };
 
 export default dataSourceOptions;

@@ -7,7 +7,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=yape_transactions
+      - POSTGRES_DB=postgres
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
   zookeeper:
