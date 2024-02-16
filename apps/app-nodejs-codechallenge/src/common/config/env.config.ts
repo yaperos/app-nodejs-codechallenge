@@ -11,6 +11,12 @@ const JoiValidation = Joi.object({
   DB_PASSWORD: Joi.string().required(),
   DB_NAME: Joi.string().required(),
   DB_SYNCHRONIZE: Joi.boolean().required().default(false),
+
+  //Kafka
+  KAFKA_HOST: Joi.string().required(),
+  KAFKA_ID: Joi.string().required(),
+  KAFKA_PRODUCER_NAME: Joi.string().required(),
+  KAFKA_TOPIC: Joi.string().required(),
 });
 
 export default JoiValidation;

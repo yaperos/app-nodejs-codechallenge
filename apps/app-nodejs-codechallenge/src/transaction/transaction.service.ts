@@ -16,7 +16,7 @@ export default class TransactionService {
     @Inject("KAFKA_PRODUCER") private readonly kafka: ClientProxy,
     private readonly configService: ConfigService,
   ) {
-    this.topic = this.configService.get<string>("KAFKA_PRODUCER_TOPIC");
+    this.topic = this.configService.getOrThrow<string>("KAFKA_TOPIC");
   }
 
   public listTransactions = async () => {
