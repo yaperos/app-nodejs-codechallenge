@@ -1,0 +1,48 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Transaction {
+  uuid: String!
+  amount: Int!
+  status: TransactionStatusEnum!
+  createdAt: DateTime!
+}
+
+"""Type of statuses on a transaction"""
+enum TransactionStatusEnum {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  getTransaction(uuid: ID!): Transaction!
+}
+
+type Mutation {
+  createTransaction(input: CreateTransactionInput!): Transaction!
+}
+
+input CreateTransactionInput {
+  amount: Int!
+  accountExternalName: AccountExternalNameEnum!
+  transferName: TransferNameEnum!
+}
+
+"""Types of an account external"""
+enum AccountExternalNameEnum {
+  DEBIT
+  CREDIT
+}
+
+"""Types of a transfer"""
+enum TransferNameEnum {
+  NATIONAL
+  INTERNATIONAL
+}

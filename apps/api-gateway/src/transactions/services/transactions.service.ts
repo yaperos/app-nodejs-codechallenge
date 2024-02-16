@@ -11,7 +11,7 @@ import { TransactionDto } from 'apps/api-gateway/src/transactions/dtos/responses
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
-export class TransactionService implements OnModuleInit {
+export class TransactionsService implements OnModuleInit {
   constructor(
     @Inject(TRANSACTIONS_SERVICE) private readonly client: ClientKafka,
   ) {}

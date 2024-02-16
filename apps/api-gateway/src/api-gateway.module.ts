@@ -1,37 +1,19 @@
-import { TRANSACTIONS_SERVICE } from '@app/common/constants/service-names';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { TransactionsController } from 'apps/api-gateway/src/transactions/transactions.controller';
-import { TransactionService } from 'apps/api-gateway/src/transactions/transactions.service';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { join } from 'path';
+import { TransactionsModule } from 'apps/api-gateway/src/transactions/transactions.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
     }),
-    ClientsModule.registerAsync({
-      clients: [
-        {
-          name: TRANSACTIONS_SERVICE,
-          useFactory: (configService: ConfigService) => ({
-            transport: Transport.KAFKA,
-            options: {
-              client: {
-                clientId: TRANSACTIONS_SERVICE,
-                brokers: [configService.get('APP_BROKER')],
-              },
-              consumer: {
-                groupId: TRANSACTIONS_SERVICE,
-              },
-            },
-          }),
-          inject: [ConfigService],
-        },
-      ],
-    }),
+    TransactionsModule,
   ],
-  controllers: [TransactionsController],
-  providers: [TransactionService],
 })
 export class ApiGatewayModule {}
