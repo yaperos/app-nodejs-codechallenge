@@ -1,6 +1,5 @@
 import * as dotenv from "dotenv";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import TransactionCreatedSubscriber from "../../transaction/subscribers/transaction.created.subscriber";
 dotenv.config();
 
 const dataSourceOptions: TypeOrmModuleOptions = {
@@ -12,7 +11,6 @@ const dataSourceOptions: TypeOrmModuleOptions = {
   database: process.env.DB_NAME,
   synchronize: process.env.DB_SYNCHRONIZE === "true" || true,
   autoLoadEntities: true,
-  subscribers: [TransactionCreatedSubscriber],
 };
 
 export default dataSourceOptions;
