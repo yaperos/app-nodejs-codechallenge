@@ -1,82 +1,99 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge Solution :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Stack
+- [NestJS](https://nestjs.com/)
+- [Prisma](https://www.prisma.io/)
+- [GraphQL](https://graphql.org/)
+- [Apollo](https://www.apollographql.com/)
+- [Kafka](https://kafka.apache.org/)
+- [PostgreSQL](https://www.postgresql.org/)
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Description
+The proposed solution implements a monorepo with three applications using the NestJS framework:
+- Transaction
+- Anti Fraud
+- Gateway
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## How to run it?
+To make the running process easier, I've created a Makefile with some utilities.
 
-# Problem
+1. Generate `.env` files based on the `.env.example` ones
+  ```bash
+  make env-generate
+  ```
+2. Initiate Docker based on the `docker-compose.yml` file
+  ```bash
+  make docker-start
+  ```
+3. Push migrations and run database seed
+  ```bash
+  make init-db
+  ```
+4. Run transaction service
+  ```bash
+  make run-transaction
+  ```
+5. Run anti fraud service
+  ```bash
+  make run-anti-raud
+  ```
+6. Run gateway
+  ```bash
+  make run-gateway
+  ```
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## How to make requests?
+1. Go to the [GraphQL playground](http://localhost:8000/graphql)
+2. Execute `createTransaction` mutation
+  ```graphql
+  mutation ($data: CreateTransactionDto!) {
+    createTransaction(createTransactionDto: $data) {
+      transactionExternalId
+      transactionType {
+        name
+      }
+      transactionStatus {
+        name
+      }
+      createdAt
+      value
+    }
+  }
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+  
+  # Query variables example:
+  {
+    "data": {
+      "accountExternalIdDebit": "98af23a7-b1b7-463d-9170-edb6154674b9",
+      "accountExternalIdCredit": "2d4649bd-c6cf-420c-a642-bd4dd24da00d",
+      "transactionTypeId": 1,
+      "value": 850
+    }
+  }
+  ```
+3. Check for the created transaction using the `findTransactionById` query:
+  ```graphql
+  query($id: String!) {
+    findTransactionById(transactionExternalId: $id) {
+      transactionType {
+        name
+      }
+      transactionStatus {
+        name
+      }
+      createdAt
+      value
+    }
+  }
 
-Every transaction with a value greater than 1000 should be rejected.
+  # Query variables example:
+  {
+    "id": "db551c17-441b-48a1-81a9-eeefd91f7665"
+  }
+  ```
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+**Note:**
+You can use Prisma Studio to check the database changes.
+```bash
+make prisma-studio
 ```
-
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.

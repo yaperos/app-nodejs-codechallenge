@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/gateway",
+  "projects": {
+    "anti-fraud": {
+      "type": "application",
+      "root": "apps/anti-fraud",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud/tsconfig.app.json"
+      }
+    },
+    "transaction": {
+      "type": "application",
+      "root": "apps/transaction",
+      "entryFile": "main",
+      "sourceRoot": "apps/transaction/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transaction/tsconfig.app.json"
+      }
+    },
+    "kafka": {
+      "type": "library",
+      "root": "libs/kafka",
+      "entryFile": "index",
+      "sourceRoot": "libs/kafka/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/kafka/tsconfig.lib.json"
+      }
+    },
+    "gateway": {
+      "type": "application",
+      "root": "apps/gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gateway/tsconfig.app.json"
+      }
+    },
+    "apollo": {
+      "type": "library",
+      "root": "libs/apollo",
+      "entryFile": "index",
+      "sourceRoot": "libs/apollo/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/apollo/tsconfig.lib.json"
+      }
+    },
+    "prisma": {
+      "type": "library",
+      "root": "libs/prisma",
+      "entryFile": "index",
+      "sourceRoot": "libs/prisma/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/prisma/tsconfig.lib.json"
+      }
+    }
+  }
+}
