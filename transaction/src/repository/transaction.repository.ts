@@ -1,21 +1,32 @@
 import { Repository } from 'typeorm';
 import { databaseConnection } from '../config/database';
-import { Transaction } from '../models/transaction.model';
+import { Transaction, TransactionStatus } from '../models/transaction.model';
 
 export class TransactionRepository {
-  private transactionRepository: Repository<Transaction>;
+  private repository: Repository<Transaction>;
 
   constructor() {
-    this.transactionRepository = databaseConnection.getRepository(Transaction);
+    this.repository = databaseConnection.getRepository(Transaction);
   }
 
-  async findOne(id: string): Promise<Transaction> {
-    return await this.transactionRepository.findOne({
+  async findOneById(id: string): Promise<Transaction> {
+    return await this.repository.findOne({
       where: { id },
     });
   }
 
-  async insert(data: Transaction) {
-    return await this.transactionRepository.save(data);
+  async insert(data: Transaction): Promise<void> {
+    await this.repository.save(data);
+  }
+
+  async updateStatus(id: string, status: TransactionStatus): Promise<void> {
+    await this.repository.update(
+      {
+        id,
+      },
+      {
+        status,
+      },
+    );
   }
 }

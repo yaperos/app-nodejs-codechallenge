@@ -1,4 +1,4 @@
-import { ITransactionRequest } from '../interfaces/transaction.interface';
+import { ITransactionEvent, ITransactionRequest } from '../interfaces/transaction.interface';
 import { KafkaClient } from '../kafka/kafka.client';
 import { Transaction, TransactionStatus } from '../models/transaction.model';
 import { TransactionRepository } from '../repository/transaction.repository';
@@ -14,7 +14,7 @@ export class TransactionService {
   }
 
   async getTransaction(transactionId: string) {
-    const transaction = await this.transactionRepository.findOne(transactionId);
+    const transaction = await this.transactionRepository.findOneById(transactionId);
     return transaction;
   }
 
@@ -35,5 +35,10 @@ export class TransactionService {
     await this.kafkaClient.sendMessage(JSON.stringify(data));
 
     return data;
+  }
+
+  async updateTransactionStatus(data: string) {
+    const payload: ITransactionEvent = JSON.parse(data);
+    await this.transactionRepository.updateStatus(payload.id, payload.status as TransactionStatus);
   }
 }

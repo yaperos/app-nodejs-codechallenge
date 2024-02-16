@@ -8,7 +8,7 @@ export const startServer = async (app: express.Application) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  app.use('/api', TransactionRoutes);
+  app.use('/api/transactions', TransactionRoutes);
 
   app.get('/', async (req, res) => {
     res.json({ message: 'Hello World' });

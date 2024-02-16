@@ -11,6 +11,7 @@ export class KafkaClient {
     this.kafka = new Kafka({
       clientId: configuration.kafka.client,
       brokers: [configuration.kafka.broker],
+      connectionTimeout: 3000,
     });
 
     this.producer = this.kafka.producer();
@@ -33,15 +34,21 @@ export class KafkaClient {
     await this.producer.disconnect();
   }
 
-  public async consumeMessage() {
+  public async consumeMessage(transactionService) {
+    console.log('Metodo para recibir mensajes del topic: ', KafkaTopics.consumer);
     await this.consumer.connect();
     await this.consumer.subscribe({ topic: KafkaTopics.consumer });
 
+    console.log('antes del consumer run!');
+
     await this.consumer.run({
       eachMessage: async (payload: EachMessagePayload) => {
-        console.log({
-          value: payload.message.value.toString(),
-        });
+        const value = payload.message.value;
+        if (value !== null && value !== undefined) {
+          console.log(payload.message.value.toString());
+          transactionService.updateTransactionStatus(payload.message.value.toString());
+          console.log('transaction updated!');
+        }
       },
     });
   }

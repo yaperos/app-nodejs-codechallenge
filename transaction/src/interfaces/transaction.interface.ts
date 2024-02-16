@@ -26,3 +26,9 @@ export interface ITransactionResponse {
   value: number;
   createdAt: Date;
 }
+
+export interface ITransactionEvent {
+  id: string;
+  value: number;
+  status: string;
+}
