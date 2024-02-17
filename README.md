@@ -27,10 +27,10 @@ docker-compose up -d
 
 ### API Endpoints
 The API endpoints for this project can be found in a Postman collection JSON file located in this repository. This collection provides a comprehensive guide to interacting with the project's APIs.
-
-or [Postman in web](https://milio-payment.postman.co/workspace/Learning~f1c56b68-de3a-4fd2-b435-a66757d3c44c/collection/29333578-3bc848c0-052e-4bcd-acc1-3ba9226e6338?action=share&creator=29333578&active-environment=29333578-390c5b74-1f2d-49c0-b93a-04e4e3730119)
-
 > file: Yape.postman_collection.json
+
+or [Postman in web](or [Postman in web](https://martian-spaceship-530139.postman.co/workspace/Learning~c54159d4-e7f7-4488-9c94-271d3c304666/collection/25752562-1fa0a753-a82f-442c-a6de-de665eec1c10?action=share&creator=25752562&active-environment=25752562-ecfe15ef-c107-476c-b480-84416443d24f))
+
 
 
 ## Author
