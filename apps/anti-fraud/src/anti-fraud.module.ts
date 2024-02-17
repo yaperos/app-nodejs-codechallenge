@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AntiFraudController } from './anti-fraud.controller';
-import { AntiFraudService } from './anti-fraud.service';
+import { AntiFraudController } from './controllers/anti-fraud.controller';
+import { AntiFraudService } from './services/anti-fraud.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import {

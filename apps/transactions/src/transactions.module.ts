@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { TransactionsController } from './transactions.controller';
-import { TransactionsService } from './transactions.service';
+import { TransactionsController } from './controllers/transactions.controller';
+import { TransactionsService } from './services/transactions.service';
 import { DatabaseModule, CacheManagerModule } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ANTI_FRAUD_SERVICE } from '@app/common/constants/service-names';
+import { TransactionsRepository } from 'apps/transactions/src/repositories/transactions.repository';
 
 @Module({
   imports: [
@@ -35,6 +36,6 @@ import { ANTI_FRAUD_SERVICE } from '@app/common/constants/service-names';
     }),
   ],
   controllers: [TransactionsController],
-  providers: [TransactionsService],
+  providers: [TransactionsService, TransactionsRepository],
 })
 export class TransactionsModule {}

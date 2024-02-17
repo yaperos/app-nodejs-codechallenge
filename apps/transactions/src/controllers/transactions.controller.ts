@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { TransactionsService } from './transactions.service';
+import { TransactionsService } from '../services/transactions.service';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CREATE_TRANSACTION,

@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { AntiFraudService } from './anti-fraud.service';
+import { AntiFraudService } from '../services/anti-fraud.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { VALIDATE_TRANSACTION } from '@app/common/constants/transaction-events';
 import { ValidateTransactionDto } from '@app/common/dtos/requests/validate-transaction.dto';

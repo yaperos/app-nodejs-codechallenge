@@ -1,29 +1,34 @@
-import { CacheService, DatabaseService } from '@app/common';
+import { CacheService, VerifiedTransactionDto } from '@app/common';
 import { ANTI_FRAUD_SERVICE } from '@app/common/constants/service-names';
 import { VALIDATE_TRANSACTION } from '@app/common/constants/transaction-events';
 import {
   Inject,
   Injectable,
+  Logger,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { CreateTransactionDto } from 'apps/api-gateway/src/transactions/dtos/requests/create-transaction.dto';
 import { GetTransactionDto } from 'apps/api-gateway/src/transactions/dtos/requests/get-transaction.dto';
 import { TransactionDto } from 'apps/api-gateway/src/transactions/dtos/responses/transaction.dto';
 import { TransactionStatusEnum } from 'apps/api-gateway/src/transactions/enums/transaction.enum';
+import { TransactionsRepository } from 'apps/transactions/src/repositories/transactions.repository';
 
 @Injectable()
 export class TransactionsService {
+  private readonly logger: Logger;
+
   constructor(
     @Inject(ANTI_FRAUD_SERVICE) private readonly client: ClientKafka,
     private readonly cacheService: CacheService,
-    private readonly databaseService: DatabaseService,
-  ) {}
+    private readonly transactionRepository: TransactionsRepository,
+  ) {
+    this.logger = new Logger(TransactionsService.name);
+  }
 
-  async create(input): Promise<TransactionDto> {
+  async create(input: CreateTransactionDto): Promise<TransactionDto> {
     try {
-      const transaction = await this.databaseService.transaction.create({
-        data: { amount: input.amount, status: 'PENDING' },
-      });
+      const transaction = await this.transactionRepository.create(input);
 
       this.client.emit(VALIDATE_TRANSACTION, transaction);
 
@@ -34,6 +39,8 @@ export class TransactionsService {
         createdAt: transaction.createdAt,
       };
     } catch (error) {
+      this.logger.error(error);
+
       throw new UnprocessableEntityException(error.message);
     }
   }
@@ -47,9 +54,7 @@ export class TransactionsService {
       return cachedTransaction;
     }
 
-    const transaction = await this.databaseService.transaction.findFirstOrThrow(
-      { where: { uuid } },
-    );
+    const transaction = await this.transactionRepository.getOne({ uuid });
 
     await this.cacheService.create(uuid, transaction);
 
@@ -61,15 +66,14 @@ export class TransactionsService {
     };
   }
 
-  async updateStatus({ uuid, status }) {
+  async updateStatus(input: VerifiedTransactionDto) {
     try {
-      const transaction = await this.databaseService.transaction.update({
-        where: { uuid },
-        data: { status },
-      });
+      const transaction = await this.transactionRepository.updateOne(input);
 
-      await this.cacheService.update(uuid, transaction);
+      await this.cacheService.update(transaction.uuid, transaction);
     } catch (error) {
+      this.logger.error(error);
+
       throw new UnprocessableEntityException(error.message);
     }
   }
