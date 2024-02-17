@@ -1,0 +1,58 @@
+{
+	"info": {
+		"_postman_id": "3bc848c0-052e-4bcd-acc1-3ba9226e6338",
+		"name": "Yape",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29333578",
+		"_collection_link": "https://milio-payment.postman.co/workspace/Learning~f1c56b68-de3a-4fd2-b435-a66757d3c44c/collection/29333578-3bc848c0-052e-4bcd-acc1-3ba9226e6338?action=share&source=collection_link&creator=29333578"
+	},
+	"item": [
+		{
+			"name": "List transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    //\"accountExternalIdDebit\": \"{{$guid}}\",\n    \"accountExternalIdCredit\": \"{{$guid}}\",\n    \"value\": {{$randomPrice}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
