@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Transaction from "./entities/transaction.entity";
 import { Repository } from "typeorm";
@@ -6,6 +11,7 @@ import CreateTransactionDto from "./dto/create-transaction.dto";
 import { StatusEnum } from "./enums/status.enum";
 import { ClientProxy } from "@nestjs/microservices";
 import { ConfigService } from "@nestjs/config";
+import TransactionUpdatedDto from "./dto/transaction.updated.dto";
 
 @Injectable()
 export default class TransactionService {
@@ -68,5 +74,15 @@ export default class TransactionService {
       },
     });
     return { message: "Transaction registered", ok: true };
+  };
+
+  public updateTransaction = async ({ id, status }: TransactionUpdatedDto) => {
+    const transaction = await this.transactionRepository.preload({
+      transactionExternalId: id,
+      statusTransaction: status === 1 ? StatusEnum.APPROVED : StatusEnum.REJECT,
+    });
+
+    if (!transaction) throw new NotFoundException("Transaction not found!");
+    await this.transactionRepository.save(transaction);
   };
 }

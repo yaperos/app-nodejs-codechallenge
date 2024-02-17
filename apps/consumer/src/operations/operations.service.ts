@@ -20,7 +20,7 @@ export default class OperationsService {
     let status: number = 1;
     if (value >= 1000) {
       Logger.error("Is fraud");
-      status = 1;
+      status = 0;
     } else Logger.log("It's ok");
     return this.kafka.emit(this.topic, { value: { id, status } });
   };
