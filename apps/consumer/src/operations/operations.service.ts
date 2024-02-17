@@ -22,6 +22,11 @@ export default class OperationsService {
       Logger.error("Is fraud");
       status = 0;
     } else Logger.log("It's ok");
+
+    // Delay for check status for transaction
+    const delay = 5000;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+
     return this.kafka.emit(this.topic, { value: { id, status } });
   };
 }
