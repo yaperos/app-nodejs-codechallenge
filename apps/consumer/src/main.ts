@@ -17,7 +17,7 @@ const bootstrap = async () => {
         groupId: "kafka-consumer",
       },
       client: {
-        clientId: configService.get<string>("KAFKA_ID"),
+        clientId: "process-transaction",
         brokers: [configService.get<string>("KAFKA_HOST")],
         // -------> In local not required others properties
         // ssl: true,

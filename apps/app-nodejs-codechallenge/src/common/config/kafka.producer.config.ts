@@ -6,15 +6,18 @@ dotenv.config();
 
 const kafkaProducerConfig: ClientsModuleOptions = [
   {
-    name: process.env.KAFKA_PRODUCER_NAME,
+    name: `KAFKA_PRODUCER_MAIN`,
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: process.env.KAFKA_ID,
+        clientId: "main",
         brokers: [process.env.KAFKA_HOST],
       },
       producer: {
         createPartitioner: Partitioners.DefaultPartitioner,
+      },
+      consumer: {
+        groupId: "main-consumer",
       },
     },
   },

@@ -8,7 +8,7 @@ export default class OperationsService {
   private readonly topic: string;
 
   constructor(
-    @Inject("KAFKA_PRODUCER") private readonly kafka: ClientProxy,
+    @Inject("KAFKA_PRODUCER_PROCESS") private readonly kafka: ClientProxy,
     private readonly configService: ConfigService,
   ) {
     this.topic = this.configService.getOrThrow<string>("KAFKA_TOPIC_UPDATED");
