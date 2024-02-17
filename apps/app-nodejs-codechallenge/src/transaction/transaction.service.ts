@@ -8,7 +8,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import Transaction from "./entities/transaction.entity";
 import { Repository } from "typeorm";
 import CreateTransactionDto from "./dto/create-transaction.dto";
-import { StatusEnum } from "./enums/status.enum";
+import getStatusName, { StatusEnum } from "./enums/status.enum";
 import { ClientProxy } from "@nestjs/microservices";
 import { ConfigService } from "@nestjs/config";
 import TransactionUpdatedDto from "./dto/transaction.updated.dto";
@@ -39,9 +39,7 @@ export default class TransactionService {
         transactionType:
           transferTypeId === 1 ? { name: "Debit" } : { name: "Credit" },
         transactionStatus: {
-          name: Object.values(StatusEnum).find(
-            (statusTransaction) => statusTransaction,
-          ),
+          name: getStatusName(statusTransaction),
         },
         ...restData,
       }),
