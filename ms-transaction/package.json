@@ -1,0 +1,35 @@
+{
+  "name": "ms-transaction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/app.ts",
+    "dev": "tsx src/app.ts",
+    "build": "npx tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.2",
+    "express": "^4.18.2",
+    "joi": "^17.12.1",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.1",
+    "sequelize": "^6.37.0",
+    "sequelize-typescript": "^2.1.6",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.17",
+    "@types/uuid": "^9.0.8",
+    "@types/validator": "^13.11.9",
+    "sequelize-cli": "^6.6.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}
