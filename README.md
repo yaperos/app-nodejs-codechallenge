@@ -1,82 +1,53 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge (Solución) 🚀
+This repository has created the solution to the Yape Code Challenge through a NestJS project to process and validate financial transactions through a microservice.
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Stack
+- NestJS
+- TypeOrm
+- Kafka
+- PostgreSQL
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## How to run the project?
+1. Install dependencies:
+  ```bash
+  npm i
+  ```
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+2. Rename the  `.env.example` file to `.env`  
+3. Start container:
+```bash
+docker-compose up -d
 ```
-
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
+4. Execute proyect:
+```bash
+$ nest start anti-fraud
+$ nest start api-gateway
+$ nest start transaction
+```
+## How to make requests?
+1. Open postman or insomnia.
+2. Make a POST to the url: http://localhost:3000/send-transaction with the following body:
 ```json
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "5c26a119-a42f-4a57-97bd-AAAAAAAAAAAA",
+  "accountExternalIdCredit": "",
   "tranferTypeId": 1,
-  "value": 120
+  "value": 555
 }
 ```
-
-2. Resource to retrieve a transaction
-
+The result will look like the following:
 ```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+[
+    {
+        "transactionExternalId": "110c9b83-fb53-4a4c-90b4-c4716890e222",
+        "transactionType": {
+            "name": "Debit"
+        },
+        "transactionStatus": {
+            "name": "Approved"
+        },
+        "value": 555,
+        "createdAt": "2024-02-18T04:09:12.723Z"
+    }
+]
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
