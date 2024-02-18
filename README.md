@@ -1,4 +1,4 @@
-# Yape Code Challenge (Solución) 🚀
+# Yape Code Challenge (Solution) 🚀
 This repository has created the solution to the Yape Code Challenge through a NestJS project to process and validate financial transactions through a microservice.
 
 ## Stack
