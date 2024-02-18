@@ -1,0 +1,7 @@
+FROM node:16.10.0
+WORKDIR /aplication
+COPY package.json index.js /aplication/
+RUN npm install
+RUN npm i -g nodemon
+
+CMD ["nodemon","index.js"]

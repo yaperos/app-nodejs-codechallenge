@@ -1,0 +1,19 @@
+{
+  "name": "retrieve-transaction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "kafka-node": "^5.0.0",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.11.3",
+    "sequelize": "^6.37.0"
+  }
+}
