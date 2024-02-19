@@ -1,8 +1,10 @@
-import { KafkaClient } from './kafka/kafka.client';
+import { AntiFraudService } from './application/anti-fraud.service';
+import { KafkaClient } from './infrastructure/kafka/kafka.client';
 
 async function bootstrap() {
-  const kafkaClient = new KafkaClient();
-  kafkaClient.consumeMessage();
+  const transactionService = new AntiFraudService(new KafkaClient());
+
+  transactionService.handleValidateValueEvent();
 }
 
 bootstrap();
