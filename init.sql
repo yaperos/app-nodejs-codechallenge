@@ -6,4 +6,5 @@ CREATE TABLE transactions (
   account_external_id_debit UUID,
   account_external_id_credit UUID,
   created_at DATE NOT NULL
+  updated_at DATE NOT NULL
 );

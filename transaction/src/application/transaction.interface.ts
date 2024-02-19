@@ -1,13 +1,3 @@
-export interface ITransaction {
-  id: string;
-  transferTypeId: number;
-  value: number;
-  status: string;
-  accountExternalIdDebit: string;
-  accountExternalIdCredit: string;
-  createdAt: Date;
-}
-
 export interface ITransactionRequest {
   accountExternalIdDebit: string;
   accountExternalIdCredit: string;
@@ -28,7 +18,7 @@ export interface ITransactionResponse {
 }
 
 export interface ITransactionEvent {
-  id: string;
+  transactionExternalId: string;
   value: number;
   status: string;
 }

@@ -1,13 +1,8 @@
-import { Entity, Column, PrimaryColumn, CreateDateColumn } from 'typeorm';
-
-export enum TransactionStatus {
-  pending = 'pending',
-  approved = 'approved',
-  rejected = 'rejected',
-}
+import { Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { TransactionStatus } from '../../domain/transaction.model';
 
 @Entity({ name: 'transactions' })
-export class Transaction {
+export class TransactionEntity {
   @PrimaryColumn('uuid')
   id: string;
 
@@ -26,6 +21,14 @@ export class Transaction {
   @Column({ name: 'account_external_id_credit', type: 'uuid' })
   accountExternalIdCredit: string;
 
-  @CreateDateColumn({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt?: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 }
