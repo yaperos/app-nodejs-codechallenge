@@ -24,6 +24,7 @@ export class TransactionModel {
   constructor(props: Partial<TransactionModel>) {
     const transactionId = props.id || uuidGenerator();
     const transactionStatus = props.status || TransactionStatus.pending;
+    const createdAt = props.createdAt || new Date();
 
     this.id = transactionId;
     this.transferTypeId = props.transferTypeId;
@@ -31,7 +32,7 @@ export class TransactionModel {
     this.status = transactionStatus;
     this.accountExternalIdDebit = props.accountExternalIdDebit;
     this.accountExternalIdCredit = props.accountExternalIdCredit;
-    this.createdAt = props.createdAt;
+    this.createdAt = createdAt;
     this.updatedAt = props.updatedAt;
   }
 

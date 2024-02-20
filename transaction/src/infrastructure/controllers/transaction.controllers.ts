@@ -7,7 +7,10 @@ import logger from '../logger';
 import { TransactionRepository } from '../persistence/repository/transaction.repository';
 
 const router = Router();
-const transactionService = new TransactionService(new TransactionRepository(), new KafkaClient());
+export const kafkaClient = new KafkaClient();
+export const transactionRepository = new TransactionRepository();
+
+export const transactionService = new TransactionService(transactionRepository, kafkaClient);
 
 transactionService.handleUpdateStatusEvent();
 
