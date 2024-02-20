@@ -30,17 +30,21 @@ services:
   transaction:
     build:
       context: ./transaction
-      target: prod
+      target: dev
     depends_on: [postgres, kafka]
     ports:
       - 3000:3000
+    volumes:
+      - ./transaction:/app
   anti_fraud:
     build:
       context: ./anti-fraud
-      target: prod
+      target: dev
     depends_on: [postgres, kafka]
     ports:
       - 3001:3001
+    volumes:
+      - ./anti-fraud:/app
 
 volumes:
   postgres_data:
