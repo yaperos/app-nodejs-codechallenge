@@ -41,8 +41,6 @@ services:
     depends_on: [postgres, kafka]
     ports:
       - 3001:3001
-    volumes:
-      - ./anti-fraud:/app
 
 volumes:
   postgres_data:
