@@ -18,7 +18,10 @@ export class KafkaClient {
     return new Kafka({
       clientId: configuration.kafka.client,
       brokers: [configuration.kafka.broker],
-      connectionTimeout: 5000,
+      connectionTimeout: 30000,
+      retry: {
+        retries: 30,
+      },
     });
   }
 
