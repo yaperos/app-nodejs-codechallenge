@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "6c916448-eff4-49ab-abe5-1595c0218200",
+		"name": "Yape Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8726641"
+	},
+	"item": [
+		{
+			"name": "Create Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"accountExternalIdDebit\": \"8e8d8e9a-93da-4037-9413-e062b2121e25\",\n  \"accountExternalIdCredit\": \"f827329c-b410-4b16-a854-6a483367bfa5\",\n  \"transferTypeId\": 2,\n  \"value\": 990\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/transactions/be2e09d7-8fe9-4f03-a764-c778a7ab87a5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"transactions",
+						"be2e09d7-8fe9-4f03-a764-c778a7ab87a5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

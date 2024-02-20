@@ -33,9 +33,10 @@ Every transaction with a value greater than 1000 should be rejected.
 # Tech Stack
 
 <ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
+  <li>Express with TypeORM </li>
+  <li>Postgres</li>
   <li>Kafka</li>
+  <li>Jest</li>
 </ol>
 
 We do provide a `Dockerfile` to help you get started with a dev environment.
@@ -80,3 +81,87 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Running the app
+
+First, you need to have docker and docker-compose installed on your machine.
+
+Then, you need to create a `.env` file in the root of each microservice. You can use the `.env.example` file as a reference.
+
+Finally, you can run the following command to start the app:
+
+1. Build the docker images:
+
+   - In dev mode:
+
+     ```bash
+       docker-compose --file docker-compose.dev.yml build
+     ```
+
+   - In production mode:
+
+     ```bash
+       docker-compose build
+     ```
+
+2. Start the apps:
+
+   - In dev mode:
+
+     ```bash
+       docker-compose --file docker-compose.dev.yml up -d
+     ```
+
+   - In production mode:
+
+     ```bash
+       docker-compose up -d
+     ```
+
+3. Test the app with the postman collection provided in the `yape-challenge.postman_collection.json` file.
+
+4. To stop the app, you can run the following command:
+
+   - In dev mode:
+
+     ```bash
+       docker-compose --file docker-compose.dev.yml down
+     ```
+
+   - In production mode:
+
+     ```bash
+       docker-compose down
+     ```
+
+# Testing the app
+
+To run the tests, you can run the following command:
+
+First, we need to install the dependencies:
+
+```bash
+  npm install
+```
+
+1. To test the transaction microservice:
+
+   - Unit tests:
+
+     ```bash
+       npm run test
+     ```
+
+   - End-to-end tests:
+
+     ```bash
+       npm run test:e2e
+     ```
+
+2. To test the anti-fraud microservice:
+
+   - Unit tests:
+
+     ```bash
+       npm run test
+     ```
