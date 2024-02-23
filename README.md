@@ -100,6 +100,7 @@ cd yape_backend
 npm install
 
 npx prisma generate
+echo DATABASE_URL="postgresql://postgres:postgres@postgres:5432/transactions?schema=public&sslmode=prefer" > .env
 npx prisma migrate dev
 npm run seed
 ```
