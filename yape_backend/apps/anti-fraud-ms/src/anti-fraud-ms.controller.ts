@@ -13,8 +13,6 @@ export class AntiFraudMsController {
 
   @MessagePattern('transaction.analize')
   async create(@Payload() createTransactionDto: any) {
-    console.log('Hoooooooola');
-
     return await this.antiFraudMsService.analizeTransaction(
       createTransactionDto,
     );

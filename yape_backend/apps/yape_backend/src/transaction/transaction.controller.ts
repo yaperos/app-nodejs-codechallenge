@@ -26,7 +26,10 @@ export class TransactionController {
     const analizedTransaction = await this.messengeService
       .handleAnalizeTransaction(transaction)
       .then(async (analizedTransaction) => {
-        return analizedTransaction;
+        return this.transactionService.update(
+          analizedTransaction.id,
+          analizedTransaction,
+        );
       });
     return analizedTransaction;
   }
