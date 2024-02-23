@@ -1,82 +1,52 @@
-# Yape Code Challenge :rocket:
+# Proyecto con NestJS,  Kafka y Prisma
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Descripción
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Este proyecto utiliza NestJS y Kafka para implementar una arquitectura de mensajería asíncrona. Permite 
+realizar transferencias entre cuentas mediante productores y consumidores.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Autor
+Alexander Frank Cairampoma Castro
 
-# Problem
+## Configuración
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+Asegúrate de tener instalado Node.js y las dependencias necesarias. Puedes instalarlas ejecutando:
+```bash
+npm install
+npx prisma migrate dev --name init
 ```
 
-# Tech Stack
+## Endpoints
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+### Enviar Transacción (Productor)
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+- **Método:** POST
+- **URL:** `localhost:3333/producer/save_send`
+- **Cuerpo de la solicitud:**
+  ```json
+  {
+    "accountExternalIdDebit": "Guid",
+    "accountExternalIdCredit": "Guid",
+    "tranferTypeId": 1,
+    "value": 120
+  }
 
-You must have two resources:
 
-1. Resource to create a transaction that must containt:
+### Correr Consumer 
+- **Método:** GET
+- **URL:** `localhost:3333/consumer/`
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
 
-2. Resource to retrieve a transaction
+### Recuperar Transacción 
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+- **Método:** POST
+- **URL:** `localhost:3333/consumer/transaccion`
+- **Cuerpo de la solicitud:**
+  ```json
+  {
+    "transactionExternalId": "Guid"
+  }
 
-## Optional
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+### Ip de Kafka
+Asegúrate cambiar la ip de kafka en consumer y producer service, actualmente esta en `172.17.96.79:9092` por que es la ip de mi wsl, pero puedes cambiarlo a `localhost:9092` si es que estas corriendo kafka en tu maquina local.
