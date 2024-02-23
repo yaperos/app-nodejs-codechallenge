@@ -15,8 +15,6 @@ export class MessengerService implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   public handleAnalizeTransaction(message: any): Promise<any> {
-    console.log(message);
-
     let transaction: Transaction;
     return new Promise((resolve, reject) => {
       this.antiFraudMsServiceClient

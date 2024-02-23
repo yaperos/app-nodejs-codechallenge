@@ -1,6 +1,6 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Our code challenge will let you marvel us with your Jedi coding skills :smile:.
 
 Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
 
@@ -80,3 +80,34 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Run project
+
+### Kafka and PostgreSql
+
+To run the project the first thing we do is run the database and kafka:
+
+```code
+docker compose up
+```
+
+### Install dependencies and prisma
+
+Enter the NestJS project folder (yape_backend) and install the dependencies
+
+```code
+cd yape_backend
+npm install
+
+npx prisma generate
+npx prisma migrate dev
+npm run seed
+```
+
+### Run microservices
+
+```code
+npm start yape_backend
+
+npm start anti-fraud-ms
+```
