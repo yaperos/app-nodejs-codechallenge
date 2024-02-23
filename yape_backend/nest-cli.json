@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/yape_backend/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/yape_backend/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/yape_backend",
+  "projects": {
+    "yape_backend": {
+      "type": "application",
+      "root": "apps/yape_backend",
+      "entryFile": "main",
+      "sourceRoot": "apps/yape_backend/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/yape_backend/tsconfig.app.json"
+      }
+    },
+    "anti-fraud-ms": {
+      "type": "application",
+      "root": "apps/anti-fraud-ms",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud-ms/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud-ms/tsconfig.app.json"
+      }
+    }
+  }
+}

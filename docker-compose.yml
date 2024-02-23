@@ -1,21 +1,33 @@
-version: "3.7"
+version: '3.7'
+
+networks:
+  app-net:
+    driver: bridge
+
 services:
   postgres:
     image: postgres:14
+    container_name: postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=transactions
+    networks:
+      - app-net
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - app-net
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
+    container_name: kafka
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
@@ -23,3 +35,29 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - app-net
+  yape_backend_ms:
+    image: yape_backend
+    restart: always
+    container_name: yape_backend
+    build:
+      context: ./
+      dockerfile: ./yape_backend/apps/yape_backend/Dockerfile
+    networks:
+      - app-net
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - 3000:3000
+  anti_fraud_ms:
+    image: anti-fraud
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./yape_backend/apps/anti-fraud-ms/Dockerfile
+    networks:
+      - app-net
+    depends_on:
+      - kafka
