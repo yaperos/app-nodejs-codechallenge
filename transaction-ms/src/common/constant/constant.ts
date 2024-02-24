@@ -1,0 +1,3 @@
+export const Constant = {
+  TOPIC_ANTIFRAUD_REVIEW: 'ANTI_FRAUD_REVIEW_TOPIC'
+};
