@@ -23,3 +23,20 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  transaction:
+    build: ./services/transaction
+    depends_on: [kafka]
+    environment:
+      - APP_PORT=3000
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - 3000:3000
+  anti-fraud:
+    build: ./services/anti-fraud
+    depends_on: [transaction]
+    environment:
+      - KAFKA_BROKER=kafka:29092

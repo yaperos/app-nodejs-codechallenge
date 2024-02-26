@@ -1,0 +1,34 @@
+{
+  "name": "transaction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nest start --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@my-org/common-tools": "file:my-org-common-tools-1.0.0.tgz",
+    "@nestjs/apollo": "^12.1.0",
+    "@nestjs/common": "^10.3.3",
+    "@nestjs/config": "^3.2.0",
+    "@nestjs/core": "^10.3.3",
+    "@nestjs/graphql": "^12.1.1",
+    "@nestjs/platform-express": "^10.3.3",
+    "@nestjs/typeorm": "^10.0.2",
+    "apollo-server-express": "^3.13.0",
+    "graphql": "^16.8.1",
+    "graphql-tools": "^9.0.0",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.2.1",
+    "typeorm": "^0.3.20",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "typescript": "^4.9.5"
+  }
+}

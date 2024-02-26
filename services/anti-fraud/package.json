@@ -1,0 +1,26 @@
+{
+  "name": "anti-fraud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "ts-node ./src/index.ts",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@my-org/common-tools": "file:my-org-common-tools-1.0.0.tgz",
+    "@types/backoff": "^2.5.5",
+    "backoff": "^2.5.0",
+    "dotenv": "^16.4.5",
+    "kafka-node": "^5.0.0",
+    "pino": "^8.19.0",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "ts-jest": "^29.1.2"
+  }
+}
