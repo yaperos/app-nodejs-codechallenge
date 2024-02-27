@@ -1,14 +1,40 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from 'nestjs-pino';
+import { AllExceptionFilter } from './infrastructure/common/filter/exception.filter';
+import { LoggerService } from './infrastructure/logger/logger.service';
+import { ValidationPipe } from '@nestjs/common';
+import { LoggingInterceptor } from './infrastructure/common/interceptors/logger.interceptor';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useLogger(app.get(Logger));
+
+  /*app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.KAFKA,
+    options: {
+
+    }
+  })*/
+
+  app.startAllMicroservices();
+
+  // Filter
+  app.useGlobalFilters(new AllExceptionFilter(new LoggerService()));
+
+  // pipes
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true
+  }));
+
+  // interceptors
+  app.useGlobalInterceptors(new LoggingInterceptor(new LoggerService()));
+
+
   const configService = app.get(ConfigService);
   const port = configService.get<number>('port');
-
 
   await app.listen(port);
 }

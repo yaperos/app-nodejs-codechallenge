@@ -1,28 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { config } from './config/config';
-import { LoggerModule } from 'nestjs-pino';
-import { envSchema } from './config/env-schema';
+import { EnvironmentConfigModule } from './infrastructure/config/environment-config/environment-config.module';
+import { ExceptionsModule } from './infrastructure/exceptions/exceptions.module';
+import { LoggerModule } from './infrastructure/logger/logger.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [config],
-      validationSchema: envSchema
-    }),
     
-    LoggerModule.forRoot({
-      pinoHttp: {
-        transport: {
-          target: "pino-pretty",
-          options: {
-            messageKey: 'message',
-          }
-        },
-        messageKey: 'message',
-      }
-    })
+    LoggerModule,
+    ExceptionsModule,
+    EnvironmentConfigModule,
   ],
   controllers: [],
   providers: [],
