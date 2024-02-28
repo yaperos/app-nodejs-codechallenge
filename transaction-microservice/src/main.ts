@@ -21,7 +21,7 @@ async function bootstrap() {
   app.startAllMicroservices();
 
   // Filter
-  app.useGlobalFilters(new AllExceptionFilter(new LoggerService()));
+  //app.useGlobalFilters(new AllExceptionFilter(new LoggerService()));
 
   // pipes
   app.useGlobalPipes(new ValidationPipe({
@@ -30,11 +30,11 @@ async function bootstrap() {
   }));
 
   // interceptors
-  app.useGlobalInterceptors(new LoggingInterceptor(new LoggerService()));
+  //app.useGlobalInterceptors(new LoggingInterceptor(new LoggerService()));
 
 
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('port');
+  const port = configService.get<number>('PORT');
 
   await app.listen(port);
 }

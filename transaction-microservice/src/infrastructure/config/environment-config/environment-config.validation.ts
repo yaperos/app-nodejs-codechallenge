@@ -26,6 +26,8 @@ class EnvironmentVariables {
     DATABASE_SCHEMA: string;
     @IsBoolean()
     DATABASE_SYNCHRONIZE: boolean;
+    @IsBoolean()
+    DATABASE_AUTOLOAD_ENTITIES: boolean;
 }
 
 

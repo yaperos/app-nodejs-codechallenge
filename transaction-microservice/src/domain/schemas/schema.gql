@@ -1,0 +1,36 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransferType {
+  name: String!
+}
+
+type BankingTransaction {
+  transactionExternalId: ID!
+  accountExternalIdDebit: ID!
+  accountExternalIdCredit: ID!
+  transferType: TransferType!
+  value: Float!
+}
+
+type Query {
+  sayHello: String!
+}
+
+type Mutation {
+  createBankingTransaction(createBankingTransactionInput: CreateBankingTransactionInput!): BankingTransaction!
+  updateBankingTransaction(updateBankingTransactionInput: UpdateBankingTransactionInput!): BankingTransaction!
+}
+
+input CreateBankingTransactionInput {
+  accountExternalIdDebit: ID!
+  accountExternalIdCredit: ID!
+  transferTypeId: Int!
+  value: Float!
+}
+
+input UpdateBankingTransactionInput {
+  transactionExternalId: ID!
+  transactionStatus: String!
+}
