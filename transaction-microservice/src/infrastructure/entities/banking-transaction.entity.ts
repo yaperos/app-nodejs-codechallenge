@@ -22,8 +22,8 @@ export class BankingTransaction {
     @Field(() => TransferType, {name:'transferType'})
     transferType: TransferType;
 
-    @Column({type:'float'})
-    @Field(() => Float)
+    @Column({type:'decimal'})
+    @Field(() => Float) // Esta línea indica que 'value' es un número de punto flotante
     value: number;
 
     /*Usuario no envia*/

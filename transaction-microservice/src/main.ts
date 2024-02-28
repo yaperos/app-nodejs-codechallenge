@@ -11,12 +11,18 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  /*app.connectMicroservice<MicroserviceOptions>({
+  app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {
-
+      consumer: {
+        groupId: 'antifraud-consumers2'
+      },
+      client: {
+        brokers: ['localhost:9092'],
+        ssl: false
+      }
     }
-  })*/
+  })
 
   app.startAllMicroservices();
 
@@ -31,6 +37,9 @@ async function bootstrap() {
 
   // interceptors
   //app.useGlobalInterceptors(new LoggingInterceptor(new LoggerService()));
+
+  // base routing
+  app.setGlobalPrefix('api/v1');
 
 
   const configService = app.get(ConfigService);
