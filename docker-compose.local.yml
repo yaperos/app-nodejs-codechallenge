@@ -22,8 +22,7 @@ services:
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://host.docker.internal:9092
-      # KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -49,40 +48,3 @@ services:
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
-  #MicroServices
-  anti-fraud-service:
-    build: ./anti_fraud_service
-    depends_on:
-      - postgres
-      - redis
-      - kafka
-      - zookeeper
-    ports:
-      - "3001:3001"
-    environment:
-      ANTI_FRAUD_PORT: 3001
-      API_TRANSACTIONS: "http://host.docker.internal:3000/graphql"
-      KAFKA_BROKER: "host.docker.internal:9092"
-      KAFKA_CLIENT_ID: "ANTI_FRAUD_CLIENT"
-      KAFKA_TOPIC: "ANTI_FRAU_TOPIC"
-      KAFKA_GROUP_ID_ANTI_FRAUD: "ANTI_FRAUD_VALIDATE"
-  transaction-service:
-    build: ./transaction_rest
-    depends_on:
-      - anti-fraud-service
-    ports:
-      - "3000:3000"
-    environment:
-      REDIS_URL: "redis://host.docker.internal:6379"
-      PG_HOST: "host.docker.internal"
-      PG_PORT: 5432
-      PG_USERNAME: "postgres"
-      PG_PASSWORD: "postgres"
-      PG_DATABASE: "postgres"
-      TRANSACTION_PORT: 3000
-      API_TRANSACTIONS: "http://host.docker.internal:3000/graphql"
-      KAFKA_BROKER: "host.docker.internal:9092"
-      KAFKA_CLIENT_ID: "ANTI_FRAUD_CLIENT"
-      KAFKA_TOPIC: "ANTI_FRAU_TOPIC"
-      KAFKA_GROUP_ID_ANTI_FRAUD: "ANTI_FRAUD_VALIDATE"
-

@@ -1,0 +1,24 @@
+{
+  "name": "yape-challenge",
+  "version": "1.0.0",
+  "description": "Integration with Kafka/GraphQl/NodeJs",
+  "scripts": {
+    "start:transaction": "cd transaction_rest && npm run start:dev",
+    "start:fraudservice": "cd anti_fraud_service && npm run start:dev",
+    "install:all": "cd transaction_rest && npm install "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaperos/app-nodejs-codechallenge.git"
+  },
+  "keywords": [
+    "Kafka",
+    "NodeJs"
+  ],
+  "author": "Elver Valverde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yaperos/app-nodejs-codechallenge/issues"
+  },
+  "homepage": "https://github.com/yaperos/app-nodejs-codechallenge#readme"
+}
