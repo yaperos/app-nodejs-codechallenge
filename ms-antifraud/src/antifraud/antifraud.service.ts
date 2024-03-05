@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { TransactionDto } from './dto/transaction.dto';
-import { TransactionStatus } from 'src/common/enums/transaction';
+import { TransactionStatus } from '../common/enums/transaction';
 
 @Injectable()
 export class AntifraudService {
