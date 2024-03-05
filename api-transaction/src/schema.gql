@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Transaction {
+  id: ID!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Int!
+  transactionStatus: Int!
+  value: Float!
+  createdAt: String!
+}
+
+type TransactionType {
+  name: String!
+}
+
+type TransactionStatus {
+  name: String!
+}
+
+type TransformedTransaction {
+  transactionExternalId: ID!
+  transactionType: TransactionType!
+  transactionStatus: TransactionStatus!
+  value: Int!
+  createdAt: String!
+}
+
+type Query {
+  transactions: [TransformedTransaction!]!
+  transaction(id: ID!): TransformedTransaction!
+}
+
+type Mutation {
+  createTransaction(createTransactionInput: CreateTransactionInput!): Transaction!
+  updateTransaction(updateTransactionInput: UpdateTransactionInput!): Transaction!
+}
+
+input CreateTransactionInput {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Int!
+  value: Float!
+}
+
+input UpdateTransactionInput {
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  tranferTypeId: Int!
+  value: Float!
+  id: ID!
+  transactionStatus: Int!
+  createdAt: String!
+}
