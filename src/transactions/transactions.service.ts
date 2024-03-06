@@ -4,17 +4,19 @@ import { Transaction } from './transaction.entity';
 import { Type } from '../type/type.entity';
 import { Status } from '../status/status.entity';
 import { Repository } from 'typeorm';
-import { CreateTransactionDto } from './dto/create-transaction.dto'
+import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { ProducerService } from './producer.service';
 
 @Injectable()
 export class TransactionsService {
 
-	constructor(@InjectRepository(Transaction) private transactionRepository: Repository<Transaction> ,
+	constructor(private readonly producerService: ProducerService, 
+				@InjectRepository(Transaction) private transactionRepository: Repository<Transaction> ,
 		        @InjectRepository(Type) private typeRepository: Repository<Type> ,
 		        @InjectRepository(Status) private statusRepository: Repository<Status> ) {}
 
 
-	async createTransaction(transaction: CreateTransactionDto ){
+	async create(transaction: CreateTransactionDto ){
 		
 		const typeFound = await this.typeRepository.findOne({
 			where:{
@@ -39,7 +41,14 @@ export class TransactionsService {
 		const newTransaction = this.transactionRepository.create(transaction);
 		newTransaction.transactionType = typeFound;
 		newTransaction.transactionStatus = statusFound;
-		return this.transactionRepository.save(newTransaction)
+		const transactionSaved = this.transactionRepository.save(newTransaction)
+		await this.producerService.send(await transactionSaved);
+		return transactionSaved;
+
+	}
+
+	async updateStatus(status: string){
+		
 	}
 
 
