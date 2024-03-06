@@ -2,11 +2,11 @@
 
 If you want to see the challenge, click [here](CHALLENGE.md "Go to Challenge Section").
 
-- [Solution](#solution)
-- [Tech Stack](#tech-stack)
-- [Running the project](#running-the-project)
-- [Documentation](#documentation)
-- [Additional Notes](#additional-notes)
+- [Solution](#solution "Go to Solution Section")
+- [Tech Stack](#tech-stack "Go to Tech Stack Section")
+- [Running the project](#running-the-project "Go to Running the project Section")
+- [Documentation](#documentation "Go to Documentation Section")
+- [Additional Notes](#additional-notes "Go to Additional Notes Section")
 
 ## Solution
 
