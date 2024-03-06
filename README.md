@@ -10,22 +10,20 @@ If you want to see the challenge, click [here](CHALLENGE.md "Go to Challenge Sec
 
 ## Solution
 
-<ul>
-  <li>Api Transaction</li>
-  <li>Ms Antifraud</li>
-</ul>
+- **Api Transaction**
+  Service that allow handle transactions.
+- **Ms Antifraud**
+  Microservice that allow verify if a new transaction is valid or not.
 
-Insert image here
+![diagram](images/diagram.png)
 
 ## Tech Stack
 
-<ul>
-  <li>NestJS (NodeJS)</li>
-  <li>TypeORM (PostgreSQL)</li>
-  <li>Apache Kafka</li>  
-  <li>GraphQL</li>  
-  <li>Docker</li>  
-</ul>
+- **NestJS (NodeJS):** Framework for server-side applications.
+- **TypeOrm (PostgreSQL):** ORM for TypeScript and JavaScript
+- **Apache Kafka:** Distributed data streaming platform.
+- **GraphQL:** Query language for APIs.
+- **Docker:** Platform for creating, deploying, and running applications in containers.
 
 ## Running the project
 
@@ -43,7 +41,7 @@ This will create and start Docker containers with each microservice, database, q
 
 4. Once all the containers are up and running, you can prove the application through the following link:
 
-* Backend (NestJS): `http://localhost:3000/graphql`
+* **Backend (NestJS):** `http://localhost:3000/graphql`
 
 This will display a Apollo Studio to prove the exposed apis with GraphQL.
 
@@ -51,7 +49,7 @@ This will display a Apollo Studio to prove the exposed apis with GraphQL.
 
 The backend (NestJS) is documented using Swagger, which provides an interactive interface to explore and test API endpoints. You can access the documentation at the following link:
 
-* API Documentation (Swagger): `http://localhost:3000/docs`
+* **API Documentation (Swagger):** `http://localhost:3000/docs`
 
 The Swagger-generated documentation will show you the different endpoints available in the backend along with details about the required parameters and expected responses.
 
@@ -61,3 +59,4 @@ The Swagger-generated documentation will show you the different endpoints availa
 
 ```bash
 docker-compose down
+```
