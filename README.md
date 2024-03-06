@@ -6,7 +6,7 @@ If you want to see the challenge, click [here](CHALLENGE.md "Go to Challenge Sec
 - [Tech Stack](#tech-stack)
 - [Running the project](#running-the-project)
 - [Documentation](#documentation)
-- [Additional Notes](#aditional-notes)
+- [Additional Notes](#additional-notes)
 
 ## Solution
 
