@@ -1,9 +1,11 @@
-FROM node:20-alpine
+FROM node:20-alpine AS development
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY package*.json /
+COPY --chown=node:node package*.json ./
 
-RUN npm install --silent
+RUN npm ci
 
-COPY . .
+COPY --chown=node:node . .
+
+USER node
