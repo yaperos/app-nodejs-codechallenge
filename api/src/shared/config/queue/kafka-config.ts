@@ -4,6 +4,6 @@ export const kafkaQueueConfig = Object.freeze({
 		clientId: String(process.env.KAFKA_CLIENT_ID),
 		updateTransactionTopic: String(process.env.KAFKA_UPDATE_TRANSACTION_TOPIC),
 		validateTransactionTopic: String(process.env.KAFKA_VALIDATE_TRANSACTION_TOPIC),
-		consumerGroupId: String(process.env.CONSUMER_TRANSACTION_API_GROUP_ID)
+		consumerGroupId: String(process.env.KAFKA_CONSUMER_TRANSACTION_API_GROUP_ID)
 	}
 });

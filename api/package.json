@@ -7,7 +7,11 @@
 		"prisma": "^5.10.2",
 		"prisma-erd-generator": "~0.11.0",
 		"typescript": "^4.6.3",
-		"uuid": "^9.0.1"
+		"uuid": "^9.0.1",
+		"dotenv": "^16.0.0"
+	},
+	"scripts": {
+		"dev": "ts-node --transpileOnly ./src/main/server.ts " 
 	},
 	"devDependencies": {
 		"@swc/cli": "^0.1.56",
@@ -19,7 +23,6 @@
 		"@types/uuid": "^9.0.8",
 		"@typescript-eslint/eslint-plugin": "^5.17.0",
 		"@typescript-eslint/parser": "^5.17.0",
-		"cross-env": "^7.0.3",
 		"dotenv-cli": "^5.1.0",
 		"eslint": "^7.12.1",
 		"eslint-config-prettier": "^8.5.0",
