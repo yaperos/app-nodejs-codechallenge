@@ -1,0 +1,33 @@
+{
+	"test": ".*.ts$",
+	"jsc": {
+		"target": "es2020",
+		"parser": {
+			"syntax": "typescript",
+			"tsx": true,
+			"decorators": true,
+			"dynamicImport": true
+		},
+		"baseUrl": "./src",
+		"paths": {
+			"@src/*": [
+				"*"
+			],
+			"@presentation/*": ["presentation/*"],
+			"@domain/*": ["domain/*"],
+			"@infra/*": ["infra/*"],
+			"@data/*": ["data/*"],
+			"@validation/*": ["validation/*"],
+			"@shared/*": ["shared/*"]
+		},
+		"minify": {
+			"compress": {
+				"unused": true
+			},
+			"mangle": false
+		}
+	},
+	"module": {
+		"type": "commonjs"
+	}
+}

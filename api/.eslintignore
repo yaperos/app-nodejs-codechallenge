@@ -1,0 +1,11 @@
+/*.js
+node_modules
+dist
+*.config.ts
+*.pdf
+*.jpeg
+*.png
+*.gif
+*.jpg
+*.feature
+./data

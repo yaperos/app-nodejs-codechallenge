@@ -1,0 +1,12 @@
+{
+	"singleQuote": false,
+	"trailingComma": "none",
+	"overrides": [
+		{
+			"files": "*.yml",
+			"options": {
+				"singleQuote": false
+			}
+		}
+	]
+}
