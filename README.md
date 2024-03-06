@@ -10,10 +10,8 @@ If you want to see the challenge, click [here](CHALLENGE.md "Go to Challenge Sec
 
 ## Solution
 
-- **Api Transaction**
-  Service that allow handle transactions.
-- **Ms Antifraud**
-  Microservice that allow verify if a new transaction is valid or not.
+- **Api Transaction:** Service that allow handle transactions.
+- **Ms Antifraud:** Microservice that allow verify if a new transaction is valid or not.
 
 ![diagram](images/diagram.png)
 
