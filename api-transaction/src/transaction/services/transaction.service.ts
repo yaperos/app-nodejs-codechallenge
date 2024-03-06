@@ -1,12 +1,12 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TransactionStatus } from 'src/common/enums/transaction';
 import { Repository } from 'typeorm';
 import { CreateTransactionInput } from '../dto/inputs/create-transaction.input';
 import { UpdateTransactionInput } from '../dto/inputs/update-transaction.input';
 import { TransformedTransaction } from '../dto/responses/transformed-transaction-response.dto';
 import { Transaction } from '../entities/transaction.entity';
+import { TransactionStatus } from './../../common/enums/transaction';
 
 @Injectable()
 export class TransactionService {
