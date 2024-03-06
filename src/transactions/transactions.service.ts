@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './transaction.entity';
 import { Type } from '../type/type.entity';
@@ -31,24 +31,46 @@ export class TransactionsService {
 		});
 
 		if( !typeFound ){
-			return // agregar exception
+			return new HttpException('Type does not exists',HttpStatus.CONFLICT)
 		}
 
 		if ( !statusFound ){
-			return // agregar exception
+			return new HttpException('Status does not exists',HttpStatus.CONFLICT)
 		}
 
 		const newTransaction = this.transactionRepository.create(transaction);
 		newTransaction.transactionType = typeFound;
 		newTransaction.transactionStatus = statusFound;
+		newTransaction.transactionExternalId = transaction.accountExternalIdCredit;
 		const transactionSaved = this.transactionRepository.save(newTransaction)
 		await this.producerService.send(await transactionSaved);
 		return transactionSaved;
 
 	}
 
-	async updateStatus(status: string){
-		
+	async updateStatus(status: string, externalId: string){
+		const statusFound = await this.statusRepository.findOne({
+			where:{
+				name: status
+			}
+		});
+
+		if ( !statusFound ){
+			return
+		}
+
+		const transaction = await this.transactionRepository.findOne({
+			where:{
+				transactionExternalId: externalId
+			}
+		})
+
+		if ( !transaction ){
+			return
+		}
+		transaction.transactionStatus = statusFound;
+
+		this.transactionRepository.update({transactionExternalId: externalId}, transaction);
 	}
 
 

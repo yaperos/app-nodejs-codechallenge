@@ -1,4 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm'
+import { Transaction } from '../transactions/transaction.entity';
 
 @Entity({name: 'transactions_type'})
 export class Type{
@@ -12,5 +13,9 @@ export class Type{
 	@Column({type:'datetime', default: () => 'CURRENT_TIMESTAMP'})
 	createdAt : Date
 	
+
+	@OneToMany(() => Transaction, (transaction) => transaction.transactionType)
+	transactions: Transaction[]
+
 
 }

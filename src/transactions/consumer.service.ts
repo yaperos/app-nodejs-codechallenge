@@ -10,10 +10,10 @@ export class ConsumerService {
 	constructor(@Inject('KAFKA') private readonly kafka: ClientProxy,
 				private readonly transactionService: TransactionsService ){}
 
-	@MessagePattern('message.created')
+	@MessagePattern('transactions.status')
 	messageConsumer(@Payload() payload: any){
-		Logger.log(payload, 'teteet')
-		this.transactionService.updateStatus(payload.status)
+		Logger.log(payload, 'ConsumerService')
+		this.transactionService.updateStatus(payload.status, payload.externalId)
 	}
 
 

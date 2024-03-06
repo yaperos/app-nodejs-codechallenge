@@ -10,16 +10,13 @@ export class TransactionsController {
 		private readonly transactionService: TransactionsService ,
 		@Inject('KAFKA') private readonly kafka: ClientProxy ){}
 
-	@MessagePattern('message.created')
+	@MessagePattern('transaction.created')
 	messageConsumer(@Payload() payload: any){
 		Logger.log(payload, 'teteet')
 	}
 
 	@Post()
 	create(@Body() newTransaction: CreateTransactionDto ){
-		this.kafka.emit('message.created',{
-			newTransaction
-		});
 		return this.transactionService.create(newTransaction);
 	}
 

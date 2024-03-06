@@ -1,24 +1,22 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne, JoinColumn} from 'typeorm'
 import { Type } from '../type/type.entity'
 import { Status } from '../status/status.entity'
 
 
 @Entity({name: 'transactions'})
 export class Transaction{
-
-	@PrimaryGeneratedColumn()
-	id : number
+	
+ 	@PrimaryGeneratedColumn("uuid")
+ 	id : string
 
 	@Column({unique: true})	
 	transactionExternalId : string
 
-	@OneToOne( () => Type )
-	@JoinColumn()
+	@ManyToOne(() => Type, (type) => type.transactions)
 	transactionType : Type
 
 
-	@OneToOne( () => Status )
-	@JoinColumn()
+	@ManyToOne(() => Status, (status) => status.transactions)
 	transactionStatus : Status
 
 	@Column({nullable: true})
