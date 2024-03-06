@@ -22,6 +22,7 @@ If you want to see the challenge, click [here](CHALLENGE.md "Go to Challenge Sec
 - **Apache Kafka:** Distributed data streaming platform.
 - **GraphQL:** Query language for APIs.
 - **Docker:** Platform for creating, deploying, and running applications in containers.
+- **Apollo GraphQL:** A comprehensive platform for managing and consuming GraphQL APIs.
 
 ## Running the project
 
@@ -45,11 +46,11 @@ This will display a Apollo Studio to prove the exposed apis with GraphQL.
 
 ## Documentation
 
-The backend (NestJS) is documented using Swagger, which provides an interactive interface to explore and test API endpoints. You can access the documentation at the following link:
+The backend (NestJS) is documented using Apollo GraphQL, which provides an interactive interface to explore and test GraphQL endpoints. You can access the documentation at the following link:
 
-* **API Documentation (Swagger):** `http://localhost:3000/docs`
+* **Documentation (Apollo GraphQL):** `http://localhost:3000/graphql`
 
-The Swagger-generated documentation will show you the different endpoints available in the backend along with details about the required parameters and expected responses.
+The Swagger-generated documentation will show you the different schemas, queries and mutations available in the backend along with details about the required parameters, and responses.
 
 ## Additional Notes
 
