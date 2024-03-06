@@ -11,12 +11,18 @@ services:
     volumes:
       - ./postgres:/var/lib/postgresql/data
     container_name: TransactionDB
+    networks:
+      - app-network
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - app-network
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    container_name: kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -27,3 +33,43 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    networks:
+      - app-network
+  api-transaction:
+    image: api-transaction
+    container_name: api-transaction
+    build:
+      context: ./api-transaction
+      dockerfile: Dockerfile
+    env_file:
+      - ./api-transaction/.env
+    ports:
+      - "3000:3000"
+    command: npm run start
+    depends_on:
+      - postgres
+      - kafka
+    volumes:
+      - ./api-transaction:/usr/src/app
+    networks:
+      - app-network
+  ms-antifraud:
+    image: ms-antifraud
+    container_name: ms-antifraud
+    build:
+      context: ./ms-antifraud
+      dockerfile: Dockerfile
+    env_file:
+      - ./ms-antifraud/.env
+    ports:
+      - "3001:3001"
+    command: npm run start
+    depends_on:
+      - kafka
+    volumes:
+      - ./ms-antifraud:/usr/src/app
+    networks:
+      - app-network
+networks:
+  app-network:
+      driver: bridge
