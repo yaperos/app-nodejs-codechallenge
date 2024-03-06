@@ -1,82 +1,63 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge 🚀
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+If you want to see the challenge, click [here](CHALLENGE.md "Go to Challenge Section").
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+- [Solution](#solution)
+- [Tech Stack](#tech-stack)
+- [Running the project](#running-the-project)
+- [Documentation](#documentation)
+- [Additional Notes](#aditional-notes)
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Solution
 
-# Problem
+<ul>
+  <li>Api Transaction</li>
+  <li>Ms Antifraud</li>
+</ul>
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Insert image here
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+## Tech Stack
 
-Every transaction with a value greater than 1000 should be rejected.
+<ul>
+  <li>NestJS (NodeJS)</li>
+  <li>TypeORM (PostgreSQL)</li>
+  <li>Apache Kafka</li>  
+  <li>GraphQL</li>  
+  <li>Docker</li>  
+</ul>
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+## Running the project
+
+To run the complete project, make sure you have Docker and Docker Compose installed on your system. Then, follow the steps below:
+
+1. Clone this repository to your local machine.
+2. Navigate to the root of the project where the `docker-compose.yml` file is located.
+3. Run the following command to start the backend and frontend services:
+
+```bash
+docker-compose up
 ```
 
-# Tech Stack
+This will create and start Docker containers with each microservice, database, queue and dependencies running simultaneously.
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+4. Once all the containers are up and running, you can prove the application through the following link:
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+* Backend (NestJS): `http://localhost:3000/graphql`
 
-You must have two resources:
+This will display a Apollo Studio to prove the exposed apis with GraphQL.
 
-1. Resource to create a transaction that must containt:
+## Documentation
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
+The backend (NestJS) is documented using Swagger, which provides an interactive interface to explore and test API endpoints. You can access the documentation at the following link:
 
-2. Resource to retrieve a transaction
+* API Documentation (Swagger): `http://localhost:3000/docs`
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+The Swagger-generated documentation will show you the different endpoints available in the backend along with details about the required parameters and expected responses.
 
-## Optional
+## Additional Notes
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+* If you want to stop the containers, you can press `Ctrl + C` in the terminal where the services are running and then execute the following command to stop and remove the containers:
 
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+```bash
+docker-compose down
