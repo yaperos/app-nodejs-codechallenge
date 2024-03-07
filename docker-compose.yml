@@ -70,6 +70,16 @@ services:
       - ./ms-antifraud:/usr/src/app
     networks:
       - app-network
+  k6:
+    image: grafana/k6
+    container_name: k6
+    working_dir: /k6
+    env_file:
+      - .env
+    volumes:
+      - ./k6:/k6
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge
