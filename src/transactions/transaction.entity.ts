@@ -15,16 +15,13 @@ export class Transaction{
 	@ManyToOne(() => Type, (type) => type.transactions)
 	transactionType : Type
 
-
 	@ManyToOne(() => Status, (status) => status.transactions)
 	transactionStatus : Status
 
 	@Column({nullable: true})
 	value : number
 	
-
 	@Column({type:'datetime', default: () => 'CURRENT_TIMESTAMP'})
 	createdAt : Date
 	
-
 }

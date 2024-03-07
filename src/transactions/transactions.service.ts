@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './transaction.entity';
 import { Type } from '../type/type.entity';
@@ -17,36 +17,32 @@ export class TransactionsService {
 
 
 	async create(transaction: CreateTransactionDto ){
-		
 		const typeFound = await this.typeRepository.findOne({
 			where:{
 				id: transaction.tranferTypeId
 			}
 		});
-
 		const statusFound = await this.statusRepository.findOne({
 			where:{
 				name: 'PENDING'
 			}
 		});
-
 		if( !typeFound ){
-			return new HttpException('Type does not exists',HttpStatus.CONFLICT)
+			return new InternalServerErrorException('Type not found')
 		}
-
 		if ( !statusFound ){
-			return new HttpException('Status does not exists',HttpStatus.CONFLICT)
+			return new InternalServerErrorException('Status not found')
 		}
-
 		const newTransaction = this.transactionRepository.create(transaction);
 		newTransaction.transactionType = typeFound;
 		newTransaction.transactionStatus = statusFound;
 		newTransaction.transactionExternalId = transaction.accountExternalIdCredit;
+	
 		const transactionSaved = this.transactionRepository.save(newTransaction)
 		await this.producerService.send(await transactionSaved);
 		return transactionSaved;
-
 	}
+
 
 	async updateStatus(status: string, externalId: string){
 		const statusFound = await this.statusRepository.findOne({
@@ -54,22 +50,18 @@ export class TransactionsService {
 				name: status
 			}
 		});
-
 		if ( !statusFound ){
-			return
+			return new InternalServerErrorException('Status not found')
 		}
-
-		const transaction = await this.transactionRepository.findOne({
+		var transaction = await this.transactionRepository.findOne({
 			where:{
 				transactionExternalId: externalId
 			}
 		})
-
 		if ( !transaction ){
-			return
+			return new InternalServerErrorException('Type not found')
 		}
-		transaction.transactionStatus = statusFound;
-
+	 	transaction.transactionStatus = statusFound;
 		this.transactionRepository.update({transactionExternalId: externalId}, transaction);
 	}
 

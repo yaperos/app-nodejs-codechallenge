@@ -41,7 +41,6 @@ export class TypeService {
 
 		if(!typeFound){
 			return new NotFoundException('Type not found')
-			//return new HttpException('Type not found',HttpStatus.NOT_FOUND)
 		}
 		return typeFound;
 	}

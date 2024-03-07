@@ -50,6 +50,7 @@ export class StatusService {
 		return this.statusRepository.delete({id});
 	}
 
+
 	updateStatus(id: number, status: UpdateStatusDto){
 		return this.statusRepository.update({id: id}, status);
     }
