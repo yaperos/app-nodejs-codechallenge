@@ -1,19 +1,19 @@
-import { CreateTypeDto } from '../../type/dto/create-type.dto';
-import { CreateStatusDto } from '../../status/dto/create-status.dto';
+import { TypeDto } from '../../type/dto/type.dto';
+import { StatusDto } from '../../status/dto/status.dto';
 import { Transaction } from '../transaction.entity'
 export class ResponseTransactionDto{
 
     transactionExternalId: string;
     value: number;
     createdAt: Date;
-	transactionType: CreateTypeDto;
-	transactionStatus: CreateStatusDto
+	transactionType: TypeDto;
+	transactionStatus: StatusDto
 
 	constructor(transaction: Transaction) {
 	    this.transactionExternalId = transaction.transactionExternalId;
 	    this.value = transaction.value;
-		this.transactionStatus = new CreateStatusDto(transaction.transactionStatus.name);
-		this.transactionType = new CreateTypeDto(transaction.transactionType.name)
+		this.transactionStatus = new StatusDto(transaction.transactionStatus.name);
+		this.transactionType = new TypeDto(transaction.transactionType.name)
 	}
 
  }

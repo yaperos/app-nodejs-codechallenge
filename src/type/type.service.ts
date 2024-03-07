@@ -2,8 +2,7 @@ import { Injectable , NotFoundException, InternalServerErrorException} from '@ne
 import { InjectRepository } from '@nestjs/typeorm';
 import { Type } from './type.entity';
 import { Repository } from 'typeorm';
-import { CreateTypeDto } from './dto/create-type.dto'
-import { UpdateTypeDto } from './dto/update-type.dto'
+import { TypeDto } from './dto/type.dto'
 
  
 @Injectable()
@@ -12,7 +11,7 @@ export class TypeService {
 
 	constructor(@InjectRepository(Type) private typeRepository: Repository<Type> ) {}
 
-	async createType(type: CreateTypeDto ){
+	async createType(type: TypeDto ){
 		const typeFound = await this.typeRepository.findOne({
 			where:{
 				name: type.name
@@ -49,7 +48,7 @@ export class TypeService {
 		return this.typeRepository.delete({id});
 	}
 
-	updateType(id: number, type: UpdateTypeDto){
+	updateType(id: number, type: TypeDto){
 		return this.typeRepository.update({id: id}, type);
     }
 

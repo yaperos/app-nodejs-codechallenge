@@ -1,6 +1,5 @@
 import { Controller, Post, Get, Param, Body , ParseIntPipe, Delete, Patch, UseFilters } from '@nestjs/common';
-import { CreateStatusDto } from './dto/create-status.dto';
-import { UpdateStatusDto } from './dto/update-status.dto';
+import { StatusDto } from './dto/status.dto';
 import { StatusService } from './status.service';
 import { Status } from './status.entity';
 import { HttpExceptionFilter } from '../exceptions/http-exception.filter';
@@ -12,7 +11,7 @@ export class StatusController {
 	constructor(private statusService: StatusService){}
 
 	@Post()
-	createStatus(@Body() newStatus: CreateStatusDto ){
+	createStatus(@Body() newStatus: StatusDto ){
 		return this.statusService.createStatus(newStatus)
 	}
 
@@ -34,8 +33,8 @@ export class StatusController {
 
 
 	@Patch(':id')
-	updateStatus(@Param('id',ParseIntPipe) id: number, @Body() Status: UpdateStatusDto){
-		return this.statusService.updateStatus(id, Status);
+	updateStatus(@Param('id',ParseIntPipe) id: number, @Body() status: StatusDto){
+		return this.statusService.updateStatus(id, status);
 	}
 
 }

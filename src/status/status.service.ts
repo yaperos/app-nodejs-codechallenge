@@ -2,8 +2,8 @@ import { Injectable , NotFoundException, InternalServerErrorException } from '@n
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from './status.entity';
 import { Repository } from 'typeorm';
-import { CreateStatusDto } from './dto/create-status.dto'
-import { UpdateStatusDto } from './dto/update-status.dto'
+import { StatusDto } from './dto/status.dto'
+ 
 
 
 @Injectable()
@@ -11,7 +11,7 @@ export class StatusService {
 
 	constructor(@InjectRepository(Status) private statusRepository: Repository<Status> ) {}
 
-	async createStatus(status: CreateStatusDto ){
+	async createStatus(status: StatusDto ){
 		const statusFound = await this.statusRepository.findOne({
 			where:{
 				name: status.name
@@ -51,7 +51,7 @@ export class StatusService {
 	}
 
 
-	updateStatus(id: number, status: UpdateStatusDto){
+	updateStatus(id: number, status: StatusDto){
 		return this.statusRepository.update({id: id}, status);
     }
 
