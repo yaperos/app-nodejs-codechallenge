@@ -1,10 +1,8 @@
-// config/database.js
-
 const { Sequelize } = require('sequelize');
 
 // Configura la conexión a la base de datos
-const sequelize = new Sequelize('nombre_base_de_datos', 'usuario', 'contraseña', {
-    host: 'localhost', // Cambiar a la dirección de tu base de datos si es remota
+const sequelize = new Sequelize('transacciones', 'postgres', 'nancy', {
+    host: process.env.DB_HOST || 'localhost', // Cambiar a la dirección de tu base de datos si es remota
     dialect: 'postgres', // El dialecto para PostgreSQL
     port: 5432, // El puerto de PostgreSQL por defecto
     // Otros parámetros de configuración si son necesarios

@@ -1,4 +1,5 @@
 const express = require('express');
+const { sequelize, testDatabaseConnection } = require('./config/databaseConfig');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -22,7 +23,13 @@ app.use((err, req, res, next) => {
   res.status(500).send('Error interno del servidor');
 });
 
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor Express en ejecución en el puerto ${PORT}`);
-});
+// Verificar la conexión a la base de datos y luego iniciar el servidor
+testDatabaseConnection()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Servidor Express en ejecución en el puerto ${PORT}`);
+    });
+  })
+  .catch(error => {
+    console.error('Error al iniciar el servidor:', error);
+  });
