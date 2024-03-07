@@ -1,7 +1,5 @@
-// controllers/transactionController.js
-
-const Transaction = require('../models/transactionModel');
-
+const TransactionService = require('../services/transaction.service');
+const antifraudService = require('../services/antifraudService');
 
 exports.createTransaction = async (req, res) => {
   try {
@@ -13,16 +11,11 @@ exports.createTransaction = async (req, res) => {
       return res.status(400).json({ message: 'Todos los campos son requeridos: accountexternaliddebit, accountexternalidcredit, transferenciatypeid, valor' });
     }
 
-    // Validar el valor de la transacción
-    if (valor > 1000) {
-      return res.status(400).json({ message: 'El valor de la transacción excede el límite permitido' });
-    }
-
-    // Actualizar el estado de la transacción según las reglas
-    let estado = valor > 1000 ? 'rechazado' : 'aprobado';
+    // Validar el valor de la transacción con el servicio antifraude
+    const estado = await antifraudService.validateTransaction({ valor });
 
     // Crear la transacción en la base de datos
-    const transaction = await Transaction.create({
+    const transaction = await TransactionService.createTransaction({
       accountexternaliddebit,
       accountexternalidcredit,
       transferenciatypeid,
@@ -39,7 +32,7 @@ exports.createTransaction = async (req, res) => {
 
 exports.getTransaction = async (req, res) => {
   try {
-    const transaction = await Transaction.findByPk(req.params.id);
+    const transaction = await TransactionService.getTransactionById(req.params.id);
     if (!transaction) {
       return res.status(404).json({ message: 'Transaction not found' });
     }
@@ -55,15 +48,8 @@ exports.updateTransactionState = async (req, res) => {
     const { id } = req.params;
     const { newState } = req.body; // Supongamos que el nuevo estado se envía en el cuerpo de la solicitud
 
-    // Encuentra la transacción por su ID
-    const transaction = await Transaction.findByPk(id);
-    if (!transaction) {
-      return res.status(404).json({ message: 'Transaction not found' });
-    }
-
-    // Actualiza el estado de la transacción
-    transaction.estado = newState;
-    await transaction.save();
+    // Encuentra la transacción por su ID y actualiza el estado
+    const transaction = await TransactionService.updateTransactionState(id, newState);
 
     return res.status(200).json(transaction);
   } catch (error) {
@@ -71,4 +57,3 @@ exports.updateTransactionState = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
-
