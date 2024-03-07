@@ -104,3 +104,7 @@ dist
 .tern-port
 
 postgres
+
+k6/report.json
+
+.env
