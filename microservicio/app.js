@@ -1,4 +1,5 @@
 const express = require('express');
+const { kafka } = require('./config/kafkaConfig'); // Importa la configuración de Kafka
 const { sequelize, testDatabaseConnection } = require('./config/databaseConfig');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +12,19 @@ app.use(express.json());
 
 // Usar las rutas
 app.use('/api', transactionRoutes); // Esto asume que todas tus rutas están bajo /api
+
+// Middleware para manejar mensajes de Kafka
+// Middleware para manejar mensajes de Kafka
+async function kafkaMiddleware() {
+  try {
+    await producer.connect(); // Conecta el cliente de Kafka
+    await consumer.connect(); // Conecta el consumidor de Kafka
+    console.log('Conexión a Kafka establecida');
+  } catch (error) {
+    console.error('Error al conectar con Kafka:', error);
+  }
+}
+
 
 // Manejador de rutas no encontradas
 app.use((req, res, next) => {

@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Nancyclavijo27/app-nodejs-codechallenge#readme",
   "dependencies": {
     "express": "^4.18.3",
+    "kafkajs": "^2.2.4",
     "knex": "^3.1.0",
     "mysql2": "^3.9.2",
     "pg": "^8.11.3",

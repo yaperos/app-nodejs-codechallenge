@@ -1,5 +1,7 @@
 const TransactionService = require('../services/transaction.service');
-const antifraudService = require('../services/antifraudService');
+const antifraudService = require('../services/antifraud.service');
+const KafkaService = require('../services/kafka.service');
+
 
 exports.createTransaction = async (req, res) => {
   try {
@@ -22,6 +24,9 @@ exports.createTransaction = async (req, res) => {
       valor,
       estado
     });
+
+    // Enviar mensaje a un tema de Kafka
+    await KafkaService.sendToTopic('nombre_del_tema', JSON.stringify(transaction));
 
     return res.status(201).json(transaction);
   } catch (error) {
@@ -50,6 +55,12 @@ exports.updateTransactionState = async (req, res) => {
 
     // Encuentra la transacción por su ID y actualiza el estado
     const transaction = await TransactionService.updateTransactionState(id, newState);
+
+    // Si necesitas enviar el nuevo estado a Kafka
+    await KafkaService.sendToTopic('topic_estado_transaccion', JSON.stringify({
+      transactionId: id,
+      newState: newState
+    }));
 
     return res.status(200).json(transaction);
   } catch (error) {
