@@ -1,0 +1,38 @@
+{
+	"compilerOptions": {
+		"incremental": true,
+		"target": "es2021",
+		"lib": [
+			"es2021"
+		],
+		"module": "commonjs",
+		"allowJs": true,
+		"outDir": "./dist",
+		"baseUrl": "./src",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"noImplicitAny": true,
+		"skipLibCheck": true,
+		"paths": {
+      "@domain/*": ["domain/*"],
+			"@data/*": ["data/*"],
+			"@infra/*": ["infra/*"],
+			"@presentation/*": ["presentation/*"],
+			"@validation/*": ["validation/*"],
+			"@shared/*": ["shared/*"]
+      
+    },
+		"plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ],
+	},
+	"ts-node": {
+    "swc": true,
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
+}
