@@ -67,10 +67,6 @@ docker-compose run k6 run --out json=report.json scripts/create_transaction.k6.j
 
 Each command will generate a report in the `k6/report.json` file
 
-* **Stress test (k6):** `http://localhost:3000/graphql`
-
-The Swagger-generated documentation will show you the different schemas, queries and mutations available in the backend along with details about the required parameters, and responses.
-
 ## Documentation
 
 The backend (NestJS) is documented using Apollo GraphQL, which provides an interactive interface to explore and test GraphQL endpoints. You can access the documentation at the following link:
