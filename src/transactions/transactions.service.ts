@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './transaction.entity';
 import { Type } from '../type/type.entity';
@@ -28,10 +28,10 @@ export class TransactionsService {
 			}
 		});
 		if( !typeFound ){
-			return new InternalServerErrorException('Type not found')
+			return new NotFoundException('Type not found')
 		}
 		if ( !statusFound ){
-			return new InternalServerErrorException('Status not found')
+			return new NotFoundException('Status not found')
 		}
 		const newTransaction = this.transactionRepository.create(transaction);
 		newTransaction.transactionType = typeFound;
@@ -51,7 +51,7 @@ export class TransactionsService {
 			}
 		});
 		if ( !statusFound ){
-			return new InternalServerErrorException('Status not found')
+			return new NotFoundException('Status not found')
 		}
 		var transaction = await this.transactionRepository.findOne({
 			where:{
@@ -59,11 +59,25 @@ export class TransactionsService {
 			}
 		})
 		if ( !transaction ){
-			return new InternalServerErrorException('Type not found')
+			return new NotFoundException('Type not found')
 		}
 	 	transaction.transactionStatus = statusFound;
 		this.transactionRepository.update({transactionExternalId: externalId}, transaction);
 	}
 
 
+
+	async get(id: string) : Promise<Transaction> {
+		const transaction = await this.transactionRepository.findOne({
+			relations: ['transactionType', 'transactionStatus'],
+			where:{
+				id: id
+			}
+		})
+
+		if(!transaction){
+			throw new NotFoundException('Type not found')
+		}
+		return transaction;
+	}
 }

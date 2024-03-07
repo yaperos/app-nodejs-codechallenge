@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TransactionsController } from './transactions.controller';
 import { TransactionsService } from './transactions.service';
 import { ProducerService } from './producer.service';
-import { ConsumerService } from './consumer.service';
 import { TypeOrmModule} from '@nestjs/typeorm'
 import { Transaction } from './transaction.entity';
 import { Type } from '../type/type.entity';
@@ -26,6 +25,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
       ])
     ],
   controllers: [TransactionsController],
-  providers: [ConsumerService,TransactionsService,ProducerService]
+  providers: [TransactionsService,ProducerService]
 })
 export class TransactionsModule {}

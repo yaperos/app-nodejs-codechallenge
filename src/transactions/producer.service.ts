@@ -1,5 +1,5 @@
 import { Injectable, Inject, Logger} from '@nestjs/common';
-import { MessagePattern, Payload, ClientProxy} from '@nestjs/microservices';
+import { MessagePattern, Payload, ClientProxy } from '@nestjs/microservices';
 import { Transaction } from './transaction.entity';
 import { EventTransactionDto } from './dto/event-transaction.dto';
 
@@ -19,5 +19,6 @@ export class ProducerService {
 			transactionDTO
 		});
 	}
+
 
 }
