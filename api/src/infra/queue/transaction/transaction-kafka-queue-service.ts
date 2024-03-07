@@ -39,6 +39,7 @@ class TransactionKafkaQueueService
 			});
 		} catch (error) {
 			console.log(error);
+			throw error;
 		}
 	}
 
@@ -51,6 +52,7 @@ class TransactionKafkaQueueService
 			});
 		} catch (error) {
 			console.log(error);
+			throw error;
 		}
 	}
 }

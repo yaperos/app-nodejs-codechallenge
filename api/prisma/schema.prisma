@@ -33,6 +33,14 @@ model TransferType {
   @@map("transfer_types")
 }
 
+model LogError {
+  id        Int      @id @unique @default(autoincrement())
+  stack     String
+  createdAt DateTime
+
+  @@map("log_errors")
+}
+
 enum TransactionStatus {
   PENDING
   APPROVED

@@ -23,6 +23,7 @@ export class AddTransactionUseCase implements IAddTransactionUseCase {
 	) {}
 
 	async execute(input: AddTransactionModel): Promise<AddTransactionUseCaseResult> {
+		throw new TransferNotFoundError();
 		const { transferTypeId } = input;
 
 		const transferExists = await this.transferExistsRepository.existsById(transferTypeId);

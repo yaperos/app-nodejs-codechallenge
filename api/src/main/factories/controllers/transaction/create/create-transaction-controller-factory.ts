@@ -2,10 +2,14 @@ import { CreateTransactionController } from '@presentation/controllers/transacti
 import { IController } from '@presentation/protocols';
 import { makeCreateTransactionValidation } from './create-transaction-validation-factory';
 import { makeAddTransactionUseCase } from 'main/factories/usecases/transaction/create-transaction-use-case-factory';
+import { LogControllerDecorator } from 'main/decorators/log-controller-decorator';
+import { LogRepository } from '@infra/db/prisma/repositories/log/log-error-repository';
 
 export const makeCreateTransactionController = (): IController => {
-	return new CreateTransactionController(
+	const controller = new CreateTransactionController(
 		makeCreateTransactionValidation(),
 		makeAddTransactionUseCase()
 	);
+
+	return new LogControllerDecorator(controller, new LogRepository());
 };
