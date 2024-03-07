@@ -1,10 +1,12 @@
-import { Controller, Post, Get, Param, Body , ParseIntPipe, Delete, Patch } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body , ParseIntPipe, Delete, Patch, UseFilters } from '@nestjs/common';
 import { CreateStatusDto } from './dto/create-status.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { StatusService } from './status.service';
 import { Status } from './status.entity';
+import { HttpExceptionFilter } from '../exceptions/http-exception.filter';
 
 @Controller('status')
+@UseFilters(new HttpExceptionFilter())
 export class StatusController {
 
 	constructor(private statusService: StatusService){}
@@ -16,7 +18,7 @@ export class StatusController {
 
 	@Get()
 	getStatuss(): Promise<Status[]> {
-		return this.statusService.getStatuss()
+		return this.statusService.getAllStatus()
 	}
 
 

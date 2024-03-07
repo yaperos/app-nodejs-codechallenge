@@ -1,4 +1,4 @@
-import { Injectable , HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable , NotFoundException, InternalServerErrorException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Type } from './type.entity';
 import { Repository } from 'typeorm';
@@ -20,7 +20,7 @@ export class TypeService {
 		});
 
 		if( typeFound ){
-			return new HttpException('Type already exists',HttpStatus.CONFLICT)
+			return new InternalServerErrorException('Type already exists')
 		}
 
 		const newType = this.typeRepository.create(type);
@@ -40,14 +40,13 @@ export class TypeService {
 		});
 
 		if(!typeFound){
-			return new HttpException('Type not found',HttpStatus.NOT_FOUND)
-
+			return new NotFoundException('Type not found')
+			//return new HttpException('Type not found',HttpStatus.NOT_FOUND)
 		}
 		return typeFound;
 	}
 
 	deleteType(id: number){
-		// TODO validar constratint con Transaction
 		return this.typeRepository.delete({id});
 	}
 
