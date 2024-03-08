@@ -5,9 +5,17 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { TypeOrmModule} from '@nestjs/typeorm'
 import { TypeModule } from './type/type.module';
 import { StatusModule } from './status/status.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [
+    GraphQLModule.forRoot({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql')
+    }),
+    TypeOrmModule.forRoot({
     type: 'mysql',
     host: 'localhost',
     username: 'root',

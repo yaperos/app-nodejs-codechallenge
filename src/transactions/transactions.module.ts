@@ -7,6 +7,7 @@ import { Transaction } from './transaction.entity';
 import { Type } from '../type/type.entity';
 import { Status } from '../status/status.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices'
+import { TransactionsResolver } from './transactions.resolver';
 
 @Module({
   imports: [ TypeOrmModule.forFeature([Transaction,Type,Status]),
@@ -25,6 +26,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
       ])
     ],
   controllers: [TransactionsController],
-  providers: [TransactionsService,ProducerService]
+  providers: [TransactionsResolver,TransactionsService,ProducerService]
 })
 export class TransactionsModule {}

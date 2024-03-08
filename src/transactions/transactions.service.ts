@@ -66,6 +66,9 @@ export class TransactionsService {
 	}
 
 
+	async getAll() : Promise<Transaction[]>{
+		return this.transactionRepository.find({relations: ['transactionType', 'transactionStatus']})
+	}	
 
 	async get(id: string) : Promise<Transaction> {
 		const transaction = await this.transactionRepository.findOne({

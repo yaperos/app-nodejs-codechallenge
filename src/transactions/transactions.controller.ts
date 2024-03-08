@@ -26,7 +26,15 @@ export class TransactionsController {
  		return new ResponseTransactionDto(await transaction)
 	}
 
- 
+ 	@Get()
+	async getAll(@Param('id') id: string ){
+		const transactions = await this.transactionService.getAll();
+		var transactionsDto = transactions.map(function(element){
+  			return new ResponseTransactionDto(element);
+		})
+		return transactionsDto;
+	}
+
 	@MessagePattern('transactions.update')
 	consumer(@Payload() payload: any){
 		Logger.log(payload, 'TransactionsController')
