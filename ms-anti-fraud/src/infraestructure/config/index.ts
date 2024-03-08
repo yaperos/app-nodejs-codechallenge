@@ -13,3 +13,9 @@ export const serverConfig = {
 export const kafkaConfig = {
   broker: process.env.KAFKA_BROKER,
 };
+
+export const msConfig = {
+  nameLogger: process.env.NAME_MS_LOGGER,
+  nameTransactions: process.env.NAME_MS_TRANSACTIONS,
+  nameAntiFraud: process.env.NAME_MS_ANTI_FRAUD,
+};

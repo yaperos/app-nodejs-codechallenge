@@ -10,7 +10,7 @@ export const MicroserviceConfig: KafkaOptions = {
       brokers: [kafkaConfig.broker],
     },
     consumer: {
-      groupId: serverConfig.name,
+      groupId: `${serverConfig.name}-consumer`,
       allowAutoTopicCreation: true,
     },
     producer: {
