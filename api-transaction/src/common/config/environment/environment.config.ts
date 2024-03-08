@@ -14,6 +14,10 @@ export class EnvironmentService {
     return this.configService.get<string>('NODE_ENV');
   }
 
+  get timeout(): number {
+    return +this.configService.get<number>('TIMEOUT');
+  }
+
   get database(): DataBaseConfig {
     return {
       host: this.configService.get<string>('DATABASE_HOST'),
