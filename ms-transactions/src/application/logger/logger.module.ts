@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { kafkaConfig, msConfig } from 'src/infraestructure/config';
+import { kafkaConfig, msConfig } from '../../infraestructure/config';
 import { LoggerService } from './logger.service';
 import { Partitioners } from 'kafkajs';
 

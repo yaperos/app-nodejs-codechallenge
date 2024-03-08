@@ -8,9 +8,9 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { LoggerServiceInterface } from 'src/domain/logger/logger.interface';
-import { LoggerInterface } from 'src/domain/logger/logger.model';
-import { msConfig } from 'src/infraestructure/config';
+import { LoggerServiceInterface } from '../../domain/logger/logger.interface';
+import { LoggerInterface } from '../../domain/logger/logger.model';
+import { msConfig } from '../../infraestructure/config';
 
 @Injectable()
 export class LoggerService implements OnModuleInit, LoggerServiceInterface {

@@ -1,6 +1,6 @@
 import { LogLevel } from '@nestjs/common';
-import { LoggerInterface } from 'src/domain/logger/logger.model';
-import { serverConfig } from 'src/infraestructure/config';
+import { LoggerInterface } from '../../domain/logger/logger.model';
+import { serverConfig } from '../../infraestructure/config';
 
 export const buildLog = (
   level: LogLevel,

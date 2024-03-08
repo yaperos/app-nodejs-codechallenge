@@ -6,7 +6,7 @@ import {
   kafkaConfig,
   msConfig,
   serverConfig,
-} from 'src/infraestructure/config';
+} from '../../infraestructure/config';
 
 @Module({
   controllers: [LoggerController],
