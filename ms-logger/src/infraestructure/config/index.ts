@@ -9,3 +9,7 @@ export const serverConfig = {
   port: Number(process.env.PORT_MS_LOGGER) || 3000,
   name: process.env.NAME_MS_LOGGER,
 };
+
+export const kafkaConfig = {
+  broker: process.env.KAFKA_BROKER,
+};

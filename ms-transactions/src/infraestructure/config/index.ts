@@ -9,3 +9,7 @@ export const serverConfig = {
   port: Number(process.env.PORT_MS_TRANSACTIONS) || 3000,
   name: process.env.NAME_MS_TRANSACTIONS,
 };
+
+export const kafkaConfig = {
+  broker: process.env.KAFKA_BROKER,
+};
