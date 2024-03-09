@@ -34,6 +34,7 @@ async function disconnect() {
 }
 
 async function sendToTopic(topic, message) {
+  console.log(`Enviando mensaje al tema ${topic}: ${message}`);
   await producer.send({
     topic: topic,
     messages: [{ value: message }]

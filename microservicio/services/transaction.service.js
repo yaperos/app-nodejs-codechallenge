@@ -4,6 +4,10 @@ const Transaction = require('../models/transactionModel');
 
 exports.createTransaction = async (data) => {
   try {
+    // Agrega el estado inicial como "pendiente" a los datos de la transacción
+    data.estado = 'pendiente';
+
+    // Crea la transacción con el estado inicial como "pendiente"
     const transaction = await Transaction.create(data);
     return transaction;
   } catch (error) {
