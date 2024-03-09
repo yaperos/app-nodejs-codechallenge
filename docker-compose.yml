@@ -7,6 +7,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=yape
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +24,45 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  pgadmin:
+    container_name: app-nodejs-codechallenge-pgadmin-1
+    depends_on:
+      - postgres
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 8002:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=danielrossini7@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    volumes:
+      - ./db/postgresql/pgadmin:/var/lib/pgadmin
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    depends_on:
+      - kafka
+    ports:
+      - 9000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+  transaction:
+    build: 
+      context: ./transaction
+      dockerfile: Dockerfile
+    depends_on: 
+      - postgres
+      - kafka
+    volumes:
+      - ./transaction:/usr/src/transaction
+      - ./transaction/node_modules:/usr/src/transaction/node_modules
+    ports:
+      - 3000:3000
+  anti-fraud:
+    build:
+      context: ./anti-fraud
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+    volumes:
+      - ./anti-fraud:/usr/src/anti-fraud
+      - ./anti-fraud/node_modules:/usr/src/anti-fraud/node_modules
