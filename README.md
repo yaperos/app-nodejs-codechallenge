@@ -1,4 +1,4 @@
-# code-challenge-yape
+# app-nodejs-codechallenge
 
 ## How to Run the Application
 
@@ -6,8 +6,8 @@
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/your-project.git
-    cd your-project
+    git clone https://github.com/your-username/app-nodejs-codechallenge.git
+    cd app-nodejs-codechallenge
     ```
 
 2. **Install dependencies for the Transaction API:**
