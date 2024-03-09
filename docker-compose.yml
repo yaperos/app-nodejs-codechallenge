@@ -1,19 +1,22 @@
 version: "3.7"
 services:
   postgres:
-    image: postgres:14
+    image: postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    image: confluentinc/cp-kafka
+    depends_on: 
+      - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
