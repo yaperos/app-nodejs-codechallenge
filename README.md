@@ -16,7 +16,13 @@
     npm install
     ```
 
-3. **Set up Docker containers, wait for the build, and run migrations for the Transaction API:**
+3. **Install dependencies for the Anti Fraud API:**
+    ```bash
+    cd anti-fraud
+    npm install
+    ```
+
+4. **Set up Docker containers, wait for the build, and run migrations for the Transaction API:**
     ```bash
     docker-compose up -d
 
