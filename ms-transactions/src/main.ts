@@ -21,6 +21,7 @@ async function bootstrap() {
   app.connectMicroservice(MicroserviceConfig);
 
   await app.startAllMicroservices();
+
   await app.listen(serverConfig.port, () => {
     Logger.log(
       `Server is running on port ${serverConfig.port}, ${serverConfig.name}`,

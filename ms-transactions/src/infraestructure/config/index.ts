@@ -19,3 +19,11 @@ export const msConfig = {
   nameTransactions: process.env.NAME_MS_TRANSACTIONS,
   nameAntiFraud: process.env.NAME_MS_ANTI_FRAUD,
 };
+
+export const databaseConfig = {
+  host: process.env.DATBASE_TRANSACTIONS_HOST,
+  port: Number(process.env.DATBASE_TRANSACTIONS_PORT) || 5432,
+  username: process.env.DATBASE_TRANSACTIONS_USERNAME,
+  password: process.env.DATBASE_TRANSACTIONS_PASSWORD,
+  database: process.env.DATBASE_TRANSACTIONS_DATABASE,
+};
