@@ -1,16 +1,69 @@
-import { TransactionAttributes } from '../../interfaces/transaction.interface';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
 
-export class Transaction<TransactionAttributes> {
+import { TransactionAttributes } from "../interfaces/transaction.interface";
+import {TransactionTypeModel, TransactionStatusModel } from "./";
 
-    constructor(
-        id: string,
-        transactionExternalId: string,
-        accountExternalIdDebit: string,
-        accountExternalIdCredit: string,
-        tranferTypeId: number,
-        tranferStatusId: number,
-        value: number
-     ){
+@Table( { tableName: "transaction" } )
 
-    }
+class TransactionModel extends Model<TransactionAttributes> {
+
+  @Column( {
+    type: DataType.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  } )
+    id!: number;
+
+  @Column( {
+    type: DataType.STRING( 16 ),
+    allowNull: false,
+    unique: true,
+  } )
+    transactionExternalId!: string;
+
+  @Column( {
+    type: DataType.STRING( 16 ),
+    allowNull: false
+  } )
+    accountExternalIdDebit!: string;
+
+  @Column( {
+    type: DataType.STRING( 16 ),
+    allowNull: false
+  } )
+    accountExternalIdCredit!: string;
+
+  @ForeignKey( () => TransactionTypeModel )
+  @Column( {
+    type: DataType.INTEGER,
+    defaultValue: 1
+  } )
+    tranferTypeId!: number;
+  @BelongsTo( () => TransactionTypeModel, "tranferTypeId" )
+    transaction_type?: TransactionTypeModel;
+
+  @ForeignKey( () => TransactionStatusModel )
+  @Column( {
+    type: DataType.INTEGER,
+    defaultValue: 1
+  } )
+    tranferStatusId!: number;
+  @BelongsTo( () => TransactionStatusModel, "tranferStatusId" )
+    transaction_status?: TransactionStatusModel;
+
+  @Column( {
+    type: DataType.INTEGER,
+    allowNull: false
+  } )
+    value!: number;
+
+  @Column({
+      type: DataType.DATE,
+      allowNull: false,
+      defaultValue: DataType.NOW,
+      field: "created_at",
+    })
+    createdAt!: Date;
 }
+
+export default TransactionModel;

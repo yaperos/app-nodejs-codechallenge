@@ -1,5 +1,5 @@
 export interface TransactionAttributes {
-    id: string;
+    id?: string;
     transactionExternalId: string;
     accountExternalIdDebit: string;
     accountExternalIdCredit: string;
