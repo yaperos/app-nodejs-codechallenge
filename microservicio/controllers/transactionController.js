@@ -43,7 +43,7 @@ exports.createTransaction = async (req, res) => {
 
     return res.status(201).json(transaction);
   } catch (error) {
-    console.error(error);
+    console.error('Error al procesar la transacción:', error);
     return res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
