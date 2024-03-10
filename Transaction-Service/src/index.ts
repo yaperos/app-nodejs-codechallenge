@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 import { errorHandler } from './middlewares/handler.middleware';
 import TransactionRoute from './routes/transaction.route'
-import pool from './database';
+import sequelize from './database';
 
 dotenv.config();
 
@@ -13,11 +13,11 @@ const PORT = process.env.PORT_SERVER;
 
 
 (async () => {
-  const client = await pool.connect();
   try {
+    await sequelize.authenticate();
     console.log('Conexion a la base de datos realizada con éxito');
-  } finally {
-    client.release();
+  } catch( err ) {
+    console.error( "Database connection error:", err );
   }
 })();
 
