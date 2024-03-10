@@ -1,33 +1,31 @@
 // antifraudService.js
 
-// Importa cualquier módulo necesario
-// Por ejemplo, si necesitas acceder a la base de datos o a otras funciones
-// Puedes importar los modelos, bibliotecas y otros servicios aquí
-
-// Define tu servicio antifraude
+// Servicio encargado de validar transacciones para prevenir fraudes
 const antifraudService = {
-    // Función para validar una transacción
-    validateTransaction: async (transactionData) => {
-      try {
-        // Aquí implementa la lógica de validación de transacciones
-        // Por ejemplo, puedes verificar el valor de la transacción
-        // y tomar decisiones basadas en los criterios de tu aplicación
-  
-        // Verifica si el valor de la transacción es mayor a 1000
-        if (transactionData.valor > 1000) {
-          return 'rechazado';
-        } else {
-          return 'aprobado';
-        }
-      } catch (error) {
-        console.error('Error al validar la transacción:', error);
-        throw new Error('Error al validar la transacción');
+  /**
+   * Valida una transacción y determina si debe ser aprobada o rechazada.
+   * @param {object} transactionData - Los datos de la transacción a validar.
+   * @returns {string} - El estado de la transacción ('aprobado' o 'rechazado').
+   * @throws {Error} - Si ocurre un error durante la validación.
+   */
+  validateTransaction: async (transactionData) => {
+    try {
+      // Implementa la lógica de validación de la transacción
+
+      // Verifica si el valor de la transacción es mayor a $1000 para rechazarla
+      if (transactionData.valor > 1000) {
+        return 'rechazado'; // La transacción se rechaza si el valor es alto
+      } else {
+        return 'aprobado'; // La transacción se aprueba si el valor es aceptable
       }
-    },
-  
-    // Otras funciones de antifraude, si es necesario
-  };
-  
-  // Exporta el servicio antifraude para que pueda ser utilizado en otras partes de la aplicación
-  module.exports = antifraudService;
-  
+    } catch (error) {
+      console.error('Error al validar la transacción:', error);
+      throw new Error('Error al validar la transacción');
+    }
+  },
+
+  // Otras funciones de antifraude, si es necesario
+};
+
+// Exporta el servicio antifraude para que pueda ser utilizado en otras partes de la aplicación
+module.exports = antifraudService;

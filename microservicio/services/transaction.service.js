@@ -1,13 +1,9 @@
-// services/transactionService.js
-
 const Transaction = require('../models/transactionModel');
 
+// Crea una nueva transacción con estado "pendiente"
 exports.createTransaction = async (data) => {
   try {
-    // Agrega el estado inicial como "pendiente" a los datos de la transacción
-    data.estado = 'pendiente';
-
-    // Crea la transacción con el estado inicial como "pendiente"
+    data.estado = 'pendiente'; // Establece el estado inicial como "pendiente"
     const transaction = await Transaction.create(data);
     return transaction;
   } catch (error) {
@@ -15,6 +11,7 @@ exports.createTransaction = async (data) => {
   }
 };
 
+// Obtiene una transacción por su ID
 exports.getTransactionById = async (id) => {
   try {
     const transaction = await Transaction.findByPk(id);
@@ -24,13 +21,14 @@ exports.getTransactionById = async (id) => {
   }
 };
 
+// Actualiza el estado de una transacción
 exports.updateTransactionState = async (id, newState) => {
   try {
     const transaction = await Transaction.findByPk(id);
     if (!transaction) {
       throw new Error('Transaction not found');
     }
-    transaction.estado = newState;
+    transaction.estado = newState; // Actualiza el estado de la transacción
     await transaction.save();
     return transaction;
   } catch (error) {

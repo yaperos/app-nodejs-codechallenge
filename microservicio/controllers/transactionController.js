@@ -48,6 +48,7 @@ exports.createTransaction = async (req, res) => {
   }
 };
 
+// Endpoint para obtener una transacción por ID
 exports.getTransaction = async (req, res) => {
   try {
     const transaction = await TransactionService.getTransactionById(req.params.id);
@@ -61,6 +62,7 @@ exports.getTransaction = async (req, res) => {
   }
 };
 
+// Endpoint para actualizar el estado de una transacción
 exports.updateTransactionState = async (req, res) => {
   try {
     const { id } = req.params;
