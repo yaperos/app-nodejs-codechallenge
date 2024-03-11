@@ -7,7 +7,7 @@ exports.createTransaction = async (data) => {
     const transaction = await Transaction.create(data);
     return transaction;
   } catch (error) {
-    throw new Error('Error creating transaction');
+    throw new Error('Error creating transaction'+ error.message);
   }
 };
 
@@ -17,7 +17,7 @@ exports.getTransactionById = async (id) => {
     const transaction = await Transaction.findByPk(id);
     return transaction;
   } catch (error) {
-    throw new Error('Error getting transaction by ID');
+    throw new Error('Error getting transaction by ID' + error.message);
   }
 };
 
@@ -32,6 +32,6 @@ exports.updateTransactionState = async (id, newState) => {
     await transaction.save();
     return transaction;
   } catch (error) {
-    throw new Error('Error updating transaction state');
+    throw new Error('Error updating transaction state' + error.message);
   }
 };

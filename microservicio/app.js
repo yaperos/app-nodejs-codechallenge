@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { connect: connectKafka } = require('./services/kafka.service'); // Importa la función connect de tu servicio de Kafka
 const { sequelize, testDatabaseConnection } = require('./config/databaseConfig');
 const app = express();
@@ -9,6 +10,10 @@ const transactionRoutes = require('./routes/transactionRoutes');
 
 // Middleware para parsear JSON en las solicitudes
 app.use(express.json());
+
+// Configuración básica de CORS
+app.use(cors());
+
 
 // Usar las rutas
 app.use('/api', transactionRoutes); // Esto asume que todas tus rutas están bajo /api
@@ -34,7 +39,7 @@ app.use((req, res, next) => {
 // Manejador de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Error interno del servidor');
+  res.status(err.status || 500).json({ message: err.message || 'Error interno del servidor' });
 });
 
 // Verificar la conexión a la base de datos y luego iniciar el servidor

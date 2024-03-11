@@ -1,17 +1,44 @@
+const Joi = require('joi');
 const KafkaService = require('../services/kafka.service');
 const TransactionService = require('../services/transaction.service');
 const antifraudService = require('../services/antifraud.service');
 
+// Definir el esquema de validación utilizando Joi
+const transactionSchema = Joi.object({
+  accountexternaliddebit: Joi.string().required(),
+  accountexternalidcredit: Joi.string().required(),
+  transferenciatypeid: Joi.number().required(), // Ahora validamos que sea un número
+  valor: Joi.number().required().max(1000) // Validar que el valor sea un número y no sea mayor que 1000
+});
+
+// Función para validar los datos de entrada
+const validateTransactionData = (data) => {
+  return transactionSchema.validate(data);
+};
+
 exports.createTransaction = async (req, res) => {
   try {
+
+    // Validar los datos de entrada
+    const { error } = validateTransactionData(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
     // Extraer datos del cuerpo de la solicitud
     const { accountexternaliddebit, accountexternalidcredit, transferenciatypeid, valor } = req.body;
+
+    // Verificar si transferenciatypeid es un número
+    if (typeof transferenciatypeid !== 'number') {
+      return res.status(400).json({ message: 'El campo transferenciatypeid debe ser un número' });
+    }
 
     // Verificar la presencia y validez de los campos requeridos
     if (!accountexternaliddebit || !accountexternalidcredit || !transferenciatypeid || !valor) {
       return res.status(400).json({ message: 'Todos los campos son requeridos: accountexternaliddebit, accountexternalidcredit, transferenciatypeid, valor' });
     }
 
+    
     // Validar el valor de la transacción
     if (valor > 1000) {
       // Rechazar transacciones con valor superior a 1000
@@ -43,7 +70,7 @@ exports.createTransaction = async (req, res) => {
 
     return res.status(201).json(transaction);
   } catch (error) {
-    console.error('Error al procesar la transacción:', error);
+    console.error('Error al procesar la transacción:', error.message);
     return res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
