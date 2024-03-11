@@ -5,47 +5,43 @@ const antifraudService = require('../services/antifraud.service');
 
 // Definir el esquema de validación utilizando Joi
 const transactionSchema = Joi.object({
-  accountexternaliddebit: Joi.string().required(),
-  accountexternalidcredit: Joi.string().required(),
-  transferenciatypeid: Joi.number().required(), // Ahora validamos que sea un número
-  valor: Joi.number().required().max(1000) // Validar que el valor sea un número y no sea mayor que 1000
+  accountexternaliddebit: Joi.string().required().messages({
+    'string.empty': 'El campo accountexternaliddebit no puede estar vacío',
+    'any.required': 'El campo accountexternaliddebit es requerido'
+  }),
+  accountexternalidcredit: Joi.string().required().messages({
+    'string.empty': 'El campo accountexternalidcredit no puede estar vacío',
+    'any.required': 'El campo accountexternalidcredit es requerido'
+  }),
+  transferenciatypeid: Joi.number().required().messages({
+    'number.base': 'El campo transferenciatypeid debe ser un número',
+    'any.required': 'El campo transferenciatypeid es requerido'
+  }),
+  valor: Joi.number().required().max(1000).messages({
+    'number.base': 'El campo valor debe ser un número',
+    'number.max': 'El valor de la transacción debe ser igual o inferior a 1000',
+    'any.required': 'El campo valor es requerido'
+  })
 });
 
 // Función para validar los datos de entrada
 const validateTransactionData = (data) => {
-  return transactionSchema.validate(data);
+  return transactionSchema.validate(data, { abortEarly: false });
 };
-
 exports.createTransaction = async (req, res) => {
   try {
 
     // Validar los datos de entrada
-    const { error } = validateTransactionData(req.body);
+    const { error, value } = validateTransactionData(req.body);
+
     if (error) {
-      return res.status(400).json({ message: error.details[0].message });
+      const errorMessage = error.details.map(detail => detail.message);
+      return res.status(400).json({ message: errorMessage });
     }
 
-    // Extraer datos del cuerpo de la solicitud
-    const { accountexternaliddebit, accountexternalidcredit, transferenciatypeid, valor } = req.body;
-
-    // Verificar si transferenciatypeid es un número
-    if (typeof transferenciatypeid !== 'number') {
-      return res.status(400).json({ message: 'El campo transferenciatypeid debe ser un número' });
-    }
-
-    // Verificar la presencia y validez de los campos requeridos
-    if (!accountexternaliddebit || !accountexternalidcredit || !transferenciatypeid || !valor) {
-      return res.status(400).json({ message: 'Todos los campos son requeridos: accountexternaliddebit, accountexternalidcredit, transferenciatypeid, valor' });
-    }
-
-    
-    // Validar el valor de la transacción
-    if (valor > 1000) {
-      // Rechazar transacciones con valor superior a 1000
-      return res.status(400).json({ message: 'El valor de la transacción debe ser igual o inferior a 1000' });
-    }
-
-
+    // Crear la transacción en la base de datos
+    const { accountexternaliddebit, accountexternalidcredit, transferenciatypeid, valor } = value;
+   
     // Validar el valor de la transacción con el servicio antifraude
     const estado = await antifraudService.validateTransaction({ valor });
 

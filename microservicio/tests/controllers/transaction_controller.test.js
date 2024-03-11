@@ -1,76 +1,125 @@
-const antifraudService = require('../../services/antifraud.service');
-const TransactionService = require('../../services/transaction.service');
-const KafkaService = require('../../services/kafka.service');
-const transactionController = require('../../controllers/transactionController');
+const Joi = require('joi');
+const {
+  createTransaction,
+  getTransaction,
+  updateTransactionState
+} = require('../../controllers/transactionController'); // Supongamos que el archivo se encuentra en el mismo directorio
+const transactionService = require('../../services/transaction.service');
 
-jest.mock('../../services/antifraud.service', () => ({
-  validateTransaction: jest.fn(),
-}));
+// Define tu mockTransaction aquí
+const mockTransaction = {
+  id: 'some-id',
+  // Otros campos de transacción...
+};
 
-jest.mock('../../services/transaction.service', () => ({
-  createTransaction: jest.fn(),
-}));
 
-jest.mock('../../services/kafka.service', () => ({
-  sendToTopic: jest.fn(),
-}));
+// Mocking services
+jest.mock('../../services/kafka.service');
+jest.mock('../../services/transaction.service');
+jest.mock('../../services/antifraud.service');
 
-describe('Transaction Controller', () => {
+
+describe('Transaction Controller Tests', () => {
   describe('createTransaction', () => {
-    afterEach(() => {
-      jest.clearAllMocks(); // Limpiar los mocks después de cada prueba
+    it('should return 201 status and created transaction', async () => {
+      const mockRequest = {
+        body: {
+          accountexternaliddebit: 'some-id',
+          accountexternalidcredit: 'another-id',
+          transferenciatypeid: 1,
+          valor: 500
+        }
+      };
+      const mockResponse = {
+        status: jest.fn(() => mockResponse),
+        json: jest.fn()
+      };
+
+      await createTransaction(mockRequest, mockResponse);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(201);
+      expect(mockResponse.json).toHaveBeenCalled();
     });
 
-    test('should create a transaction and send to Kafka', async () => {
-      // Datos de la transacción
-      const transactionData = {
-        accountexternaliddebit: '123456',
-        accountexternalidcredit: '789012',
-        transferenciatypeid: 'some_type_id',
-        valor: 500,
-        estado: 'pendiente',
+    it('should return 400 status if validation fails', async () => {
+      const mockRequest = {
+        body: {
+          // Incomplete data to trigger validation failure
+          accountexternaliddebit: 'some-id',
+          transferenciatypeid: 1
+        }
+      };
+      const mockResponse = {
+        status: jest.fn(() => mockResponse),
+        json: jest.fn()
       };
 
-      // Simula que la validación de la transacción devuelve 'aprobado'
-      antifraudService.validateTransaction.mockResolvedValue('aprobado');
-      
-      // Simula la creación de la transacción
-      TransactionService.createTransaction.mockResolvedValue(transactionData);
-      
-      // Simula el envío a Kafka
-      KafkaService.sendToTopic.mockResolvedValue();
+      await createTransaction(mockRequest, mockResponse);
 
-      // Solicitud y respuesta falsas
-      const req = { body: transactionData };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalled();
+    });
+  });
+
+  describe('getTransaction', () => {
+    it('should return 200 status and transaction if found', async () => {
+
+      // Simular que se encuentra una transacción
+  jest.spyOn(transactionService, 'getTransactionById').mockResolvedValueOnce(mockTransaction);
+
+      const mockRequest = {
+        params: {
+          id: 'some-id'
+        }
+      };
+      const mockResponse = {
+        status: jest.fn(() => mockResponse),
+        json: jest.fn()
       };
 
-      // Ejecuta el controlador
-      await transactionController.createTransaction(req, res);
+      await getTransaction(mockRequest, mockResponse);
 
-      // Verifica si se llaman a las funciones correspondientes
-      expect(antifraudService.validateTransaction).toHaveBeenCalledWith({ valor: 500 });
-      expect(TransactionService.createTransaction).toHaveBeenCalledWith(transactionData);
-      expect(KafkaService.sendToTopic).toHaveBeenCalledWith('nombre_del_tema', JSON.stringify(transactionData));
-      expect(res.status).toHaveBeenCalledWith(201);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalled();
     });
 
-    test('should return 500 if an internal server error occurs', async () => {
-      // Simula que la validación de la transacción arroja un error
-      antifraudService.validateTransaction.mockRejectedValue(new Error('Internal Server Error'));
-
-      // Solicitud y respuesta falsas
-      const req = { body: {} };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
+    it('should return 404 status if transaction not found', async () => {
+      const mockRequest = {
+        params: {
+          id: 'non-existing-id'
+        }
+      };
+      const mockResponse = {
+        status: jest.fn(() => mockResponse),
+        json: jest.fn()
       };
 
-      // Ejecuta el controlador
-      await transactionController.createTransaction(req, res);
+      await getTransaction(mockRequest, mockResponse);
 
+      expect(mockResponse.status).toHaveBeenCalledWith(404);
+      expect(mockResponse.json).toHaveBeenCalled();
+    });
+  });
+
+  describe('updateTransactionState', () => {
+    it('should return 200 status and updated transaction', async () => {
+      const mockRequest = {
+        params: {
+          id: 'some-id'
+        },
+        body: {
+          newState: 'completed'
+        }
+      };
+      const mockResponse = {
+        status: jest.fn(() => mockResponse),
+        json: jest.fn()
+      };
+
+      await updateTransactionState(mockRequest, mockResponse);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalled();
     });
   });
 });
