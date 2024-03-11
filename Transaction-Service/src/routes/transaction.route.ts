@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { postTransaction } from "../controllers/transaction.controller";
+import { getTransactionByExternalId, postTransaction } from "../controllers/transaction.controller";
 import { asyncHandler } from "../middlewares/handler.middleware";
 
 
@@ -8,6 +8,8 @@ import { asyncHandler } from "../middlewares/handler.middleware";
 const router = Router();
 
 router.post( "/create", asyncHandler( postTransaction ) );
+
+router.get( "/:id", asyncHandler( getTransactionByExternalId ) );
 
 export default router;
 

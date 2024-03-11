@@ -2,6 +2,7 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from "sequelize
 
 import { TransactionAttributes } from "../interfaces/transaction.interface";
 import {TransactionTypeModel, TransactionStatusModel } from "./";
+import { UUIDV4 } from "sequelize";
 
 @Table( { tableName: "transaction", timestamps: false } )
 
@@ -15,7 +16,9 @@ class TransactionModel extends Model<TransactionAttributes> {
     id!: number;
 
   @Column( {
-    type: DataType.STRING( 16 ),
+    type: DataType.STRING( 50 ),
+    
+    defaultValue: UUIDV4
   } )
     transactionExternalId!: string;
 
