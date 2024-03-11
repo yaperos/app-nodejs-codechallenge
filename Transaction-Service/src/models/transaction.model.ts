@@ -3,7 +3,7 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from "sequelize
 import { TransactionAttributes } from "../interfaces/transaction.interface";
 import {TransactionTypeModel, TransactionStatusModel } from "./";
 
-@Table( { tableName: "transaction" } )
+@Table( { tableName: "transaction", timestamps: false } )
 
 class TransactionModel extends Model<TransactionAttributes> {
 
@@ -16,8 +16,6 @@ class TransactionModel extends Model<TransactionAttributes> {
 
   @Column( {
     type: DataType.STRING( 16 ),
-    allowNull: false,
-    unique: true,
   } )
     transactionExternalId!: string;
 
@@ -64,6 +62,16 @@ class TransactionModel extends Model<TransactionAttributes> {
       field: "created_at",
     })
     createdAt!: Date;
+}
+
+export async function initTransactionDatabase() {
+  try {
+    await TransactionModel.sync({ force: true });
+  } catch (error) {
+     const err = error as Error
+     throw new Error( err.message )
+  }
+
 }
 
 export default TransactionModel;

@@ -7,6 +7,7 @@ import TransactionRoute from './routes/transaction.route'
 import sequelize from './database';
 import { initTransactionTypeDatabase } from './models/transactionType.model';
 import { initTransactionStatusDatabase } from './models/transactionStatus.model';
+import { initTransactionDatabase } from './models/transaction.model';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ const PORT = process.env.PORT_SERVER;
     console.log('Conexion a la base de datos realizada con éxito');
   await initTransactionTypeDatabase();
   await initTransactionStatusDatabase();
+  await initTransactionDatabase();
 
   } catch( err ) {
     console.error( "Database connection error:", err );
