@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { HealthService } from '../src/application/health/health.service';
+import { HealthService } from '../src/application/useCases/health/health.service';
 import { healthMock } from './mock/health.mock';
-import { LoggerService } from '../src/application/logger/logger.service';
+import { LoggerService } from '../src/application/useCases/logger/logger.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;

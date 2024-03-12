@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { HealthModule } from './application/health/health.module';
-import { LoggerModule } from './application/logger/logger.module';
+import { HealthModule } from './application/useCases/health/health.module';
+import { LoggerModule } from './application/useCases/logger/logger.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig } from './infraestructure/database/config';
-import { TransactionModule } from './application/transaction/transaction.module';
+import { TransactionModule } from './application/useCases/transaction/transaction.module';
+import { AntiFraudModule } from './application/useCases/antiFraud/logger.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { TransactionModule } from './application/transaction/transaction.module'
     HealthModule,
     LoggerModule,
     TransactionModule,
+    AntiFraudModule,
   ],
   controllers: [],
   providers: [],

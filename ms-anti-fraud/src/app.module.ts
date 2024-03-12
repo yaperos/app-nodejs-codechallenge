@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import { HealthModule } from './application/health/health.module';
+import { HealthModule } from './application/useCases/health/health.module';
+import { AntiFraudModule } from './application/useCases/antiFraud/antiFraud.module';
+import { TransactionModule } from './application/useCases/transaction/transaction.module';
 @Module({
-  imports: [HealthModule],
+  imports: [HealthModule, AntiFraudModule, TransactionModule],
   controllers: [],
   providers: [],
 })

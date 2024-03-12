@@ -1,23 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { kafkaConfig, msConfig } from '../../infraestructure/config';
-import { LoggerService } from './logger.service';
+import { kafkaConfig, msConfig } from '../../../infraestructure/config';
+import { TransactionService } from './transaction.service';
 import { Partitioners } from 'kafkajs';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: msConfig.nameLogger,
+        name: msConfig.nameAntiFraud,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: `${msConfig.nameTransactions}-${msConfig.nameLogger}`,
+            clientId: `${msConfig.nameAntiFraud}-${msConfig.nameTransactions}`,
             brokers: [kafkaConfig.broker],
           },
-          producerOnlyMode: true,
           consumer: {
-            groupId: `${msConfig.nameLogger}-consumer`,
+            groupId: `${msConfig.nameAntiFraud}-consumer`,
           },
           producer: {
             createPartitioner: Partitioners.LegacyPartitioner,
@@ -26,7 +25,7 @@ import { Partitioners } from 'kafkajs';
       },
     ]),
   ],
-  providers: [LoggerService],
-  exports: [LoggerService],
+  providers: [TransactionService],
+  exports: [TransactionService],
 })
-export class LoggerModule {}
+export class TransactionModule {}

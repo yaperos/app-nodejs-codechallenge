@@ -1,8 +1,8 @@
 import { Inject, Injectable, LogLevel } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { LoggerControllerInterface } from '../../domain/logger/logger.interface';
-import { LoggerInterface } from '../../domain/logger/logger.model';
-import { msConfig } from '../../infraestructure/config';
+import { LoggerControllerInterface } from '../../../domain/logger/logger.interface';
+import { LoggerInterface } from '../../../domain/logger/logger.model';
+import { msConfig } from '../../../infraestructure/config';
 
 @Injectable()
 export class LoggerService implements LoggerControllerInterface {

@@ -1,20 +1,21 @@
 import { Module } from '@nestjs/common';
-import { LoggerController } from './logger.controller';
-import { LoggerService } from './logger.service';
+import { AntiFraudController } from './antiFraud.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import {
   kafkaConfig,
   msConfig,
   serverConfig,
-} from '../../infraestructure/config';
+} from '../../../infraestructure/config';
+import { AntiFraudService } from './antiFraud.service';
+import { TransactionService } from '../transaction/transaction.service';
 
 @Module({
-  controllers: [LoggerController],
-  providers: [LoggerService],
+  controllers: [AntiFraudController],
+  providers: [AntiFraudService, TransactionService],
   imports: [
     ClientsModule.register([
       {
-        name: msConfig.nameLogger,
+        name: msConfig.nameAntiFraud,
         transport: Transport.KAFKA,
         options: {
           client: {
@@ -22,11 +23,11 @@ import {
             brokers: [kafkaConfig.broker],
           },
           consumer: {
-            groupId: `${msConfig.nameLogger}-consumer`,
+            groupId: `${msConfig.nameAntiFraud}-consumer`,
           },
         },
       },
     ]),
   ],
 })
-export class LoggerModule {}
+export class AntiFraudModule {}
