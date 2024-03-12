@@ -12,16 +12,17 @@ import { TRANSACTION_STATUS_ID } from '../../../../application/constant';
 import {
   TransactionInterface,
   TransactionInterfaceRequest,
-} from '../../../../domain/transaction/transaction.model';
+} from '../../../../domain/transaction/createTransaction/transaction.model';
 import { LoggerService } from '../../logger/logger.service';
 import { TransactionService } from './transaction.service';
 import { AntiFraudService } from '../../antiFraud/antiFraud.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { msConfig } from '../../../../infraestructure/config';
+import { TransactionControllerInterface } from 'src/domain/transaction/createTransaction/transaction.interface';
 
 @ApiTags('Transactions')
 @Controller('transaction')
-export class TransactionController {
+export class TransactionController implements TransactionControllerInterface {
   constructor(
     private readonly loggerService: LoggerService,
     private readonly transactionService: TransactionService,

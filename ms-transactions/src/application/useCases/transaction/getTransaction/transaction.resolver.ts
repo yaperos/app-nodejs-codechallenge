@@ -2,11 +2,12 @@ import { Resolver, Query, Args } from '@nestjs/graphql';
 import {
   GetTransactionInterface,
   TransactionFilterInput,
-} from '../../../../domain/transaction/transaction.model';
+} from '../../../../domain/transaction/createTransaction/transaction.model';
 import { TransactionService } from './transaction.service';
+import { TransactionResolverInterface } from 'src/domain/transaction/getTransaction/transaction.interface';
 
 @Resolver()
-export class GetTransactionResolver {
+export class GetTransactionResolver implements TransactionResolverInterface {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Query(() => [GetTransactionInterface])

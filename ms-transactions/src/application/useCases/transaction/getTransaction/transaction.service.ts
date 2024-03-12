@@ -7,7 +7,7 @@ import {
   TRANSACTION_STATUS_ID,
   TRANSACTION_TYPE_ID,
 } from '../../../../application/constant';
-import { TransactionFilterInput } from '../../../../domain/transaction/transaction.model';
+import { TransactionFilterInput } from '../../../../domain/transaction/createTransaction/transaction.model';
 
 @Injectable()
 export class TransactionService {
