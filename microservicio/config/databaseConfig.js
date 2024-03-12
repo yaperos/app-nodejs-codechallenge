@@ -7,7 +7,7 @@ const { Sequelize } = require('sequelize');
 // Configura la conexión a la base de datos
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   //host: process.env.DB_HOST || 'localhost', // Cambiar a la dirección de tu base de datos si es remota
-  host: process.env.DB_HOST,
+  host: process.env.DB_HOST, // Utiliza la dirección IP del contenedor PostgreSQ
   dialect: 'postgres', // El dialecto para PostgreSQL
   port: process.env.DB_PORT || 5432, // El puerto de PostgreSQL por defecto
   // Otros parámetros de configuración si son necesarios
