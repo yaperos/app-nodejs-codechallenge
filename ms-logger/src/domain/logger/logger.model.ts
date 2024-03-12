@@ -4,6 +4,6 @@ export interface LoggerInterface {
   level: LogLevel;
   msName: string;
   trxId: string;
-  custom: any;
+  data: object;
   createdAt: Date;
 }

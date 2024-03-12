@@ -4,7 +4,6 @@ import { HealthControllerInterface } from '../../../domain/health/health.interfa
 import { HealthCheckResult } from '../../../domain/health/health.model';
 import { ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '../logger/logger.service';
-import { buildLog } from '../../helper/buildLog';
 import { randomUUID } from 'crypto';
 
 @ApiTags('Health')
@@ -17,8 +16,7 @@ export class HealthController implements HealthControllerInterface {
 
   @Get()
   checkHealth(): HealthCheckResult {
-    const trxId = randomUUID();
-    this.loggerService.report('log', buildLog('log', trxId, 'health endpoint'));
+    this.loggerService.report('log', { mission: 'health' }, randomUUID());
     return this.healthService.getHealth();
   }
 }

@@ -14,7 +14,6 @@ import {
   TransactionInterfaceRequest,
 } from 'src/domain/transaction/transaction.model';
 import { LoggerService } from '../logger/logger.service';
-import { buildLog } from '../../helper/buildLog';
 import { TransactionService } from './transaction.service';
 import { AntiFraudService } from '../antiFraud/antiFraud.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
@@ -43,11 +42,8 @@ export class TransactionController {
 
     this.loggerService.report(
       'log',
-      buildLog('log', trx.transactionExternalId, {
-        request: { ...data },
-        transaction: { ...trx },
-        mission: 'createTransaction',
-      }),
+      { transaction: trx, mission: 'create-transaction' },
+      trx.transactionExternalId,
     );
 
     try {
@@ -55,30 +51,25 @@ export class TransactionController {
     } catch (error) {
       this.loggerService.report(
         'error',
-        buildLog('error', trx.transactionExternalId, {
-          request: { ...data },
-          transaction: { ...trx },
-          error,
-          mission: 'create-transaction',
-        }),
+        { transaction: trx, error, mission: 'error-create-transaction' },
+        trx.transactionExternalId,
       );
       throw new InternalServerErrorException(error);
     }
 
-    try {
-      this.antiFraudService.verifyTransaction(trx);
-    } catch (error) {
-      this.loggerService.report(
-        'error',
-        buildLog('error', trx.transactionExternalId, {
-          request: { ...data },
-          transaction: { ...trx },
-          error,
-          mission: 'send-verify-transaction',
-        }),
-      );
-      throw new InternalServerErrorException(error);
-    }
+    this.loggerService.report(
+      'log',
+      { transaction: trx, mission: 'created-transaction-succesfully' },
+      trx.transactionExternalId,
+    );
+
+    this.antiFraudService.verifyTransaction(trx);
+
+    this.loggerService.report(
+      'log',
+      { transaction: trx, mission: `send-${msConfig.nameAntiFraud}` },
+      trx.transactionExternalId,
+    );
 
     return trx;
   }
@@ -87,20 +78,24 @@ export class TransactionController {
   async updateTransactionAccepted(
     @Payload(ValidationPipe) trx: TransactionInterface,
   ) {
-    try {
-      console.log('accepted');
-      console.log(trx);
+    this.loggerService.report(
+      'log',
+      { transaction: trx, mission: `updating-transaction-accepted` },
+      trx.transactionExternalId,
+    );
 
+    try {
       await this.transactionService.updateTransaction(trx);
+      this.loggerService.report(
+        'log',
+        { transaction: trx, mission: `updated-transaction-accepted` },
+        trx.transactionExternalId,
+      );
     } catch (error) {
       this.loggerService.report(
         'error',
-        buildLog('error', trx.transactionExternalId, {
-          request: { ...trx },
-          transaction: { ...trx },
-          error,
-          mission: 'update-transaction-accepted',
-        }),
+        { transaction: trx, error, mission: `error-update-transaction` },
+        trx.transactionExternalId,
       );
       throw new InternalServerErrorException(error);
     }
@@ -110,20 +105,28 @@ export class TransactionController {
   async updateTransactionRejected(
     @Payload(ValidationPipe) trx: TransactionInterface,
   ) {
-    try {
-      console.log('rejected');
-      console.log(trx);
+    this.loggerService.report(
+      'log',
+      { transaction: trx, mission: `updating-transaction-rejected` },
+      trx.transactionExternalId,
+    );
 
+    try {
       await this.transactionService.updateTransaction(trx);
+      this.loggerService.report(
+        'log',
+        { transaction: trx, mission: `updated-transaction-rejected` },
+        trx.transactionExternalId,
+      );
     } catch (error) {
       this.loggerService.report(
         'error',
-        buildLog('error', trx.transactionExternalId, {
-          request: { ...trx },
-          transaction: { ...trx },
+        {
+          transaction: trx,
           error,
-          mission: 'update-transaction-rejected',
-        }),
+          mission: `error-updated-transaction-rejected`,
+        },
+        trx.transactionExternalId,
       );
       throw new InternalServerErrorException(error);
     }
