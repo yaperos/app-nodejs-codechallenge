@@ -5,14 +5,38 @@ import {
 } from '../../../../domain/transaction/createTransaction/transaction.model';
 import { TransactionService } from './transaction.service';
 import { TransactionResolverInterface } from 'src/domain/transaction/getTransaction/transaction.interface';
+import { LoggerService } from '../../logger/logger.service';
+import { randomUUID } from 'crypto';
 
 @Resolver()
 export class GetTransactionResolver implements TransactionResolverInterface {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(
+    private readonly transactionService: TransactionService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
   @Query(() => [GetTransactionInterface])
   async getTransactions(@Args('filter') filter: TransactionFilterInput) {
-    const trasactions = await this.transactionService.getTransaction(filter);
-    return trasactions;
+    const trx = randomUUID();
+    try {
+      this.loggerService.report(
+        'log',
+        { filter, mission: 'getting-transactions' },
+        trx,
+      );
+      const trasactions = await this.transactionService.getTransaction(filter);
+      this.loggerService.report(
+        'log',
+        { trasactions, mission: 'get-transactions' },
+        trx,
+      );
+      return trasactions;
+    } catch (error) {
+      this.loggerService.report(
+        'error',
+        { filter, error, mission: 'error-getting-transaction' },
+        trx,
+      );
+    }
   }
 }
