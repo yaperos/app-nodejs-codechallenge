@@ -30,4 +30,6 @@ services:
     depends_on:
       - kafka
       - postgres
+    environment:
+      KAFKA_BROKER_HOST: 172.25.0.4 # Utiliza la dirección IP del contenedor Kafka
     # Aquí puedes agregar más configuraciones como variables de entorno, volúmenes, etc.
