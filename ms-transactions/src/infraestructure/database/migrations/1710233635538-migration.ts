@@ -2,6 +2,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class Migration1710233635538 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`SET TIME ZONE 'America/Lima'`);
+
     await queryRunner.query(`
                 CREATE TABLE IF NOT EXISTS "transaction_status" (
                     "id" SERIAL PRIMARY KEY,
