@@ -1,5 +1,3 @@
-// apps/payments-microservice/src/app/app.service.ts
-
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { msConfig } from '../../../infraestructure/config';

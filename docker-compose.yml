@@ -7,6 +7,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - TZ=America/Lima
 
   zookeeper:
     image: zookeeper
