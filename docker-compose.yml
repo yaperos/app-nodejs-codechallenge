@@ -30,6 +30,4 @@ services:
     depends_on:
       - kafka
       - postgres
-    environment:
-      - NODE_ENV=docker
     # Aquí puedes agregar más configuraciones como variables de entorno, volúmenes, etc.

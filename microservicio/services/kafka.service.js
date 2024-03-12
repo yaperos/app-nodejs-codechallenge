@@ -1,18 +1,11 @@
 const { Kafka, Partitioners } = require('kafkajs');
 
 // Configuración de Kafka
-let kafka;
-if (process.env.NODE_ENV === 'docker') {
-  kafka = new Kafka({
-    clientId: 'my-app',
-    brokers: ['kafka:29092']
-  });
-} else {
-  kafka = new Kafka({
-    clientId: 'my-app',
-    brokers: ['localhost:9092']
-  });
-}
+const kafka = new Kafka({
+  clientId: 'my-app',
+  //brokers: ['localhost:9092']
+  brokers: ['kafka:29092']
+});
 
 // Creación del productor y el consumidor
 const producer = kafka.producer({
