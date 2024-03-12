@@ -1,11 +1,8 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { msConfig } from '../../../infraestructure/config';
-import {
-  MAXIMUM_AMOUNT_TRANSFER,
-  TRANSACTION_STATUS_ID,
-} from 'src/application/constant';
-import { TransactionInterface } from 'src/domain/transaction/transaction.model';
+import { MAXIMUM_AMOUNT_TRANSFER, TRANSACTION_STATUS_ID } from '../../constant';
+import { TransactionInterface } from '../../../domain/transaction/transaction.model';
 
 @Injectable()
 export class AntiFraudService implements OnModuleInit {

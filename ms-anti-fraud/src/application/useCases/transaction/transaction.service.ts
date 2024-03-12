@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { msConfig } from '../../../infraestructure/config';
-import { TransactionInterface } from 'src/domain/transaction/transaction.model';
-import { TRANSACTION_STATUS_ID } from 'src/application/constant';
+import { TransactionInterface } from '../../../domain/transaction/transaction.model';
+import { TRANSACTION_STATUS_ID } from '../../../application/constant';
 
 @Injectable()
 export class TransactionService {
