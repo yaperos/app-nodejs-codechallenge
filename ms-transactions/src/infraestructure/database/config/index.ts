@@ -13,4 +13,6 @@ export const DatabaseConfig: TypeOrmModuleOptions = {
   database: databaseConfig.database,
   entities: [TransactionType, TransactionStatus, Transactions],
   synchronize: true,
+  logging: true,
+  migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
 };

@@ -13,9 +13,9 @@ import {
   TransactionInterface,
   TransactionInterfaceRequest,
 } from 'src/domain/transaction/transaction.model';
-import { LoggerService } from '../logger/logger.service';
+import { LoggerService } from '../../logger/logger.service';
 import { TransactionService } from './transaction.service';
-import { AntiFraudService } from '../antiFraud/antiFraud.service';
+import { AntiFraudService } from '../../antiFraud/antiFraud.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { msConfig } from 'src/infraestructure/config';
 
