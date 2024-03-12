@@ -36,42 +36,45 @@ export class TransactionTypeInput {
 
 @InputType()
 export class TransactionFilterInput {
-  @Field()
+  @Field({ nullable: true })
   transactionExternalId: string;
 
-  @Field(() => TransactionTypeInput)
+  @Field(() => TransactionTypeInput, { nullable: true })
   transactionType: TransactionTypeInput;
 
-  @Field(() => TransactionTypeInput)
+  @Field(() => TransactionTypeInput, { nullable: true })
   transactionStatus: TransactionTypeInput;
 
-  @Field()
+  @Field({ nullable: true })
   value: number;
 
-  @Field()
+  @Field({ nullable: true })
   createdAt: string;
 }
 
 @ObjectType()
-export class GetTransactionDto {
+export class Transaction {
   @Field()
   id: string;
 
   @Field()
-  type: number;
+  name: string;
+}
 
+@ObjectType()
+export class GetTransactionInterface {
   @Field()
-  status: number;
-
-  @Field()
-  value: number;
-
-  @Field()
-  createdAt?: Date;
-
-  @Field()
-  updatedAt?: Date;
-
+  id: string;
   @Field()
   transactionExternalId: string;
+  @Field()
+  type: Transaction;
+  @Field()
+  status: Transaction;
+  @Field()
+  value: number;
+  @Field()
+  createdAt: Date;
+  @Field()
+  updatedAt: Date;
 }

@@ -38,9 +38,10 @@ export class TransactionService {
         whereClause.createdAt = new Date(query.createdAt);
       }
 
-      console.log(whereClause);
-
-      return await this.transactionRepository.find({ where: whereClause });
+      return await this.transactionRepository.find({
+        where: whereClause,
+        relations: ['type', 'status'],
+      });
     } catch (error) {
       throw new DbError(error, 'createTransaction');
     }

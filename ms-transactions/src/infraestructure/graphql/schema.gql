@@ -2,14 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type GetTransactionDto {
+type Transaction {
   id: String!
-  type: Float!
-  status: Float!
+  name: String!
+}
+
+type GetTransactionInterface {
+  id: String!
+  transactionExternalId: String!
+  type: Transaction!
+  status: Transaction!
   value: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
-  transactionExternalId: String!
 }
 
 """
@@ -18,15 +23,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Query {
-  getTransactions(filter: TransactionFilterInput!): [GetTransactionDto!]!
+  getTransactions(filter: TransactionFilterInput!): [GetTransactionInterface!]!
 }
 
 input TransactionFilterInput {
-  transactionExternalId: String!
-  transactionType: TransactionTypeInput!
-  transactionStatus: TransactionTypeInput!
-  value: Float!
-  createdAt: String!
+  transactionExternalId: String
+  transactionType: TransactionTypeInput
+  transactionStatus: TransactionTypeInput
+  value: Float
+  createdAt: String
 }
 
 input TransactionTypeInput {
