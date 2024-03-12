@@ -3,6 +3,7 @@ import { databaseConfig } from '../../config';
 import { TransactionType } from '../models/transactionType';
 import { TransactionStatus } from '../models/transactionStatus';
 import { Transactions } from '../models/transactions';
+import { join } from 'path';
 
 export const DatabaseConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -14,5 +15,5 @@ export const DatabaseConfig: TypeOrmModuleOptions = {
   entities: [TransactionType, TransactionStatus, Transactions],
   synchronize: true,
   logging: true,
-  migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
+  migrations: [join(__dirname, '../migrations/**')],
 };
