@@ -23,5 +23,13 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
         - 9092:9092
-
-  
+  mi-servicio-personalizado:
+    image: nombre-de-tu-imagen:latest
+    ports:
+      - "3000:3000" # Asegúrate de cambiar este puerto si tu servicio usa uno diferente.
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      - NODE_ENV=docker
+    # Aquí puedes agregar más configuraciones como variables de entorno, volúmenes, etc.
