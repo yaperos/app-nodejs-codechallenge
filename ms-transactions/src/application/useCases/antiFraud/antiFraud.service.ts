@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { msConfig } from '../../../infraestructure/config';
-import { TransactionInterface } from 'src/domain/transaction/transaction.model';
+import { TransactionInterface } from '../../../domain/transaction/transaction.model';
 
 @Injectable()
 export class AntiFraudService {

@@ -6,8 +6,8 @@ import { DbError } from '../../../errors/database.error';
 import {
   TRANSACTION_STATUS_ID,
   TRANSACTION_TYPE_ID,
-} from 'src/application/constant';
-import { TransactionFilterInput } from 'src/domain/transaction/transaction.model';
+} from '../../../../application/constant';
+import { TransactionFilterInput } from '../../../../domain/transaction/transaction.model';
 
 @Injectable()
 export class TransactionService {

@@ -1,8 +1,8 @@
 import { Controller, ValidationPipe } from '@nestjs/common';
 import { LoggerService } from './logger.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { LoggerInterface } from 'src/domain/logger/logger.model';
-import { LoggerControllerInterface } from 'src/domain/logger/logger.interface';
+import { LoggerInterface } from '../../../domain/logger/logger.model';
+import { LoggerControllerInterface } from '../../../domain/logger/logger.interface';
 
 @Controller()
 export class LoggerController implements LoggerControllerInterface {
