@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { TransactionModel, TransactionStatusModel, TransactionTypeModel } from "../models";
 import { CustomError } from "../helpers/customError.helper";
-import { kafkaProducerTest } from "../producer/transaction.producer";
+import { kafkaProducerTest } from "../kafka/producer/transaction.producer";
 
 
 
