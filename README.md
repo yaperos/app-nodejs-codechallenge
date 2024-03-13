@@ -12,12 +12,14 @@ Puedes verificar los ambientes correctamente trabajando con el siguiente comando
 ```
 docker-compose ps
 ```
--Iniciar el server, en la carpeta /Transaction-Service ejecutar:
+-Instalar dependencias e iniciar el server, en la carpeta /Transaction-Service ejecutar:
 ```
+npm install
 npm run dev
 ```
--Iniciar kafka, en la carpeta /Antifraud ejecutar:
+-Instalar dependencias e iniciar kafka, en la carpeta /Antifraud ejecutar:
 ```
+npm install
 npm run dev
 ```
 
