@@ -3,8 +3,8 @@ const { Kafka, Partitioners } = require('kafkajs');
 // Configuración de Kafka
 const kafka = new Kafka({
   clientId: 'my-app',
-  brokers: ['localhost:9092']
-  //brokers: ['kafka:29092']
+  //brokers: ['localhost:9092']
+  brokers: ['kafka:29092']
   //brokers: ['172.25.0.4:9092'] // Dirección IP del broker de Kafka
   //brokers: ['app-nodejs-codechallenge-kafka-1:9092']
 });
