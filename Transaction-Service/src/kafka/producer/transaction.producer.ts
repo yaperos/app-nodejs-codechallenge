@@ -1,5 +1,5 @@
 
-import { Kafka, Partitioners } from "kafkajs"
+import { Partitioners } from "kafkajs"
 import dotenv from 'dotenv';
 import { kafka } from "..";
 dotenv.config();
