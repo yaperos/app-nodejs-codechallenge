@@ -8,7 +8,7 @@ import { kafkaProducerTest } from "../kafka/producer/transaction.producer";
 export const postTransaction = async ( req: Request, res: Response ): Promise<void> => {
   const { tranferTypeId, value } = req.body
   const existType = await TransactionTypeModel.findByPk( tranferTypeId )
-  if( !existType ) throw new CustomError( "The transaction type doesn't exist", 404 );
+  if( !existType ) throw new CustomError( "The transaction type doesn't exist", 404, "postTransaction" );
   const newTransaction = await TransactionModel.create( req.body )
 
   const id = newTransaction.dataValues.transactionExternalId
@@ -22,7 +22,7 @@ export const getTransactionByExternalId = async ( req: Request, res: Response ):
   const { id } = req.params
 
   const transaction = await TransactionModel.findOne( {where : {transactionExternalId: id}} )
-  if ( !transaction ) throw new CustomError( "The transaction doesn't exist", 404 );
+  if ( !transaction ) throw new CustomError( "The transaction doesn't exist", 404, "getTransactionByExternalId" );
   const { tranferTypeId, tranferStatusId, value, createdAt } = transaction?.dataValues;
 
   const type = await TransactionTypeModel.findByPk( tranferTypeId );
@@ -52,7 +52,7 @@ export const updateStatusTransaction = async ( req: Request, res: Response ): Pr
   const { idStatus } = req.query
 
   const transaction = await TransactionModel.findOne( {where : {transactionExternalId: id}} )
-  if ( !transaction ) throw new CustomError( "The transaction doesn't exist", 404 );
+  if ( !transaction ) throw new CustomError( "The transaction doesn't exist", 404, "updateStatusTransaction" );
 
   if ( idStatus ){
 

@@ -3,7 +3,8 @@ import { CustomError } from "../helpers/customError.helper";
 
 export const errorHandler = async ( error: CustomError, req: Request, res: Response, _next: NextFunction ) => {
   res.status( error.code || 500 ).json( {
-    message: `Error: ${error.message}`
+    message: `Error: ${error.message}`,
+    fn: error.fn
   } );
 } ;
 
