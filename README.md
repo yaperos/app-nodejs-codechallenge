@@ -1,3 +1,19 @@
+# Solucion
+
+¡Hola Yaperos!
+
+Quería informarles que he completado con éxito la prueba técnica asignada. He integrado los flujos necesarios y además he implementado un servicio de monitoreo y auditoría para las transacciones.
+
+Dada mi amplia experiencia como desarrollador, principalmente en el sector financiero, comprendo la vital importancia de monitorear y detectar posibles fallos o irregularidades. En este sentido, he creado tres microservicios: uno para gestionar transacciones, otro para la detección de fraudes y uno más para el registro de actividades. Además, he diseñado un panel de control que permite supervisar el uso de la solución.
+
+En cuanto a la implementación, he considerado diversas herramientas como Datadog, Dynatrace, Grafana, entre otras, que podrían integrarse según las necesidades específicas del proyecto.
+
+Con nueve años de experiencia como desarrollador, con más de seis de ellos dedicados al sector financiero en diferentes partes de Latinoamérica, me siento preparado para contribuir significativamente al equipo de Yape. Mi objetivo es formar parte de esta empresa, ya que percibo que su enfoque en el bienestar y la cultura organizacional resuena profundamente conmigo. Durante más de un año, he estado preparándome específicamente para esta oportunidad.
+
+Les agradezco la oportunidad y les deseo mucha suerte en el proceso de selección. Estoy seguro de que pronto me uniré como otro miembro orgulloso del equipo de Yape.
+
+¡Saludos cordiales!
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 

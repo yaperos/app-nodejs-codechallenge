@@ -1,19 +1,23 @@
 version: "3.7"
 services:
   postgres:
-    image: postgres:14
+    image: postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - TZ=America/Lima
+
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    image: confluentinc/cp-kafka
+    depends_on: 
+      - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -23,3 +27,25 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgres@postgres:5432/shop?sslmode=disable"
+    links:
+      - postgres
+      - prometheus

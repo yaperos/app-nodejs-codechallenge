@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "0a405f94-1746-4202-b405-22bb91afbc57",
+		"name": "ms-transactions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14593605"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountExternalIdDebit\": \"2e3bf1a5-5c5c-4ea5-b397-4a20f8a57e00\",\n    \"accountExternalIdCredit\": \"e3411801-8b18-4c1e-977e-4335d5101cc5\",\n    \"tranferTypeId\": 1,\n    \"value\": {{$randomInt}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/transaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get transactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n  getTransactions(filter: {\n    transactionExternalId: \"95f559af-8a2b-4846-b156-06571b003371\",\n    transactionType: {\n      name: \"debit\"\n    },\n    transactionStatus: {\n      name: \"rejected\"\n    },\n    value: 1000,\n    createdAt: \"2024-03-12 04:09:11.082\"\n  }) {\n    transactionExternalId\n    type {\n      name\n    }\n    status {\n      name\n    }\n    value\n    createdAt\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
