@@ -1,49 +1,31 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Hola, Bienvenidos!
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Para comenzar primero deben:
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+-Iniciar Docker, en la carpeta donde se encuentra el archivo docker-compose.yml:
+```
+docker-compose up
+```
+Puedes verificar los ambientes correctamente trabajando con el siguiente comando:
+```
+docker-compose ps
+```
+-Iniciar el server, en la carpeta /Transaction-Service ejecutar:
+```
+npm run dev
+```
+-Iniciar kafka, en la carpeta /Antifraud ejecutar:
+```
+npm run dev
 ```
 
-# Tech Stack
+Vas a necesitar alguna herramienta como POSTMAN para probar las siguientes rutas:
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+POST: "localhost:3000/api/transaction/create"
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
+Informacion en el body:
 ```json
 {
   "accountExternalIdDebit": "Guid",
@@ -52,31 +34,43 @@ You must have two resources:
   "value": 120
 }
 ```
+Respuesta al POST: 
+```json
+{
+    "message": "Success",
+    "results": {
+        "transactionExternalId": "87ed6981-8d56-4b78-bbc2-7be24b99942b",
+        "tranferStatusId": 1,
+        "createdAt": "2024-03-13T13:48:31.732Z",
+        "id": 1,
+        "accountExternalIdDebit": "Guid",
+        "accountExternalIdCredit": "Guid",
+        "tranferTypeId": 1,
+        "value": 770
+    }
+}
+```
+GET: "localhost:3000/api/transaction/:id"
 
-2. Resource to retrieve a transaction
+El id param en este caso es el "transactionExternalId" que devuelve en la respuesta del POST.
+
+En este get podremos observar el estado de la transacción:
 
 ```json
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+    "message": "Success",
+    "results": {
+        "transactionExternalId": "87ed6981-8d56-4b78-bbc2-7be24b99942b",
+        "transactionType": {
+            "name": "Other"
+        },
+        "transactionStatus": {
+            "name": "Approved"
+        },
+        "value": 770,
+        "createdAt": "2024-03-13T13:48:31.732Z"
+    }
 }
 ```
 
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+Gracias por leer, no duden en consultar!
