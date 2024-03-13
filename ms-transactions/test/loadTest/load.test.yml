@@ -1,0 +1,68 @@
+config:
+  target: 'http://localhost:3002'
+  phases:
+    - duration: 10
+      arrivalRate: 100
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+scenarios:
+  - flow:
+      - get:
+          url: '/health'
+      - post:
+          url: '/transaction'
+          json:
+            accountExternalIdDebit: '2e3bf1a5-5c5c-4ea5-b397-4a20f8a57e00'
+            accountExternalIdCredit: 'e3411801-8b18-4c1e-977e-4335d5101cc5'
+            tranferTypeId: 1
+            value: 999
+      - post:
+          url: '/transaction'
+          json:
+            accountExternalIdDebit: '2e3bf1a5-5c5c-4ea5-b397-4a20f8a57e00'
+            accountExternalIdCredit: 'e3411801-8b18-4c1e-977e-4335d5101cc5'
+            tranferTypeId: 2
+            value: 1000
+      - post:
+          url: '/graphql'
+          json:
+            query: |
+              query {
+                getTransactions(filter: {
+                  transactionType: {
+                    name: "debit"
+                  },
+                }) {
+                  transactionExternalId
+                  type {
+                    name
+                  }
+                  status {
+                    name
+                  }
+                  value
+                  createdAt
+                }
+              }
+      - post:
+          url: '/graphql'
+          json:
+            query: |
+              query {
+                getTransactions(filter: {
+                  transactionType: {
+                    name: "credit"
+                  },
+                }) {
+                  transactionExternalId
+                  type {
+                    name
+                  }
+                  status {
+                    name
+                  }
+                  value
+                  createdAt
+                }
+              }        

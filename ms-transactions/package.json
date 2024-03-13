@@ -21,7 +21,9 @@
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "typeorm:create-migration": "npm run typeorm -- migration:create src/infraestructure/database/migrations/migration",
     "typeorm:run": "npm run typeorm migration:run -- -d src/infraestructure/database/config/dataSource.ts",
-    "typeorm:down": "npm run typeorm migration:revert -- -d src/infraestructure/database/config/dataSource.ts"
+    "typeorm:down": "npm run typeorm migration:revert -- -d src/infraestructure/database/config/dataSource.ts",
+    "test:load": "npx artillery run --output test/loadTest/test-load.json test/loadTest/load.test.yml && artillery report test/loadTest/test-load.json",
+    "test:stress": "npx artillery run --output test/stressTest/stress-load.json test/stressTest/stress.test.yml && artillery report test/stressTest/stress-load.json"
   },
   "dependencies": {
     "@apollo/server": "^4.10.1",
