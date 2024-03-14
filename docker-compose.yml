@@ -6,7 +6,9 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      # - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=db_pass
+      - POSTGRES_DB=transaction
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
