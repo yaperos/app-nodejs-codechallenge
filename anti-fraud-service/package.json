@@ -54,12 +54,16 @@
     "typescript": "^5.1.3"
   },
   "jest": {
+    "coveragePathIgnorePatterns": [
+      "/src/main.ts",
+      "/src/app.module.ts"
+    ],
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "test",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
