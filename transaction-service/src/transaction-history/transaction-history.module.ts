@@ -12,15 +12,21 @@ import { RedisClientFactory } from './infrastructure/cache/CacheFactory';
 import { TransactionController } from './infrastructure/http/Transaction.controller';
 import { ITransactionService } from './application/services/ITransactionService';
 import { TransactionService } from './application/services/impl/TransactionService';
-import { KafkaProducerClientFactory } from './infrastructure/stream/KafkaProducerFactory';
-import { IKafkaProducer } from './domain/stream/IKafkaProducer';
-import { KafkaProducer } from './infrastructure/stream/KafkaProducer';
+import { KafkaProducerClientFactory } from './infrastructure/stream/producer/KafkaProducerFactory';
+import { IKafkaProducer } from './domain/stream/producer/IKafkaProducer';
+import { KafkaProducer } from './infrastructure/stream/producer/KafkaProducer';
+import { IKafkaConsumer } from './domain/stream/consumer/IKafkaConsumer';
+import { KafkaConsumer } from './infrastructure/stream/consumer/KafkaConsumer';
+import { KafkaConsumerClientFactory } from './infrastructure/stream/consumer/KafkaConsumerFactory';
+import { DatabaseModule } from './infrastructure/database/database.module';
 
 @Module({
+  imports: [DatabaseModule],
   controllers: [TransactionCatalogController, TransactionController],
   providers: [
     RedisClientFactory,
     KafkaProducerClientFactory,
+    KafkaConsumerClientFactory,
     {
       provide: ITransactionCatalogService,
       useClass: TransactionCatalogService,
@@ -44,6 +50,10 @@ import { KafkaProducer } from './infrastructure/stream/KafkaProducer';
     {
       provide: IKafkaProducer,
       useClass: KafkaProducer,
+    },
+    {
+      provide: IKafkaConsumer,
+      useClass: KafkaConsumer,
     },
   ],
 })

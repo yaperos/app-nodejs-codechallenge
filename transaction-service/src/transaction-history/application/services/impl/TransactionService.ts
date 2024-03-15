@@ -6,17 +6,22 @@ import { ITransactionCatalogService } from '../ITransactionCatalogService';
 import { CatalogTypes } from '../../../domain/enums/CatalogTypes';
 import { TransactionModel } from '../../../domain/model/Transaction.model';
 import { TransactionCatalogModel } from '../../../domain/model/TransactionCatalog.model';
-import { IKafkaProducer } from '../../../domain/stream/IKafkaProducer';
+import { IKafkaProducer } from '../../../domain/stream/producer/IKafkaProducer';
+import { TransactionEvaluatedDTO } from '../../dto/TransactionEvaluatedDTO';
+import { ICacheRepository } from '../../../domain/repositories/cache/ICacheRepository';
+import { TransactionDetailModel } from '../../../domain/model/TransactionDetail.model';
+import { TransactionCreatedModel } from '../../../domain/model/TransactionCreated.model';
 
 @Injectable()
 export class TransactionService implements ITransactionService {
   constructor(
+    private readonly cache: ICacheRepository,
     private readonly producer: IKafkaProducer,
     private readonly repository: ITransactionRepository,
     private readonly catalogService: ITransactionCatalogService,
   ) {}
 
-  async createTransaction(transaction: TransactionDTO): Promise<void> {
+  async createTransaction(transaction: TransactionDTO): Promise<TransactionCreatedModel> {
     const transactionType: TransactionCatalogModel =
       await this.catalogService.findById(transaction.transferTypeId);
 
@@ -57,7 +62,28 @@ export class TransactionService implements ITransactionService {
       transactionTypeId: transactionType.id,
     };
 
-    await this.repository.createTransaction(newTransaction);
+    const result = await this.repository.createTransaction(newTransaction);
     await this.producer.sendMessage(newTransaction);
+
+    return result;
+  }
+
+  async updateTransactionAfterEvaluate(
+    data: TransactionEvaluatedDTO,
+  ): Promise<void> {
+    const transactionStatus: TransactionCatalogModel =
+      await this.catalogService.findByNameAndType(
+        data.status,
+        CatalogTypes.TRANSACTION_STATUS,
+      );
+
+    await this.repository.updateTransactionStatus(
+      data.transactionExternalId,
+      transactionStatus.id,
+    );
+  }
+
+  async findTransactionById(id: string): Promise<TransactionDetailModel> {
+    return this.repository.findTransactionById(id);
   }
 }

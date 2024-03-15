@@ -5,6 +5,7 @@ export default registerAs('config', () => {
   return {
     NODE_ENV: process.env.NODE_ENV,
     API_KEY: process.env.API_KEY,
+    APP_NAME: process.env.APP_NAME,
     DB_HOST: process.env.DB_HOST,
     DB_PORT: process.env.DB_PORT,
     DB_NAME: process.env.DB_NAME,
@@ -21,6 +22,8 @@ export default registerAs('config', () => {
     KAFKA_TIMEOUT: process.env.KAFKA_TIMEOUT,
     KAFKA_RETRIES: process.env.KAFKA_RETRIES,
     KAFKA_CLIENT_ID: process.env.KAFKA_CLIENT_ID,
+    KAFKA_GROUP_ID: process.env.KAFKA_GROUP_ID,
     TRANSACTION_TOPIC: process.env.TRANSACTION_TOPIC,
+    TRANSACTION_EVALUATED_TOPIC: process.env.TRANSACTION_EVALUATED_TOPIC,
   };
 });
