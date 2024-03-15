@@ -19,5 +19,7 @@ export const environmentsValidator = Joi.object({
   KAFKA_TIMEOUT: Joi.number().required(),
   KAFKA_RETRIES: Joi.number().required(),
   KAFKA_CLIENT_ID: Joi.string().required(),
+  KAFKA_GROUP_ID: Joi.string().required(),
   TRANSACTION_TOPIC: Joi.string().required(),
+  TRANSACTION_EVALUATED_TOPIC: Joi.string().required(),
 });

@@ -38,7 +38,7 @@ Every transaction with a value greater than 1000 should be rejected.
   <li>Kafka</li>    
 </ol>
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+We do provide a `docker-compose` to help you get started with a dev environment.
 
 You must have two resources:
 

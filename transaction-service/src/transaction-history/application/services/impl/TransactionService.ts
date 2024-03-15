@@ -6,7 +6,7 @@ import { ITransactionCatalogService } from '../ITransactionCatalogService';
 import { CatalogTypes } from '../../../domain/enums/CatalogTypes';
 import { TransactionModel } from '../../../domain/model/Transaction.model';
 import { TransactionCatalogModel } from '../../../domain/model/TransactionCatalog.model';
-import { IKafkaProducer } from '../../../domain/stream/IKafkaProducer';
+import { IKafkaProducer } from '../../../domain/stream/producer/IKafkaProducer';
 
 @Injectable()
 export class TransactionService implements ITransactionService {
@@ -59,5 +59,9 @@ export class TransactionService implements ITransactionService {
 
     await this.repository.createTransaction(newTransaction);
     await this.producer.sendMessage(newTransaction);
+  }
+
+  async updateTransactionAfterEvaluate(data: any): Promise<void> {
+    console.log('DATAAAAA', data);
   }
 }

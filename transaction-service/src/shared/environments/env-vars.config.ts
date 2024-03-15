@@ -21,6 +21,8 @@ export default registerAs('config', () => {
     KAFKA_TIMEOUT: process.env.KAFKA_TIMEOUT,
     KAFKA_RETRIES: process.env.KAFKA_RETRIES,
     KAFKA_CLIENT_ID: process.env.KAFKA_CLIENT_ID,
+    KAFKA_GROUP_ID: process.env.KAFKA_GROUP_ID,
     TRANSACTION_TOPIC: process.env.TRANSACTION_TOPIC,
+    TRANSACTION_EVALUATED_TOPIC: process.env.TRANSACTION_EVALUATED_TOPIC,
   };
 });

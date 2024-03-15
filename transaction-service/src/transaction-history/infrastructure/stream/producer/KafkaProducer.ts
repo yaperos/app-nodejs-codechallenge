@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IKafkaProducer } from '../../domain/stream/IKafkaProducer';
+import { IKafkaProducer } from '../../../domain/stream/producer/IKafkaProducer';
 import { Producer } from 'kafkajs';
 
 @Injectable()
