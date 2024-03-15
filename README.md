@@ -80,3 +80,9 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+
+# Solution flow diagram
+The proposed solution defines an architecture where each service communicates with each other through kafka, when a transaction is created an event is generated on the topic transactions, then the anti-fraud system is listening to the events on the transaction topic, when it finds a new event it evaluates it and processes it to update the status in the database, which in this case is in MongoDB.
+
+![](https://i.ibb.co/hDT3jPy/transaction.png)

@@ -1,12 +1,12 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - '27017:27017'
+    volumes:
+      - /Users/elkinurango/mongodb-volume:/data/db
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
