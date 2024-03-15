@@ -11,7 +11,6 @@ services:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
-      ALLOW_ANONYMOUS_LOGIN: yes
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -22,8 +21,5 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
-      KAFKA_CFG_NUM_PARTITIONS: 3
-      ALLOW_PLAINTEXT_LISTENER: yes
-      KAFKA_CREATE_TOPICS: TS_NODE_KAFKAJS
     ports:
       - 9092:9092

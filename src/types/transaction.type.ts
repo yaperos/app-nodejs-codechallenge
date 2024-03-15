@@ -10,7 +10,7 @@ export interface ITransaction {
 }
 
 export enum TransactionStatus {
-  PENDING,
-  APPROVED,
-  REJECTED
+  PENDING = "PENDING",
+  APPROVED= "APPROVED",
+  REJECTED= "REJECTED"
 }

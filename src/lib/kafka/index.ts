@@ -3,7 +3,7 @@ import { Kafka } from 'kafkajs'
 
 export const kafka = new Kafka({
   clientId: process.env.APP_NAME,
-  brokers: [`${process.env.BOOTSTRAP_SERVER}`],
+  brokers: ['localhost:9092'],
   connectionTimeout: 3000,
   requestTimeout: 25000,
   enforceRequestTimeout: false,

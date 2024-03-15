@@ -1,8 +1,8 @@
-import mongoose from 'mongoose'
+import mongoose, { Schema, Model } from 'mongoose'
 import { randomUUID } from 'node:crypto'
-import { TransactionStatus } from '@/types/transaction.type'
+import { TransactionStatus, ITransaction } from '@/types/transaction.type'
 
-const transactionSchema = new mongoose.Schema(
+const transactionSchema = new Schema(
   {
     _id: {
       type: String,
@@ -31,7 +31,7 @@ const transactionSchema = new mongoose.Schema(
       require: true,
     },
     transactionStatus: {
-      type: TransactionStatus,
+      type: String,
       require: true,
     },
     createdAt: {
@@ -45,6 +45,6 @@ const transactionSchema = new mongoose.Schema(
   }
 )
 
-const Transaction = mongoose.model('Transaction', transactionSchema)
+const Transaction: Model<ITransaction> = mongoose.model<ITransaction>('Transaction', transactionSchema)
 
 export { Transaction }

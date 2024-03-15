@@ -4,6 +4,7 @@ import { Router } from 'express'
 const router: Router = Router()
 const transactionController = new TransactionController()
 
-router.get('/transaction', transactionController.create)
+router.post('/transaction', transactionController.create)
+router.get('/transactions', transactionController.getTransactions)
 
 export { router }
