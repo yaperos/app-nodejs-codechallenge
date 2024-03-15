@@ -18,8 +18,10 @@ import { KafkaProducer } from './infrastructure/stream/producer/KafkaProducer';
 import { IKafkaConsumer } from './domain/stream/consumer/IKafkaConsumer';
 import { KafkaConsumer } from './infrastructure/stream/consumer/KafkaConsumer';
 import { KafkaConsumerClientFactory } from './infrastructure/stream/consumer/KafkaConsumerFactory';
+import { DatabaseModule } from './infrastructure/database/database.module';
 
 @Module({
+  imports: [DatabaseModule],
   controllers: [TransactionCatalogController, TransactionController],
   providers: [
     RedisClientFactory,

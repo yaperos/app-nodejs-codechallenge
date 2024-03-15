@@ -7,10 +7,14 @@ import { CatalogTypes } from '../../../domain/enums/CatalogTypes';
 import { TransactionModel } from '../../../domain/model/Transaction.model';
 import { TransactionCatalogModel } from '../../../domain/model/TransactionCatalog.model';
 import { IKafkaProducer } from '../../../domain/stream/producer/IKafkaProducer';
+import { TransactionEvaluatedDTO } from '../../dto/TransactionEvaluatedDTO';
+import { ICacheRepository } from '../../../domain/repositories/cache/ICacheRepository';
+import { TransactionDetailModel } from '../../../domain/model/TransactionDetail.model';
 
 @Injectable()
 export class TransactionService implements ITransactionService {
   constructor(
+    private readonly cache: ICacheRepository,
     private readonly producer: IKafkaProducer,
     private readonly repository: ITransactionRepository,
     private readonly catalogService: ITransactionCatalogService,
@@ -61,7 +65,22 @@ export class TransactionService implements ITransactionService {
     await this.producer.sendMessage(newTransaction);
   }
 
-  async updateTransactionAfterEvaluate(data: any): Promise<void> {
-    console.log('DATAAAAA', data);
+  async updateTransactionAfterEvaluate(
+    data: TransactionEvaluatedDTO,
+  ): Promise<void> {
+    const transactionStatus: TransactionCatalogModel =
+      await this.catalogService.findByNameAndType(
+        data.status,
+        CatalogTypes.TRANSACTION_STATUS,
+      );
+
+    await this.repository.updateTransactionStatus(
+      data.transactionExternalId,
+      transactionStatus.id,
+    );
+  }
+
+  async findTransactionById(id: string): Promise<TransactionDetailModel> {
+    return this.repository.findTransactionById(id);
   }
 }

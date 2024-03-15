@@ -5,6 +5,7 @@ export default registerAs('config', () => {
   return {
     NODE_ENV: process.env.NODE_ENV,
     API_KEY: process.env.API_KEY,
+    APP_NAME: process.env.APP_NAME,
     DB_HOST: process.env.DB_HOST,
     DB_PORT: process.env.DB_PORT,
     DB_NAME: process.env.DB_NAME,

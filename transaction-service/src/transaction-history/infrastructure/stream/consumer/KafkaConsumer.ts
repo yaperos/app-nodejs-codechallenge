@@ -26,13 +26,13 @@ export class KafkaConsumer implements OnModuleDestroy, IKafkaConsumer {
         eachMessage: async ({ topic, partition, message }) => {
           const data = JSON.parse(message.value.toString());
           Logger.log(
-            `Kafka Consumer:: New transaction topic': ${topic}, partition: ${partition}, message: ${data}`,
+            `Kafka Consumer:: New transaction evaluated topic': ${topic}, partition: ${partition}, message: ${message.value.toString()}`,
           );
           await this.transactionService.updateTransactionAfterEvaluate(data);
         },
       });
     } catch (error) {
-      Logger.error('Error sending new transaction');
+      Logger.error('Error receiving new transaction');
     }
   }
 }
