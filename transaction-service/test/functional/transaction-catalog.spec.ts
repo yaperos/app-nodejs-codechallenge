@@ -2,7 +2,7 @@ import * as supertest from 'supertest';
 import * as assert from 'assert';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { AppModule } from '../../app.module';
+import { AppModule } from '../../src/app.module';
 
 describe('Transaction Catalog Test', () => {
   let app: INestApplication;
