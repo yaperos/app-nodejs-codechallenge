@@ -4,7 +4,7 @@
 
 # Diagrama de Aplicaciones
 
-![Diagrama de Aplicaciones](URL de  imagen)
+![Diagrama de Aplicaciones](https://github.com/cesarxa14/app-nodejs-codechallenge/blob/feature/cesar/Diagrama%20de%20aplicaciones.png)
 
 # Herramientas
 
