@@ -1,5 +1,3 @@
-# Yape Code Challenge :rocket:
-
 # Solución - César Torres Lara :smiley:
 
 # Diagrama de Aplicaciones
@@ -37,6 +35,10 @@ Para poder ejecutar la aplicación debe ubicar en la ruta raiz del proyecto y ej
 **NOTA:** Para poder entrar como cliente, se hace uso de Swagger donde esta documentado el API REST y así poder crear transacciones de manera manual.
 
 Swagger se encuentra ubicado en `http://localhost:3001/documentation/`.
+
+# Observaciones
+
+- Elegí usar Mongoose en lugar de TypeORM principalmente debido a mi familiaridad y experiencia previa con el ecosistema de MongoDB y Node.js. Mongoose me proporciona una interfaz intuitiva y orientada a objetos para interactuar con MongoDB, lo que me resulta cómodo y eficiente. Aunque tambien tengo conocimientos de TypeORM y conozco sus ventajas, como su soporte para múltiples bases de datos relacionales, decidí utilizar Mongoose en mi proyecto.
 
 
 
