@@ -1,6 +1,6 @@
 # Yape Code Challenge :rocket:
 
-# Solución - César Torres Lara
+# Solución - César Torres Lara :smiley:
 
 # Diagrama de Aplicaciones
 
@@ -8,7 +8,7 @@
 
 # Herramientas
 
-He usado las siguiente herramientas para el desarrollo de mi reto técnico.
+He usado las siguientes herramientas para el desarrollo de mi reto técnico.
 
 <ol>
   <ul><strong>VS Code</strong>: Editor de código fuente</ul>
@@ -26,17 +26,17 @@ He usado las siguiente herramientas para el desarrollo de mi reto técnico.
 
 Para poder ejecutar y ver los logs del proyecto, recomiendo descargar **Docker Desktop** para tener una interfaz gráfica mas intuitiva de como se estan manejando los contenedores y ver los logs del sistema.
 
-Link de la página oficial para poder descargarlo: [Docker Desktop]("https://www.docker.com/products/docker-desktop/")
+Link de la página oficial para poder descargarlo: [Docker Desktop](https://www.docker.com/products/docker-desktop/ target="_blank")
 
-No olvides tener los puertos **3001** y **3002** para poder ejecutar los microservicios.
+No olvides tener los puertos **3001** y **3002** libres para poder ejecutar los microservicios.
 
 # Instalación y Ejecución
 
 Para poder ejecutar la aplicación debe ubicar en la ruta raiz del proyecto y ejecutar en la consola el siguiente comando: `docker-compose up -d`. De esta forma se empezaran a iniciar en segundo plano los contenedores definidos en el archivo **docker-compose.yml**.
 
-**NOTA:** para poder entrar como cliente, se hace uso de Swagger donde esta documentado el API REST y así poder crear transacciones de manera manual.
+**NOTA:** Para poder entrar como cliente, se hace uso de Swagger donde esta documentado el API REST y así poder crear transacciones de manera manual.
 
-SWagger se encuentra ubicado en `http://localhost:3001/documentation/`.
+Swagger se encuentra ubicado en `http://localhost:3001/documentation/`.
 
 
 
