@@ -10,7 +10,7 @@ He usado las siguientes herramientas para el desarrollo de mi reto técnico.
 
 <ol>
   <ul><strong>VS Code</strong>: Editor de código fuente</ul>
-  <ul><strong>NodeJS</strong>: Entorno de ejecución Javascript</ul>
+  <ul><strong>NodeJS</strong>: Entorno de ejecución Javascript en el servidor</ul>
   <ul><strong>Typescript</strong>: Lenguaje de programación como extensión de Javascript, para el tipado de datos</ul>
   <ul><strong>MongoDB</strong>: Sistema de datos NoSQL para el almacenamientos de datos</ul>
   <ul><strong>Docker</strong>: Virtualiza las aplicaciones en contenedores para ejecutar en diferentes entornos</ul>
