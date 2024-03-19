@@ -5,8 +5,10 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_ROOT_PASSWORD: 'postgres'
+      POSTGRES_DB: 'postgres_db'
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
