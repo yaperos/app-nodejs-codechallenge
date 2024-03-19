@@ -19,6 +19,7 @@
     "express-validator": "^7.0.1",
     "kafkajs": "^2.2.4",
     "mongoose": "^8.2.1",
+    "short-uuid": "^4.2.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.2"

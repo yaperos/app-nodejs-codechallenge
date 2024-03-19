@@ -20,15 +20,10 @@ const createTransaction = async function(req: Request, res: Response) {
             return res.status(404).json({"error": "No existe el transferType"})
         }        
 
-        // SE GENERA UN CLAVE UNICA PARA LAS CUENTAS DE CREDITO Y DEBITO
-        let generateAccountExternalIdCredit = 'CREDIT-' + new Date().getTime().toString();
-        let generateAccountExternalIdDebit = 'DEBIT-' + new Date().getTime().toString();
-
-
         // SE CREA UN NUEVO MODELO DE LA TRANSACCIÓN
         const newTransaction = new TransactionModel({
-            accountExternalIdCredit: generateAccountExternalIdCredit,
-            accountExternalIdDebit: generateAccountExternalIdDebit,
+            accountExternalIdCredit,
+            accountExternalIdDebit,
             transferTypeId, 
             value,
         });
@@ -52,7 +47,7 @@ const createTransaction = async function(req: Request, res: Response) {
         
     } catch(err) {
         console.error('ERROR -> Transacción controller -> createTransaction:', err);
-        return res.status(500).send({error: 'createTransaction -> Ocurrió un error interno en el servidor'});
+        return res.status(500).send({error: 'createTransaction -> Ocurrió un error interno en el servidor', err});
     }
 }
 
