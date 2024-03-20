@@ -12,11 +12,6 @@ export class AntiFraudService {
   }
 
   async create(messagePayload: TransactionPayload) {
-    console.log(
-      '<<<< Received transaction service >>>>>',
-      messagePayload,
-      parseFloat(messagePayload.amount) > 1000,
-    );
     return await this.prismaService.antiFraud.create({
       data: {
         transaction_id: messagePayload.id,
