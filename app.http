@@ -1,0 +1,46 @@
+###
+http://localhost:3001
+
+
+### Customer
+GET http://localhost:3001/customer
+
+###
+POST http://localhost:3001/customer
+content-type: application/json
+
+{
+    "name": "Jonas Oliveira",
+    "email": "jonas@gmail.com"
+}
+
+
+### Account
+GET http://localhost:3001/account
+
+###
+POST http://localhost:3001/account
+content-type: application/json
+
+{
+    "customer_id": "5ff7d583-6637-45da-a39c-62400a82400c",
+    "balance": "10000.00"
+}
+
+
+### Transaction
+GET http://localhost:3002/transaction
+
+
+###
+POST http://localhost:3002/transaction
+content-type: application/json
+
+{
+    "accountExternalId": "872194a9-3648-40b2-87fd-312d306f8cb2",
+    "transactionTypeId": "046b40b9-87c7-4798-9265-56053617ddf9",
+    "value": "125.23"
+}
+
+### Transaction
+GET http://localhost:3003/anti-fraud

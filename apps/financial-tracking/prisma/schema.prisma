@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../../../node_modules/.prisma/client/financial-tracking"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  account  Account[]
+}
+
+model Account {
+  id        String   @id @default(uuid())
+  customer_id String
+  customer   Customer @relation(fields: [customer_id], references: [id])
+  balance   Decimal
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  status    AccountStatus
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+}

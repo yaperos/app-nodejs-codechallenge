@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/financial-tracking/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/financial-tracking/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/financial-tracking",
+  "projects": {
+    "customers": {
+      "type": "application",
+      "root": "apps/customers",
+      "entryFile": "main",
+      "sourceRoot": "apps/customers/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/customers/tsconfig.app.json"
+      }
+    },
+    "transactions": {
+      "type": "application",
+      "root": "apps/transactions",
+      "entryFile": "main",
+      "sourceRoot": "apps/transactions/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transactions/tsconfig.app.json"
+      }
+    },
+    "financial-tracking": {
+      "type": "application",
+      "root": "apps/financial-tracking",
+      "entryFile": "main",
+      "sourceRoot": "apps/financial-tracking/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/financial-tracking/tsconfig.app.json"
+      }
+    },
+    "anti-fraud": {
+      "type": "application",
+      "root": "apps/anti-fraud",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud/tsconfig.app.json"
+      }
+    }
+  }
+}

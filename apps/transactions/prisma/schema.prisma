@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../../../node_modules/.prisma/client/transactions"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TransactionType {
+  id        String   @id @default(uuid())
+  type      TransactionTypes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  transactions Transaction[]
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  amount    Decimal
+  account_id String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  transaction_type_id String
+  TransactionType TransactionType @relation(fields: [transaction_type_id], references: [id])
+  status    TransactionStatus
+}
+
+enum TransactionTypes {
+  DEBIT
+  CREDIT
+  TRANSFER
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
