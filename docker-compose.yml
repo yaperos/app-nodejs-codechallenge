@@ -1,20 +1,51 @@
 version: "3.7"
 services:
-  postgres:
+  ms-transaction:
+    container_name: ms-transaction
+    build:
+      dockerfile: Dockerfile
+      context: ./ms-transaction
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./ms-transaction/.env
+    environment:
+      - DATABASE_HOST=db-postgres
+    depends_on:
+      - db-postgres
+      - kafka
+  ms-antifraud:
+    container_name: ms-antifraud
+    build:
+      dockerfile: Dockerfile
+      context: ./ms-antifraud
+    restart: unless-stopped
+    env_file:
+      - ./ms-antifraud/.env
+  db-postgres:
     image: postgres:14
+    hostname: db-postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes: 
+      - ./db-postgres:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    platform: linux/amd64
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
+    hostname: kafka
+    platform: linux/amd64
     environment:
+      environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
@@ -23,3 +54,6 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+volumes:
+  db-postgres:
+    driver: local

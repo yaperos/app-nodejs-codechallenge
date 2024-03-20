@@ -102,3 +102,11 @@ dist
 
 # TernJS port file
 .tern-port
+db-postgres
+ms-transaction/dist
+ms-transaction/node_modules
+ms-transaction/.tmp
+
+ms-antifraud/.tmp
+ms-antifraud/dist
+ms-antifraud/node_modules
