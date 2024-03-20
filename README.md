@@ -1,82 +1,92 @@
-# Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# Summary
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+This project implements two microservices, one for transactions and one for anti-fraud, using technologies such as Kafka, GraphQL and HTTP API. A clean and scalable architecture is followed to ensure efficient development and maintenance.
+- mention that microservices are independent, therefore they can be built independently
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Requirements before starting
+- **Nodejs v21**
+- **Kafka**
+- **Docker**
+- **PostgreSQL**
 
-# Problem
+## Dependencies
+Run the main services for correct operation using the `deploy.sh` file and make sure the following services are running.
+zookeeper
+- kafka
+- db-postgres
+- ms-transaction
+- ms-antifraud
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+#### Execute command
+```sh
+chmod +x deploy.sh
 ```
 
-# Tech Stack
+#### Run services
+```sh
+./deploy.sh
+```
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## Http API
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+#### POST
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
+```ssh
+# Use your reference http client, in my case it was tested by Postman
+# Body:
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+    "amount": 999,
+    "accountExternalName": "Jhon Birreo",
+    "transferTypeName": "DEBIT"
+}
+```
+#### GET
+
+```bash
+# Use your reference http client, in my case it was tested by Postman
+# Params:
+`http://localhost:3000/transaction/71148b13-326b-4ddf-a4d8-9b8a9f1883dd`
+```
+
+## Graphql API
+
+#### CREATE
+
+```js
+mutation { # create new transaction
+  createTransaction (
+	data : {
+    amount: 3000,
+		accountExternalName: "testin",
+		transferTypeName: DEBIT
+  }
+  ) {
+			amount
+			accountExternalName
+			transferTypeName
+		}
+}
+```
+#### FIND
+
+```js
+query {  # get transaction
+ findFirstTransaction (
+		where : {
+			externalId: {
+				contains : "9b48ebf7-c7ef-4454-b207-afd3c5797b01"
+			}
+		}
+  ) {
+      externalId
+			status
+			transferTypeName
+    }
 }
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+## Swagger documentation 
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+http://localhost:3000/doc
+```
