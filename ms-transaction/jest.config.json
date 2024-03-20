@@ -1,0 +1,14 @@
+{
+	"moduleDirectories": ["node_modules", "test"],
+	"moduleFileExtensions": ["js", "json", "ts"],
+	"testEnvironment": "node",
+	"testRegex": ".*\\.spec\\.ts$",
+	"clearMocks": true,
+	"transform": {
+	  "^.+\\.ts$": "ts-jest"
+	},
+	"preset": "ts-jest",
+	"coverageDirectory": "./coverage",
+	"cacheDirectory": ".tmp/jest-cache",
+	"collectCoverage": true
+  }
