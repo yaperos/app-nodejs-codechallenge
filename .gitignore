@@ -106,3 +106,6 @@ dist
 
 # VSCode code challenge config
 .docker/postgres_data
+
+# My Mac
+.DS_Store
