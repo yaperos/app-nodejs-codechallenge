@@ -15,7 +15,7 @@ async function main() {
   const transactionsTypeDebit = await prisma.transactionType.create({
     data: {
       id: randomUUID(),
-      type: TransactionTypes.CREDIT,
+      type: TransactionTypes.DEBIT,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -24,7 +24,7 @@ async function main() {
   const transactionsTypeTransfer = await prisma.transactionType.create({
     data: {
       id: randomUUID(),
-      type: TransactionTypes.CREDIT,
+      type: TransactionTypes.TRANSFER,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
