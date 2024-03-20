@@ -9,7 +9,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     PrismaModule,
     ClientsModule.register([
       {
-        name: 'ANTI_FRAUD_SERVICE',
+        name: 'ANTI_FRAUD_TRANSPORT_SERVICE',
         transport: Transport.KAFKA,
         options: {
           client: {

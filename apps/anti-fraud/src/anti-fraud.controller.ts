@@ -10,14 +10,15 @@ export class AntiFraudController {
 
   constructor(
     private readonly antiFraudService: AntiFraudService,
-    @Inject('ANTI_FRAUD_SERVICE')
+    @Inject('ANTI_FRAUD_TRANSPORT_SERVICE')
     private kafkaService: ClientKafka,
   ) {}
 
   @Get()
   async all() {
-    this.logger.log('All anti-fraud');
-    return await this.antiFraudService.all();
+    const allAntiFraudResponse = await this.antiFraudService.all();
+    this.logger.log('All anti-fraud', allAntiFraudResponse.length);
+    return allAntiFraudResponse;
   }
 
   @MessagePattern('transactions')

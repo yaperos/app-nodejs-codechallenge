@@ -11,7 +11,7 @@ export class TransactionsController {
 
   constructor(
     private readonly transactionsService: TransactionsService,
-    @Inject('TRANSACTIONS_SERVICE')
+    @Inject('TRANSACTIONS_TRANSPORT_SERVICE')
     private kafkaClient: ClientKafka,
   ) {}
 
