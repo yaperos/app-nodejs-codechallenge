@@ -1,12 +1,50 @@
 version: "3.7"
 services:
+  transaction:
+    build:
+      context: "./transaction/"
+    container_name: yape-transaction
+    depends_on: [kafka, postgres, zookeeper]
+    image: transaction
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+      - API_PREFIX=TD_MY_API
+      - CONTEXT=v1
+      - ORIGINS=http://localhost:3000,http://localhost:8080
+      - ALLOWED_HEADERS=Content-Type,Authorization,Set-Cookie,Access-Control-Allow-Origin,Cache-Control,Pragma
+      - ALLOWED_METHODS=GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS
+      - CORS_ENABLED=true
+      - CORS_CREDENTIALS=false
+      - TYPEORM_HOST=postgres
+      - TYPEORM_PORT=5432
+      - TYPEORM_USERNAME=yape
+      - TYPEORM_PASSWORD=yapechallenge
+      - TYPEORM_DATABASE=yape
+      - GRAPHQL_PLAYGROUND=true
+      - GRAPHQP_SCHEMA_DIR=./src/graphql/schema.gql
+      - KAFKA_CLIENT_ID=TRANSACTION_SERVICE
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_LOG_LEVEL=0
+  antifraude:
+    build:
+      context: "./antifraude/"
+    container_name: yape-antifraude
+    depends_on: [kafka, postgres, zookeeper]
+    image: antifraude
+    environment:
+      - KAFKA_COMSUMER_GROUP_ID=ANTIFRAUDE_SERVICE
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_LOG_LEVEL=0
   postgres:
     image: postgres:14
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=yape
+      - POSTGRES_PASSWORD=yapechallenge
+      - POSTGRES_DATABASE=challenge
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:

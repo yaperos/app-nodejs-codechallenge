@@ -1,82 +1,98 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge Solución - Christian Calderon 🥳 
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+La solución que he propuesto fue desarrollar dos microservicios los cuales usan como base el framework NestJs.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+El primer microservicio llamado **transaction** utiliza además de NestJs, TypeORM para la conexión con la base de datos cuyo motor es Postgres, además de Graphql en la cual se tiene 2 query para consultar las transacciones y una mutación para la creación de una transacción, la cual al ser creada envia a un topico de **KAFKA** llamado **VALIDATE_TRANSACTION** y recibe la respues de verificación del topico llamdo **TRANSACTION_VALIDATED**, para luego hacer la actualización de su estado.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+El segundo microservicio llamado **antifraude** realiza la validación de las transacciones en base a el value, para lo cual se encuentra escuchando el topico **VALIDATE_TRANSACTION** y envia una respuesta con el nuevo estado al topico **TRANSACTION_VALIDATED**.
 
-# Problem
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## 🤓 Diagrama
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+<div align="center">
+    <img src="./.readme-static/solution.drawio.png" width="515" alt="BPMN diagram" />
+</div>
 
-Every transaction with a value greater than 1000 should be rejected.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+# Instalación y uso ⚙️👨‍💻
+Los dos microservicios se encuentran dockerizados para su uso
+
+1.- Realizar el build de la imagen de docker
+
+```bash
+  docker-compose build
 ```
 
-# Tech Stack
+2.- Levantar la imagen generado
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```bash
+  docker-compose up -d
+```
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+3.- Antes de utilizar los microservicios se deben correr las migraciones y seeds de la base de datos
 
-You must have two resources:
+- Nos dirigimos al directorio del microservicio transaction 
+```bash
+  cd transaction/
+```
+- Realizamos la instalación de las librerias con yarn o npm
+```bash
+  yarn install
+  npm run install
+```
+- Generamos el archivo **.env**, realizando y renombrando el archivo **.env.example**
+- Ejecutamos los comando migration:run y migration:seed para ejecutar la migracion y las seed
 
-1. Resource to create a transaction that must containt:
+```bash
+  yarn migration:run
+  yarn migration:seed
+```
+**En las seeds vienen registrados los status para las transacciones y los type (de momento hay 2 registradas)**
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+4.- Abrir en el navegador la dirección http://localhost:3000/graphql para poder ingresar al playground y pode interactuar con las querys y mutations
+
+```graphql
+query {
+  allTransactions: transactions{
+    transactionExternalId
+    transactionType {
+      name
+    }
+    transactionStatus {
+      name
+    }
+    value
+    createdAt
+  }
+  
+
+  transactionByID: transaction(input:{
+    id: "ID-PARA-CONSULTAR"
+  }){
+    transactionExternalId
+    transactionType {
+      name
+    }
+    transactionStatus {
+      name
+    }
+    value
+    createdAt
+    
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+```graphql
+mutation {
+  createTransaction(input: {
+    accountExternalIdDebit: "genear-un-uuid",
+    accountExternalIdCredit: "genear-un-uuid",
+    value: 15,
+    transactionTypeId: 2 # de momento solo existe el ID 1 y 2
+  }) {
+    transactionExternalId,
+    value
+  }
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
