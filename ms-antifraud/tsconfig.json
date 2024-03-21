@@ -17,13 +17,5 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@nestjs-microservices/shared/dto": [
-        "../libs/shared/src"
-      ],
-      "@nestjs-microservices/shared/dto*": [
-        "../libs/shared/src/*"
-      ]
-    }
   }
 }
