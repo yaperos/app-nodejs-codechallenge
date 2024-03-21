@@ -9,10 +9,13 @@ services:
       - POSTGRES_PASSWORD=postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    networks:
+      - local-network
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    container_name: kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -21,5 +24,38 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+    networks:
+      - local-network
     ports:
       - 9092:9092
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: FRaK20X5rQst8oroUayfC
+    networks:
+      - local-network
+    volumes:
+      - mongodb_data:/data/db
+  transactions-svc:
+    container_name: transactions-svc
+    build:
+      context: .
+      dockerfile: devops/transactions/Dockerfile
+      target: development
+    ports:
+      - "3000:3000"
+    networks:
+      - local-network
+
+networks:
+  local-network:
+    name: local-network
+    driver: bridge
+
+volumes:
+  mongodb_data:
