@@ -1,0 +1,26 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionEntity {
+  id: Float!
+  accountExternalId: Float!
+  transferTypeId: Float
+  value: Int!
+  status: String!
+}
+
+type Query {
+  findTransactionById(id: Int!): TransactionEntity!
+}
+
+type Mutation {
+  createTransaction(body: TransactionCreateDto!): TransactionEntity!
+}
+
+input TransactionCreateDto {
+  accountExternalIdDebit: Float!
+  accountExternalIdCredit: Float!
+  transferTypeId: Float!
+  value: Float!
+}
