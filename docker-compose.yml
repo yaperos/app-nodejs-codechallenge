@@ -1,18 +1,23 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_server
     ports:
-      - "5432:5432"
+      - "3306:3306"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      MYSQL_ROOT_PASSWORD: root12345
+      MYSQL_DATABASE: yape
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin_yape_12345
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    container_name: kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -21,5 +26,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_CREATE_TOPICS: "transactions:1:1,transactions.reply:1:1"
+      KAFKA_ADVERTISED_HOST_NAME: kafka
     ports:
       - 9092:9092
