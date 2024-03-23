@@ -1,82 +1,95 @@
-# Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+# Reto-Yape
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Solo clonar el repositorio y ejecutar el comando: docker-compose up
 
-# Problem
+Esto creará automaticamente los 5 servicios necesarios, también creará las tablas y los seeds.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Para probar las api puede hacerse desde postman o usando el playground de graphql
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+desde postman:
 
-Every transaction with a value greater than 1000 should be rejected.
+metodo crear Transacción:
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
-
-# Tech Stack
-
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
-
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+query: {
+  "accountExternalIdDebit": "4567-9875-5634-2236",
+  "accountExternalIdCredit": null,
+  "transferTypeId": 1,
+  "value": 1200
 }
-```
 
-2. Resource to retrieve a transaction
+<img width="641" alt="image" src="https://user-images.githubusercontent.com/62466867/231577435-af932acc-f79a-4aca-822e-58395075fe2b.png">
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+metodo consultar Transacción:
+
+<img width="636" alt="image" src="https://user-images.githubusercontent.com/62466867/231577527-2d96b709-369d-4a77-b989-9f0ae4ce9712.png">
+
+desde graphql:
+
+metodo crear:
+
+mutation {
+  createTransaction(CreateTransactionWithGraphql: {
+    accountExternalIdDebit: "4567-9875-5634-1934",
+    accountExternalIdCredit: null,
+    transferTypeId: 1,
+    value: 500
+  }) {
+    id
+    transactionExternalId
+    value
+    createdAt
+    accountExternalIdDebit
+    accountExternalIdCredit
+    transferType {
+      id
+      name
+    }
+    transactionStatus {
+      id
+      name
+    }
+  }
 }
-```
 
-## Optional
+<img width="957" alt="image" src="https://user-images.githubusercontent.com/62466867/231583764-f2cdef96-fcb6-4b9f-9ddd-25521d90b657.png">
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
 
-You can use Graphql;
+metodo consultar:
 
-# Send us your challenge
+query {
+  findTransactionByExternalId(
+    transactionExternalId: "bfbd8fa8-bc93-455e-bfe2-04fcb993b6c1") {
+    transactionExternalId
+    value
+    createdAt
+    accountExternalIdDebit
+    accountExternalIdCredit
+    transferType {
+      id
+      name
+    }
+    transactionStatus {
+      id
+      name
+    }
+  }
+}
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/62466867/231583911-53d65e59-18ef-4cee-9315-e13ff82f778d.png">
 
-If you have any questions, please let us know.
+Uso de kafka:
+
+servicio transaction:
+
+<img width="607" alt="image" src="https://user-images.githubusercontent.com/62466867/231585830-701060d8-24cc-4999-a448-de4d7528d929.png">
+
+servicio anti-fraud:
+
+<img width="775" alt="image" src="https://user-images.githubusercontent.com/62466867/231585720-6df7809e-af7a-4172-9445-028052fb304b.png">
+
+
+
+
+
