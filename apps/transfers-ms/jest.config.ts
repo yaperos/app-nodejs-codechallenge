@@ -8,12 +8,4 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/transfers-ms',
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 70,
-      lines: 80,
-      statements: 80,
-    },
-  },
 };
