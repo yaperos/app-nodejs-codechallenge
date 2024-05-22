@@ -1,0 +1,24 @@
+{
+  "name": "antifraud-ms",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/antifraud-ms/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "antifraud-ms:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "antifraud-ms:build:development"
+        },
+        "production": {
+          "buildTarget": "antifraud-ms:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

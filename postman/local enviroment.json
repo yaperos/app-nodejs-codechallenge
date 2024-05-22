@@ -1,0 +1,15 @@
+{
+	"id": "fbc212c6-87d6-4fdc-9fcc-8579d3dd4e22",
+	"name": "Local",
+	"values": [
+		{
+			"key": "URL",
+			"value": "http://localhost:3001/api",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-05-22T18:27:02.400Z",
+	"_postman_exported_using": "Postman/10.24.24"
+}

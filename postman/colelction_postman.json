@@ -1,0 +1,52 @@
+{
+	"info": {
+		"_postman_id": "6441dbdb-0c94-4a36-ad6d-2f40b6bc3069",
+		"name": "Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1253036"
+	},
+	"item": [
+		{
+			"name": "Create a new transfer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "accountExternalIdCredit",
+							"value": "ABC",
+							"type": "text"
+						},
+						{
+							"key": "accountExternalIdDebit",
+							"value": "ABC2",
+							"type": "text"
+						},
+						{
+							"key": "transferTypeId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "value",
+							"value": "1001",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{URL}}/transfers",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

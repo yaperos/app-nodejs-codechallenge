@@ -1,0 +1,24 @@
+{
+  "name": "transfers-ms",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/transfers-ms/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "transfers-ms:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "transfers-ms:build:development"
+        },
+        "production": {
+          "buildTarget": "transfers-ms:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

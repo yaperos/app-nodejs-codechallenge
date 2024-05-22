@@ -1,0 +1,6 @@
+fraud-rules:
+  - name: 'Every transaction with a value greater than 1000 should be rejected.'
+    description: 'Value greater than 1000 should be rejected.'
+    condition: '>'
+    value: 1000
+    enabled: true

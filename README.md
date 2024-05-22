@@ -1,82 +1,100 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Introduction
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+This project has been developed using **Nx workspace** for managing a monorepo with multiple microservices based on NestJS. The database used is PostgreSQL with the Prisma ORM for managing migrations and data access. Additionally, Kafka is used as a messaging system.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Requirements
 
-# Problem
+- Node.js (version 18 or higher)
+- Docker (for running PostgreSQL and Kafka)
+- `docker-compose` (for orchestrating PostgreSQL and Kafka services)
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## Installation
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/arodriguezp2003/app-nodejs-codechallenge
+   cd app-nodejs-codechallenge
+   ```
+2. Install the dependencies:
+   npm install
 
-Every transaction with a value greater than 1000 should be rejected.
+## Start Services with Docker Compose
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+To start the PostgreSQL and Kafka services, run:
+
+```bash
+docker-compose up -d
 ```
 
-# Tech Stack
+Ensure that the containers are running correctly with:
+docker ps
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## Apply Prisma Migrations
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+Once the services are up and running, apply the Prisma migrations to set up the database:
 
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```bash
+npx prisma migrate deploy
 ```
 
-2. Resource to retrieve a transaction
+## Configuration
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+Make sure you have a `.env` file at the root of the project with the following variables:
+
+```bash
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/mydatabase
+KAFKA_CLIENT_ID=app-gateway
+KAFKA_BROKERS=localhost:9092
+KAFKA_CONSUMER_GROUP_ID=kafka-microservices
 ```
 
-## Optional
+Note: The `.env` file is intentionally configured in development mode.
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## Execution
 
-You can use Graphql;
+To start the development server, run:
 
-# Send us your challenge
+```bash
+npx nx serve antifraud-ms
+npx nx serve transfers-ms
+```
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## Build
 
-If you have any questions, please let us know.
+To build the project for production, run:
+
+```bash
+npx nx build antifraud-ms
+npx nx build transfers-ms
+```
+
+The build artifacts will be stored in the output directory, ready for deployment.
+
+## Testing
+
+To run the tests, use the following command:
+
+```bash
+npx nx test antifraud-ms --coverage
+npx nx test transfers-ms --coverage
+```
+
+## Resources
+
+This project contains Postman files for testing the API endpoints. You can use these files to quickly import the API endpoints into Postman and start testing.
+
+## Contributions
+
+If you wish to contribute to this project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/new-feature`).
+3. Make your changes and commit them (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature/new-feature`).
+5. Open a Pull Request.
+
+## Contact
+
+For any inquiries or suggestions, please contact [alejandrorodriguezpena@gmail.com](mailto:alejandrorodriguezpena@gmail.com).
