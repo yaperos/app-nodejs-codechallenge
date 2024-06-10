@@ -1,0 +1,44 @@
+{
+  "name": "code-challenge-yape",
+  "version": "1.0.0",
+  "description": "This is a code challenge for Yape",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "start": "node build/index.js",
+    "build": "sequelize-cli db:migrate",
+    "dev": "tsc && nodemon --exec ts-node src/index.ts",
+    "dev1": "tsc && ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/",
+    "docker": "tsc && docker-compose -f ./docker/docker-compose.yml -p transactions-api down -v && docker-compose -f docker/docker-compose.yml -p transactions-api up --build -d"
+  },
+  "author": "Sebastian Santander Fontalvo",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/body-parser": "^1.19.4",
+    "@types/cors": "^2.8.15",
+    "@types/express": "^4.17.20",
+    "@types/node": "^20.8.10",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "eslint": "^8.52.0",
+    "eslint-config-standard-with-typescript": "^39.1.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-n": "^16.2.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^3.0.1",
+    "sequelize-cli": "^6.6.2",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "kafkajs": "^2.2.4",
+    "mysql2": "^3.6.2",
+    "sequelize": "^6.33.0"
+  }
+}

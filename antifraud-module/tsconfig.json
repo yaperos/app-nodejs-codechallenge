@@ -1,0 +1,18 @@
+{
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "outDir": "./build",
+    "rootDir": "./src",
+    "allowJs": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "skipLibCheck": true,
+  },
+  "exclude": ["migrations/**/*", "build", "models/**/*"]
+}
