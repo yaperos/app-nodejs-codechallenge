@@ -1,0 +1,58 @@
+version: "3.7"
+services:
+  mysql_yape:
+    platform: linux/x86_64
+    image: mysql:5.7
+    container_name: mysql_yape
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 3307:3306
+    expose:
+      - 3307
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.3
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      
+  kafka:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    depends_on: [zookeeper]
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9991
+    ports:
+      - 9092:9092
+
+  transactions-api:
+    container_name: transactions-api
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.transaction
+    ports:
+      - 3309:3309
+    depends_on:
+      - mysql_yape
+      - kafka
+    command: sh -c "/wait && (cd sequelize && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all) && npm run dev"
+    environment:
+      - WAIT_HOSTS=mysql_yape:3306
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+  antifraud-api:
+    container_name: antifraud-api
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.antifraud
+    ports:
+      - 3310:3310
+    depends_on:
+      - kafka
