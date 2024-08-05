@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CreateTransactionResponse {
+  """Id externo"""
+  transactionExternalId: String!
+}
+
+type Query {
+  placeholderQuery: String!
+}
+
+type Mutation {
+  createTransaction(createTransactionRequest: CreateTransactionRequest!): CreateTransactionResponse!
+}
+
+input CreateTransactionRequest {
+  """id debito"""
+  accountExternalIdDebit: String!
+
+  """id credito"""
+  accountExternalIdCredit: String!
+
+  """tipo transacción"""
+  tranferTypeId: Int!
+
+  """valor a transferir"""
+  value: Float!
+}

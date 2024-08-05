@@ -1,82 +1,126 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge 
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Problem
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+ [Problem](README2.md)
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Solution Description
 
-# Problem
+Proposed event-based solution with clean architecture. The solution addresses high-volume situations where there is a large number of writes and reads.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## Technologies
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+<ul>
+  <li>NestJS</li>
+  <li>GraphQL</li>
+  <li>TypeORM</li>
+  <li>Mongoose</li>  
+  <li>CQRS</li>  
+  <li>Saga</li>
+  <li>MongoDB</li>
+  <li>PostgreSQL</li>
+  <li>Kafka</li>
+  <li>Docker</li>
+</ul>
 
-Every transaction with a value greater than 1000 should be rejected.
+## Docker compose
+docker-compose -f docker-compose.yml -p solyape up -d 
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+## Migrations - run them in apps/transaction-write
+npm run migration:generate:transaction apps/transaction-write/src/transaction/infrastructure/database/migrations/inicio
+
+npm run migration:run:transaction
+
+npm run seed:run:transaction
+
+### optional
+npm run migration:revert
+
+
+## Variables de Entorno
+
+### file `.env`
+
+```plaintext
+NODE_ENV=development
+
+TRANSACTION_WRITE_CLIENT=transaction-write
+TRANSACTION_WRITE_CONSUMER=transactionwrite-consumer
+
+TRANSACTION_READ_CLIENT=transaction-read
+TRANSACTION_READ_CONSUMER=transactionread-consumer
+
+ANTIFRAUD_CLIENT=antifraud-write
+ANTIFRAUD_CONSUMER=antifraud-consumer
+
+BROKERS=localhost:29092        
+
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=yape
+POSTGRES_USER=userapp
+POSTGRES_PASSWORD=yape$
+
+MONGODB_HOST=localhost
+MONGODB_PORT=27017
+MONGODB_DB=yaperead
+MONGODB_USER=root
+MONGODB_PASS=pwd2024
 ```
 
-# Tech Stack
+### Start the microservices
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```bash
+npm run start:dev transaction-read
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+npm run start:dev transaction-write
+  
+npm run start:dev antifraud
+```
 
-You must have two resources:
 
-1. Resource to create a transaction that must containt:
+## Test graphql
+ 
+To create a transaction
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+http://localhost:3000/graphql
+
+```graphql
+mutation {
+  createTransaction(
+    createTransactionRequest: {
+      accountExternalIdDebit: "a81bc81b-dead-4e5d-abff-90865d1e13b1"
+      accountExternalIdCredit: "a81bc81b-dead-4e5d-abff-90865d1e13b1"
+      tranferTypeId: 1
+      value: 840
+    }
+  ) {
+    transactionExternalId
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
+To view all transactions by filters
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+http://localhost:3001/graphql
+
+
+```graphql
+query {
+  searchTransactions(searchTransactionRequest: {
+    transactionExternalId: "",
+    transactionType: { name: "" },
+    transactionStatus: { name: "" },
+    value: 0,
+    createdAt: null
+  }) {
+    transactionExternalId
+    transactionType
+    accountExternalIdDebit
+    accountExternalIdCredit
+    transactionStatus
+    value
+    createdAt
+  }
+} 
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
