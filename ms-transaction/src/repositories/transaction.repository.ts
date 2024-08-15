@@ -17,4 +17,8 @@ export class TransactionRepository {
     const transaction = this.mapper.dtoToEntity(dto);
     return await this.transaction.save(transaction);
   }
+
+  async findById(transactionExternalId: string): Promise<TransactionEntity> {
+    return this.transaction.findOne({ where: { transactionExternalId } });
+  }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionDTO } from '../dtos/transaction.dto';
 import { TransactionEntity } from '../entities/transaction.entity';
+import { TransactionStatus } from 'src/helper/contants';
 
 @Injectable()
 export class TransactionMapper {
@@ -28,5 +29,15 @@ export class TransactionMapper {
     dto.createdAt = entity.createdAt;
     dto.updatedAt = entity.updatedAt;
     return dto;
+  }
+
+  entityDomainToResponse(transaction: TransactionEntity) {
+    return {
+      transactionExternalId: transaction.transactionExternalId,
+      transactionType: { name: transaction.tranferTypeId },
+      transactionStatus: { name: TransactionStatus[transaction.status] },
+      value: transaction.value,
+      createdAt: transaction.createdAt,
+    };
   }
 }

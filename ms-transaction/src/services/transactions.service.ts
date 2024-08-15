@@ -3,6 +3,7 @@ import { TransactionRepository } from '../repositories/transaction.repository';
 import { TransactionMapper } from '../mappers/transaction.mapper';
 import { TransactionDTO } from '../dtos/transaction.dto';
 import { TransactionStatus } from 'src/helper/contants';
+import { TransactionResponseDto } from 'src/dtos/transaction-response.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -15,5 +16,13 @@ export class TransactionsService {
     dto.status = TransactionStatus.PENDING;
     const transaction = await this.transactionRepository.saveTransaction(dto);
     return this.mapper.entityToDto(transaction);
+  }
+
+  async getTransactionByExternalId(transactionExternalId: string ): Promise<TransactionResponseDto> {
+    const transaction = await this.transactionRepository.findById(
+      transactionExternalId,
+    );
+    
+    return this.mapper.entityDomainToResponse(transaction)
   }
 }
