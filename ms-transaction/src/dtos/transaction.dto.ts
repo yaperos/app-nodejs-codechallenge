@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TransactionDTO {
-  @ApiProperty()
   transactionExternalId?: string;
 
   @ApiProperty()
@@ -16,12 +15,9 @@ export class TransactionDTO {
   @ApiProperty()
   value: number;
 
-  @ApiProperty()
   status: number;
 
-  @ApiProperty()
   createdAt?: Date;
 
-  @ApiProperty()
   updatedAt?: Date;
 }

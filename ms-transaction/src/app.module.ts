@@ -6,6 +6,9 @@ import { TransactionMapper } from './mappers/transaction.mapper';
 import { TransactionEntity } from './entities/transaction.entity';
 import { TransactionRepository } from './repositories/transaction.repository';
 import { TransactionsService } from './services/transactions.service';
+import { KafkaService } from './services/kafka.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Partitioners } from 'kafkajs';
 
 @Module({
   imports: [
@@ -25,8 +28,26 @@ import { TransactionsService } from './services/transactions.service';
       synchronize: true,
       entities: [TransactionEntity],
     }),
+
+    ClientsModule.register([
+      {
+        name: 'TRANSACTION_KAFKA_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: ['localhost:9092'],
+          },
+          consumer: {
+            groupId: 'ms-transaction-consumer',
+          },
+          producer: {
+            createPartitioner: Partitioners.LegacyPartitioner,
+          },
+        },
+      },
+    ]),
   ],
   controllers: [TransactionsController],
-  providers: [TransactionRepository, TransactionMapper, TransactionsService],
+  providers: [TransactionRepository, TransactionMapper, TransactionsService, KafkaService],
 })
 export class AppModule {}
