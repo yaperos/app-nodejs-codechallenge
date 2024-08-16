@@ -1,27 +1,44 @@
 name: CI Pipeline 
-
 on:
   push:
     branches:
       - feat/code-challenge
 jobs:
-  build:
+  install-dependencies:
+    name: Install Dependencies
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Set Up NestJS
+    - name: Set up NestJS
       uses: actions/setup-node@v3
       with:
         node-version: '20'
 
-    - name: Install Dependencies For Ms-Transaction
+    - name: Install Dependencies Ms-Transaction
       working-directory: ./ms-transaction
       run: npm install
 
-    - name: Run Test For Ms-Transaction
+    - name: Install Dependencies For Ms-Fraude
+      working-directory: ./ms-antifraud
+      run: npm install
+
+  run-tests:
+    name: Run Test
+    runs-on: ubuntu-latest
+    needs: install-dependencies
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Run Test for Ms-Transaction
       working-directory: ./ms-transaction
+      run: npm run test
+
+    - name: Run tests For Ms-Fraude
+      working-directory: ./ms-antifraud
       run: npm run test
 
