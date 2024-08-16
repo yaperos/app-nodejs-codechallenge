@@ -4,6 +4,7 @@ import { TransactionEntity } from 'src/entities/transaction.entity';
 import { TransactionDTO } from 'src/dtos/transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionMapper } from 'src/mappers/transaction.mapper';
+import { UpdateTransactionDTO } from 'src/dtos/transaction-update.dtp';
 
 @Injectable()
 export class TransactionRepository {
@@ -20,5 +21,11 @@ export class TransactionRepository {
 
   async findById(transactionExternalId: string): Promise<TransactionEntity> {
     return this.transaction.findOne({ where: { transactionExternalId } });
+  }
+
+  async update(UpdateDTO: UpdateTransactionDTO): Promise<TransactionEntity> {
+    const { transactionExternalId, status } = UpdateDTO;
+    await this.transaction.update(transactionExternalId, { status });
+    return await this.transaction.findOne({ where: { transactionExternalId } });
   }
 }

@@ -5,6 +5,7 @@ import { TransactionDTO } from '../dtos/transaction.dto';
 import { TransactionStatus } from 'src/helper/contants';
 import { TransactionResponseDto } from 'src/dtos/transaction-response.dto';
 import { KafkaService } from './kafka.service';
+import { UpdateTransactionDTO } from 'src/dtos/transaction-update.dtp';
 
 @Injectable()
 export class TransactionsService {
@@ -34,5 +35,10 @@ export class TransactionsService {
     );
 
     return this.mapper.entityDomainToResponse(transaction);
+  }
+
+  async update(UpdateDTO: UpdateTransactionDTO): Promise<TransactionDTO> {
+    const transaction = await this.transactionRepository.update(UpdateDTO);
+    return this.mapper.entityToDto(transaction);
   }
 }

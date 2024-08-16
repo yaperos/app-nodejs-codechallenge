@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ValidationPipe,
+  Logger,
 } from '@nestjs/common';
 import { TransactionDTO } from '../dtos/transaction.dto';
 import { TransactionsService } from '../services/transactions.service';
@@ -15,6 +16,8 @@ import { UpdateTransactionDto } from 'src/dtos/update-transaction.dto';
 
 @Controller('transactions')
 export class TransactionsController {
+
+  private readonly logger = new Logger('TransactionsController');
   constructor(private transactionService: TransactionsService) {}
 
   @Post()
@@ -34,7 +37,9 @@ export class TransactionsController {
   }
 
   @MessagePattern('transaction-update')
-  async handleEventUpdateTransaction(@Payload() data: UpdateTransactionDto) {
-    const { transactionExternalId, status } = data;
+  async handleEventUpdateTransaction(@Payload() data: UpdateTransactionDto): Promise<TransactionDTO> {
+    const transaction = await this.transactionService.update(data);
+    this.logger.debug(JSON.stringify(transaction))
+    return transaction;
   }
 }
