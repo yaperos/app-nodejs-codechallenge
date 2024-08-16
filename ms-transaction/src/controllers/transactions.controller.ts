@@ -32,7 +32,7 @@ export class TransactionsController {
     return await this.transactionService.createTransaction(transaction);
   }
 
-  @ApiOperation({ summary: 'Get Transaction By Id' })
+  @ApiOperation({ summary: 'Get Transaction By TransactionExternalId' })
   @ApiResponse({ status: 200, description: 'List Transaction.' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiParam({ name: 'transactionExternalId', type: 'string', description: 'TransactionExternalId Of Transaction' })  
