@@ -17,7 +17,9 @@ export class KafkaService {
       value > 1000 ? TransactionStatus.REJECTED : TransactionStatus.APPROVED;
 
     const statusDescription = TransactionStatus[status];
-    this.logger.debug(JSON.stringify({ transactionExternalId, statusDescription }));
+    this.logger.debug(
+      JSON.stringify({ transactionExternalId, statusDescription }),
+    );
 
     return this.authClient.emit(
       'transaction-update',

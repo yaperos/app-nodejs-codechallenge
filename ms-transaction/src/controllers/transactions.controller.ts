@@ -9,7 +9,10 @@ import {
 } from '@nestjs/common';
 import { TransactionDTO } from '../dtos/transaction.dto';
 import { TransactionsService } from '../services/transactions.service';
-import { TransactionCreateResponse, TransactionResponseDto } from 'src/dtos/transaction-response.dto';
+import {
+  TransactionCreateResponse,
+  TransactionResponseDto,
+} from 'src/dtos/transaction-response.dto';
 import { TransactionIdParamDto } from 'src/dtos/tansactionId-param.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UpdateTransactionDto } from 'src/dtos/update-transaction.dto';
@@ -17,10 +20,8 @@ import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('Transaction')
 @Controller('transactions')
 export class TransactionsController {
-
   private readonly logger = new Logger('TransactionsController');
   constructor(private transactionService: TransactionsService) {}
-
 
   @ApiResponse({
     status: 201,
@@ -35,7 +36,11 @@ export class TransactionsController {
   @ApiOperation({ summary: 'Get Transaction By TransactionExternalId' })
   @ApiResponse({ status: 200, description: 'List Transaction.' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-  @ApiParam({ name: 'transactionExternalId', type: 'string', description: 'TransactionExternalId Of Transaction' })  
+  @ApiParam({
+    name: 'transactionExternalId',
+    type: 'string',
+    description: 'TransactionExternalId Of Transaction',
+  })
   @Get(':transactionExternalId')
   async getTransaction(
     @Param(new ValidationPipe()) params: TransactionIdParamDto,
@@ -48,9 +53,11 @@ export class TransactionsController {
   }
 
   @MessagePattern('transaction-update')
-  async handleEventUpdateTransaction(@Payload() data: UpdateTransactionDto): Promise<TransactionDTO> {
+  async handleEventUpdateTransaction(
+    @Payload() data: UpdateTransactionDto,
+  ): Promise<TransactionDTO> {
     const transaction = await this.transactionService.update(data);
-    this.logger.debug(JSON.stringify(transaction))
+    this.logger.debug(JSON.stringify(transaction));
     return transaction;
   }
 }

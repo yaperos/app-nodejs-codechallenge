@@ -48,6 +48,11 @@ import { Partitioners } from 'kafkajs';
     ]),
   ],
   controllers: [TransactionsController],
-  providers: [TransactionRepository, TransactionMapper, TransactionsService, KafkaService],
+  providers: [
+    TransactionRepository,
+    TransactionMapper,
+    TransactionsService,
+    KafkaService,
+  ],
 })
 export class AppModule {}
