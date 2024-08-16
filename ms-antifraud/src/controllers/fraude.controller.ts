@@ -11,9 +11,6 @@ export class FraudeController {
 
   @MessagePattern('transaction-topic')
   transactionVerify(@Payload() data: FraudeDTO) {
-    this.logger.log(`Verificar Transaction`);
-    this.logger.log(JSON.stringify(data));
-
-    this.kafkaService.verifyTransactionFraude(data);
+    return this.kafkaService.verifyTransactionFraude(data);
   }
 }

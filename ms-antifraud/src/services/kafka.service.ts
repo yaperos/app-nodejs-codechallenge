@@ -5,7 +5,7 @@ import { TransactionStatus } from 'src/helper/contants';
 
 @Injectable()
 export class KafkaService {
-  private readonly logger = new Logger('Fraude[KafkaService]');
+  private readonly logger = new Logger('AntiFraude KafkaService');
 
   constructor(
     @Inject('ANTIFRAUDE_KAFKA_SERVICE')
@@ -16,11 +16,12 @@ export class KafkaService {
     const status =
       value > 1000 ? TransactionStatus.REJECTED : TransactionStatus.APPROVED;
 
-    this.logger.log(status);
+    const statusDescription = TransactionStatus[status];
+    this.logger.debug(JSON.stringify({ transactionExternalId, statusDescription }));
 
-    // return this.authClient.emit(
-    //   'update-transaction',
-    //   JSON.stringify({ transactionExternalId, status }),
-    // );
+    return this.authClient.emit(
+      'transaction-update',
+      JSON.stringify({ transactionExternalId, status }),
+    );
   }
 }

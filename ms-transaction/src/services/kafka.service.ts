@@ -5,7 +5,7 @@ import { TransactionEventDTO } from 'src/dtos/transaction-event.dto';
 
 @Injectable()
 export class KafkaService implements OnModuleInit {
-  private readonly logger = new Logger('KafkaService');
+  private readonly logger = new Logger('Transaction KafkaService');
 
   constructor(
     @Inject('TRANSACTION_KAFKA_SERVICE')
@@ -21,6 +21,6 @@ export class KafkaService implements OnModuleInit {
       'transaction-topic',
       JSON.stringify(transactionEventDTO),
     );
-    this.logger.log(JSON.stringify(transactionEventDTO));
+    this.logger.debug(JSON.stringify(transactionEventDTO));
   }
 }
