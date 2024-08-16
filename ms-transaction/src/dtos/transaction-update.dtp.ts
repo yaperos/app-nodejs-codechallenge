@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 export class UpdateTransactionDTO {
   transactionExternalId: string;
   accountExternalIdDebit?: string;
