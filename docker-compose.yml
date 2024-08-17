@@ -9,10 +9,12 @@ services:
       - POSTGRES_PASSWORD=qwerty12345@@
     volumes:
       - postgres-vol:/var/lib/postgresql/data
+      
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -25,5 +27,16 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+  kafkagui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8087:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=testerick
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+    depends_on:
+      - kafka
 volumes:
   postgres-vol:

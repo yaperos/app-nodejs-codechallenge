@@ -3,6 +3,7 @@
 - NestJS
 - Typescript
 - Kafka
+- Kafka UI
 - Postgres
 - Docker
 - DockerHub
