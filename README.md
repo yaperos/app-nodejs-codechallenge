@@ -27,8 +27,8 @@ Root Directory `docker-compose.yml` And Run File To Create Docker Containers.
 
 ```
 docker-compose up
-
 ```
+
 ## 2 Initial Microservices Transaction
 
 Enter To Directory `ms-transaction` To Install Dependencies And To Start The Server.
@@ -36,7 +36,6 @@ Enter To Directory `ms-transaction` To Install Dependencies And To Start The Ser
 ```
 npm run install
 npm run start:dev
-
 ```
 
 ## 3 Initial Microservices Antifraud
@@ -46,9 +45,7 @@ Enter To Directory `ms-antifraud` To Install Dependencies And To Start The Serve
 ```
 npm run install
 npm run start:dev
-
 ```
-
 
 ## Docker Hub
 
