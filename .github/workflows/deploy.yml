@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - feat/deploy
+      - feat/code-challenge
 jobs:
   install-dependencies:
     name: Install Dependencies
