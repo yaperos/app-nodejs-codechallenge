@@ -1,5 +1,14 @@
-# Yape CodeChallenge
-### Challenge Using Following Technologies:
+# Microservices Project with Kafka and NestJS
+
+This Project Implements Microservices System Using Kafka As A Message Broker And NestJS For Business Logic.
+
+## Microservices
+
+- **ms-transaction:** Manages Transactions.
+- **ms-antifraud:** Handles Fraud Detection..
+
+## Challenge Using Following Technologies:
+
 - NestJS
 - Typescript
 - Kafka
@@ -10,6 +19,19 @@
 - Dockerfile
 - CI/CD
 - Swagger
+
+
+
+## Initial Proyect
+
+1. Root Directory `docker-compose.yml` File. Run `docker-compose up` To Create Docker Containers.
+
+## Initial Microservices Transaction
+
+2. Enter To Directory 
+`ms-transaction` And Run `npm run install` To Install Dependencies.
+
+Enter To Directory `ms-transaction` And Run `npm run start:dev` To Start Server.
 
 
 ## Docker Hub
