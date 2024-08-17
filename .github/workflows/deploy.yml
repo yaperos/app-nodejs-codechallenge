@@ -107,7 +107,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     needs: run-tests
-    if: github.ref == 'refs/heads/feat/deploy' 
+    if: github.ref == 'refs/heads/feat/code-challenge' 
 
     steps:
     - name: Checkout Code
