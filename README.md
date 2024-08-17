@@ -1,11 +1,11 @@
-# Microservices Project with Kafka and NestJS
+# Microservices Project With Kafka and NestJS
 
 This Project Implements Microservices System Using Kafka As A Message Broker And NestJS For Business Logic.
 
 ## Microservices
 
 - **ms-transaction:** Manages Transactions.
-- **ms-antifraud:** Handles Fraud Detection..
+- **ms-antifraud:** Handles Fraud Detection.
 
 ## Challenge Using Following Technologies:
 
@@ -21,17 +21,19 @@ This Project Implements Microservices System Using Kafka As A Message Broker And
 - Swagger
 
 
+## 1 Initial Proyect
 
-## Initial Proyect
+Root Directory `docker-compose.yml` File. Run `docker-compose up` To Create Docker Containers.
 
-1. Root Directory `docker-compose.yml` File. Run `docker-compose up` To Create Docker Containers.
+## 2 Initial Microservices Transaction
 
-## Initial Microservices Transaction
+Enter To Directory `ms-transaction` And Run `npm run install` To Install Dependencies.
+Enter To Directory `ms-transaction` and Run `npm run start:dev` To Start The Server.
 
-2. Enter To Directory 
-`ms-transaction` And Run `npm run install` To Install Dependencies.
+## 3 Initial Microservices Antifraud
 
-Enter To Directory `ms-transaction` And Run `npm run start:dev` To Start Server.
+Enter To Directory `ms-antifraud` And Run `npm run install` To Install Dependencies.
+Enter To Directory `ms-antifraud` and Run `npm run start:dev` To Start The Server.
 
 
 ## Docker Hub
