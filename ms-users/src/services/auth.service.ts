@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 import * as bcryptjs from 'bcryptjs';
-import { LoginDto, RegisterDto } from 'src/dto/create-user.dto';
+import { LoginDto, RegisterDto, UserDTO } from 'src/dto/create-user.dto';
 import { UserRepository } from 'src/repositories/user.repository';
 import { JwtService } from '@nestjs/jwt';
 
@@ -49,12 +49,22 @@ export class AuthService {
       throw new UnauthorizedException('Invalid Password');
     }
 
-    const payload = { email: user.email };
+    const payload = { email: user.email, userId: user.userId };
     const token = await this.jwtService.signAsync(payload);
 
     return {
       email: user.email,
       token: token,
     };
+  }
+
+  async findByUserId({ userId }: UserDTO) {
+    const user = await this.usersRepository.findUserId(userId);
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid User');
+    }
+
+    return user;
   }
 }

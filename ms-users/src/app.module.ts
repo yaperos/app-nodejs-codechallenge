@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './helper/jwt.constant';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Partitioners } from 'kafkajs';
 
 @Module({
   imports: [
@@ -32,6 +34,24 @@ import { jwtConstants } from './helper/jwt.constant';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '1h' },
     }),
+
+    ClientsModule.register([
+      {
+        name: 'USER_KAFKA_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: ['localhost:9092'],
+          },
+          consumer: {
+            groupId: 'ms-user-consumer',
+          },
+          producer: {
+            createPartitioner: Partitioners.LegacyPartitioner,
+          },
+        },
+      },
+    ]),
   ],
   controllers: [AuthController],
   providers: [UserRepository, AuthService],

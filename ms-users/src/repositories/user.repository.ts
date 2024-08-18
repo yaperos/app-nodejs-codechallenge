@@ -18,4 +18,8 @@ export class UserRepository {
   async findOneByEmail(email: string) {
     return await this.usersRepository.findOneBy({ email });
   }
+
+  async findUserId(userId: number) {
+    return await this.usersRepository.findOneBy({ userId });
+  }
 }
