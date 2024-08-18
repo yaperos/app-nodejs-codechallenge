@@ -28,8 +28,15 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Financial Yape Transaction')
     .setDescription('Microservicions Of Transaction And Fraude')
-    .setVersion('1.0');
-
+    .setVersion('1.0')
+    .addBearerAuth()
+    .addTag('users', 'Operations Related To Users')
+    .addTag('transactions', 'Operations Related To Transactions')
+    .setContact(
+      'Rafael Guevara Aller',        
+      'https://www.linkedin.com/in/rafael-guevara/', 
+      'djzm80@gmail.com'            
+    );
   const documentBuild = config.build();
   const document = SwaggerModule.createDocument(app, documentBuild);
 
@@ -37,6 +44,7 @@ async function bootstrap() {
     swaggerOptions: {
       tagsSorter: 'alpha',
       operationsSorter: 'alpha',
+      filter: true, 
     },
   });
 
