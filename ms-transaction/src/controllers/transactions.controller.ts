@@ -6,6 +6,7 @@ import {
   Param,
   ValidationPipe,
   Logger,
+  UseGuards,
 } from '@nestjs/common';
 import { TransactionDTO } from '../dtos/transaction.dto';
 import { TransactionsService } from '../services/transactions.service';
@@ -17,6 +18,7 @@ import { TransactionIdParamDto } from 'src/dtos/tansactionId-param.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UpdateTransactionDto } from 'src/dtos/update-transaction.dto';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/providers/jwt-auth-guard.provider';
 @ApiTags('Transaction')
 @Controller('transactions')
 export class TransactionsController {
@@ -28,6 +30,8 @@ export class TransactionsController {
     description: 'Create Transaction',
     type: TransactionCreateResponse,
   })
+
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() transaction: TransactionDTO): Promise<TransactionDTO> {
     return await this.transactionService.createTransaction(transaction);
@@ -41,6 +45,8 @@ export class TransactionsController {
     type: 'string',
     description: 'TransactionExternalId Of Transaction',
   })
+
+  @UseGuards(JwtAuthGuard)
   @Get(':transactionExternalId')
   async getTransaction(
     @Param(new ValidationPipe()) params: TransactionIdParamDto,

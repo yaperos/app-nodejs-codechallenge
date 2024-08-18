@@ -9,6 +9,7 @@ import { TransactionsService } from './services/transactions.service';
 import { KafkaService } from './services/kafka.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Partitioners } from 'kafkajs';
+import { JwtStrategy } from './providers/jwt-strategy.provider';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { Partitioners } from 'kafkajs';
     TransactionMapper,
     TransactionsService,
     KafkaService,
+    JwtStrategy
   ],
 })
 export class AppModule {}
