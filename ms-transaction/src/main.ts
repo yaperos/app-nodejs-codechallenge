@@ -28,10 +28,8 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Financial Yape Transaction')
     .setDescription('Microservicions Of Transaction And Fraude')
-    .setVersion('1.0')
+    .setVersion('2.1')
     .addBearerAuth()
-    .addTag('users', 'Operations Related To Users')
-    .addTag('transactions', 'Operations Related To Transactions')
     .setContact(
       'Rafael Guevara Aller',        
       'https://www.linkedin.com/in/rafael-guevara/', 
