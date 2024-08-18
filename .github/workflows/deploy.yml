@@ -29,12 +29,22 @@ jobs:
           path: ./ms-antifraud/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
+    - name: Cache Node.Js Modules For Ms-Users
+      uses: actions/cache@v3
+      with:
+          path: ./ms-users/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
     - name: Install Dependencies Ms-Transaction
       working-directory: ./ms-transaction
       run: npm install
 
     - name: Install Dependencies For Ms-Fraude
       working-directory: ./ms-antifraud
+      run: npm install
+
+    - name: Install Dependencies For Ms-Users
+      working-directory: ./ms-users
       run: npm install
 
   run-lints:
@@ -58,6 +68,12 @@ jobs:
         path: ./ms-antifraud/node_modules
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
+    - name: Restore Cache Node.Js Modules For Ms-User
+      uses: actions/cache@v3
+      with:
+        path: ./ms-users/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
     - name: List Installed Packages Ms-Transaction
       working-directory: ./ms-transaction
       run: npm list
@@ -72,6 +88,10 @@ jobs:
 
     - name: Run Lint For Ms-Fraude
       working-directory: ./ms-antifraud
+      run: npm run lint
+
+    - name: Run Lint For Ms-Users
+      working-directory: ./ms-users
       run: npm run lint
 
   run-tests:
@@ -94,6 +114,12 @@ jobs:
       with:
         path: ./ms-antifraud/node_modules
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    
+    - name: Restore Cache Node.Js Modules For Ms-User
+      uses: actions/cache@v3
+      with:
+        path: ./ms-users/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
     - name: Run Tests For Ms-Transaction
       working-directory: ./ms-transaction
@@ -101,6 +127,10 @@ jobs:
 
     - name: Run Tests For Ms-Fraude
       working-directory: ./ms-antifraud
+      run: npm run test
+
+    - name: Run Tests For Ms-User
+      working-directory: ./ms-users
       run: npm run test
 
   deploy:
@@ -131,3 +161,8 @@ jobs:
       run: |
         docker build -t rafamandevops/ms-antifraud ./ms-antifraud
         docker push rafamandevops/ms-antifraud
+
+    - name: Build And Push Docker Image For Ms-User
+      run: |
+          docker build -t rafamandevops/ms-users ./ms-users
+          docker push rafamandevops/ms-antifraud
