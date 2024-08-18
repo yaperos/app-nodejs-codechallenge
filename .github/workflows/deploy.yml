@@ -165,4 +165,4 @@ jobs:
     - name: Build And Push Docker Image For Ms-User
       run: |
           docker build -t rafamandevops/ms-users ./ms-users
-          docker push rafamandevops/ms-antifraud
+          docker push rafamandevops/ms-users
