@@ -3,9 +3,9 @@
 This Project Implements Microservices System Using Kafka As A Message Broker And NestJS For Business Logic.
 
 
-## Authentication With Bearer Token
+### Authentication With Bearer Token
 
-To Make Requests To The API, You Need To Authenticate Using A **Bearer Token** Generate With  **ms-users** . Ensure You Have A Valid Access Token Before Making Requests.
+To Make Requests To The API, You Need To Authenticate Using A `Bearer Token` Generate With  `ms-users` . Ensure You Have A Valid Access Token Before Making Requests.
 
 ### Authentication Headers
 
@@ -77,6 +77,8 @@ npm run start:dev
 
 - **ms-transaction**: [Docker Hub - ms-transaction](https://hub.docker.com/r/rafamandevops/ms-transaction)
 - **ms-antifraud**: [Docker Hub - ms-antifraud](https://hub.docker.com/r/rafamandevops/ms-antifraud)
+- **ms-users**: [Docker Hub - ms-antifraud](https://hub.docker.com/r/rafamandevops/ms-users)
+
 
 # API Documentation
 ## Ms Transaction
