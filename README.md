@@ -77,7 +77,7 @@ npm run start:dev
 
 - **ms-transaction**: [Docker Hub - ms-transaction](https://hub.docker.com/r/rafamandevops/ms-transaction)
 - **ms-antifraud**: [Docker Hub - ms-antifraud](https://hub.docker.com/r/rafamandevops/ms-antifraud)
-- **ms-users**: [Docker Hub - ms-antifraud](https://hub.docker.com/r/rafamandevops/ms-users)
+- **ms-users**: [Docker Hub - ms-users](https://hub.docker.com/r/rafamandevops/ms-users)
 
 
 # API Documentation
