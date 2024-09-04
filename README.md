@@ -48,25 +48,44 @@ You must have two resources:
 {
   "accountExternalIdDebit": "Guid",
   "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
+  "transferTypeId": 1,
   "value": 120
 }
+```
+**CURL Example**
+
+```bash
+curl --location 'http://localhost:3005/transaction' \
+--header 'Content-Type: application/json' \
+--data '{
+  "accountExternalIdDebit": "2aa03664-8549-4473-bbec-443cb16a6550",
+  "accountExternalIdCredit": "b3b202f5-a183-4e0f-a553-2dae8e393042",
+  "transferTypeId": 1,
+  "value": 120
+}'
 ```
 
 2. Resource to retrieve a transaction
 
 ```json
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+  "accountExternalIdDebit": "Guid",
+  "accountExternalIdCredit": "Guid",
+  "transferTypeId": 1,
+  "value": 120
 }
+```
+**Response**
+
+```bash
+curl --location 'http://localhost:3005/transaction' \
+--header 'Content-Type: application/json' \
+--data '{
+  "accountExternalIdDebit": "2aa03664-8549-4473-bbec-443cb16a6550",
+  "accountExternalIdCredit": "b3b202f5-a183-4e0f-a553-2dae8e393042",
+  "transferTypeId": 1,
+  "value": 120
+}'
 ```
 
 ## Optional
@@ -80,3 +99,7 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+# Install steps
+
+Follow the steps in the INSTALL.md file
