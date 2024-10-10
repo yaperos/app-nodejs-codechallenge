@@ -19,4 +19,10 @@ export class Transaction {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @Column()
+  transactionType: string;
+
+  @Column()
+  transactionStatus: string;
 }

@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transaction } from './transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { Kafka, Producer } from 'kafkajs';
+import { TransactionResponseDto } from './dto/transaction-response.dto';
 
-// TODO: Move to a shared module
 @Injectable()
 export class TransactionService {
   private kafkaProducer: Producer;
@@ -34,5 +34,25 @@ export class TransactionService {
     await this.kafkaProducer.disconnect();
 
     return transaction;
+  }
+
+  async getTransaction(id: string): Promise<TransactionResponseDto> {
+    const transaction = await this.transactionRepository.findOne({ where: { id } });
+
+    if (!transaction) {
+      throw new NotFoundException(`Transaction with id ${id} not found`);
+    }
+
+    return {
+      transactionExternalId: transaction.id,
+      transactionType: {
+        name: transaction.transactionType,
+      },
+      transactionStatus: {
+        name: transaction.transactionStatus,
+      },
+      value: transaction.value,
+      createdAt: transaction.createdAt.toISOString(),
+    };
   }
 }
