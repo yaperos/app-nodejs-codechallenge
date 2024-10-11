@@ -22,6 +22,7 @@ export class TransactionService {
   }
 
   async createTransaction(createTransactionDto: CreateTransactionDto): Promise<Transaction> {
+    // TODO: add transactionTypeId mapping to transactionType
     const newTransaction = { ...createTransactionDto, transactionType: 'transfer', transactionStatus: 'pending' };
 
     this.logger.log('new transaction', newTransaction);
