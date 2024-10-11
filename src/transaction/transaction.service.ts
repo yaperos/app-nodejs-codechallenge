@@ -13,10 +13,10 @@ export class TransactionService {
   private kafkaConsumer: Consumer;
 
   constructor(@InjectRepository(Transaction) private transactionRepository: Repository<Transaction>) {
-    const kafka = new Kafka({ clientId: 'transaction-service', brokers: ['localhost:9092'] });
+    const kafka = new Kafka({ clientId: process.env.KAFKA_CLIENT_ID, brokers: process.env.KAFKA_BROKERS.split(',') });
 
     this.kafkaProducer = kafka.producer();
-    this.kafkaConsumer = kafka.consumer({ groupId: 'transaction-test-local' });
+    this.kafkaConsumer = kafka.consumer({ groupId: process.env.KAFKA_GROUP_ID });
 
     this.listenToAntiFraud();
   }
@@ -32,7 +32,10 @@ export class TransactionService {
 
     await this.kafkaProducer.connect();
 
-    await this.kafkaProducer.send({ topic: 'anti-fraud', messages: [{ value: JSON.stringify(transaction) }] });
+    await this.kafkaProducer.send({
+      topic: process.env.KAFKA_TOPIC,
+      messages: [{ value: JSON.stringify(transaction) }],
+    });
 
     await this.kafkaProducer.disconnect();
 
@@ -42,7 +45,7 @@ export class TransactionService {
   async listenToAntiFraud(): Promise<void> {
     await this.kafkaConsumer.connect();
 
-    await this.kafkaConsumer.subscribe({ topic: 'anti-fraud', fromBeginning: true });
+    await this.kafkaConsumer.subscribe({ topic: process.env.KAFKA_TOPIC, fromBeginning: true });
 
     await this.kafkaConsumer.run({
       eachMessage: async ({ message }) => {
