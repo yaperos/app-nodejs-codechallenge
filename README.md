@@ -1,3 +1,6 @@
+# Testing the app
+Rename the file .env.example to .env
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 

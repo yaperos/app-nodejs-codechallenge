@@ -1,0 +1,14 @@
+// Change the port if needed
+
+// Change the value as needed to test rejected or approved transactions - gt or lt 1000
+curl --location 'http://localhost:3000/transactions' \
+--header 'Content-Type: application/json' \
+--data '{
+      "accountExternalIdDebit": "00000000-0000-0000-0000-000000000000",
+      "accountExternalIdCredit": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "transferTypeId": 1,
+      "value": 1500
+    }'
+
+// Change the transaction uuid using the one from the payload above
+curl --location 'http://localhost:3000/transactions/:uuid'
