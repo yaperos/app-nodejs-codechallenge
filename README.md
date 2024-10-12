@@ -1,82 +1,106 @@
-# Yape Code Challenge :rocket:
+# Installation Guide
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Candidate: Alexander Esteban Joffre Aguirre
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Architecture
+![Architecture Diagram](./images/architecture-diagram.png)
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+This solution is composed by 2 micro services. They comunicate between each others using Kafka's topics. For this, both services auto connect when they start and read their respective topics.
 
-# Problem
+The flow to create and validate if a transaction is a possible fraud or not is:
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+1. Send POST request to ***/transactions/create*** in ms-transactions. It creates the transaction into db and publish a message into **trx-created** Kafka's topic
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+2. Then, when the ***ms-fraud-detector*** notices that a new message is published into this topic, it proceeds to validate the transaction amount.
+	1. If it's higher than 1000, then publish a message into **trx-rejected** Kafka's topic.
+	2. If it's less than or equals to 1000, then publish a message into **trx-approved** Kafka's topic.
 
-Every transaction with a value greater than 1000 should be rejected.
+3. So, when ***ms-transactions*** notices that a new message is published into any of them, it proceeds to update the transaction record depending on if it's approved or rejected. Finally, it sets the ***isClosed*** with **true** to indicate that the record couldn't be updated again.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+## Technologies used
+- NestJS Framework
+- Kafka
+- MongoDB
+
+## 1. Run Dependencies with docker
+Execute the following command:
+```bash
+docker-compose up
 ```
 
-# Tech Stack
+## 2. Set up kafka topics
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+Run the following commands to create the 3 required kafka services to ensure the correct application behavior:
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+- `trx-created`
+```bash
+docker exec -it kafka /opt/kafka/bin/kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic trx-created
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+- `trx-approved`
+```bash
+docker exec -it kafka /opt/kafka/bin/kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic trx-approved
 ```
 
-## Optional
+- `trx-rejected`
+```bash
+docker exec -it kafka /opt/kafka/bin/kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic trx-rejected
+```
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## 3. Prepare transactions microservice
+### 3.1 Move into the micro service for transactions folder
+```bash
+cd ms-transactions
+```
+### 3.2 Install dependencies
+```bash
+npm i
+```
+### 3.3 Set up initial data into Mongo DB
+```bash
+npm run migrations
+```
+### 3.4 Configure environment variables
+create a file in this directory called .env and copy the following code into this and save it:
+```
+APP_PORT=3000
+APP_ID=ms-transactions
 
-You can use Graphql;
+MONGODB_CONNECTION_URL=mongodb://localhost:27017/yape-anti-fraud
 
-# Send us your challenge
+KAFKA_BROKER=localhost:9092
+KAFKA_CLIENT_ID=yape
+KAFKA_GROUP_ID=yape
+KAFKA_SUBSCRIBE_TOPICS=trx-rejected,trx-approved
+```
+### 3.4 Initiate service
+```bash
+npm run start
+```
+**NOTE**: to see the full documentation, once it was initiated, you can visite the *[ms-transactions API Docs](http://localhost:3000/docs)*
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## 4. Prepare fraud detector microservice
+### 4.1 Move into the fraud-detector for transactions folder
+```bash
+cd ..
+cd ms-fraud-detector
+```
+### 4.2 Install dependencies
+```bash
+npm i
+```
+### 4.3 Configure environment variables
+create a file in this directory called .env and copy the following code into this and save it:
+```
+APP_PORT=3001
+APP_ID=ms-fraud-detector
 
-If you have any questions, please let us know.
+KAFKA_BROKER=localhost:9092
+KAFKA_CLIENT_ID=yape
+KAFKA_GROUP_ID=yape
+KAFKA_SUBSCRIBE_TOPICS=trx-created
+```
+### 4.4 Initiate service
+```bash
+npm run start
+```

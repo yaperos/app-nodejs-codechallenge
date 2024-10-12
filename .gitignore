@@ -38,7 +38,6 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -80,7 +79,7 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+*/dist
 
 # Gatsby files
 .cache/
@@ -102,3 +101,16 @@ dist
 
 # TernJS port file
 .tern-port
+
+# subfolders
+/ms-transactions/application.log
+/ms-transactions/error.log
+
+/ms-fraud-detector/application.log
+/ms-fraud-detector/error.log
+
+/ms-fraud-detector/*.env
+/ms-fraud-detector/*.env
+
+/ms-fraud-detector/node_modules/
+/ms-transactions/node_modules/
