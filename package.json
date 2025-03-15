@@ -1,0 +1,27 @@
+{
+  "name": "app-nodejs-codechallenge",
+  "version": "1.0.0",
+  "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --watch ./src --exec ts-node ./src/index.ts",
+    "build": "tsc",
+    "start": "node ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "kafka-node": "^5.0.0",
+    "nodemon": "^3.1.9",
+    "prisma": "^6.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
+  }
+}

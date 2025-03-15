@@ -1,0 +1,6 @@
+version: "3.7"
+
+services:
+  postgres:
+    environment:
+      - POSTGRES_DB=yape_db
