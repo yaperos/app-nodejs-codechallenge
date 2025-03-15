@@ -1,4 +1,3 @@
-import './config/env'; 
 import { startTransactionService } from './transactions-service/index';
 import { startAntiFraudService } from './anti-fraud-service/index';
 
