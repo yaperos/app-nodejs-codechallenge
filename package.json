@@ -16,13 +16,13 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "kafka-node": "^5.0.0",
-    "nodemon": "^3.1.9",
     "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0"
+    "@types/express": "^5.0.0",
+    "nodemon": "^3.1.9"
   }
 }

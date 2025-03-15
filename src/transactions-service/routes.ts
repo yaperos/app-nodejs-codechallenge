@@ -4,7 +4,7 @@ import { validateDTO } from "./infrastructure/middlewares/dtoValidator";
 /* DTO Validator */
 import { CreateTransactionDTO } from "./application/dto/TransactionDTO";
 /* Controller */
-import { TransactionController } from './interfaces/transaction.controller';
+import { TransactionController } from './interfaces/TransactionController';
 
 const router = Router();
 const transactionController = new TransactionController();

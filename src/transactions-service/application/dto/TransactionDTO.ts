@@ -29,5 +29,5 @@ export const CreateTransactionDTO = z.object({
       invalid_type_error: "El campo 'value' debe ser un número"
     })
     .positive("El monto de la transacción debe ser mayor que cero")
-    .max(100000, "El monto de la transacción no puede superar los 100,000"),
+    // .max(100000, "El monto de la transacción no puede superar los 100,000"),
 });
