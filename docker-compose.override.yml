@@ -1,6 +1,9 @@
 version: "3.7"
 
 services:
+  kafka:
+    environment:
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
   postgres:
     environment:
       - POSTGRES_DB=yape_db
