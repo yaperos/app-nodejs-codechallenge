@@ -4,3 +4,8 @@ services:
   postgres:
     environment:
       - POSTGRES_DB=yape_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+
+volumes:
+  postgres_data: 
