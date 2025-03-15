@@ -1,67 +1,36 @@
-import prisma from '../../config/prisma.config';
-import { Transaction } from '../domain/Transaction';
-import { ITransactionRepository } from '../domain/ITransactionRepository';
+import { Request, Response, NextFunction } from 'express';
+import { TransactionService } from '../application/transaction.service';
+import { TransactionRepository } from '../infrastructure/repository/transaction.repository';
+import { NotFoundError } from '../infrastructure/middlewares/ErrorMiddleware';
 
-export class TransactionRepository implements ITransactionRepository {
+export class TransactionController {
+    private transactionService: TransactionService;
 
-    async create(transaction: Transaction): Promise<Transaction> {
-        const createdTransaction = await prisma.transaction.create({
-            data: {
-                id: transaction.id,
-                accountExternalIdDebit: transaction.accountExternalIdDebit,
-                accountExternalIdCredit: transaction.accountExternalIdCredit,
-                tranferTypeId: transaction.tranferTypeId,
-                value: transaction.value,
-                statusId: transaction.status === 'pending' ? 1 : 2,
-                createdAt: transaction.createdAt
-            }
-        });
-
-        return new Transaction(
-            createdTransaction.id,
-            createdTransaction.accountExternalIdDebit,
-            createdTransaction.accountExternalIdCredit,
-            createdTransaction.tranferTypeId,
-            createdTransaction.value,
-            createdTransaction.statusId === 1 ? 'pending' : 'approved',
-            createdTransaction.createdAt
-        );
+    constructor() {
+        const transactionRepository = new TransactionRepository(); 
+        this.transactionService = new TransactionService(transactionRepository); 
     }
 
-    async getById(id: string): Promise<Transaction | null> {
-        const foundTransaction = await prisma.transaction.findUnique({
-            where: { id }
-        });
-
-        if (!foundTransaction) return null;
-
-        return new Transaction(
-            foundTransaction.id,
-            foundTransaction.accountExternalIdDebit,
-            foundTransaction.accountExternalIdCredit,
-            foundTransaction.tranferTypeId,
-            foundTransaction.value,
-            foundTransaction.statusId === 1 ? 'pending' : 'approved',
-            foundTransaction.createdAt
-        );
+    async createTransaction(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const transaction = await this.transactionService.createTransaction(req.body);
+            res.status(201).json(transaction);
+        } catch (error) {
+            next(error);
+        }
     }
 
-    async update(transaction: Transaction): Promise<Transaction> {
-        const updatedTransaction = await prisma.transaction.update({
-            where: { id: transaction.id },
-            data: {
-                statusId: transaction.status === 'approved' ? 2 : 3
-            }
-        });
+    async getTransactionById(req: Request<{ id: string }>, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const transaction = await this.transactionService.getTransactionById(req.params.id);
 
-        return new Transaction(
-            updatedTransaction.id,
-            updatedTransaction.accountExternalIdDebit,
-            updatedTransaction.accountExternalIdCredit,
-            updatedTransaction.tranferTypeId,
-            updatedTransaction.value,
-            updatedTransaction.statusId === 2 ? 'approved' : 'rejected',
-            updatedTransaction.createdAt
-        );
+            if (!transaction) {
+                throw new NotFoundError('La transacción solicitada no fue encontrada.');
+            }
+
+            res.status(200).json(transaction);
+        } catch (error) {
+            next(error);
+        }
     }
 }
