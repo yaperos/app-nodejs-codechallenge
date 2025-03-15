@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { TransactionService } from '../application/transaction.service';
-import { TransactionRepository } from '../infrastructure/repository/transaction.repository';
+import { TransactionService } from '../application/TransactionService';
+import { TransactionRepository } from '../infrastructure/repository/TransactionRepository';
 import { NotFoundError } from '../infrastructure/middlewares/errorMiddleware';
 
 export class TransactionController {
