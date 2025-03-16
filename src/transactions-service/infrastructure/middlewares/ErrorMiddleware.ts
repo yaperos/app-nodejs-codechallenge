@@ -49,7 +49,7 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
   const message = err.message || "Error interno del servidor";
   
   // Registro del error en el sistema de logs
-  LogService.error(`[ERROR] ${message}`, err);
+  LogService.error(`[ERROR] ${message}`);
 
   res.status(statusCode).json({ error: message });
 };
