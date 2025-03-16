@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { LogService } from '../log/LogService';
+import { createLogger } from '../../../config/LogService';
+
+const LogService = createLogger('TRX');
 
 // Clase base de error personalizada
 class AppError extends Error {

@@ -1,5 +1,7 @@
 import { producer } from '../../../config/kafka.config';
-import { LogService } from '../log/LogService';
+import { createLogger } from '../../../config/LogService';
+
+const LogService = createLogger('TRX');
 
 export const publishTransactionCreated = (transactionData: any) => {
     producer.send(

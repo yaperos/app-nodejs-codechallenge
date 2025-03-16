@@ -2,8 +2,9 @@ import { Transaction } from '../domain/Transaction';
 import { ITransactionRepository } from '../domain/ITransactionRepository';
 import { publishTransactionCreated } from '../infrastructure/kafka/TransactionProducer';
 import { DatabaseError, NotFoundError } from '../infrastructure/middlewares/errorMiddleware';
-import { LogService } from '../infrastructure/log/LogService';
+import { createLogger } from '../../config/LogService';
 
+const LogService = createLogger('TRX');
 export class TransactionService {
     constructor(private transactionRepository: ITransactionRepository) {}
 
