@@ -25,7 +25,7 @@ const LogService = winston.createLogger({
           )
       }),
       new winston.transports.DailyRotateFile({
-          filename: "logs/user-service-%DATE%.log",
+          filename: "logs/transactions-service-%DATE%.log",
           datePattern: "YYYY-MM-DD",
           maxSize: "20m",
           maxFiles: "14d",
