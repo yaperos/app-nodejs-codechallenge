@@ -18,23 +18,56 @@ export class TransactionService {
         this.validateTransaction(transaction);
 
         // *3. Guarda en DB*
-        const createdTransaction = await this.saveTransaction(transaction);
+        const createdTransactionData = await this.saveTransaction(transaction);
 
-        // *4. Pública topic de Transacción generada*
+        // *4. Mapea la data del repositorio a la entidad del dominio*
+        const createdTransaction = this.mapToTransaction(createdTransactionData);
+
+        // *5. Pública topic de Transacción generada*
         await this.publishEvent(createdTransaction);
 
         return createdTransaction;
     }
 
     // Construcción del objeto de dominio
-    private buildTransaction(transactionData: any): Transaction {
+    public buildTransaction(transactionData: any): Transaction {
+        const status = this.mapStatusIdToStatus(transactionData.statusId);
+
         return new Transaction(
             transactionData.id,
             transactionData.accountExternalIdDebit,
             transactionData.accountExternalIdCredit,
             transactionData.tranferTypeId,
             transactionData.value,
-            'pending'
+            status,
+            transactionData.createdAt
+        );
+    }
+
+    // Mapea el `statusId` al string correspondiente ('pending', 'approved', 'rejected')
+    private mapStatusIdToStatus(statusId: number): 'pending' | 'approved' | 'rejected' {
+        switch (statusId) {
+            case 1:
+                return 'pending';
+            case 2:
+                return 'approved';
+            case 3:
+                return 'rejected';
+            default:
+                return 'pending';
+        }
+    }
+
+    // Mapear datos del repositorio a la entidad de dominio
+    private mapToTransaction(transactionData: any): Transaction {        
+        return new Transaction(
+            transactionData.id,
+            transactionData.accountExternalIdDebit,
+            transactionData.accountExternalIdCredit,
+            transactionData.tranferTypeId,
+            transactionData.value,
+            this.mapStatusIdToStatus(transactionData.statusId),
+            transactionData.createdAt
         );
     }
 
@@ -71,11 +104,11 @@ export class TransactionService {
     // Valida que exista Transacción en DB
     private async validateTransactionOnDB(id: string): Promise<Transaction> {
         try {
-            const transaction = await this.transactionRepository.getById(id);
+            const transactionData = await this.transactionRepository.getById(id);
+            
+            if (!transactionData) throw new DatabaseError(`La transacción con ID ${id} no fue encontrada.`);
     
-            if (!transaction) throw new DatabaseError(`La transacción con ID ${id} no fue encontrada.`);
-    
-            return transaction;
+            return this.mapToTransaction(transactionData);
         } catch (error) {
             throw new DatabaseError(`Error al consultar la transacción en la base de datos: ${error}`);
         }
@@ -90,10 +123,13 @@ export class TransactionService {
             const transaction = await this.getTransactionById(transactionId);
 
             // *2. Actualiza estado local según reglas del negocio*
-            this.updateStatus(transaction, status)
+            this.updateStatus(this.mapToTransaction(transaction), status)
 
-            // *Actualiza estado de Transacción en DB*
-            return this.updatedStatusTransaction(transaction);    
+            // *3. Actualiza Status en DB*
+            const updatedTransactionData = await this.updatedStatusTransaction(transaction);
+
+            // *4. Mapea data en la entidad de dominio*
+            return this.mapToTransaction(updatedTransactionData);   
         } catch (error) {
             LogService.warn(`No se logró actualizar el estado by Consumer: ${error}`)
         }
