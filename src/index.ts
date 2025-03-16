@@ -5,9 +5,7 @@ const start = async () => {
     try {
         await startTransactionService();
         await startAntiFraudService();
-        console.log('Microservicios en ejecución...');
     } catch (err) {
-        console.error('Error al iniciar los microservicios:', err);
         process.exit(1); 
     }
 };
