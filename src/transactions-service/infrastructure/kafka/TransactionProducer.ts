@@ -10,8 +10,8 @@ export const publishTransactionCreated = (transactionData: any) => {
             }
         ],
         (err, data) => {
-            if (err) LogService.warn(`Error al enviar evento a Kafka:`, err);
-            else LogService.info(`Evento enviado correctamente al topic 'transaction_created':`, data);
+            if (err) LogService.warn(`Producer falló al enviar evento a Kafka:`, err);
+            else LogService.info(`Producer generó evento correctamente al topic 'transaction_created':`, data);
         }
     );
 };

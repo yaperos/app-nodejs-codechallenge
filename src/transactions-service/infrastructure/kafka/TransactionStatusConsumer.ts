@@ -11,14 +11,14 @@ const consumer = createConsumer('transaction_status_updated', 'transaction-updat
 consumer.on('message', async (message) => {
     const { transactionId, status } = JSON.parse(message.value.toString());
 
-    LogService.info(`Evento recibido: Actualizando transacción ${transactionId} con estado ${status.toUpperCase()}`);
+    LogService.info(`Consumer: Actualizando transacción ${transactionId} con estado ${status.toUpperCase()}`);
 
     const updatedTransaction = await transactionService.updateTransactionStatusByConsumer(transactionId, status);
 
-    if (updatedTransaction) LogService.info(`Transacción ${transactionId} actualizada como ${status.toUpperCase()}`);
+    if (updatedTransaction) LogService.info(`Consumer actualizó transacción ${transactionId} actualizada como ${status.toUpperCase()}`);
   
 });
 
-consumer.on('error', (err) => LogService.error('Error en el Consumer de Kafka:', err));
+consumer.on('error', (err) => LogService.error('Consumer con error de Kafka:', err));
 
-LogService.info('Servicio de Actualización de Transacciones escuchando eventos...');
+LogService.info('Consumer de Actualización de Transacciones escuchando eventos...');
