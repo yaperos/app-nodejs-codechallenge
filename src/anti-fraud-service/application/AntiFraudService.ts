@@ -7,6 +7,9 @@ const LogService = createLogger('FRAUD');
 export class AntiFraudService {
     constructor(private transactionStatusPublisher: ITransactionStatusPublisher) {}
 
+    /* 
+    * Evalua transacción en sistema Anti-Fraude
+    */
     evaluateTransaction(transactionData: any): void {
         const transaction = new Transaction(transactionData.id, transactionData.value);
 
