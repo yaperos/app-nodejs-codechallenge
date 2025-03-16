@@ -1,9 +1,15 @@
-version: "3.7"
-
 services:
-  kafka:
-    environment:
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+  kafka-init:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    depends_on:
+      - kafka
+    command: >
+      bash -c "
+      echo 'Esperando que Kafka esté listo...' &&
+      cub kafka-ready -b kafka:29092 1 40 &&
+      kafka-topics --create --topic transaction_created --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 || echo 'Topic transaction_created ya existe' &&
+      kafka-topics --create --topic transaction_status_updated --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 || echo 'Topic transaction_status_updated ya existe'
+      "
   postgres:
     environment:
       - POSTGRES_DB=yape_db
