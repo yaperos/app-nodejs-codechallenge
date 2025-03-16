@@ -12,7 +12,7 @@ const fileFormat = winston.format.printf(({ level, message, timestamp }) => {
   return `[${timestamp}] ${level.toUpperCase()}: ${formattedMessage}`;
 });
 
-const logger = winston.createLogger({
+const LogService = winston.createLogger({
   level: "info",
   transports: [
       new winston.transports.Console({
@@ -34,4 +34,4 @@ const logger = winston.createLogger({
   ]
 });
 
-export { logger };
+export { LogService };
