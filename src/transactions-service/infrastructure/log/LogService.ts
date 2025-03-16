@@ -1,27 +1,37 @@
-import winston from 'winston';
+import winston from "winston";
+import "winston-daily-rotate-file";
 
-const logFormat = winston.format.printf(({ level, message, timestamp }) => {
-  return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+// Formato de Consola
+const consoleFormat = winston.format.printf(({ level, message }) => {
+  return `${level.toUpperCase()}: ${typeof message === "string" ? message : JSON.stringify(message)}`;
 });
 
-// Configuración del logger
+// Formato de Archivo
+const fileFormat = winston.format.printf(({ level, message, timestamp }) => {
+  const formattedMessage = typeof message === "string" ? message : JSON.stringify(message);
+  return `[${timestamp}] ${level.toUpperCase()}: ${formattedMessage}`;
+});
+
 const logger = winston.createLogger({
-  level: 'info', 
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    logFormat
-  ),
+  level: "info",
   transports: [
-    new winston.transports.Console(), 
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }) 
+      new winston.transports.Console({
+          format: winston.format.combine(
+              winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+              consoleFormat
+          )
+      }),
+      new winston.transports.DailyRotateFile({
+          filename: "logs/user-service-%DATE%.log",
+          datePattern: "YYYY-MM-DD",
+          maxSize: "20m",
+          maxFiles: "14d",
+          format: winston.format.combine(
+              winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+              fileFormat
+          )
+      })
   ]
 });
 
-export const LogService = {
-  info: (message: string) => logger.info(message),
-  warn: (message: string) => logger.warn(message),
-  error: (message: string, error?: any) => {
-    const errorDetails = error ? `${message} | Detalles: ${error.stack || error}` : message;
-    logger.error(errorDetails);
-  }
-};
+export { logger };
