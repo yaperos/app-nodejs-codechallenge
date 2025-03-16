@@ -1,6 +1,6 @@
 import { Transaction } from '../domain/Transaction';
 import { ITransactionRepository } from '../domain/ITransactionRepository';
-import { producer } from '../../config/kafka.config';
+import { publishTransactionCreated } from '../infrastructure/kafka/TransactionProducer';
 
 export class TransactionService {
     constructor(private transactionRepository: ITransactionRepository) {}
@@ -18,15 +18,11 @@ export class TransactionService {
         // Lógica de validación de montos en la capa de dominio
         transaction.validateAmount();  
 
+        // Registra en BD 
         const createdTransaction = await this.transactionRepository.create(transaction);
 
         // Enviar evento a Kafka
-        producer.send(
-            [{ topic: 'transaction_created', messages: JSON.stringify(createdTransaction) }],
-            (err) => {
-                if (err) console.error('Error al enviar evento a Kafka:', err);
-            }
-        );
+        publishTransactionCreated(createdTransaction);
 
         return createdTransaction;
     }
