@@ -1,7 +1,7 @@
 import { createConsumer } from '../../../config/kafka.config';
 import { AntiFraudService } from '../../application/AntiFraudService';
 import { TransactionStatusProducer } from './TransactionStatusProducer';
-import { createLogger } from '../../../config/LogService';
+import { createLogger } from '../../../config/log.config';
 
 const LogService = createLogger('FRAUD');
 
