@@ -1,5 +1,8 @@
 import { Transaction } from '../domain/Transaction';
 import { ITransactionStatusPublisher } from '../domain/ITransactionStatusPublisher';
+import { createLogger } from '../../config/LogService';
+
+const LogService = createLogger('FRAUD');
 
 export class AntiFraudService {
     constructor(private transactionStatusPublisher: ITransactionStatusPublisher) {}
@@ -12,6 +15,6 @@ export class AntiFraudService {
         // Enviar resultado al topic correspondiente
         this.transactionStatusPublisher.publish(transaction.id, status);
 
-        console.log(`Transacción ${transaction.id} marcada como ${status.toUpperCase()}`);
+        LogService.info(`Transacción ${transaction.id} marcada como ${status.toUpperCase()}`);
     }
 }
