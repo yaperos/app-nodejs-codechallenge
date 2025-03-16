@@ -120,11 +120,11 @@ export class TransactionService {
     async updateTransactionStatusByConsumer(transactionId: string, status: 'approved' | 'rejected'): Promise<Transaction | undefined> {
         try {
             // *1. Obtiene transacción*
-            const transaction = await this.getTransactionById(transactionId);
-
+            const transaction = await this.getTransactionById(transactionId);              
+            
             // *2. Actualiza estado local según reglas del negocio*
-            this.updateStatus(this.mapToTransaction(transaction), status)
-
+            this.updateStatus(transaction, status)           
+            
             // *3. Actualiza Status en DB*
             const updatedTransactionData = await this.updatedStatusTransaction(transaction);
 
