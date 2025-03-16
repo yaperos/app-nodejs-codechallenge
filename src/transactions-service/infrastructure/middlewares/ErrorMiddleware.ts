@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { LogService } from '../log/LogService';
 
 // Clase base de error personalizada
 class AppError extends Error {
@@ -46,7 +47,9 @@ class RateLimitError extends AppError {
 const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Error interno del servidor";
-  console.error(`[ERROR] ${message}`);
+  
+  // Registro del error en el sistema de logs
+  LogService.error(`[ERROR] ${message}`, err);
 
   res.status(statusCode).json({ error: message });
 };

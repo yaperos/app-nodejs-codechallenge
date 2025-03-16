@@ -19,6 +19,7 @@
     "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
+    "winston": "^3.17.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
