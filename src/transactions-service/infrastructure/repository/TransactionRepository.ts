@@ -46,12 +46,10 @@ export class TransactionRepository implements ITransactionRepository {
         );
     }
 
-    async update(transaction: Transaction): Promise<Transaction> {
+    async updateTransactionStatus(transaction: Transaction): Promise<Transaction | null> {
         const updatedTransaction = await prisma.transaction.update({
             where: { id: transaction.id },
-            data: {
-                statusId: transaction.status === 'approved' ? 2 : 3
-            }
+            data: { statusId: transaction.status === 'approved' ? 2 : 3 } // 2 = Aprobado, 3 = Rechazado
         });
 
         return new Transaction(
