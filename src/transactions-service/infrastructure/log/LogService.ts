@@ -6,7 +6,7 @@ const LOG_TRANSACTION = process.env.LOG_TRANSACTION || 'TRX';
 
 // Formato de Consola
 const consoleFormat = winston.format.printf(({ level, message }) => {
-  return ` ${LOG_TRANSACTION} - ${level.toUpperCase()}: ${typeof message === "string" ? message : JSON.stringify(message)}`;
+  return `[${LOG_TRANSACTION} - ${level.toUpperCase()}] ${typeof message === "string" ? message : JSON.stringify(message)}`;
 });
 
 // Formato de Archivo
