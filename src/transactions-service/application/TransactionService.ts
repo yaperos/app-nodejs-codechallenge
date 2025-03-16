@@ -1,12 +1,34 @@
 import { Transaction } from '../domain/Transaction';
 import { ITransactionRepository } from '../domain/ITransactionRepository';
 import { publishTransactionCreated } from '../infrastructure/kafka/TransactionProducer';
+import { DatabaseError, NotFoundError } from '../infrastructure/middlewares/errorMiddleware';
+import { LogService } from '../infrastructure/log/LogService';
 
 export class TransactionService {
     constructor(private transactionRepository: ITransactionRepository) {}
 
+    /* 
+    * Crear transacción
+    */
     async createTransaction(transactionData: any): Promise<Transaction> {
-        const transaction = new Transaction(
+        // *1. Genera Transaction*
+        const transaction = this.buildTransaction(transactionData);
+
+        // *2. Valida un monto valido (Valor positivo)*
+        this.validateTransaction(transaction);
+
+        // *3. Guarda en DB*
+        const createdTransaction = await this.saveTransaction(transaction);
+
+        // *4. Pública topic de Transacción generada*
+        await this.publishEvent(createdTransaction);
+
+        return createdTransaction;
+    }
+
+    // Construcción del objeto de dominio
+    private buildTransaction(transactionData: any): Transaction {
+        return new Transaction(
             transactionData.id,
             transactionData.accountExternalIdDebit,
             transactionData.accountExternalIdCredit,
@@ -14,40 +36,88 @@ export class TransactionService {
             transactionData.value,
             'pending'
         );
-
-        // Lógica de validación de montos en la capa de dominio
-        transaction.validateAmount();  
-
-        // Registra en BD 
-        const createdTransaction = await this.transactionRepository.create(transaction);
-
-        // Enviar evento a Kafka
-        publishTransactionCreated(createdTransaction);
-
-        return createdTransaction;
     }
 
-    async getTransactionById(id: string): Promise<Transaction | null> {
-        return this.transactionRepository.getById(id);
+    // Validación de reglas del negocio
+    private validateTransaction(transaction: Transaction): void {
+        transaction.validateAmount();
     }
 
-    async updateTransactionStatus(transactionId: string, status: 'approved' | 'rejected'): Promise<Transaction | null> {
-        const transaction = await this.getTransactionById(transactionId);
-
-        if (!transaction) {
-            console.error(`No se encontró la transacción ${transactionId} para actualizar.`);
-            return null;
+    // Guardar en la base de datos con manejo de errores
+    private async saveTransaction(transaction: Transaction): Promise<Transaction> {
+        try {
+            const createdTransaction = await this.transactionRepository.create(transaction);
+    
+            if (!createdTransaction) throw new DatabaseError(`La transacción no se creó correctamente en la base de datos.`);
+    
+            return createdTransaction;
+        } catch (error) {
+            throw new DatabaseError(`Error al guardar la transacción en la base de datos: ${error}`);
         }
+    }
 
-        if (status === 'approved') transaction.approve();  
-        else transaction.reject();   
+    // Publicar evento en Kafka con manejo de errores
+    private async publishEvent(transaction: Transaction): Promise<void> {
+        publishTransactionCreated(transaction);
+    }
 
-        const updatedTransaction = await this.transactionRepository.updateTransactionStatus(transaction);
+    /* 
+    * Obtener Transacción
+    */
+    async getTransactionById(id: string): Promise<Transaction> {    
+        return this.validateTransactionOnDB(id);
+    }
 
-        if (updatedTransaction) console.log(`Transacción ${transactionId} actualizada como ${status.toUpperCase()}`);
-        else console.error(`No se pudo actualizar la transacción ${transactionId}`);
+    // Valida que exista Transacción en DB
+    private async validateTransactionOnDB(id: string): Promise<Transaction> {
+        try {
+            const transaction = await this.transactionRepository.getById(id);
+    
+            if (!transaction) throw new DatabaseError(`La transacción con ID ${id} no fue encontrada.`);
+    
+            return transaction;
+        } catch (error) {
+            throw new DatabaseError(`Error al consultar la transacción en la base de datos: ${error}`);
+        }
+    }
+    
+    /* 
+    * Actualizar status de Transacción
+    */
+    async updateTransactionStatusByConsumer(transactionId: string, status: 'approved' | 'rejected'): Promise<Transaction | undefined> {
+        try {
+            // *1. Obtiene transacción*
+            const transaction = await this.getTransactionById(transactionId);
 
-        return updatedTransaction;
+            // *2. Actualiza estado local según reglas del negocio*
+            this.updateStatus(transaction, status)
+
+            // *Actualiza estado de Transacción en DB*
+            return this.updatedStatusTransaction(transaction);    
+        } catch (error) {
+            LogService.warn(`No se logró actualizar el estado by Consumer: ${error}`)
+        }
+        
+    }
+
+    // Actualiza status según reglas del negocio
+    private updateStatus(transaction: Transaction, status: 'approved' | 'rejected'): void {
+        if (status === 'approved') return transaction.approve();  
+        
+        return transaction.reject();   
+    }
+
+    // Actualiza transacción en la BD
+    private async updatedStatusTransaction(transaction: Transaction): Promise<Transaction> {
+        try {
+            const updatedTransaction = await this.transactionRepository.updateTransactionStatus(transaction);
+    
+            if (!updatedTransaction) throw new DatabaseError(`La transacción no se actualizó correctamente en la base de datos.`);
+    
+            return updatedTransaction;
+        } catch (error) {
+            throw new DatabaseError(`Error al actualizar la transacción en la base de datos: ${error}`);
+        }
     }
 
 }

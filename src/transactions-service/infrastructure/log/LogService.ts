@@ -1,15 +1,18 @@
 import winston from "winston";
 import "winston-daily-rotate-file";
 
+// Variable de etiqueta para microservicio
+const LOG_TRANSACTION = process.env.LOG_TRANSACTION || 'TRX';
+
 // Formato de Consola
 const consoleFormat = winston.format.printf(({ level, message }) => {
-  return `${level.toUpperCase()}: ${typeof message === "string" ? message : JSON.stringify(message)}`;
+  return ` ${LOG_TRANSACTION} - ${level.toUpperCase()}: ${typeof message === "string" ? message : JSON.stringify(message)}`;
 });
 
 // Formato de Archivo
 const fileFormat = winston.format.printf(({ level, message, timestamp }) => {
   const formattedMessage = typeof message === "string" ? message : JSON.stringify(message);
-  return `[${timestamp}] ${level.toUpperCase()}: ${formattedMessage}`;
+  return `[${LOG_TRANSACTION} - ${timestamp}] ${level.toUpperCase()}: ${formattedMessage}`;
 });
 
 const LogService = winston.createLogger({

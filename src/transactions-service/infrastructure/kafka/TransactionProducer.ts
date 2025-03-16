@@ -1,4 +1,5 @@
 import { producer } from '../../../config/kafka.config';
+import { LogService } from '../log/LogService';
 
 export const publishTransactionCreated = (transactionData: any) => {
     producer.send(
@@ -9,11 +10,8 @@ export const publishTransactionCreated = (transactionData: any) => {
             }
         ],
         (err, data) => {
-            if (err) {
-                console.error(`Error al enviar evento a Kafka:`, err);
-            } else {
-                console.log(`Evento enviado correctamente al topic 'transaction_created':`, data);
-            }
+            if (err) LogService.warn(`Error al enviar evento a Kafka:`, err);
+            else LogService.info(`Evento enviado correctamente al topic 'transaction_created':`, data);
         }
     );
 };
