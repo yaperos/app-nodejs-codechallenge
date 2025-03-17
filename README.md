@@ -80,3 +80,60 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+## Usage
+
+This project consists of two microservices developed using NestJS:
+
+- transaction-service
+
+- anti-fraud-service
+
+### Prerequisites
+
+- Docker and Docker Compose installed.
+
+- Node.js and NestJS (for local development).
+
+### Running the Services
+mer
+- Build and start docker-compose
+
+```shell
+- docker compose up
+```
+
+- Start transaction-service and migrate database
+
+```shell
+- yarn install
+- nest start
+- npx prisma migrate dev
+```
+
+- Start anti-fraud
+
+```shell
+- yarn install
+- nest start
+```
+
+### Accessing the Services
+
+- Transaction service:
+
+```curl
+curl --location 'http://localhost:3001/api/v1/transaction' \
+--data '{
+  "accountExternalIdDebit": "123e4567-e89b-12d3-a456-426614174000",
+  "accountExternalIdCredit": "987e6543-e21b-32d1-b456-123456789000",
+  "tranferTypeId": 1,
+  "value": 5000
+}'
+```
+
+- Anti Fraud service:
+
+```curl
+curl --location 'http://localhost:3001/api/v1/transaction?debitId=123e4567-e89b-12d3-a456-426614174000&creditId=987e6543-e21b-32d1-b456-123456789000'
+```
