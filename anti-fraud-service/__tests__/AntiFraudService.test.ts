@@ -1,5 +1,5 @@
-import { AntiFraudService } from '../../anti-fraud-service/application/AntiFraudService';
-import { TransactionStatusProducer } from '../../anti-fraud-service/infrastructure/kafka/TransactionStatusProducer';
+import { AntiFraudService } from '../src/application/AntiFraudService';
+import { TransactionStatusProducer } from '../src/infrastructure/kafka/TransactionStatusProducer';
 
 describe('AntiFraudService', () => {
     let antiFraudService: AntiFraudService;

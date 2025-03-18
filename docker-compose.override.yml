@@ -1,4 +1,19 @@
 services:
+ # Servicio de Prisma para inicializar las migraciones
+  prisma-migrate:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./transactions-service:/app
+    command: >
+      sh -c "
+      npx prisma generate &&
+      npx prisma migrate deploy
+      "
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/yape_db
+    depends_on:
+      - postgres
   # Genera topics con particiones
   kafka-init:
     image: confluentinc/cp-enterprise-kafka:5.5.3
@@ -17,8 +32,9 @@ services:
   # Microservicio de Transacciones
   transaction-service:
     build:
-      context: ./src/transactions-service
-    command: ["npm", "run", "start"]
+      context: ./transactions-service
+      dockerfile: Dockerfile
+    command: ["node", "./dist/index.js"]
     ports:
       - "3001:3001"
     environment:
@@ -30,14 +46,16 @@ services:
     depends_on:
       - postgres
       - kafka
+      - prisma-migrate
     networks:
       - app_network
 
   # Microservicio de Anti-Fraude
   anti-fraud-service:
     build:
-      context: ./src/anti-fraud-service
-    command: ["npm", "run", "start"]
+      context: ./anti-fraud-service
+      dockerfile: Dockerfile
+    command: ["node", "./dist/index.js"]
     ports:
       - "3002:3002"
     environment:
@@ -49,6 +67,7 @@ services:
     depends_on:
       - postgres
       - kafka
+      - prisma-migrate
     networks:
       - app_network
 
