@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "nodemon --watch ./ --exec ts-node ./server.ts",
         "start": "node ./dist/server.js",
-        "build": "tsc"
+        "build": "tsc",
+        "test": "jest --coverage"
     },
     "keywords": [],
     "author": "",
