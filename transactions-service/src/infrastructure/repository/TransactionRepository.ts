@@ -29,4 +29,8 @@ export class TransactionRepository implements ITransactionRepository {
             data: { statusId: transaction.status === 'approved' ? 2 : 3 }
         });
     }
+
+    async getAllTransactions(): Promise<any[]> {
+        return await prisma.transaction.findMany();
+    }   
 }

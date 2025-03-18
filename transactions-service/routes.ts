@@ -11,6 +11,6 @@ const transactionController = new TransactionController();
 
 // Definición de Rutas
 router.post('/transactions', validateDTO(CreateTransactionDTO),transactionController.createTransaction.bind(transactionController));
-router.get('/transactions/:id', validateDTO(GetTransactionDTO),transactionController.getTransactionById.bind(transactionController));
+router.get('/transactions', transactionController.getTransactionById.bind(transactionController));
 
 export default router;

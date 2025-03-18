@@ -22,7 +22,10 @@ export class TransactionController {
 
     async getTransactionById(req: Request<{ id: string }>, res: Response, next: NextFunction): Promise<void> {
         try {
-            const transaction = await this.transactionService.getTransactionById(req.params.id);
+            // ID Opcional
+            const { id } = req.query; 
+
+            const transaction = await this.transactionService.obtainTransactions(id as string | undefined);
 
             res.status(200).json(transaction);
         } catch (error) {

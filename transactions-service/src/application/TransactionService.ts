@@ -1,7 +1,7 @@
 import { Transaction } from '../domain/Transaction';
 import { ITransactionRepository } from '../domain/ITransactionRepository';
 import { publishTransactionCreated } from '../infrastructure/kafka/TransactionProducer';
-import { DatabaseError, NotFoundError } from '../infrastructure/middlewares/errorMiddleware';
+import { DatabaseError } from '../infrastructure/middlewares/errorMiddleware';
 import { createLogger } from '../infrastructure/logging/LogConfig';
 
 const LogService = createLogger('TRX');
@@ -72,6 +72,19 @@ export class TransactionService {
         );
     }
 
+    // Mapear valores múltiples
+    private mapToTransactionMultiple(transactionData: any[]): Transaction[] {       
+        return transactionData.map((data) => new Transaction(
+            data.id,
+            data.accountExternalIdDebit,
+            data.accountExternalIdCredit,
+            data.tranferTypeId,
+            data.value,
+            this.mapStatusIdToStatus(data.statusId),
+            data.createdAt
+        ));
+    }
+
     // Validación de reglas del negocio
     private validateTransaction(transaction: Transaction): void {
         transaction.validateAmount();
@@ -101,6 +114,27 @@ export class TransactionService {
     async getTransactionById(id: string): Promise<Transaction> {    
         return this.validateTransactionOnDB(id);
     }
+    
+    // Obtiene transacciones de manera global
+    async obtainTransactions(id: string | undefined): Promise<Transaction | Transaction[]> {
+        try {
+            
+            // Obtiene una transacción específica
+            if (id) return await this.getTransactionById(id); 
+                
+            // Obtiene todas las transacciones
+            const transactionsData = await this.transactionRepository.getAllTransactions();
+    
+            // Retorna un array vacío si no hay registros
+            if (!transactionsData || transactionsData.length === 0) return [];
+    
+            // Mapea todas las transacciones a la entidad del dominio
+            return this.mapToTransactionMultiple(transactionsData);
+        } catch (error) {
+            throw new DatabaseError(`Error al obtener las transacciones: ${error}`);
+        }
+    }
+    
 
     // Valida que exista Transacción en DB
     private async validateTransactionOnDB(id: string): Promise<Transaction> {
