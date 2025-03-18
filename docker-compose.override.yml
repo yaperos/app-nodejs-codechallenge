@@ -31,7 +31,6 @@ services:
     depends_on:
       - postgres
       - kafka
-      - prisma-migrate
     networks:
       - app_network
 
@@ -52,7 +51,6 @@ services:
     depends_on:
       - postgres
       - kafka
-      - prisma-migrate
     networks:
       - app_network
 
