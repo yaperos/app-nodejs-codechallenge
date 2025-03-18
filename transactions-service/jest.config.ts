@@ -3,11 +3,11 @@ import type { Config } from 'jest';
 const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  roots: ['<rootDir>/src'],  // Carpeta raíz para los tests
+  roots: ['<rootDir>'],  
   moduleFileExtensions: ['ts', 'tsx', 'js'],
-  testMatch: ['**/__tests__/**/*.test.ts'], // Ubicación de las pruebas
-  clearMocks: true, // Limpia mocks después de cada test
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'], // Archivo de configuración adicional
+  testMatch: ['**/__tests__/**/*.test.ts'], 
+  clearMocks: true, 
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'], 
 };
 
 export default config;
