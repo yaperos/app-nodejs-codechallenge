@@ -1,19 +1,4 @@
 services:
- # Servicio de Prisma para inicializar las migraciones
-  prisma-migrate:
-    image: node:20
-    working_dir: /app
-    volumes:
-      - ./transactions-service:/app
-    command: >
-      sh -c "
-      npx prisma generate &&
-      npx prisma migrate deploy
-      "
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/yape_db
-    depends_on:
-      - postgres
   # Genera topics con particiones
   kafka-init:
     image: confluentinc/cp-enterprise-kafka:5.5.3
@@ -34,7 +19,7 @@ services:
     build:
       context: ./transactions-service
       dockerfile: Dockerfile
-    command: ["node", "./dist/index.js"]
+    command: ["sh", "-c", "npx prisma generate && npx prisma migrate deploy && node ./dist/index.js"]
     ports:
       - "3001:3001"
     environment:

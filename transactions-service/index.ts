@@ -14,13 +14,6 @@ app.use(errorHandler);
 
 const PORT_TRANSACTION = process.env.PORT_TRANSACTION || 3001;
 
-export const startTransactionService = async () => {
-    try {
-        app.listen(PORT_TRANSACTION, () => {
-            console.log(`[TRX] Microservicio escuchando puerto ${PORT_TRANSACTION}`);
-        });
-
-    } catch (error) {
-        process.exit(1);
-    }
-};
+app.listen(PORT_TRANSACTION, () => {
+    console.log(`[TRX] Microservicio escuchando puerto ${PORT_TRANSACTION}`);
+});

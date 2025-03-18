@@ -16,4 +16,4 @@ COPY . .
 RUN npm run build
 
 # Ejecutar Prisma Migrate antes de levantar el servicio
-CMD ["sh", "-c", "npx prisma generate && npx prisma migrate deploy && node ./dist/server.js"]
+CMD ["sh", "-c", "npx prisma generate && npx prisma migrate deploy && node ./dist/index.js"]

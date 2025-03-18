@@ -4,8 +4,8 @@
     "description": "Our code challenge will let you marvel us with your Jedi coding skills :smile:.",
     "main": "index.js",
     "scripts": {
-        "dev": "nodemon --watch ./ --exec ts-node ./server.ts",
-        "start": "node ./dist/server.js",
+        "dev": "nodemon --watch ./ --exec ts-node ./index.ts",
+        "start": "node ./dist/index.js",
         "build": "tsc",
         "test": "jest --coverage"
     },
