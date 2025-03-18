@@ -1,9 +1,26 @@
 services:
+  # Zookeper
+  zookeeper:
+    networks:
+        - app_network
+  # Kafka
+  kafka: 
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "29092"]   
+      interval: 10s
+      retries: 15
+      timeout: 5s
+
   # Genera topics con particiones
   kafka-init:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    networks:
+      - app_network
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     command: >
       bash -c "
       echo 'Esperando que Kafka esté listo...' &&
@@ -11,8 +28,6 @@ services:
       kafka-topics --create --topic transaction_created --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 || echo 'Topic transaction_created ya existe' &&
       kafka-topics --create --topic transaction_status_updated --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 || echo 'Topic transaction_status_updated ya existe'
       "
-    networks:
-    - app_network
 
   # Microservicio de Transacciones
   transaction-service:
@@ -28,9 +43,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - KAFKA_BROKER=kafka:29092
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/yape_db
     depends_on:
-      - postgres
-      - kafka
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     networks:
       - app_network
 
@@ -43,14 +61,10 @@ services:
     ports:
       - "3002:3002"
     environment:
-      - NODE_ENV=production
-      - POSTGRES_DB=yape_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
       - KAFKA_BROKER=kafka:29092
     depends_on:
-      - postgres
-      - kafka
+      kafka:
+        condition: service_healthy
     networks:
       - app_network
 
@@ -60,6 +74,11 @@ services:
       - POSTGRES_DB=yape_db
     volumes:
       - postgres_data:/var/lib/postgresql/data 
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     networks:
       - app_network
 
