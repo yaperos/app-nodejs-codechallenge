@@ -1,5 +1,5 @@
 import express from 'express';
-import './infrastructure/kafka/TransactionConsumer';
+import './src/infrastructure/kafka/TransactionConsumer';
 
 const app = express();
 const PORT_FRAUD = process.env.PORT_FRAUD || 3001;

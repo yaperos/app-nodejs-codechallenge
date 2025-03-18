@@ -1,7 +1,7 @@
 import express from 'express';
 import transactionRoutes from './routes'; 
 import { errorHandler } from './src/infrastructure/middlewares/errorMiddleware';
-import './infrastructure/kafka/TransactionStatusConsumer';
+import './src/infrastructure/kafka/TransactionStatusConsumer';
 
 const app = express();
 app.use(express.json());
