@@ -1,7 +1,6 @@
 import { TransactionService } from '../../transactions-service/application/TransactionService';
 import { Transaction } from '../../transactions-service/domain/Transaction';
 import { ITransactionRepository } from '../../transactions-service/domain/ITransactionRepository';
-import { producer } from '../../config/kafka.config'; 
 
 class MockTransactionRepository implements ITransactionRepository {
     create = jest.fn();
@@ -18,10 +17,6 @@ describe('TransactionService', () => {
     beforeEach(() => {
         mockRepository = new MockTransactionRepository();
         transactionService = new TransactionService(mockRepository);
-    });
-
-    afterAll(async () => {
-        producer.close();  
     });
 
     it('debería crear una transacción correctamente', async () => {
