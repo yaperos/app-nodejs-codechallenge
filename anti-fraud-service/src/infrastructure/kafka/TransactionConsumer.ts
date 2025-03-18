@@ -8,16 +8,26 @@ const LogService = createLogger('FRAUD');
 const transactionStatusPublisher = new TransactionStatusProducer();
 const antiFraudService = new AntiFraudService(transactionStatusPublisher);
 
-const consumer = createConsumer('transaction_created', 'anti-fraud-group');
+async function startConsumer() {
+    const consumer = createConsumer('transaction_created', 'anti-fraud-group');
 
-consumer.on('message', async (message) => {
-    const transactionData = JSON.parse(message.value.toString());
+    consumer.on('message', async (message) => {
+        const transactionData = JSON.parse(message.value.toString());
 
-    LogService.info('Consumer recibió evento en Anti-Fraude:', transactionData);
+        LogService.info('1. Consumer: Recibió evento en Anti-Fraude:', transactionData);
 
-    antiFraudService.evaluateTransaction(transactionData);
-});
+        antiFraudService.evaluateTransaction(transactionData);
+    });
 
-consumer.on('error', (err) => LogService.error('Consumer error de Kafka:', err));
+    consumer.on('error', async (err) => {
+        LogService.error('Consumer error de Kafka:', err);
 
-LogService.info('Consumer de Anti-Fraude escuchando eventos...');
+        if (err.message.includes('The topic(s) transaction_created do not exist')) {
+            LogService.warn('El topic no existe. Esperando 5 segundos para reintentar...');
+            await new Promise(resolve => setTimeout(resolve, 5000)); 
+            startConsumer(); 
+        }
+    });
+}
+
+startConsumer();

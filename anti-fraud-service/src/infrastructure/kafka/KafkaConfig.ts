@@ -2,7 +2,11 @@ import { KafkaClient, Producer, Consumer } from 'kafka-node';
 
 const kafkaHost = process.env.KAFKA_BROKER || 'localhost:9092';
 
-const client = new KafkaClient({ kafkaHost });
+const client = new KafkaClient({
+    kafkaHost,
+    requestTimeout: 30000,        
+    connectTimeout: 30000,        
+});
 
 export const producer = new Producer(client);
 

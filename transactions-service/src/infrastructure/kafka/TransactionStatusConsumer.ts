@@ -8,19 +8,28 @@ const LogService = createLogger('TRX');
 const transactionRepository = new TransactionRepository();
 const transactionService = new TransactionService(transactionRepository);
 
-const consumer = createConsumer('transaction_status_updated', 'transaction-update-group');
+async function startConsumer() {
+    const consumer = createConsumer('transaction_status_updated', 'transaction-update-group');
 
-consumer.on('message', async (message) => {
-    const { transactionId, status } = JSON.parse(message.value.toString());
+    consumer.on('message', async (message) => {
+        const { transactionId, status } = JSON.parse(message.value.toString());
 
-    LogService.info(`Consumer: Actualizando transacción ${transactionId} con estado ${status.toUpperCase()}`);
+        LogService.info(`1. Consumer: Actualizando transacción ${transactionId} con estado ${status.toUpperCase()}`);
 
-    const updatedTransaction = await transactionService.updateTransactionStatusByConsumer(transactionId, status);
+        const updatedTransaction = await transactionService.updateTransactionStatusByConsumer(transactionId, status);
 
-    if (updatedTransaction) LogService.info(`Consumer actualizó transacción ${transactionId} actualizada como ${status.toUpperCase()}`);
-  
-});
+        if (updatedTransaction) LogService.info(`2. Consumer: Actualizó transacción ${transactionId} como ${status.toUpperCase()}`);
+    });
 
-consumer.on('error', (err) => LogService.error('Consumer con error de Kafka:', err));
+    consumer.on('error', async (err) => {
+        LogService.error('Consumer con error de Kafka:', err);
 
-LogService.info('Consumer de Actualización de Transacciones escuchando eventos...');
+        if (err.message.includes('The topic(s) transaction_status_updated do not exist')) {
+            LogService.warn('El topic no existe. Esperando 5 segundos para reintentar...');
+            await new Promise(resolve => setTimeout(resolve, 5000)); 
+            startConsumer(); 
+        }
+    });
+}
+
+startConsumer();
