@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MasterTable {
+  id Int @id @default(autoincrement())
+
+  parentId    Int?
+  name        String  @unique
+  description String?
+
+  order Int?
+  value String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  externalTransactionTransactionType         ExternalTransaction[] @relation("TransactionType")
+  externalTransactionTransactionStatus       ExternalTransaction[] @relation("TransactionStatus")
+  externalTransactionTransactionTransferType ExternalTransaction[] @relation("TransactionTransferType")
+}
+
+model ExternalTransaction {
+  id String @id @default(uuid())
+
+  externalDebitAccount    ExternalDebitAccount  @relation(fields: [externalDebitAccountId], references: [id])
+  externalDebitAccountId  String
+  externalCreditAccount   ExternalCreditAccount @relation(fields: [externalCreditAccountId], references: [id])
+  externalCreditAccountId String
+
+  type           MasterTable @relation("TransactionType", fields: [typeId], references: [id])
+  typeId         Int
+  status         MasterTable @relation("TransactionStatus", fields: [statusId], references: [id])
+  statusId       Int
+  transferType   MasterTable @relation("TransactionTransferType", fields: [transferTypeId], references: [id])
+  transferTypeId Int
+  value          Float
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model ExternalDebitAccount {
+  id String @id @default(uuid())
+
+  accountNumber  String  @unique
+  bankName       String
+  bankCode       String
+  currency       String
+  country        String
+  holderName     String
+  holderDocument String?
+  balance        Float
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  ExternalTransaction ExternalTransaction[]
+}
+
+model ExternalCreditAccount {
+  id String @id @default(uuid())
+
+  accountNumber  String  @unique
+  bankName       String
+  bankCode       String
+  currency       String
+  country        String
+  holderName     String
+  holderDocument String?
+  creditLimit    Float
+  debtBalance    Float
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  ExternalTransaction ExternalTransaction[]
+}

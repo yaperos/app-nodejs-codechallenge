@@ -7,6 +7,11 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -21,5 +26,51 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     ports:
       - 9092:9092
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--list", "--bootstrap-server", "kafka:29092"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+
+  client-gateway:
+    build: ./client-gateway
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client-gateway/src:/usr/src/app/src
+    command: npm run start:dev
+    env_file:
+      - ./client-gateway/.env.dev
+
+  external-transaction-ms:
+    build: ./external-transaction-ms
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    restart: always
+    volumes:
+      - ./external-transaction-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    env_file:
+      - ./external-transaction-ms/.env.dev
+  
+  anti-fraud-ms:
+    build: ./anti-fraud-ms
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: always
+    volumes:
+      - ./anti-fraud-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    env_file:
+      - ./anti-fraud-ms/.env.dev
