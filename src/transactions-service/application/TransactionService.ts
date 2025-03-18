@@ -2,7 +2,7 @@ import { Transaction } from '../domain/Transaction';
 import { ITransactionRepository } from '../domain/ITransactionRepository';
 import { publishTransactionCreated } from '../infrastructure/kafka/TransactionProducer';
 import { DatabaseError, NotFoundError } from '../infrastructure/middlewares/errorMiddleware';
-import { createLogger } from '../../config/log.config';
+import { createLogger } from '../infrastructure/logging/LogConfig';
 
 const LogService = createLogger('TRX');
 export class TransactionService {

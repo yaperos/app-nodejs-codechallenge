@@ -1,6 +1,6 @@
-import { producer } from '../../../config/kafka.config';
+import { producer } from './KafkaConfig';
 import { ITransactionStatusPublisher } from '../../domain/ITransactionStatusPublisher';
-import { createLogger } from '../../../config/log.config';
+import { createLogger } from '../logging/LogConfig';
 
 const LogService = createLogger('FRAUD');
 

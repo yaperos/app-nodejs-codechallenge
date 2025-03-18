@@ -22,8 +22,7 @@ export const createLogger = (serviceName: string) => {
                 )
             }),
             new winston.transports.DailyRotateFile({
-                // filename: `logs/${serviceName.toLowerCase()}-service-%DATE%.log`,  // Logs específicos por servicio
-                filename: `logs/app-%DATE%.log`,  // Un solo log en desarrollo
+                filename: `logs/${serviceName.toLowerCase()}-service-%DATE%.log`,  // Logs específicos por servicio
                 datePattern: "YYYY-MM-DD",
                 maxSize: "20m",
                 maxFiles: "14d",

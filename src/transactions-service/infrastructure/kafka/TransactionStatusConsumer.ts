@@ -1,7 +1,7 @@
-import { createConsumer } from '../../../config/kafka.config';
+import { createConsumer } from './KafkaConfig';
 import { TransactionService } from '../../application/TransactionService';
 import { TransactionRepository } from '../repository/TransactionRepository';
-import { createLogger } from '../../../config/log.config';
+import { createLogger } from '../logging/LogConfig';
 
 const LogService = createLogger('TRX');
 

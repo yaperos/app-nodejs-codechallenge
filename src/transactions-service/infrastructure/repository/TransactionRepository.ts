@@ -1,4 +1,4 @@
-import prisma from '../../../config/prisma.config';
+import prisma from '../database/PrismaConfig';
 import { Transaction } from '../../domain/Transaction';
 import { ITransactionRepository } from '../../domain/ITransactionRepository';
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { createLogger } from '../../../config/log.config';
+import { createLogger } from '../logging/LogConfig';
 
 const LogService = createLogger('TRX');
 

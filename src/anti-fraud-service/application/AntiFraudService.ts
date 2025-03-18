@@ -1,6 +1,6 @@
 import { Transaction } from '../domain/Transaction';
 import { ITransactionStatusPublisher } from '../domain/ITransactionStatusPublisher';
-import { createLogger } from '../../config/log.config';
+import { createLogger } from '../infrastructure/logging/LogConfig';
 
 const LogService = createLogger('FRAUD');
 

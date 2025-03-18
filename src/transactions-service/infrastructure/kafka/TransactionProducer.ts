@@ -1,5 +1,5 @@
-import { producer } from '../../../config/kafka.config';
-import { createLogger } from '../../../config/log.config';
+import { producer } from './KafkaConfig';
+import { createLogger } from '../logging/LogConfig';
 
 const LogService = createLogger('TRX');
 
