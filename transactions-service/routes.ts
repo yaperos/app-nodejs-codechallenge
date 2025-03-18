@@ -1,10 +1,10 @@
 import { Router } from 'express';
 /* Middleware Validator */
-import { validateDTO } from "./infrastructure/middlewares/dtoValidator";
+import { validateDTO } from "./src/infrastructure/middlewares/dtoValidator";
 /* DTO Validator */
-import { CreateTransactionDTO, GetTransactionDTO } from "./application/dto/TransactionDTO";
+import { CreateTransactionDTO, GetTransactionDTO } from "./src/application/dto/TransactionDTO";
 /* Controller */
-import { TransactionController } from './interfaces/TransactionController';
+import { TransactionController } from './src/interfaces/TransactionController';
 
 const router = Router();
 const transactionController = new TransactionController();
