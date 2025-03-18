@@ -1,6 +1,6 @@
-import { TransactionService } from '../../transactions-service/application/TransactionService';
-import { Transaction } from '../../transactions-service/domain/Transaction';
-import { ITransactionRepository } from '../../transactions-service/domain/ITransactionRepository';
+import { TransactionService } from '../src/application/TransactionService';
+import { Transaction } from '../src/domain/Transaction';
+import { ITransactionRepository } from '../src/domain/ITransactionRepository';
 
 class MockTransactionRepository implements ITransactionRepository {
     create = jest.fn();

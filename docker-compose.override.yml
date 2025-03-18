@@ -1,4 +1,5 @@
 services:
+  # Genera topics con particiones
   kafka-init:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on:
@@ -10,11 +11,59 @@ services:
       kafka-topics --create --topic transaction_created --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 || echo 'Topic transaction_created ya existe' &&
       kafka-topics --create --topic transaction_status_updated --bootstrap-server kafka:29092 --partitions 3 --replication-factor 1 || echo 'Topic transaction_status_updated ya existe'
       "
+    networks:
+    - app_network
+
+  # Microservicio de Transacciones
+  transaction-service:
+    build:
+      context: ./src/transactions-service
+    command: ["npm", "run", "start"]
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - POSTGRES_DB=yape_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - KAFKA_BROKER=kafka:29092
+    depends_on:
+      - postgres
+      - kafka
+    networks:
+      - app_network
+
+  # Microservicio de Anti-Fraude
+  anti-fraud-service:
+    build:
+      context: ./src/anti-fraud-service
+    command: ["npm", "run", "start"]
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - POSTGRES_DB=yape_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - KAFKA_BROKER=kafka:29092
+    depends_on:
+      - postgres
+      - kafka
+    networks:
+      - app_network
+
+  # DB con volumenes para persistencia de Datos
   postgres:
     environment:
       - POSTGRES_DB=yape_db
     volumes:
       - postgres_data:/var/lib/postgresql/data 
+    networks:
+      - app_network
 
 volumes:
   postgres_data: 
+
+networks:
+  app_network:
+    driver: bridge
