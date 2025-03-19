@@ -34,6 +34,9 @@ El sistema maneja la creación y validación de transacciones financieras median
 **Autenticación con JWT:**  
 - Incluye autenticación mediante tokens JWT.  
 
+**Documentación By Swagger:**  
+- Incluye documentación de endpoints mediante Swagger: http://localhost:3001/api-docs
+
 ## **Características del Proyecto**
 - Implementación modular siguiendo principios de **Clean Architecture**.  
 - Uso de **TypeScript** para mayor robustez y escalabilidad.  

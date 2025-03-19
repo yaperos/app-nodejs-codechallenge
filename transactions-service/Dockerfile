@@ -7,7 +7,7 @@ COPY ./package*.json ./
 RUN npm install --omit=dev
 
 # Instala temporalmente las dependencias de desarrollo para el build
-RUN npm install --save-dev @types/express
+RUN npm install --save-dev @types/express @types/swagger-jsdoc
 
 # Copiar el resto del código fuente
 COPY . .
