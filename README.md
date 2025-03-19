@@ -1,6 +1,15 @@
 # Yape Code Challenge :rocket:
 Este proyecto implementa un sistema de validación de transacciones financieras basado en microservicios, siguiendo los lineamientos del **Yape Code Challenge**.
 
+## **Índice**
+- [Resumen del Proyecto](#resumen-del-proyecto)
+- [Características del Proyecto](#caracteristicas-del-proyecto)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Instrucciones de Despliegue](#instrucciones-de-despliegue)
+- [Endpoints Disponibles](#endpoints-disponibles)
+- [Pruebas](#pruebas)
+- [Checklist de Requisitos Cumplidos](#checklist-de-requisitos-cumplidos)
+
 ## **Resumen del Proyecto**
 El sistema maneja la creación y validación de transacciones financieras mediante dos microservicios:
 
@@ -90,13 +99,13 @@ Para ejecutar pruebas unitarias
 - docker-compose exec app-nodejs-codechallenge-anti-fraud-service-1 npm run test
 
 ## **Checklist de Requisitos Cumplidos :check:**
-✅ Creación de transacciones con estado pending.
-✅ Validación automática de transacciones mayores a 1000 como rejected.
-✅ Envío y recepción de eventos mediante Kafka.
-✅ Uso de Prisma como ORM para la gestión de la base de datos.
-✅ Autenticación mediante JWT para garantizar seguridad y trazabilidad.
-✅ Documentación completa del proyecto.
-✅ Pruebas unitarias para la lógica del negocio.
+# ✅ Creación de transacciones con estado pending.
+# ✅ Validación automática de transacciones mayores a 1000 como rejected.
+# ✅ Envío y recepción de eventos mediante Kafka.
+# ✅ Uso de Prisma como ORM para la gestión de la base de datos.
+# ✅ Autenticación mediante JWT para garantizar seguridad y trazabilidad.
+# ✅ Documentación completa del proyecto.
+# ✅ Pruebas unitarias para la lógica del negocio.
 
 
 
