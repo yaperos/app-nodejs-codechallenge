@@ -1,0 +1,183 @@
+service: anti-fraud-service
+frameworkVersion: '3'
+
+plugins:
+  - serverless-appsync-plugin
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  environment:
+    AWS_REGION: us-east-1
+    KAFKA_BROKER: ${env:KAFKA_BROKER, 'localhost:9092'}
+
+  iamRoleStatements:
+
+    - Effect: Allow
+      Action:
+        - kafka:*
+      Resource: "*"
+
+    - Effect: Allow
+      Action:
+        - appsync:*
+      Resource: "*"
+
+package:
+  individually: true
+
+
+
+functions:
+  antiFraudConsumer:
+    handler: dist/src/main.handler
+    name: antiFraudConsumer
+    description: "Lambda que consume el tópico transaction-created-topic"
+    events:
+      - msk:
+          arn: !Ref AntiFraudMskCluster
+          topic: transaction-created-topic
+    vpc:
+      securityGroupIds:
+        - !GetAtt AntiFraudSecurityGroup.GroupId
+      subnetIds:
+        - !Ref AntiFraudPublicSubnet1
+        - !Ref AntiFraudPublicSubnet2
+
+
+  antiFraudAppSyncHandler:
+    handler: dist/src/infrastructure/controllers/anti-fraud.lambda.handler
+    name: antiFraudAppSyncHandler
+    description: "Lambda para resolver la Mutation manualCheck en GraphQL"
+    vpc:
+      securityGroupIds:
+        - !GetAtt AntiFraudSecurityGroup.GroupId
+      subnetIds:
+        - !Ref AntiFraudPublicSubnet1
+        - !Ref AntiFraudPublicSubnet2
+
+
+
+custom:
+  appSync:
+    name: AntiFraudAppSync
+    authenticationType: API_KEY
+    schema: 'graphql/schema.graphql'
+    mappingTemplates:
+      - dataSource: AntiFraudLambdaDS
+        type: Mutation
+        field: manualCheck
+        request: 'templates/Request.vtl'
+        response: 'templates/Response.vtl'
+    dataSources:
+      - type: AWS_LAMBDA
+        name: AntiFraudLambdaDS
+        config:
+          functionName: antiFraudAppSyncHandler
+
+
+
+resources:
+  Resources:
+
+    AntiFraudVPC:
+      Type: AWS::EC2::VPC
+      Properties:
+        CidrBlock: 10.1.0.0/16
+        EnableDnsSupport: true
+        EnableDnsHostnames: true
+        Tags:
+          - Key: Name
+            Value: AntiFraudServiceVPC
+
+    AntiFraudInternetGateway:
+      Type: AWS::EC2::InternetGateway
+      Properties:
+        Tags:
+          - Key: Name
+            Value: AntiFraudInternetGateway
+
+    AntiFraudVPCGatewayAttachment:
+      Type: AWS::EC2::VPCGatewayAttachment
+      Properties:
+        VpcId: !Ref AntiFraudVPC
+        InternetGatewayId: !Ref AntiFraudInternetGateway
+
+    AntiFraudPublicSubnet1:
+      Type: AWS::EC2::Subnet
+      Properties:
+        VpcId: !Ref AntiFraudVPC
+        CidrBlock: 10.1.1.0/24
+        AvailabilityZone: us-east-1a
+        MapPublicIpOnLaunch: true
+        Tags:
+          - Key: Name
+            Value: AntiFraudPublicSubnet1
+
+    AntiFraudPublicSubnet2:
+      Type: AWS::EC2::Subnet
+      Properties:
+        VpcId: !Ref AntiFraudVPC
+        CidrBlock: 10.1.2.0/24
+        AvailabilityZone: us-east-1b
+        MapPublicIpOnLaunch: true
+        Tags:
+          - Key: Name
+            Value: AntiFraudPublicSubnet2
+
+    AntiFraudRouteTable:
+      Type: AWS::EC2::RouteTable
+      Properties:
+        VpcId: !Ref AntiFraudVPC
+        Tags:
+          - Key: Name
+            Value: AntiFraudPublicRouteTable
+
+    AntiFraudRoute:
+      Type: AWS::EC2::Route
+      Properties:
+        RouteTableId: !Ref AntiFraudRouteTable
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: !Ref AntiFraudInternetGateway
+
+    AntiFraudRouteTableAssociation1:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties:
+        SubnetId: !Ref AntiFraudPublicSubnet1
+        RouteTableId: !Ref AntiFraudRouteTable
+
+    AntiFraudRouteTableAssociation2:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties:
+        SubnetId: !Ref AntiFraudPublicSubnet2
+        RouteTableId: !Ref AntiFraudRouteTable
+
+    AntiFraudSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupName: "AntiFraudSecurityGroup"
+        GroupDescription: "Security group for Anti-Fraud Service"
+        VpcId: !Ref AntiFraudVPC
+        SecurityGroupIngress:
+          - IpProtocol: tcp
+            FromPort: 0
+            ToPort: 65535
+            CidrIp: 0.0.0.0/0
+
+
+
+    AntiFraudMskCluster:
+      Type: AWS::MSK::Cluster
+      Properties:
+        ClusterName: AntiFraudMSKCluster
+        KafkaVersion: 2.8.1
+        NumberOfBrokerNodes: 2
+        BrokerNodeGroupInfo:
+          InstanceType: kafka.m5.large
+          ClientSubnets:
+            - !Ref AntiFraudPublicSubnet1
+            - !Ref AntiFraudPublicSubnet2
+          SecurityGroups:
+            - !Ref AntiFraudSecurityGroup

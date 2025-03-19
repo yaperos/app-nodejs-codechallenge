@@ -1,0 +1,7 @@
+## Response mapping template for manualCheck in Anti-Fraud Service
+
+#if ($context.error)
+  $util.error($context.error.message, $context.error.type)
+#else
+  $utils.toJson($context.result)
+#end

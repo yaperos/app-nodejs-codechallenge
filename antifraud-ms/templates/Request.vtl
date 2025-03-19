@@ -1,0 +1,11 @@
+## Request mapping template for manualCheck in Anti-Fraud Service
+{
+  "version": "2018-05-29",
+  "operation": "Invoke",
+  "payload": {
+    "info": {
+      "fieldName": "$context.info.fieldName"
+    },
+    "arguments": $utils.toJson($context.arguments)
+  }
+}

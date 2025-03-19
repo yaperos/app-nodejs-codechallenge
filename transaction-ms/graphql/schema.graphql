@@ -1,0 +1,22 @@
+type Transaction {
+  transactionExternalId: ID!
+  accountExternalIdDebit: String!
+  accountExternalIdCredit: String!
+  transferTypeId: Int!
+  value: Float!
+  transactionStatus: String!
+  createdAt: String!
+}
+
+type Query {
+  getTransaction(transactionExternalId: ID!): Transaction
+}
+
+type Mutation {
+  createTransaction(
+    accountExternalIdDebit: String!
+    accountExternalIdCredit: String!
+    transferTypeId: Int!
+    value: Float!
+  ): Transaction
+}

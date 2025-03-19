@@ -1,0 +1,196 @@
+service: transaction-service
+frameworkVersion: '3'
+
+plugins:
+  - serverless-appsync-plugin
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  environment:
+    AWS_REGION: us-east-1
+    DYNAMODB_TABLE: TransactionsTable
+    KAFKA_BROKER: ${env:KAFKA_BROKER, 'localhost:9092'}
+
+  iamRoleStatements:
+
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+      Resource: "*"
+
+    - Effect: Allow
+      Action:
+        - kafka:*
+      Resource: "*"
+
+    - Effect: Allow
+      Action:
+        - appsync:*
+      Resource: "*"
+
+package:
+  individually: true
+
+
+functions:
+
+  transactionAppSyncHandler:
+    handler: dist/src/infrastructure/controllers/transaction.lambda.handler
+    name: transactionAppSyncHandler
+    description: "Lambda que maneja resolvers GraphQL (createTransaction, getTransaction)"
+
+    vpc:
+      securityGroupIds:
+        - !GetAtt TransactionSecurityGroup.GroupId
+      subnetIds:
+        - !Ref TransactionPublicSubnet1
+        - !Ref TransactionPublicSubnet2
+
+
+custom:
+  appSync:
+    name: TransactionAppSync
+    authenticationType: API_KEY
+    schema: graphql/schema.graphql
+    
+    mappingTemplates:
+      - dataSource: TransactionLambdaDS
+        type: Query
+        field: getTransaction
+        request: 'templates/Request.vtl'
+        response: 'templates/Response.vtl'
+      - dataSource: TransactionLambdaDS
+        type: Mutation
+        field: createTransaction
+        request: 'templates/Request.vtl'
+        response: 'templates/Response.vtl'
+    dataSources:
+      - type: AWS_LAMBDA
+        name: TransactionLambdaDS
+        config:
+          functionName: transactionAppSyncHandler
+
+
+
+resources:
+  Resources:
+
+    TransactionVPC:
+      Type: AWS::EC2::VPC
+      Properties:
+        CidrBlock: 10.0.0.0/16
+        EnableDnsSupport: true
+        EnableDnsHostnames: true
+        Tags:
+          - Key: Name
+            Value: TransactionServiceVPC
+
+    TransactionInternetGateway:
+      Type: AWS::EC2::InternetGateway
+      Properties:
+        Tags:
+          - Key: Name
+            Value: TransactionInternetGateway
+
+    TransactionVPCGatewayAttachment:
+      Type: AWS::EC2::VPCGatewayAttachment
+      Properties:
+        VpcId: !Ref TransactionVPC
+        InternetGatewayId: !Ref TransactionInternetGateway
+
+    TransactionPublicSubnet1:
+      Type: AWS::EC2::Subnet
+      Properties:
+        VpcId: !Ref TransactionVPC
+        CidrBlock: 10.0.1.0/24
+        AvailabilityZone: us-east-1a
+        MapPublicIpOnLaunch: true
+        Tags:
+          - Key: Name
+            Value: TransactionPublicSubnet1
+
+    TransactionPublicSubnet2:
+      Type: AWS::EC2::Subnet
+      Properties:
+        VpcId: !Ref TransactionVPC
+        CidrBlock: 10.0.2.0/24
+        AvailabilityZone: us-east-1b
+        MapPublicIpOnLaunch: true
+        Tags:
+          - Key: Name
+            Value: TransactionPublicSubnet2
+
+    TransactionRouteTable:
+      Type: AWS::EC2::RouteTable
+      Properties:
+        VpcId: !Ref TransactionVPC
+        Tags:
+          - Key: Name
+            Value: TransactionPublicRouteTable
+
+    TransactionRoute:
+      Type: AWS::EC2::Route
+      Properties:
+        RouteTableId: !Ref TransactionRouteTable
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: !Ref TransactionInternetGateway
+
+    TransactionRouteTableAssociation1:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties:
+        SubnetId: !Ref TransactionPublicSubnet1
+        RouteTableId: !Ref TransactionRouteTable
+
+    TransactionRouteTableAssociation2:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties:
+        SubnetId: !Ref TransactionPublicSubnet2
+        RouteTableId: !Ref TransactionRouteTable
+
+    TransactionSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupName: "TransactionSecurityGroup"
+        GroupDescription: "Security group for Transaction Service"
+        VpcId: !Ref TransactionVPC
+        SecurityGroupIngress:
+          - IpProtocol: tcp
+            FromPort: 0
+            ToPort: 65535
+            CidrIp: 0.0.0.0/0
+
+    
+    TransactionMskCluster:
+      Type: AWS::MSK::Cluster
+      Properties:
+        ClusterName: TransactionMSKCluster
+        KafkaVersion: 2.8.1
+        NumberOfBrokerNodes: 2
+        BrokerNodeGroupInfo:
+          InstanceType: kafka.m5.large
+          ClientSubnets:
+            - !Ref TransactionPublicSubnet1
+            - !Ref TransactionPublicSubnet2
+          SecurityGroups:
+            - !Ref TransactionSecurityGroup
+
+
+    TransactionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TransactionsTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: transactionExternalId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: transactionExternalId
+            KeyType: HASH

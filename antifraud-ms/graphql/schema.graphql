@@ -1,0 +1,11 @@
+type FraudCheckResult {
+  transactionExternalId: ID!
+  status: String!
+}
+
+type Mutation {
+  manualCheck(
+    transactionExternalId: ID!
+    value: Float!
+  ): FraudCheckResult
+}
