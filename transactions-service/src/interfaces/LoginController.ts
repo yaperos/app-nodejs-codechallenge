@@ -8,9 +8,9 @@ export class LoginController {
     login = async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { username, password } = req.body;
-        const response = await this.loginService.login(username, password);
-      
-        res.json(response);
+        const token = await this.loginService.login(username, password);
+
+        res.json({ token });
       } catch (error) {
         next(error);
       }

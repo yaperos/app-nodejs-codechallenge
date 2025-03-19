@@ -13,8 +13,8 @@ export class TransactionController {
     createTransaction = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             
-            const userId = (req as any).user.id;
-
+            const userId = (req as any).user.userId;
+            
             const transaction = await this.transactionService.createTransaction(req.body, userId);
 
             res.status(201).json(transaction);
