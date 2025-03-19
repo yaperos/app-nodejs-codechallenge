@@ -34,10 +34,10 @@ El sistema maneja la creación y validación de transacciones financieras median
 - Pruebas unitarias e integración usando **Jest**.  
 
 ## **Instrucciones de Despliegue**
-- 1. Clonar el repositorio.
+1. Clonar el repositorio.
     - git clone <URL_DEL_REPOSITORIO>
     - cd app-nodejs-codechallenge
-- 2. Deploy del proyecto con Docker
+2. Deploy del proyecto con Docker
     - docker-compose up
     - Esto iniciará:
         - Microservicio de Transacciones
@@ -83,4 +83,20 @@ El sistema maneja la creación y validación de transacciones financieras median
         {
         "Authorization": "Bearer <TOKEN_GENERADO>"
         }
+
+## **Testing**
+Para ejecutar pruebas unitarias
+- docker-compose exec app-nodejs-codechallenge-transaction-service-1 npm run test
+- docker-compose exec app-nodejs-codechallenge-anti-fraud-service-1 npm run test
+
+## **Checklist de Requisitos Cumplidos :check:**
+✅ Creación de transacciones con estado pending.
+✅ Validación automática de transacciones mayores a 1000 como rejected.
+✅ Envío y recepción de eventos mediante Kafka.
+✅ Uso de Prisma como ORM para la gestión de la base de datos.
+✅ Autenticación mediante JWT para garantizar seguridad y trazabilidad.
+✅ Documentación completa del proyecto.
+✅ Pruebas unitarias para la lógica del negocio.
+
+
 
