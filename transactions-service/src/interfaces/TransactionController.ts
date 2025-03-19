@@ -10,9 +10,12 @@ export class TransactionController {
         this.transactionService = new TransactionService(transactionRepository); 
     }
 
-    async createTransaction(req: Request, res: Response, next: NextFunction): Promise<void> {
+    createTransaction = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const transaction = await this.transactionService.createTransaction(req.body);
+            
+            const userId = (req as any).user.id;
+
+            const transaction = await this.transactionService.createTransaction(req.body, userId);
 
             res.status(201).json(transaction);
         } catch (error) {
@@ -20,7 +23,7 @@ export class TransactionController {
         }
     }
 
-    async getTransactionById(req: Request<{ id: string }>, res: Response, next: NextFunction): Promise<void> {
+    getTransactionById = async (req: Request<{ id: string }>, res: Response, next: NextFunction): Promise<void> => {
         try {
             // ID Opcional
             const { id } = req.query; 

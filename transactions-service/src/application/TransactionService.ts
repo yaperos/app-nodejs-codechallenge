@@ -11,9 +11,13 @@ export class TransactionService {
     /* 
     * Crear transacción
     */
-    async createTransaction(transactionData: any): Promise<Transaction> {
+    async createTransaction(transactionData: any, userId: string): Promise<Transaction> {
+        const enrichedTransactionData = {
+            ...transactionData,
+            userId
+        };
         // *1. Genera Transaction*
-        const transaction = this.buildTransaction(transactionData);
+        const transaction = this.buildTransaction(enrichedTransactionData);
 
         // *2. Valida un monto valido (Valor positivo)*
         this.validateTransaction(transaction);
@@ -41,7 +45,8 @@ export class TransactionService {
             transactionData.tranferTypeId,
             transactionData.value,
             status,
-            transactionData.createdAt
+            transactionData.createdAt,
+            transactionData.userId
         );
     }
 
@@ -68,7 +73,8 @@ export class TransactionService {
             transactionData.tranferTypeId,
             transactionData.value,
             this.mapStatusIdToStatus(transactionData.statusId),
-            transactionData.createdAt
+            transactionData.createdAt,
+            transactionData.userId
         );
     }
 
@@ -81,7 +87,8 @@ export class TransactionService {
             data.tranferTypeId,
             data.value,
             this.mapStatusIdToStatus(data.statusId),
-            data.createdAt
+            data.createdAt,
+            data.userId
         ));
     }
 

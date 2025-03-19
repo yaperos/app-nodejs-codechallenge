@@ -7,7 +7,8 @@ export class Transaction {
         public readonly tranferTypeId: number,
         public readonly value: number,
         public status: 'pending' | 'approved' | 'rejected',
-        public readonly createdAt: Date = new Date()
+        public readonly createdAt: Date = new Date(),
+        public readonly userId: string 
     ) {}
 
     // Lógica de negocio: validar el monto de la transacción

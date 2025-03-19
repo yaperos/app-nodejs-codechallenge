@@ -13,24 +13,25 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-      "@prisma/client": "^6.5.0",
-      "dotenv": "^16.4.7",
-      "express": "^4.21.2",
-      "kafka-node": "^5.0.0",
-      "prisma": "^6.5.0",
-      "ts-node": "^10.9.2",
-      "typescript": "^5.8.2",
-      "winston": "^3.17.0",
-      "winston-daily-rotate-file": "^5.0.0",
-      "zod": "^3.24.2"
+        "@prisma/client": "^6.5.0",
+        "@types/jsonwebtoken": "^9.0.9",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "jsonwebtoken": "^9.0.2",
+        "kafka-node": "^5.0.0",
+        "prisma": "^6.5.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.2",
+        "winston": "^3.17.0",
+        "winston-daily-rotate-file": "^5.0.0",
+        "zod": "^3.24.2"
     },
     "devDependencies": {
-      "@types/express": "^5.0.0",
-      "@types/jest": "^29.5.14",
-      "jest": "^29.7.0",
-      "nodemon": "^3.1.9",
-      "supertest": "^7.0.0",
-      "ts-jest": "^29.2.6"
+        "@types/express": "^5.0.0",
+        "@types/jest": "^29.5.14",
+        "jest": "^29.7.0",
+        "nodemon": "^3.1.9",
+        "supertest": "^7.0.0",
+        "ts-jest": "^29.2.6"
     }
-  }
-  
+}

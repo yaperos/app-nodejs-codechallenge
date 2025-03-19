@@ -12,7 +12,13 @@ datasource db {
   provider = "postgresql"
   url = env("DATABASE_URL")
 }
-
+model User {
+  id            String         @id @default(uuid())
+  username       String         @unique
+  password       String
+  createdAt      DateTime       @default(now())
+  transactions   Transaction[]
+}
 model Transaction {
   id                      String   @id @default(uuid())
   accountExternalIdDebit  String
@@ -22,8 +28,11 @@ model Transaction {
   transactionStatus       TransactionStatus @relation(fields: [statusId], references: [id])
   statusId                Int
   createdAt               DateTime @default(now())
-}
 
+  // Relación con el usuario
+  userId                  String
+  user                    User      @relation(fields: [userId], references: [id])
+}
 model TransactionStatus {
   id    Int    @id @default(autoincrement())
   name  String

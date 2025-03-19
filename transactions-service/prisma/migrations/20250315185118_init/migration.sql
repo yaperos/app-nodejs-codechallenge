@@ -22,6 +22,9 @@ CREATE TABLE "TransactionStatus" (
 -- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_statusId_fkey" FOREIGN KEY ("statusId") REFERENCES "TransactionStatus"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+-- Inserta usuario por defecto
+INSERT INTO "User" (id, username, password, createdAt) VALUES ('1', 'admin', 'admin', NOW());
+
 -- Inserta TransactionStatus por defecto
 INSERT INTO "TransactionStatus" (id, name) VALUES (1, 'pending') ON CONFLICT (id) DO NOTHING;
 INSERT INTO "TransactionStatus" (id, name) VALUES (2, 'approved') ON CONFLICT (id) DO NOTHING;

@@ -31,14 +31,13 @@ export const CreateTransactionDTO = z.object({
         .positive("El monto de la transacción debe ser mayor que cero")
 });
 
-export const GetTransactionDTO = z.object({
-    id: z.string({
-        required_error: "ID es obligatorio",
-        invalid_type_error: "ID debe ser una cadena de texto"
-        })
-        .min(1, "El ID es obligatorio")
-        .regex(/^\S+$/, "El ID no puede contener espacios")
-        .refine(value => value !== undefined, {
-            message: "El ID es obligatorio"
-        }),
-});
+export const LoginUserDTO = z.object ({
+    username: z.string()
+      .min(1, "El username es obligatorio")
+      .regex(/^\S+$/, "El username no puede contener espacios"),
+      password: z.string()
+      .min(8, "La contraseña debe tener al menos 8 caracteres")
+      .regex(/[A-Z]/, "La contraseña debe contener al menos una mayúscula")
+      .regex(/\d/, "La contraseña debe contener al menos un número")
+      .regex(/[\W_]/, "La contraseña debe contener al menos un carácter especial")
+  });

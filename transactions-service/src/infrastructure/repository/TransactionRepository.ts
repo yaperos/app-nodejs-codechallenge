@@ -12,7 +12,8 @@ export class TransactionRepository implements ITransactionRepository {
                 tranferTypeId: transaction.tranferTypeId,
                 value: transaction.value,
                 statusId: transaction.status === 'pending' ? 1 : transaction.status === 'approved' ? 2 : 3,
-                createdAt: transaction.createdAt
+                createdAt: transaction.createdAt,
+                userId: transaction.userId
             }
         });
     }

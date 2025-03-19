@@ -44,6 +44,16 @@ class RateLimitError extends AppError {
     super(message, 429); 
   }
 }
+class UnauthorizedError  extends AppError {
+    constructor(message = "JWT => Usuario no autorizado") {
+      super(message, 401);
+    }
+  }
+  class InvalidTokenError  extends AppError {
+    constructor(message = "JWT => Token no válido") {
+      super(message, 403);
+    }
+  }
 
 // Middleware de manejo de errores global
 const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
@@ -63,5 +73,7 @@ export {
   BadRequestError,
   DatabaseError,
   RateLimitError,
+  UnauthorizedError,
+  InvalidTokenError,
   errorHandler 
 };
