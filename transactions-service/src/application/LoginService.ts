@@ -28,14 +28,17 @@ export class LoginService {
     }
 
     private async validateUser(username: string) {
-        try {
-            const existingUser = await this.loginRepository.findOnlyByUsername(username);
-            if (!existingUser) throw new NotFoundError(`USR => El usuario ${username} no existe en la DB`);    
+        const existingUser = await this.loginRepository.findOnlyByUsername(username);
+        if (!existingUser) throw new NotFoundError(`USR => El usuario ${username} no existe en la DB`);    
     
-            return existingUser;
-        } catch (error) {
-            throw new DatabaseError(`Error al obtener el usuario desde la DB: ${error}`);
-        }
+        return existingUser;
+    }
+
+    public async validateUserById(userId: string) {
+        const existingUser = await this.loginRepository.findById(userId);
+        if (!existingUser) throw new NotFoundError(`USR => El usuario ${userId} no existe en la DB`);    
+    
+        return existingUser;
     }
 
     private validatePassword(storedPassword: string, providedPassword: string): void {

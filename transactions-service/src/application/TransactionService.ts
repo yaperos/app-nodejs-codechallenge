@@ -1,37 +1,52 @@
 import { Transaction } from '../domain/Transaction';
 import { ITransactionRepository } from '../domain/ITransactionRepository';
 import { publishTransactionCreated } from '../infrastructure/kafka/TransactionProducer';
-import { DatabaseError } from '../infrastructure/middlewares/errorMiddleware';
+import { DatabaseError, AppError } from '../infrastructure/middlewares/errorMiddleware';
 import { createLogger } from '../infrastructure/logging/LogConfig';
+import { LoginService } from './LoginService'
 
 const LogService = createLogger('TRX');
 export class TransactionService {
-    constructor(private transactionRepository: ITransactionRepository) {}
+    private loginService = new LoginService();
 
+    constructor(private transactionRepository: ITransactionRepository) {}
+    
     /* 
     * Crear transacción
     */
     async createTransaction(transactionData: any, userId: string): Promise<Transaction> {
-        const enrichedTransactionData = {
-            ...transactionData,
-            userId
-        };
-        // *1. Genera Transaction*
-        const transaction = this.buildTransaction(enrichedTransactionData);
+        try {
 
-        // *2. Valida un monto valido (Valor positivo)*
-        this.validateTransaction(transaction);
+            // *1. Valida que userId del usuario Logueado exista*
+            await this.loginService.validateUserById(userId);
 
-        // *3. Guarda en DB*
-        const createdTransactionData = await this.saveTransaction(transaction);
+            // *2. Mapea TransactionData*
+            const enrichedTransactionData = {
+                ...transactionData,
+                userId
+            };        
 
-        // *4. Mapea la data del repositorio a la entidad del dominio*
-        const createdTransaction = this.mapToTransaction(createdTransactionData);
+            // *3. Genera Transaction*
+            const transaction = this.buildTransaction(enrichedTransactionData);
 
-        // *5. Pública topic de Transacción generada*
-        await this.publishEvent(createdTransaction);
+            // *4. Valida un monto valido (Valor positivo)*
+            this.validateTransaction(transaction);
 
-        return createdTransaction;
+            // *5. Guarda en DB*
+            const createdTransactionData = await this.saveTransaction(transaction);
+
+            // *6. Mapea la data del repositorio a la entidad del dominio*
+            const createdTransaction = this.mapToTransaction(createdTransactionData);
+
+            // *7. Pública topic de Transacción generada*
+            await this.publishEvent(createdTransaction);
+
+            return createdTransaction;
+        } catch (error) {
+            LogService.warn(`No se logró crear la transacción: ${error}`)
+            throw error; 
+        }
+
     }
 
     // Construcción del objeto de dominio
@@ -174,6 +189,7 @@ export class TransactionService {
             return this.mapToTransaction(updatedTransactionData);   
         } catch (error) {
             LogService.warn(`No se logró actualizar el estado by Consumer: ${error}`)
+            throw error; 
         }
         
     }

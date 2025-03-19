@@ -44,6 +44,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - KAFKA_BROKER=kafka:29092
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/yape_db
+      - JWT_SECRET=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
     depends_on:
       kafka:
         condition: service_healthy
