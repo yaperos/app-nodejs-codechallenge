@@ -1,12 +1,27 @@
 version: "3.7"
 services:
-  postgres:
+  postgres-command:
     image: postgres:14
     ports:
       - "5432:5432"
     environment:
+      - POSTGRES_DB=transaction_command_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_command_data:/var/lib/postgresql/data
+
+  postgres-query:
+    image: postgres:14
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=transaction_query_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_query_data:/var/lib/postgresql/data
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +38,87 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+  #Gateway
+  api-gateway:
+    build:
+      context: ./api_gateway-main
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./api_gateway-main:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - kafka
+      - postgres-command
+      - postgres-query
+      - ms-transaction-qr
+      - ms-transaction-cm
+      - ms-anti-fraud
+    environment:
+      - CLIENT_GATEWAY_PORT=3000
+      - KAFKA_BROKER=kafka:29092
+
+  #Transaction QR
+  ms-transaction-qr:
+    build:
+      context: ./ms_bk-ux-transaction-qr
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./ms_bk-ux-transaction-qr:/app
+      - /app/node_modules
+    depends_on:
+      - kafka
+      - postgres-query
+    command: npm run start:dev
+    environment:
+      - PORT=3001
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-query:5432/transaction_query_db?schema=public
+      - KAFKA_BROKER=kafka:29092
+
+  #Transaction CM
+  ms-transaction-cm:
+    build:
+      context: ./ms_bk-ux-transaction-cm
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./ms_bk-ux-transaction-cm:/app
+      - /app/node_modules
+    depends_on:
+      - kafka
+      - postgres-query
+      - postgres-command
+    command: npm run start:dev
+    environment:
+      - PORT=3002
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-command:5432/transaction_command_db?schema=public
+      - KAFKA_BROKER=kafka:29092
+
+  #Anti-fraud-ms
+  ms-anti-fraud:
+    build:
+      context: ./ms_bk-ng-anti_fraud
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./ms_bk-ng-anti_fraud/src:/app
+    depends_on:
+      - kafka
+      - ms-transaction-cm
+    command: npm run start:dev
+    environment:
+      - PORT=3003
+      - KAFKA_BROKER=kafka:29092
+
+volumes:
+  postgres_command_data:
+  postgres_query_data:
