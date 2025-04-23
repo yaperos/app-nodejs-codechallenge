@@ -80,3 +80,6 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
+
+kafka-console-consumer --bootstrap-server kafka:9092 --topic txmng.public.transactions --from-beginning --max-messages 10

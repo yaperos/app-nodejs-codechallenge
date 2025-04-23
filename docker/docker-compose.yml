@@ -1,0 +1,151 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    env_file:
+      - ../postgres/.env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-transactions}
+    command: postgres -c wal_level=logical -c max_replication_slots=4 -c max_wal_senders=4
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  redis:
+    image: redis:7-alpine
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: kafka_broker
+    depends_on:
+      - zookeeper
+    ports:
+      # Exposes the internal Kafka port to the host machine
+      - "9092:9092"
+      # Port for external 
+      # Ensure KAFKA_ADVERTISED_LISTENERS uses the correct hostname/IP
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # Listeners: 'INTERNAL' for communication within docker-compose, 'EXTERNAL' for host access
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:29092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0 # Speeds up consumer group initialization for dev
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    # volumes:
+      # - kafka_data:/var/lib/kafka/data
+  
+  kafka-connect:
+    image: debezium/connect:2.5
+    container_name: kafka_connect
+    restart: always
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - "8083:8083"
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_REST_ADVERTISED_HOST_NAME: localhost # Host access to Connect API
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: kafka-connect-group
+      CONNECT_CONFIG_STORAGE_TOPIC: _connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: _connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: _connect-status
+      CONFIG_STORAGE_TOPIC: _connect-configs
+      OFFSET_STORAGE_TOPIC: _connect-offsets
+      STATUS_STORAGE_TOPIC: _connect-status
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_JSON_KEY_CONVERTER_SCHEMAS_ENABLE: 'false'
+      CONNECT_JSON_VALUE_CONVERTER_SCHEMAS_ENABLE: 'false'
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  transaction_service:
+    build:
+      context: ../transaction_service
+      dockerfile: Dockerfile 
+    image: transaction_service_docker
+    container_name: transaction_service
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    ports:
+      - "${TRANSACTION_SERVICE_PORT:-3000}:${TRANSACTION_SERVICE_PORT:-3000}"
+    env_file:
+      - ../transaction_service/.env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
+      REDIS_URL: redis://redis:${REDIS_PORT:-6379}
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CLIENT_ID: transaction-service
+      KAFKA_CONSUMER_GROUP_ID: transaction-processor-group
+  
+  antifraud_service:
+    build:
+      context: ../antifraud_service
+      dockerfile: Dockerfile 
+    image: antifraud_service_docker
+    container_name: antifraud_service
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    ports:
+      - "${ANTIFRAUD_SERVICE_PORT:-3001}:${ANTIFRAUD_SERVICE_PORT:-3001}"
+    env_file:
+      - ../antifraud_service/.env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
+      REDIS_URL: redis://redis:${REDIS_PORT:-6379}
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CLIENT_ID: antifraud-service
+      KAFKA_CONSUMER_GROUP_ID: antifraud-processor-group
+
+volumes:
+  postgres_data:
+  redis_data:
+  # kafka_data:

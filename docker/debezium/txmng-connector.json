@@ -1,0 +1,30 @@
+{
+  "name": "txmng-postgres-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "plugin.name": "pgoutput",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "user",
+    "database.password": "password",
+    "database.dbname": "transactions",
+    "database.server.name": "txmng",
+    "table.include.list": "public.transactions",
+    "topic.prefix": "txmng",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "slot.name": "debezium_txmng_slot",
+    "publication.name": "debezium_txmng_pub",
+    "publication.autocreate.mode": "filtered",
+    "decimal.handling.mode": "double",
+    "tombstones.on.delete": "false",
+    "transforms": "unwrap,filterOp",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.add.fields": "op,table,source.ts_ms",
+    "transforms.unwrap.delete.handling.mode": "none",
+    "transforms.filterOp.type": "org.apache.kafka.connect.transforms.Filter",
+    "transforms.filterOp.predicate": "op == 'c'"
+  }
+}
