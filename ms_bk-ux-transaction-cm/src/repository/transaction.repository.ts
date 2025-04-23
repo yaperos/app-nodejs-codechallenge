@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { STATUS_TRANSACTION } from 'src/config/constants';
-import { PrismaService } from 'src/config/db-client';
+import { TRANSACTION_STATUS } from 'src/config/constants/transaction';
+import { PrismaService } from 'src/config/db/db-client';
 import { TransactionCreate } from 'src/types/transaction.types';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class TransactionRepository {
         accountCredit: transaction.accountExternalIdCredit,
         value: transaction.value,
         transferTypeId: transaction.transferTypeId,
-        statusId: STATUS_TRANSACTION.PENDING,
+        statusId: TRANSACTION_STATUS.PENDING,
       },
       include: {
         transferType: true,

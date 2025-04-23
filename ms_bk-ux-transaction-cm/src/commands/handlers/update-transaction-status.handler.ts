@@ -1,26 +1,34 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateTransactionStatusCommand } from '../impl/update-transaction-status.command';
 import { TransactionRepository } from 'src/repository/transaction.repository';
-import { EventStoreService } from 'src/events/event-store';
+import { EventStore } from 'src/events/event-store';
+import { EVENTS_TYPES } from 'src/config/constants/topics';
+import { Logger } from '@nestjs/common';
 
 @CommandHandler(UpdateTransactionStatusCommand)
 export class UpdateTransactionStatusHandler
   implements ICommandHandler<UpdateTransactionStatusCommand>
 {
+  private readonly logger = new Logger(UpdateTransactionStatusCommand.name);
+
   constructor(
     private readonly transactionRepository: TransactionRepository,
-    private readonly eventStore: EventStoreService,
+    private readonly eventStore: EventStore,
   ) {}
 
   async execute(command: UpdateTransactionStatusCommand) {
-    console.log({ command });
+    this.logger.log({ command });
 
     const response = await this.transactionRepository.updateTransactionStatus(
       command.transactionId,
       command.statusId,
     );
 
-    this.eventStore.appendEvent('transaction.updated', response.id, response);
+    this.eventStore.appendEvent(
+      EVENTS_TYPES.TRANSACTION_UPDATED,
+      response.id,
+      response,
+    );
 
     return response;
   }

@@ -1,4 +1,4 @@
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller, HttpStatus, Logger } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import {
   EventPattern,
@@ -6,18 +6,23 @@ import {
   Payload,
   RpcException,
 } from '@nestjs/microservices';
+import { TOPICS, TRANSACTION_EVENTS } from 'src/config/contants/topics';
+import { TransactionCreatedRequestDto } from 'src/dtos/transaction-created-request.dto';
 import { TransactionDetailRequestDto } from 'src/dtos/transaction-detail-request.dto';
+import { TransactionEventsRequestDto } from 'src/dtos/transaction-events-request.dto';
 import { GetTransactionQuery } from 'src/queries/impl/get-transaction.query';
 import { AppService } from 'src/services/app.service';
 
 @Controller()
 export class AppController {
+  private readonly logger = new Logger(AppController.name);
+
   constructor(
     private readonly queryBus: QueryBus,
     private readonly appService: AppService,
   ) {}
 
-  @MessagePattern('transaction.detail')
+  @MessagePattern(TOPICS.TRANSACTION_DETAIL)
   async getTransaction(@Payload() data: TransactionDetailRequestDto) {
     try {
       const response = await this.queryBus.execute(
@@ -33,19 +38,24 @@ export class AppController {
     }
   }
 
-  @EventPattern('transaction.events')
-  async handle(@Payload() data: any) {
+  @EventPattern(TOPICS.TRANSACTION_EVENTS)
+  async handle(@Payload() data: TransactionEventsRequestDto) {
     const { eventType, aggregateId, payload } = data;
-    console.log({ eventType, aggregateId, payload });
+
+    this.logger.log({ data });
+
     switch (eventType) {
-      case 'transaction.created':
+      case TRANSACTION_EVENTS.CREATED:
         await this.appService.createTransaction({
           id: aggregateId,
           ...payload,
-        });
+        } as TransactionCreatedRequestDto);
         break;
-      case 'transaction.updated':
-        await this.appService.updateTransaction(aggregateId, payload);
+      case TRANSACTION_EVENTS.UPDATED:
+        await this.appService.updateTransaction(
+          aggregateId,
+          payload as TransactionCreatedRequestDto,
+        );
         break;
     }
   }

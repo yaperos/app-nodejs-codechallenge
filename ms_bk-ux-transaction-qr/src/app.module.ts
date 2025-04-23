@@ -3,11 +3,12 @@ import { AppController } from './controllers/app.controller';
 import { AppService } from './services/app.service';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TransactionRepository } from './repositories/transaction.repository';
-import { PrismaService } from './config/db-client';
+import { PrismaService } from './config/db/db-client';
 import { GetTransactionHandler } from './queries/handlers/get-transaction.handler';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { EVENT_STORE } from './config/services';
+import { EVENT_STORE } from './config/contants/services';
 import { envs } from './config/envs';
+import { TRANSPORT_GROUP_ID } from './config/contants/topics';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { envs } from './config/envs';
             brokers: [envs.KAFKA_BROKER],
           },
           consumer: {
-            groupId: 'ms-transaction-events',
+            groupId: TRANSPORT_GROUP_ID,
           },
         },
       },

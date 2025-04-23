@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { EVENT_STORE } from 'src/config/services';
+import { EVENT_STORE } from 'src/config/constants/services';
 
 @Injectable()
-export class EventStoreService {
+export class EventStore {
   constructor(@Inject(EVENT_STORE) private readonly kafka: ClientKafka) {}
 
   appendEvent(eventType: string, aggregateId: string, payload: any) {

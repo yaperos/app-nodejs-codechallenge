@@ -1,6 +1,9 @@
+import { IsNumber, IsString } from 'class-validator';
+
 export class UpdateTransactionStatusRequestDto {
-  constructor(
-    public readonly transactionStatusId: number,
-    public readonly externalId: string,
-  ) {}
+  @IsNumber()
+  status: number;
+
+  @IsString()
+  id: string;
 }

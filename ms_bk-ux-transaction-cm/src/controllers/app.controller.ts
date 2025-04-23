@@ -3,13 +3,15 @@ import { CommandBus } from '@nestjs/cqrs';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateTransactionCommand } from 'src/commands/impl/create-transaction.command';
 import { UpdateTransactionStatusCommand } from 'src/commands/impl/update-transaction-status.command';
+import { EVENTS_TYPES, TOPICS } from 'src/config/constants/topics';
 import { CreateTransactionRequestDto } from 'src/dtos/create-transaction-request.dto';
+import { TransactionEventsRequestDto } from 'src/dtos/transaction-events-request.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @MessagePattern('transaction.create')
+  @MessagePattern(TOPICS.TRANSACTION_CREATED)
   createTransaction(
     @Payload('data') createTransactionRequestDto: CreateTransactionRequestDto,
   ) {
@@ -25,16 +27,17 @@ export class AppController {
     return response;
   }
 
-  @EventPattern('transaction.events')
-  async onTransactionEvent(data) {
-    console.log({ data });
-
+  @EventPattern(TOPICS.TRANSACTION_EVENTS)
+  async onTransactionEvent(@Payload() data: TransactionEventsRequestDto) {
     const { eventType, payload } = data;
 
     switch (eventType) {
-      case 'transaction.validated':
+      case EVENTS_TYPES.TRANSACTION_VALIDATED:
         await this.commandBus.execute(
-          new UpdateTransactionStatusCommand(payload.id, payload.status),
+          new UpdateTransactionStatusCommand(
+            payload.id as string,
+            payload.status as number,
+          ),
         );
 
         break;

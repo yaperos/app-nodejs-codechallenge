@@ -1,10 +1,11 @@
+import { EventStore } from 'src/events/event-store';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateTransactionCommand } from '../impl/create-transaction.command';
 import { TransactionRepository } from 'src/repository/transaction.repository';
-import { EventStoreService } from 'src/events/event-store';
 import { TransactionModel } from 'src/models/transaction.model';
 import { TransactionTypeModel } from 'src/models/transaction-type.model';
 import { TransactionStatusModel } from 'src/models/transaction-status.model';
+import { EVENTS_TYPES } from 'src/config/constants/topics';
 
 @CommandHandler(CreateTransactionCommand)
 export class CreateTransactionHandler
@@ -12,7 +13,7 @@ export class CreateTransactionHandler
 {
   constructor(
     private readonly transactionRepository: TransactionRepository,
-    private readonly eventStore: EventStoreService,
+    private readonly eventStore: EventStore,
   ) {}
 
   async execute(command: CreateTransactionCommand) {
@@ -40,7 +41,7 @@ export class CreateTransactionHandler
     );
 
     this.eventStore.appendEvent(
-      'transaction.created',
+      EVENTS_TYPES.TRANSACTION_CREATED,
       response.id,
       transaction,
     );

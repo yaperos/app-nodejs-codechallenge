@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { TransactionCreatedRequestDto } from 'src/dtos/transaction-created-request.dto';
 import { TransactionRepository } from 'src/repositories/transaction.repository';
 
 @Injectable()
 export class AppService {
+  private readonly logger = new Logger(AppService.name);
+
   constructor(private readonly transactionRepository: TransactionRepository) {}
 
-  async createTransaction(data: any) {
+  async createTransaction(data: TransactionCreatedRequestDto) {
     const transaction = await this.transactionRepository.create({
       externalId: data.id,
       typeName: data.transferType.name,
@@ -17,7 +20,7 @@ export class AppService {
     return transaction;
   }
 
-  async updateTransaction(id: string, data: any) {
+  async updateTransaction(id: string, data: TransactionCreatedRequestDto) {
     const transaction = await this.transactionRepository.findByExternalId(id);
 
     if (!transaction) {
@@ -33,6 +36,6 @@ export class AppService {
       updatedAt: data.updatedAt,
     });
 
-    console.log('Transaction updated', response);
+    this.logger.log('Transaction updated', response);
   }
 }

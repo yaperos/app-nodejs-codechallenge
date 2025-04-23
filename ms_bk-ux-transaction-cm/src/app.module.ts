@@ -1,15 +1,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
-import { PrismaService } from './config/db-client';
 import { TransactionRepository } from './repository/transaction.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateTransactionHandler } from './commands/handlers/create-transaction.handler';
-import { EVENT_STORE } from './config/services';
+import { EVENT_STORE } from './config/constants/services';
 import { UpdateTransactionStatusHandler } from './commands/handlers/update-transaction-status.handler';
-import { EventStoreService } from './events/event-store';
+import { EventStore } from './events/event-store';
 import { envs } from './config/envs';
-import { SeedService } from './db/seed.service';
+import { SeedService } from './services/seed.service';
+import { PrismaService } from './config/db/db-client';
+import {
+  EVENT_STORE_CLIENT_ID,
+  EVENT_STORE_GROUP_ID,
+} from './config/constants/event-store';
 
 @Module({
   imports: [
@@ -20,11 +24,11 @@ import { SeedService } from './db/seed.service';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'ms-transaction-cm-consumer',
+            clientId: EVENT_STORE_CLIENT_ID,
             brokers: [envs.KAFKA_BROKER],
           },
           consumer: {
-            groupId: 'ms-transaction-events',
+            groupId: EVENT_STORE_GROUP_ID,
           },
         },
       },
@@ -36,7 +40,7 @@ import { SeedService } from './db/seed.service';
     TransactionRepository,
     CreateTransactionHandler,
     UpdateTransactionStatusHandler,
-    EventStoreService,
+    EventStore,
     SeedService,
   ],
 })
