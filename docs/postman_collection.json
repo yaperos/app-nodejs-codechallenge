@@ -1,0 +1,81 @@
+{
+  "info": {
+    "name": "Transaction Service API",
+    "description": "API para el servicio de transacciones financieras",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/transactions",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["transactions"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"accountExternalIdDebit\": \"123e4567-e89b-12d3-a456-426614174004\",\n    \"accountExternalIdCredit\": \"123e4567-e89b-12d3-a456-426614174006\",\n    \"tranferTypeId\": 1,\n    \"value\": 1500\n}"
+            },
+            "description": "Crear una nueva transacción"
+          }
+        },
+        {
+          "name": "Get Transaction",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/transactions/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["transactions", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "transaction_id",
+                  "description": "ID de la transacción"
+                }
+              ]
+            },
+            "description": "Obtener una transacción por ID"
+          }
+        },
+        {
+          "name": "Get All Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/transactions",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["transactions"]
+            },
+            "description": "Obtener todas las transacciones"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}

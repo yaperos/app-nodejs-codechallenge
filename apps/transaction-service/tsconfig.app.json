@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "../../dist/apps/transaction-service",
+    "baseUrl": "./src",
+    "paths": {
+      "@transactions/*": ["transactions/*"],
+      "@kafka-events/*": ["kafka-events/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}

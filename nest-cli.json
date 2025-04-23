@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "monorepo": true,
+  "root": "apps/transaction-service",
+  "sourceRoot": "apps/transaction-service/src",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/transaction-service/tsconfig.app.json"
+  },
+  "projects": {
+    "transaction-service": {
+      "type": "application",
+      "root": "apps/transaction-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/transaction-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transaction-service/tsconfig.app.json"
+      }
+    },
+    "anti-fraud-service": {
+      "type": "application",
+      "root": "apps/anti-fraud-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud-service/tsconfig.app.json"
+      }
+    }
+  }
+}
