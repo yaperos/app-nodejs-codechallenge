@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { TRANSACTION_STATUS } from 'src/config/transaction';
+import { Injectable, Logger } from '@nestjs/common';
+import { TRANSACTION_STATUS } from 'src/config/contants/transaction';
 import { EventStoreService } from 'src/events/event-store';
 
 @Injectable()
 export class AppService {
+  private readonly logger = new Logger(AppService.name);
+
   constructor(private readonly eventStore: EventStoreService) {}
 
   validateTransaction(transaction: any) {
-    console.log({ transaction });
-    console.log('Validating transaction:', transaction);
+    this.logger.log('Validating transaction:', transaction);
 
     const { value } = transaction;
 
@@ -18,7 +19,7 @@ export class AppService {
       status = TRANSACTION_STATUS.REJECTED;
     }
 
-    this.eventStore.appendEvent('transaction.validated', transaction.id, {
+    this.eventStore.onTransactionValidatedEvent({
       id: transaction.id,
       status,
     });

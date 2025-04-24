@@ -107,10 +107,11 @@ services:
     build:
       context: ./ms_bk-ng-anti_fraud
       dockerfile: Dockerfile
+      target: development
     ports:
       - "3003:3003"
     volumes:
-      - ./ms_bk-ng-anti_fraud/src:/app
+      - ./ms_bk-ng-anti_fraud:/app
     depends_on:
       - kafka
       - ms-transaction-cm

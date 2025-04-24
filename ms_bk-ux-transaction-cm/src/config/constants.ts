@@ -1,5 +1,0 @@
-export enum STATUS_TRANSACTION {
-  PENDING = 1,
-  APPROVED = 2,
-  REJECTED = 3,
-}

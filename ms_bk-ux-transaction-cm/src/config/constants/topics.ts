@@ -1,6 +1,7 @@
 export const TOPICS = {
   TRANSACTION_CREATED: 'transaction.create',
   TRANSACTION_EVENTS: 'transaction.events',
+  TRANSACTION_VALIDATED: 'transaction.validated',
 };
 
 export const EVENTS_TYPES = {

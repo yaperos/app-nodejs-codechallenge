@@ -9,15 +9,19 @@ export class AppService {
   constructor(private readonly transactionRepository: TransactionRepository) {}
 
   async createTransaction(data: TransactionCreatedRequestDto) {
-    const transaction = await this.transactionRepository.create({
-      externalId: data.id,
-      typeName: data.transferType.name,
-      statusName: data.status.name,
-      value: data.value,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-    });
-    return transaction;
+    try {
+      const transaction = await this.transactionRepository.create({
+        externalId: data.id,
+        typeName: data.transferType.name,
+        statusName: data.status.name,
+        value: data.value,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+      });
+      return transaction;
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 
   async updateTransaction(id: string, data: TransactionCreatedRequestDto) {

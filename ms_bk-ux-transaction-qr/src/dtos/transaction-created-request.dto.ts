@@ -1,6 +1,22 @@
 import { IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 
+export class TransferTypeDto {
+  @IsNumber()
+  id: number;
+
+  @IsString()
+  name: string;
+}
+
+export class StatusDto {
+  @IsNumber()
+  id: number;
+
+  @IsString()
+  name: string;
+}
+
 export class TransactionCreatedRequestDto {
   @IsString()
   id: string;
@@ -19,20 +35,4 @@ export class TransactionCreatedRequestDto {
 
   @IsString()
   updatedAt: string;
-}
-
-export class TransferTypeDto {
-  @IsNumber()
-  id: number;
-
-  @IsString()
-  name: string;
-}
-
-export class StatusDto {
-  @IsNumber()
-  id: number;
-
-  @IsString()
-  name: string;
 }

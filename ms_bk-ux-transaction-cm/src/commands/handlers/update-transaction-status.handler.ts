@@ -2,7 +2,6 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateTransactionStatusCommand } from '../impl/update-transaction-status.command';
 import { TransactionRepository } from 'src/repository/transaction.repository';
 import { EventStore } from 'src/events/event-store';
-import { EVENTS_TYPES } from 'src/config/constants/topics';
 import { Logger } from '@nestjs/common';
 
 @CommandHandler(UpdateTransactionStatusCommand)
@@ -24,11 +23,7 @@ export class UpdateTransactionStatusHandler
       command.statusId,
     );
 
-    this.eventStore.appendEvent(
-      EVENTS_TYPES.TRANSACTION_UPDATED,
-      response.id,
-      response,
-    );
+    this.eventStore.onTransactionUpdatedEvent(response);
 
     return response;
   }

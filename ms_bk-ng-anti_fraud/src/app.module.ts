@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
 import { AppService } from './services/app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { EVENT_STORE } from './config/services';
+import { EVENT_STORE } from './config/contants/services';
 import { EventStoreService } from './events/event-store';
 import { envs } from './config/envs';
 

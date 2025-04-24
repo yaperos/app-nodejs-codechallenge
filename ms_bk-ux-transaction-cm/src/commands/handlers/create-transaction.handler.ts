@@ -5,7 +5,6 @@ import { TransactionRepository } from 'src/repository/transaction.repository';
 import { TransactionModel } from 'src/models/transaction.model';
 import { TransactionTypeModel } from 'src/models/transaction-type.model';
 import { TransactionStatusModel } from 'src/models/transaction-status.model';
-import { EVENTS_TYPES } from 'src/config/constants/topics';
 
 @CommandHandler(CreateTransactionCommand)
 export class CreateTransactionHandler
@@ -40,11 +39,7 @@ export class CreateTransactionHandler
       new TransactionStatusModel(response.status.id, response.status.name),
     );
 
-    this.eventStore.appendEvent(
-      EVENTS_TYPES.TRANSACTION_CREATED,
-      response.id,
-      transaction,
-    );
+    this.eventStore.onTransactionCreatedEvent(transaction);
 
     return {
       transactionExternalId: response.id,

@@ -9,7 +9,6 @@ import {
 import { TOPICS, TRANSACTION_EVENTS } from 'src/config/contants/topics';
 import { TransactionCreatedRequestDto } from 'src/dtos/transaction-created-request.dto';
 import { TransactionDetailRequestDto } from 'src/dtos/transaction-detail-request.dto';
-import { TransactionEventsRequestDto } from 'src/dtos/transaction-events-request.dto';
 import { GetTransactionQuery } from 'src/queries/impl/get-transaction.query';
 import { AppService } from 'src/services/app.service';
 
@@ -38,25 +37,15 @@ export class AppController {
     }
   }
 
-  @EventPattern(TOPICS.TRANSACTION_EVENTS)
-  async handle(@Payload() data: TransactionEventsRequestDto) {
-    const { eventType, aggregateId, payload } = data;
+  @EventPattern(TRANSACTION_EVENTS.CREATED)
+  async handleCreated(@Payload('data') data: TransactionCreatedRequestDto) {
+    this.logger.log('Transaction created', data);
+    await this.appService.createTransaction(data);
+  }
 
-    this.logger.log({ data });
-
-    switch (eventType) {
-      case TRANSACTION_EVENTS.CREATED:
-        await this.appService.createTransaction({
-          id: aggregateId,
-          ...payload,
-        } as TransactionCreatedRequestDto);
-        break;
-      case TRANSACTION_EVENTS.UPDATED:
-        await this.appService.updateTransaction(
-          aggregateId,
-          payload as TransactionCreatedRequestDto,
-        );
-        break;
-    }
+  @EventPattern(TRANSACTION_EVENTS.UPDATED)
+  async handleUpdated(@Payload('data') data: TransactionCreatedRequestDto) {
+    this.logger.log('Transaction updated', data);
+    await this.appService.updateTransaction(data.id, data);
   }
 }

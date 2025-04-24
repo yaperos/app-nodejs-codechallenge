@@ -1,11 +1,8 @@
-FROM node:21-alpine3.19
+FROM node:22-alpine AS development
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package.json ./
-COPY package-lock.json ./
-
-
+COPY package*.json ./
 RUN npm install
 
 COPY . .
