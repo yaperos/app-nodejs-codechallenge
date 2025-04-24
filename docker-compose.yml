@@ -112,6 +112,7 @@ services:
       - "3003:3003"
     volumes:
       - ./ms_bk-ng-anti_fraud:/app
+      - /app/node_modules
     depends_on:
       - kafka
       - ms-transaction-cm
