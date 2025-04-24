@@ -80,6 +80,12 @@ cd app-nodejs-codechallenge
 
 #### 2.1. Modo desarrollo
 
+Si se esta ejecutando el proyecto en modo producción, es necesario detener los servicios antes de iniciar el modo desarrollo.
+
+```bash
+  docker-compose stop
+```
+
 Para iniciar el proyecto en modo desarrollo, ejecuta el siguiente comando:
 
 ```bash
@@ -107,6 +113,12 @@ En caso de que se requiera iniciar los servicios individualmente, puede utilizar
 ```
 
 #### 2.2. Modo producción
+
+Si se esta ejecutando el proyecto en modo desarrollo, es necesario detener los servicios antes de iniciar el modo producción.
+
+```bash
+  docker-compose stop
+```
 
 Para iniciar el proyecto en modo producción, ejecuta el siguiente comando:
 
