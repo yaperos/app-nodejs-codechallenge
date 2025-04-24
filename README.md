@@ -72,8 +72,14 @@ El sistema consta de varios microservicios que colaboran para crear, validar y a
 Clona este repositorio en tu máquina local:
 
 ```bash
-git clone https://github.com/username/app-nodejs-codechallenge.git
+git clone https://github.com/{username}/app-nodejs-codechallenge.git
 cd app-nodejs-codechallenge
+```
+
+Moverse de la rama `main` a la rama `feat/transaction`
+
+```bash
+git checkout feat/transaction
 ```
 
 ### 2. Iniciar el proyecto

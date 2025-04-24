@@ -30,6 +30,7 @@ services:
       - "3000:3000"
     volumes:
       - ./api_gateway-main:/app
+      - /app/node_modules
     environment:
       CLIENT_GATEWAY_PORT: 3000
       KAFKA_BROKER: kafka:29092
@@ -43,6 +44,7 @@ services:
       - "3001:3001"
     volumes:
       - ./ms_bk-ux-transaction-qr:/app
+      - /app/node_modules
     command: npm run start:dev
     environment:
       PORT: 3001
@@ -58,6 +60,7 @@ services:
       - "3002:3002"
     volumes:
       - ./ms_bk-ux-transaction-cm:/app
+      - /app/node_modules
     command: npm run start:dev
     environment:
       PORT: 3002
@@ -73,6 +76,7 @@ services:
       - "3003:3003"
     volumes:
       - ./ms_bk-ng-anti_fraud:/app
+      - /app/node_modules
     command: npm run start:dev
     environment:
       PORT: 3003
