@@ -4,7 +4,6 @@
 
 This project was developed following **hexagonal architecture** principles, ensuring a clean separation of concerns to enhance maintainability, scalability, and testing. Solid practices around clean code, OWASP-based security, and modular design were implemented.
 
----
 
 ## ⚙️ Tech Stack
 
@@ -17,7 +16,14 @@ This project was developed following **hexagonal architecture** principles, ensu
 - **OWASP Practices**: Input validation, access control, and code injection prevention were considered.
 - **Agile Collaboration (optional)**: Modular structure enables teamwork and feature-based development.
 
----
+## 🔄 Optimization for High Concurrency
+
+The system was designed to handle high-volume scenarios where multiple writes and reads occur simultaneously over the same transaction data. The following optimizations were implemented:
+
+- **Redis Caching**: `Redis` is used to cache transaction query results, significantly reducing database load. Cache entries are automatically invalidated when a transaction status is updated.
+- **Database Indexing**: Indexes were applied to key fields (`id`, `accountExternalIdDebit`, `accountExternalIdCredit`, `transactionStatusId`) to speed up read operations.
+- **Concurrency Control via Kafka**: The antifraud validation logic was decoupled from the transaction creation flow using Kafka. This allows asynchronous processing and horizontal scalability.
+
 
 ## 📁 Project Structure
 
@@ -42,6 +48,8 @@ src/
 │       │   │   │   ├── create-transaction.input.ts
 │       │   │   │   ├── transaction.output.ts
 │       │   │   │   └── transaction.mapper.ts
+│       │   │   ├── filters/
+│       │   │   │   └── graphql-exception.filter.ts
 │       │   │   └── transaction.resolver.ts
 │       │   ├── kafka/
 │       │   │   ├── antifraud.consumer.ts
@@ -176,11 +184,12 @@ The API will be available at: `http://localhost:3000/graphql`
 
 ---
 
-## 🚀 Docker Deployment
+## 🐳 Docker Deployment (Portainer)
 
-To build and deploy:
+This project can also be deployed and managed easily using [**Portainer**](https://www.portainer.io/), a friendly web interface for Docker.
 
-```bash
-docker build -t yape-codechallenge .
-docker run -p 3000:3000 yape-codechallenge
-```
+### Successful Deployment Example
+
+Below is a screenshot of the Portainer environment showing all required services (`PostgreSQL`, `Kafka`, `Zookeeper`, `Redis`, and the `API`) running successfully:
+
+![Portainer Containers Running](./images/portainer-containers.png)

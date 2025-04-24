@@ -1,19 +1,32 @@
 version: "3.7"
+
 services:
   postgres:
     image: postgres:14
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_USER=sandbox_user
       - POSTGRES_PASSWORD=sandbox_password
+    ports:
+      - "5432:5432"
+    networks:
+      - yape-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sandbox_user"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - yape-network
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on:
+      - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -22,10 +35,38 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - "9092:9092"
+    networks:
+      - yape-network
+
   redis:
     image: redis:7
     container_name: redis
     ports:
-      - '6379:6379'
+      - "6379:6379"
+    networks:
+      - yape-network
 
+  app:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      redis:
+        condition: service_started
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://sandbox_user:sandbox_password@postgres:5432/sandbox_db?schema=yape_challenge"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_TTL_SECONDS: 60
+      KAFKA_BROKER: kafka:29092
+      ANTIFRAUD_REJECT_LIMIT: 1000
+    networks:
+      - yape-network
+
+networks:
+  yape-network:

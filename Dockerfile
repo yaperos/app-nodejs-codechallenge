@@ -1,5 +1,5 @@
 # Usa una imagen oficial de Node.js como base
-FROM node:18-alpine
+FROM node:22-alpine
 
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
@@ -20,4 +20,5 @@ RUN npm run build
 EXPOSE 3000
 
 # Comando por defecto al levantar el contenedor
-CMD ["node", "dist/main"]
+CMD ["node", "-r", "module-alias/register", "dist/src/main.js"]
+

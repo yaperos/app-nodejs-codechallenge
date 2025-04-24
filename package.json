@@ -21,10 +21,14 @@
     "graphql": "^16.10.0",
     "ioredis": "^5.6.1",
     "kafkajs": "^2.2.4",
+    "module-alias": "^2.2.3",
     "prisma": "^6.6.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0"
+  },
+  "_moduleAliases": {
+    "@": "dist/src"
   }
 }
