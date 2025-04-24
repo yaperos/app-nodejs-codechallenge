@@ -1,59 +1,108 @@
-# Yape Code Challenge :rocket:
+# Proyecto: Microservicio de Transacciones Financieras con Validación Antifraude y Kafka
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Descripción
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Este proyecto implementa un sistema de transacciones financieras distribuidas con validación antifraude, utilizando el patrón **CQRS, EVENT SOURCING** con Kafka como un event store (por motivos de la prueba). La implementación de estos patrones es por el requerimiento de que pueda estar optimizado para un tráfico alto. Los microservicios están desacoplados y se comunican mediante **Kafka** para garantizar la consistencia de las transacciones y el manejo eficiente de errores.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+El sistema consta de varios microservicios que colaboran para crear, validar y actualizar transacciones:
 
-# Problem
+- **ms-transaction-cm**: Crea las transacciones y actualiza el estado en la BD de escritura.
+- **ms-anti-fraud**: Valida las transacciones (rechaza aquellas con un valor mayor a 1000).
+- **ms-transaction-qr**: Permite consultar el estado de las transacciones.
+- **api-gateway**: Permite tener un único punto de acceso y derivar las solicitudes a los microservicios correspondientes.
+- **Kafka**: Sistema de mensajería para la comunicación entre los microservicios.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+Este sistema sigue el patrón de **Saga**, donde cada microservicio responde a los eventos emitidos por otros microservicios.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+## Tecnologías Usadas
 
-Every transaction with a value greater than 1000 should be rejected.
+- **NestJS**: Framework de Node.js para la construcción de microservicios.
+- **Kafka**: Sistema de mensajería para la comunicación asíncrona entre microservicios.
+- **PostgreSQL**: Base de datos para almacenar las transacciones.
+- **Prisma**: ORM para interactuar con la base de datos en NestJS.
+- **Docker**: Para crear un entorno de desarrollo aislado.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+## Arquitectura Big Picture
+
+![App Screenshot](https://i.ibb.co/YT28dB4G/Diagrama-sin-ti-tulo.jpg)
+
+1. La aplicación solicita al backend crear una nueva transacción, el API-GATEWAY redirige al microservicio correspondiente.
+2. Mediante Kafka, el API-GATEWAY redigire la petición al microservicio ms-transaction-cm.
+3. El microservicio crea la transacción en la base de datos "transaction_command_db" y devuelve al usuario la resuesta con los datos de la transacción,
+4. 4.1. 4.2. A su vez, el microservicio ms-transaction-cm emite un evento asíncrono de la creación de la transacción al microservicio ms-transaction-qr y ms-anti-fraud, para que puedan actualizar la base de datos de lectura "transaction_query_db" y validar la transacción correspondientemente.
+5. El microservicio ms-anti-fraud luego de valida asincronamente la transacción, notifica al ms-transaction-cm el resultado.
+6. El microservicio ms-transaction-cm actualiza la base de datos "transaction_command_db" y a su vez emite un evento asíncrono al ms-transaction-qr para que actualize los datos de la transacción.
+7. Con el ID de la transacción el app podrá obtener los datos de la transacción en cualquier momento.
+
+## Requisitos
+
+1. **Docker** y **Docker Compose** para la configuración de los microservicios, Kafka y las bases de datos.
+
+## Variables de entorno
+
+| Proyecto          | Variable                               | Descripción                     | Valor por defecto                                                                         |
+| ----------------- | -------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------- |
+| postgres-command  | POSTGRES_DB                            | Nombre de la base de datos      | transaction_command_db                                                                    |
+| postgres-command  | POSTGRES_USER                          | Usuario de la base de datos     | postgres                                                                                  |
+| postgres-command  | POSTGRES_PASSWORD                      | Contraseña de la base de datos  | postgres                                                                                  |
+| postgres-query    | POSTGRES_DB                            | Nombre de la base de datos      | transaction_query_db                                                                      |
+| postgres-query    | POSTGRES_USER                          | Usuario de la base de datos     | postgres                                                                                  |
+| postgres-query    | POSTGRES_PASSWORD                      | Contraseña de la base de datos  | postgres                                                                                  |
+| zookeeper         | ZOOKEEPER_CLIENT_PORT                  | Puerto del zookeeper            | 2181                                                                                      |
+| kafka             | KAFKA_ZOOKEEPER_CONNECT                | Conexión al zookeeper           | zookeeper:2181                                                                            |
+| kafka             | KAFKA_ADVERTISED_LISTENERS             | Lista de listeners              | PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092                                   |
+| kafka             | KAFKA_LISTENER_SECURITY_PROTOCOL_MAP   | Protocolo de seguridad          | PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT                                              |
+| kafka             | KAFKA_BROKER_ID                        | ID del broker                   | 1                                                                                         |
+| kafka             | KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR | Factor de replicación del topic | 1                                                                                         |
+| kafka             | KAFKA_JMX_PORT                         | Puerto JMX                      | 9991                                                                                      |
+| api-gateway       | CLIENT_GATEWAY_PORT                    | Puerto del gateway              | 3000                                                                                      |
+| api-gateway       | KAFKA_BROKER                           | Broker de kafka                 | kafka:29092                                                                               |
+| ms-transaction-qr | PORT                                   | Puerto del microservicio        | 3001                                                                                      |
+| ms-transaction-qr | DATABASE_URL                           | URL de la base de datos         | postgresql://postgres:postgres@postgres-query:5432/transaction_query_db?schema=public     |
+| ms-transaction-qr | KAFKA_BROKER                           | Broker de kafka                 | kafka:29092                                                                               |
+| ms-transaction-cm | PORT                                   | Puerto del microservicio        | 3002                                                                                      |
+| ms-transaction-cm | DATABASE_URL                           | URL de la base de datos         | postgresql://postgres:postgres@postgres-command:5432/transaction_command_db?schema=public |
+| ms-transaction-cm | KAFKA_BROKER                           | Broker de kafka                 | kafka:29092                                                                               |
+| ms-anti-fraud     | PORT                                   | Puerto del microservicio        | 3003                                                                                      |
+| ms-anti-fraud     | KAFKA_BROKER                           | Broker de kafka                 | kafka:29092                                                                               |
+
+## Instalación y Configuración
+
+### 1. Clonar el Repositorio
+
+Clona este repositorio en tu máquina local:
+
+```bash
+git clone https://github.com/username/app-nodejs-codechallenge.git
+cd app-nodejs-codechallenge
 ```
 
-# Tech Stack
+### 2. Iniciar el docker-compose
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```bash
+docker-compose up -d
+```
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+## Ejecución
 
-You must have two resources:
+### 1. Crear una nueva transacción
 
-1. Resource to create a transaction that must containt:
+#### Request
+
+```bash
+URL POST http://localhost:3000/transaction/create
+```
 
 ```json
 {
   "accountExternalIdDebit": "Guid",
   "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
+  "transferTypeId": 1,
   "value": 120
 }
 ```
 
-2. Resource to retrieve a transaction
+#### Response
 
 ```json
 {
@@ -69,14 +118,30 @@ You must have two resources:
 }
 ```
 
-## Optional
+### 2. Consultar la transacción
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+#### Request
 
-You can use Graphql;
+```bash
+URL GET http://localhost:3000/transaction/detail/{Guid}
+```
 
-# Send us your challenge
+#### Response
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionType": {
+    "name": ""
+  },
+  "transactionStatus": {
+    "name": ""
+  },
+  "value": 120,
+  "createdAt": "Date"
+}
+```
 
-If you have any questions, please let us know.
+## Conclusión
+
+Este proyecto es un ejemplo de cómo se pueden implementar microservicios distribuidos con Kafka y CQRS para una aplicación de transacciones financieras. El código fuente está disponible en el repositorio de GitHub y se puede clonar y ejecutar en su propio equipo.
