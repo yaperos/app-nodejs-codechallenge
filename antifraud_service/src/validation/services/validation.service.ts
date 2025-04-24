@@ -2,9 +2,6 @@ import { Injectable, Inject, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { ANTIFRAUD_KAFKA_CLIENT, KAFKA_TOPIC_TRANSACTION_VALIDATED } from 'src/shared/constants';
-import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
-import { GetTransactionDto } from '../dto/get-transaction.dto';
-import { hasRequiredKeys } from 'src/utils/type-guards';
 
 @Injectable()
 export class ValidationService {
@@ -17,8 +14,6 @@ export class ValidationService {
     private readonly kafkaClient: ClientKafka,
     private readonly configService: ConfigService,
 
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache
   ) {
     this.threshold = this.configService.get<number>('app.antifraudThreshold', 1000);
     this.transactionValidatedTopic = KAFKA_TOPIC_TRANSACTION_VALIDATED
@@ -45,55 +40,6 @@ export class ValidationService {
       this.logger.error(`Failed to publish validation result for ${transactionExternalId}: ${error.message}`, error.stack);
       // Retry / Error handling
       throw error;
-    }
-  }
-
-  async updateCache(
-    transactionExternalId: string,
-    partialData: Partial<GetTransactionDto>,
-  ): Promise<void> {
-    const cacheKey = `PK-${transactionExternalId}`;
-    this.logger.debug(`Attempting cache update for ${cacheKey} with data: ${JSON.stringify(partialData)}`);
-
-    try {
-      const existingCachedData = await this.cacheManager.get<GetTransactionDto>(cacheKey);
-
-      if (!existingCachedData) {
-        this.logger.log(`No existing cache data found for ${transactionExternalId}, creating new entry.`);
-        await this.cacheManager.set(cacheKey, partialData, 3600);
-        return;
-      }
-
-      this.logger.log(`Existing cache data found for ${transactionExternalId}, merging with new data.`);
-
-      let mergedData: GetTransactionDto
-
-      const isFullData = hasRequiredKeys<GetTransactionDto>(partialData, GetTransactionDto.arguments)
-
-      if (isFullData) {
-        this.logger.log(`Full data received for ${transactionExternalId}, updating cache.`);
-
-        mergedData = {
-          ...existingCachedData,
-          ...partialData,
-        }
-
-        await this.cacheManager.set(cacheKey, mergedData, 3600);
-        return;
-      }
-
-      this.logger.log(`Partial data received for ${transactionExternalId}, updating cache.`);
-
-      mergedData = {
-        ...existingCachedData,
-        ...partialData,
-      }
-
-      await this.cacheManager.set(cacheKey, mergedData, 3600);
-      this.logger.log(`Cache updated for ${transactionExternalId}`);
-
-    } catch (error) {
-      this.logger.error(`Failed to update cache for ${transactionExternalId}: ${error.message}`, error.stack);
     }
   }
 

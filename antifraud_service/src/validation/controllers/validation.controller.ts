@@ -1,9 +1,8 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload, Ctx, KafkaContext } from '@nestjs/microservices';
 import { ValidationService } from '../services/validation.service';
-import { KAFKA_TOPIC_TRANSACTION_CREATED } from 'src/shared/constants';
+import { KAFKA_TOPIC_TRANSACTION_DEBEZIUM } from 'src/shared/constants';
 import { TransactionStatus } from '../enums/transaction-status.enum';
-import { GetTransactionDto } from '../dto/get-transaction.dto';
 
 export interface DebeziumTransactionPayload {
   id: string;
@@ -25,8 +24,8 @@ export class ValidationController {
 
   constructor(private readonly validationService: ValidationService) { }
 
-  @MessagePattern(KAFKA_TOPIC_TRANSACTION_CREATED || 'transactions.public.transactions')
-  async handleTransactionCreated(
+  @MessagePattern(KAFKA_TOPIC_TRANSACTION_DEBEZIUM || 'transactions.public.transactions')
+  async handleTransactionDebezium(
     @Payload() message: any,
     @Ctx() context: KafkaContext,
   ): Promise<void> {
@@ -40,7 +39,7 @@ export class ValidationController {
 
     this.logger.debug(`[<span class="math-inline">\{topic\}/</span>{partition}/${offset}] ANTIFRAUD_SERVICE received Debezium event`);
     try {
-      const event: DebeziumTransactionPayload = JSON.parse(JSON.stringify(message));
+      const event: DebeziumTransactionPayload = message
       console.log(event, typeof event)
 
       // Only process create events ('c') with valid 'after' data
@@ -49,17 +48,15 @@ export class ValidationController {
         return;
       }
 
-      const transactionId = event.transactionExternalId;
+      const transactionExternalId = event.transactionExternalId;
       const value = Number(event.value);
 
       if (isNaN(value)) {
-        throw new Error(`Invalid value received for ${transactionId}: ${event.value}`);
+        throw new Error(`Invalid value received for ${transactionExternalId}: ${event.value}`);
       }
 
-      this.logger.log(`Processing transaction for validation: ${transactionId}, Value: ${value}`);
-      await this.validationService.validateAndPublish(transactionId, value);
-
-      await this.validationService.updateCache(transactionId, GetTransactionDto.fromEntity(event));
+      this.logger.log(`Processing transaction for validation: ${transactionExternalId}, Value: ${value}`);
+      await this.validationService.validateAndPublish(transactionExternalId, value);
 
       await context.getConsumer().commitOffsets([{ topic, partition, offset: (Number(offset) + 1).toString() }]);
 

@@ -37,7 +37,7 @@ async function bootstrap() {
         },
         // subscribe: {
         // Optional: Explicitly define topics here if not using @MessagePattern discovery
-        // topics: [KAFKA_TOPIC_TRANSACTION_CREATED],
+        // topics: [KAFKA_TOPIC_TRANSACTION_DEBEZIUM],
         // fromBeginning: false, // Start consuming from the latest offset
         // }
       },

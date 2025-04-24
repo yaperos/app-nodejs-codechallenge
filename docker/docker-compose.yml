@@ -4,7 +4,7 @@ services:
     container_name: postgres_db
     restart: always
     env_file:
-      - ../postgres/.env
+      - .env
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
@@ -103,7 +103,7 @@ services:
 
   transaction_service:
     build:
-      context: ../transaction_service
+      context: ./../transaction_service
       dockerfile: Dockerfile 
     image: transaction_service_docker
     container_name: transaction_service
@@ -115,7 +115,7 @@ services:
     ports:
       - "${TRANSACTION_SERVICE_PORT:-3000}:${TRANSACTION_SERVICE_PORT:-3000}"
     env_file:
-      - ../transaction_service/.env
+      - ./../transaction_service/.env
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
       REDIS_URL: redis://redis:${REDIS_PORT:-6379}
@@ -125,7 +125,7 @@ services:
   
   antifraud_service:
     build:
-      context: ../antifraud_service
+      context: ./../antifraud_service
       dockerfile: Dockerfile 
     image: antifraud_service_docker
     container_name: antifraud_service
@@ -137,7 +137,7 @@ services:
     ports:
       - "${ANTIFRAUD_SERVICE_PORT:-3001}:${ANTIFRAUD_SERVICE_PORT:-3001}"
     env_file:
-      - ../antifraud_service/.env
+      - ./../antifraud_service/.env
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
       REDIS_URL: redis://redis:${REDIS_PORT:-6379}

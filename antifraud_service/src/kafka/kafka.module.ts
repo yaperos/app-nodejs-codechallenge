@@ -2,7 +2,7 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ANTIFRAUD_KAFKA_CLIENT } from '../shared/constants';
+import { ANTIFRAUD_KAFKA_CLIENT, KAFKA_TOPIC_TRANSACTION_DEBEZIUM } from '../shared/constants';
 
 @Module({
   imports: [
@@ -17,20 +17,25 @@ import { ANTIFRAUD_KAFKA_CLIENT } from '../shared/constants';
             client: {
               clientId: configService.get<string>('app.kafka.clientId') || 'default-client-id',
               brokers: [configService.get<string>('app.kafka.broker') || 'kafka:9092'],
-              // Add any other Kafka client options here (SSL, SASL, etc.)
             },
             consumer: {
-              // Use a group ID specific to this service's role
-              groupId: configService.get<string>('app.kafka.consumerGroupId') || 'default-consumer-group',
+              allowAutoTopicCreation: true,
+              groupId: configService.get<string>('app.kafka.consumerGroupId') || 'antifraud-debezium-consumer-group',
             },
             producer: {
-              allowAutoTopicCreation: true, // Convenient for dev, maybe disable in prod
+              allowAutoTopicCreation: true,
+            },
+            subscribe: {
+              fromBeginning: false,
+              topics: [
+                KAFKA_TOPIC_TRANSACTION_DEBEZIUM
+              ]
             }
           },
         }),
       },
     ]),
   ],
-  exports: [ClientsModule], // Export so other modules can inject the Kafka client
+  exports: [ClientsModule],
 })
 export class KafkaModule { }

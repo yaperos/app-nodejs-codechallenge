@@ -7,7 +7,6 @@ import { TransactionStatus } from '../enums/transaction-status.enum';
 import { TransactionResponseDto } from '../dto/create-transaction-response.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
-import { hasRequiredKeys } from '../utils/type-guards';
 
 @Injectable()
 export class TransactionService {
@@ -102,20 +101,6 @@ export class TransactionService {
       this.logger.log(`Existing cache data found for ${transactionExternalId}, merging with new data.`);
 
       let mergedData: TransactionResponseDto
-
-      const isFullData = hasRequiredKeys<TransactionResponseDto>(partialData, TransactionResponseDto.arguments)
-
-      if (isFullData) {
-        this.logger.log(`Full data received for ${transactionExternalId}, updating cache.`);
-
-        mergedData = {
-          ...existingCachedData,
-          ...partialData,
-        }
-
-        await this.cacheManager.set(cacheKey, mergedData, 3600);
-        return;
-      }
 
       this.logger.log(`Partial data received for ${transactionExternalId}, updating cache.`);
 

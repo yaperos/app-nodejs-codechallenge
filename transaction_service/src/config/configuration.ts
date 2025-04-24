@@ -15,7 +15,7 @@ export default registerAs('app', () => {
     kafka: {
       broker: process.env.KAFKA_BROKER || 'localhost:9092',
       clientId: process.env.KAFKA_CLIENT_ID || 'transaction-service',
-      consumerGroupId: process.env.KAFKA_CONSUMER_GROUP_ID || 'transaction-processor-group',
+      consumerGroupId: process.env.KAFKA_CONSUMER_GROUP_ID || 'transaction-service-group',
     },
   }
   Logger.log('Loaded configuration', env)
