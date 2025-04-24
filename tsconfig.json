@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["*"]
+        },
+        "target": "ES2020",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "rootDir": ".",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "include": ["src", "prisma"],
+    "exclude": ["node_modules"]
+}
+  
