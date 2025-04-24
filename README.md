@@ -100,6 +100,9 @@ Para iniciar el proyecto en modo desarrollo, ejecuta el siguiente comando:
 
 Este comando iniciará todos los servicios necesarios para ejecutar el proyecto en modo desarrollo.
 
+> **❗ Nota importante**: En caso de que el servidor de kafka se demore en iniciar, es posible que no se conecten los microservicios. Para solucionar ello se ejecutará el comando `docker-compose stop` y luego el comando previo para iniciar el proyecto en desarrollo de nuevo.
+> Tambien se podría reiniciar los servicios individualmente desde el docker desktop.
+
 En caso de que se requiera iniciar los servicios individualmente, puede utilizar los siguientes comandos:
 
 ```bash
