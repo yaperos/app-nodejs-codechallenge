@@ -7,7 +7,10 @@
     "generate": "prisma generate",
     "push": "prisma db push",
     "seed": "tsc && node dist/prisma/seed.js",
-    "db:setup": "npm run generate && npm run push && npm run seed"
+    "db:setup": "npm run generate && npm run push && npm run seed",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
   },
   "dependencies": {
     "@apollo/server": "^4.12.0",
@@ -25,6 +28,10 @@
     "prisma": "^6.6.0"
   },
   "devDependencies": {
+    "@nestjs/testing": "^11.1.0",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0"
   },

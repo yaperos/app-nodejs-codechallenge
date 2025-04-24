@@ -5,6 +5,10 @@ import { CreateTransactionUseCase } from '@/modules/transaction/application/use-
 import { FindTransactionUseCase } from '@/modules/transaction/application/use-cases/find-transaction.use-case';
 import { toTransactionOutput } from '@/modules/transaction/infrastructure/graphql/dto/transaction.mapper';
 
+/**
+ * GraphQL resolver for handling transaction-related operations.
+ * Exposes mutation and query endpoints for creating and retrieving transactions.
+ */
 @Resolver(() => TransactionOutput)
 export class TransactionResolver {
   constructor(
@@ -12,6 +16,12 @@ export class TransactionResolver {
     private readonly findTransaction: FindTransactionUseCase,
   ) {}
 
+  /**
+   * Mutation to create a new transaction.
+   *
+   * @param input - Input payload with transaction details.
+   * @returns The newly created transaction formatted as TransactionOutput.
+   */
   @Mutation(() => TransactionOutput)
   async createTransactionMutation(
     @Args('input') input: CreateTransactionInput,
@@ -20,6 +30,12 @@ export class TransactionResolver {
     return toTransactionOutput(transactionWithRelations);
   }
 
+  /**
+   * Query to retrieve a transaction by its external ID.
+   *
+   * @param id - The external transaction ID.
+   * @returns The corresponding transaction formatted as TransactionOutput.
+   */
   @Query(() => TransactionOutput)
   async getTransaction(@Args('id') id: string): Promise<TransactionOutput> {
     const transactionWithRelations = await this.findTransaction.execute(id);

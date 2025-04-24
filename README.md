@@ -19,20 +19,20 @@ This project was developed following **hexagonal architecture** principles, ensu
 - **Node.js**  
   Developed entirely using the NestJS framework for robust, scalable architecture.
 
-- **GraphQL & REST Support**  
-  API layer implemented with GraphQL, with potential for REST extensions.
-
 - **Design Patterns & Clean Code**  
   Follows Hexagonal Architecture, SOLID principles, and uses DTOs for structured data flow.
+
+- **GraphQL & REST Support**  
+  API layer implemented with GraphQL, with potential for REST extensions.
 
 - **Kafka Integration**  
   Implements both Producer and Consumer logic for asynchronous antifraud processing.
 
-- **Kafka UI**  
-  Web-based interface to visualize topics, messages, and consumers for Kafka.
-
 - **Redis Caching**  
   Used to cache transaction queries and reduce database load, with auto-invalidation on updates.
+
+- **Kafka UI**  
+  Web-based interface to visualize topics, messages, and consumers for Kafka.
 
 - **Secure and Maintainable Code**  
   Input validation with `class-validator`, comprehensive error handling, and clear separation of concerns.
@@ -43,6 +43,11 @@ This project was developed following **hexagonal architecture** principles, ensu
 - **Basic Authentication (API)**  
   All GraphQL requests are protected using **Basic Auth**. This is simple and secure for demo purposes, but could be upgraded to **OAuth2 or JWT** for production environments.
 
+- **Unit Testing**  
+  Unit tests were added for core use cases, resolvers, and services, enabling logic validation and regression detection.
+
+- **Code Documentation**  
+  The codebase is documented with clear comments and structure to improve readability and maintainability.
 
 ## 🚀 Improvements for High Concurrency and Performance
 
@@ -96,6 +101,16 @@ src/
 │       └── transaction.module.ts
 ├── app.module.ts
 ├── main.ts
+tests/
+├── transaction/
+│   ├── create-transaction.use-case.spec.ts
+│   ├── find-transaction.use-case.spec.ts
+│   ├── transaction.resolver.spec.ts
+│   └── update-transaction.use-case.spec.ts
+prisma/
+├── schema.prisma
+├── seed.ts
+
 ```
 
 ## 🛠 Developer Notes

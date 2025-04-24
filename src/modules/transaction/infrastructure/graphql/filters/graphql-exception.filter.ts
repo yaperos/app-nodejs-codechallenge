@@ -7,6 +7,15 @@ import {
   import { GqlArgumentsHost } from '@nestjs/graphql';
   import { GraphQLError } from 'graphql';
   
+  /**
+   * Custom exception filter for handling HTTP exceptions in GraphQL context.
+   *
+   * This filter catches all exceptions of type `HttpException` thrown inside GraphQL
+   * resolvers and formats them into proper `GraphQLError` objects with useful metadata.
+   *
+   * It ensures consistency in error responses and allows exposing error codes,
+   * messages, and additional context to the GraphQL client.
+   */
   @Catch(HttpException)
   export class GraphQLExceptionFilter implements ExceptionFilter {
     catch(exception: HttpException, host: ArgumentsHost) {
