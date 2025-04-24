@@ -27,6 +27,6 @@ export class TransactionController {
   ): Promise<TransactionResponseDto> {
     this.logger.log(`Received request to get transaction by external ID: ${transactionExternalId}`);
 
-    return this.transactionService.findTransactionById(transactionExternalId);
+    return this.transactionService.getTransactionFromCache(transactionExternalId);
   }
 }

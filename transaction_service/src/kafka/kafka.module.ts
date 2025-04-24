@@ -1,14 +1,13 @@
-// src/kafka/kafka.module.ts
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TRANSACTION_SERVICE_KAFKA_CLIENT } from '../shared/constants'; // Create this constants file
+import { TRANSACTION_SERVICE_KAFKA_CLIENT } from '../shared/constants';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
-        name: TRANSACTION_SERVICE_KAFKA_CLIENT, // Injection token
+        name: TRANSACTION_SERVICE_KAFKA_CLIENT,
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: (configService: ConfigService) => ({
@@ -17,14 +16,9 @@ import { TRANSACTION_SERVICE_KAFKA_CLIENT } from '../shared/constants'; // Creat
             client: {
               clientId: configService.get<string>('app.kafka.clientId') || 'default-client-id',
               brokers: [configService.get<string>('app.kafka.broker') || 'localhost:9092'],
-              // Add any other Kafka client options here (SSL, SASL, etc.)
             },
             consumer: {
-              // Use a group ID specific to this service's role
               groupId: configService.get<string>('app.kafka.consumerGroupId') || 'default-consumer-group',
-            },
-            producer: {
-              allowAutoTopicCreation: true, // Convenient for dev, maybe disable in prod
             }
           },
         }),

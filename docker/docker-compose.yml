@@ -66,6 +66,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0 # Speeds up consumer group initialization for dev
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     # volumes:
       # - kafka_data:/var/lib/kafka/data
   
@@ -99,7 +100,6 @@ services:
       CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_AUTO_CREATE_TOPICS_ENABLE: "true"
 
   transaction_service:
     build:
@@ -142,8 +142,8 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
       REDIS_URL: redis://redis:${REDIS_PORT:-6379}
       KAFKA_BROKER: kafka:9092
-      KAFKA_CLIENT_ID: antifraud-service
-      KAFKA_CONSUMER_GROUP_ID: antifraud-processor-group
+      KAFKA_CLIENT_ID: antifraud-service-client-id
+      KAFKA_CONSUMER_GROUP_ID: antifraud-debezium-consumer-group
 
 volumes:
   postgres_data:

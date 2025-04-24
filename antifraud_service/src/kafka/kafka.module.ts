@@ -8,7 +8,7 @@ import { ANTIFRAUD_KAFKA_CLIENT } from '../shared/constants';
   imports: [
     ClientsModule.registerAsync([
       {
-        name: ANTIFRAUD_KAFKA_CLIENT, // Injection token
+        name: ANTIFRAUD_KAFKA_CLIENT,
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: (configService: ConfigService) => ({

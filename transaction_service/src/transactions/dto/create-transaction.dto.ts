@@ -1,4 +1,3 @@
-// src/transaction/dto/create-transaction.dto.ts
 import { IsNotEmpty, IsNumber, IsUUID, Min, IsInt } from 'class-validator';
 import { Type } from 'class-transformer';
 

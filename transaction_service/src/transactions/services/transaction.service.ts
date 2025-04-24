@@ -1,42 +1,25 @@
-import { Injectable, Inject, Logger, NotFoundException, InternalServerErrorException, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, Inject, Logger, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ClientKafka } from '@nestjs/microservices';
 import { Transaction } from '../entities/transaction.entity';
 import { CreateTransactionDto } from '../dto/create-transaction.dto';
 import { TransactionStatus } from '../enums/transaction-status.enum';
-import { TRANSACTION_SERVICE_KAFKA_CLIENT, KAFKA_TOPIC_TRANSACTION_CREATED } from '../../shared/constants';
 import { TransactionResponseDto } from '../dto/create-transaction-response.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
+import { hasRequiredKeys } from '../utils/type-guards';
 
 @Injectable()
-export class TransactionService implements OnModuleInit, OnModuleDestroy {
+export class TransactionService {
   private readonly logger = new Logger(TransactionService.name);
 
   constructor(
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
 
-    @Inject(TRANSACTION_SERVICE_KAFKA_CLIENT)
-    private readonly kafkaClient: ClientKafka,
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache
   ) { }
-
-  async onModuleInit() {
-    this.kafkaClient.subscribeToResponseOf(KAFKA_TOPIC_TRANSACTION_CREATED);
-
-    try {
-      await this.kafkaClient.connect();
-      this.logger.log('Kafka client connected successfully.');
-    } catch (error) {
-      this.logger.error('Failed to connect Kafka client:', error);
-    }
-  }
-
-  async onModuleDestroy() {
-    await this.kafkaClient.close();
-    this.logger.log('Kafka client disconnected.');
-  }
-
 
   async createTransaction(createDto: CreateTransactionDto): Promise<TransactionResponseDto> {
     this.logger.log(`Creating transaction: ${JSON.stringify(createDto)}`);
@@ -51,19 +34,10 @@ export class TransactionService implements OnModuleInit, OnModuleDestroy {
       const savedTransaction = await this.transactionRepository.save(transaction);
       this.logger.log(`Transaction ${savedTransaction.transactionExternalId} saved with PENDING status.`);
 
-      const eventPayload = {
-        transactionId: savedTransaction.transactionExternalId,
-        value: savedTransaction.value,
-      };
-
-      this.kafkaClient.emit(KAFKA_TOPIC_TRANSACTION_CREATED, JSON.stringify(eventPayload));
-      this.logger.log(`Event emitted to ${KAFKA_TOPIC_TRANSACTION_CREATED} for transaction ${savedTransaction.transactionExternalId}`);
-
       return TransactionResponseDto.fromEntity(savedTransaction);
 
     } catch (error) {
       this.logger.error(`Failed to create transaction or emit event: ${error.message}`, error.stack);
-      // Consider more specific error handling (e.g., db constraint errors)
       throw new InternalServerErrorException('Failed to create transaction.');
     }
   }
@@ -94,7 +68,7 @@ export class TransactionService implements OnModuleInit, OnModuleDestroy {
 
     if (transaction.status !== TransactionStatus.PENDING) {
       this.logger.warn(`Transaction ${transactionExternalId} already has status ${transaction.status}. Ignoring update to ${status}.`);
-      return transaction; // Return the existing transaction
+      return transaction;
     }
 
     transaction.status = status;
@@ -106,6 +80,76 @@ export class TransactionService implements OnModuleInit, OnModuleDestroy {
     } catch (error) {
       this.logger.error(`Failed to update status for transaction ${transactionExternalId}: ${error.message}`, error.stack);
       throw new InternalServerErrorException(`Failed to update status for transaction ${transactionExternalId}`);
+    }
+  }
+
+  async updateCache(
+    transactionExternalId: string,
+    partialData: Partial<TransactionResponseDto>
+  ): Promise<void> {
+    const cacheKey = `PK-${transactionExternalId}`;
+    this.logger.debug(`Attempting cache update for ${cacheKey} with data: ${JSON.stringify(partialData)}`);
+
+    try {
+      const existingCachedData = await this.cacheManager.get<TransactionResponseDto>(cacheKey);
+
+      if (!existingCachedData) {
+        this.logger.log(`No existing cache data found for ${transactionExternalId}, creating new entry.`);
+        await this.cacheManager.set(cacheKey, partialData, 3600);
+        return;
+      }
+
+      this.logger.log(`Existing cache data found for ${transactionExternalId}, merging with new data.`);
+
+      let mergedData: TransactionResponseDto
+
+      const isFullData = hasRequiredKeys<TransactionResponseDto>(partialData, TransactionResponseDto.arguments)
+
+      if (isFullData) {
+        this.logger.log(`Full data received for ${transactionExternalId}, updating cache.`);
+
+        mergedData = {
+          ...existingCachedData,
+          ...partialData,
+        }
+
+        await this.cacheManager.set(cacheKey, mergedData, 3600);
+        return;
+      }
+
+      this.logger.log(`Partial data received for ${transactionExternalId}, updating cache.`);
+
+      mergedData = {
+        ...existingCachedData,
+        ...partialData,
+      }
+
+      await this.cacheManager.set(cacheKey, mergedData, 3600);
+      this.logger.log(`Cache updated for ${transactionExternalId}`);
+
+    } catch (error) {
+      this.logger.error(`Failed to update cache for ${transactionExternalId}: ${error.message}`, error.stack);
+    }
+  }
+
+
+  async getTransactionFromCache(transactionExternalId: string): Promise<TransactionResponseDto> {
+    const cacheKey = `PK-${transactionExternalId}`;
+    this.logger.log(`Workspaceing transaction from Read DB (Redis Cache): ${cacheKey}`);
+    try {
+      const cachedData = await this.cacheManager.get<TransactionResponseDto>(cacheKey);
+      if (cachedData) {
+        this.logger.log(`Cache HIT for ${transactionExternalId}`);
+        return cachedData;
+      } else {
+        this.logger.log(`Cache MISS for ${transactionExternalId}`);
+
+        const response = await this.findTransactionById(transactionExternalId)
+        return response as TransactionResponseDto
+      }
+    } catch (error) {
+      this.logger.error(`Failed to read from cache for ${transactionExternalId}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Failed to access transaction data.');
     }
   }
 }

@@ -1,4 +1,3 @@
-// src/transaction/transaction.module.ts
 import { Module } from '@nestjs/common';
 import { TransactionController } from './controllers/transaction.controller';
 import { TransactionService } from './services/transaction.service';

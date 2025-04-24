@@ -17,11 +17,11 @@ done
 echo "Kafka Connect is up. Configuring Debezium connector..."
 
 curl -X POST -H "Content-Type: application/json" \
-  --data-binary "@../docker/debezium/txmng-connector.json" \
+  --data-binary "@../docker/debezium/transactions-connector.json" \
   http://localhost:8083/connectors
 
 echo "Checking connector status (wait a few seconds for initialization)..."
 sleep 10
-curl -X GET http://localhost:8083/connectors/txmng-postgres-connector/status
+curl -X GET http://localhost:8083/connectors/transactions-postgres-connector/status
 
 echo "Debezium configuration attempted."

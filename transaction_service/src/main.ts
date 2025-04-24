@@ -35,8 +35,11 @@ async function bootstrap() {
           // Add clientId specific to the consumer instance if desired
           clientId: `${configService.get<string>('app.kafka.clientId')}-consumer`,
         },
+        run: {
+          autoCommit: false,
+        },
         consumer: {
-          groupId: consumerGroupId, // Critical for consumer group behavior
+          groupId: consumerGroupId,
           // Optional: configure session timeout, heartbeat interval, etc.
           // sessionTimeout: 30000,
           // heartbeatInterval: 3000,

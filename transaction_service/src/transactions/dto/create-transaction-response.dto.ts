@@ -1,4 +1,3 @@
-// src/transaction/dto/transaction.response.dto.ts
 import { Transaction } from '../entities/transaction.entity';
 import { TransactionStatus } from '../enums/transaction-status.enum';
 
