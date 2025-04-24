@@ -4,25 +4,58 @@
 
 This project was developed following **hexagonal architecture** principles, ensuring a clean separation of concerns to enhance maintainability, scalability, and testing. Solid practices around clean code, OWASP-based security, and modular design were implemented.
 
+## 🔁 How It Works
+
+- User creates a transaction (status: `pending`)
+- Event is emitted to Kafka (`transaction_created`)
+- Antifraud microservice listens and validates:
+   - If value > 1000 → `rejected`
+   - Else → `approved`
+- Status is updated in DB and cache is invalidated
+
 
 ## ⚙️ Tech Stack
 
-- **Node.js**: Fully built using NestJS (Node.js framework).
-- **REST & GraphQL APIs**: Implemented using GraphQL with potential to extend to REST.
-- **GraphQL**: Fully functional with queries and mutations.
-- **Design Patterns & Clean Code**: Hexagonal architecture, SOLID principles, DTOs.
-- **Kafka**: Full integration with Kafka (Producer & Consumer).
-- **Secure & Clean Code**: `class-validator` validations, proper error handling, separation of responsibilities.
-- **OWASP Practices**: Input validation, access control, and code injection prevention were considered.
-- **Agile Collaboration (optional)**: Modular structure enables teamwork and feature-based development.
+- **Node.js**  
+  Developed entirely using the NestJS framework for robust, scalable architecture.
 
-## 🔄 Optimization for High Concurrency
+- **GraphQL & REST Support**  
+  API layer implemented with GraphQL, with potential for REST extensions.
+
+- **Design Patterns & Clean Code**  
+  Follows Hexagonal Architecture, SOLID principles, and uses DTOs for structured data flow.
+
+- **Kafka Integration**  
+  Implements both Producer and Consumer logic for asynchronous antifraud processing.
+
+- **Kafka UI**  
+  Web-based interface to visualize topics, messages, and consumers for Kafka.
+
+- **Redis Caching**  
+  Used to cache transaction queries and reduce database load, with auto-invalidation on updates.
+
+- **Secure and Maintainable Code**  
+  Input validation with `class-validator`, comprehensive error handling, and clear separation of concerns.
+
+- **OWASP Security Practices**  
+  Focus on preventing injection attacks, validating user input, and enforcing access control.
+
+- **Basic Authentication (API)**  
+  All GraphQL requests are protected using **Basic Auth**. This is simple and secure for demo purposes, but could be upgraded to **OAuth2 or JWT** for production environments.
+
+
+## 🚀 Improvements for High Concurrency and Performance
 
 The system was designed to handle high-volume scenarios where multiple writes and reads occur simultaneously over the same transaction data. The following optimizations were implemented:
 
-- **Redis Caching**: `Redis` is used to cache transaction query results, significantly reducing database load. Cache entries are automatically invalidated when a transaction status is updated.
-- **Database Indexing**: Indexes were applied to key fields (`id`, `accountExternalIdDebit`, `accountExternalIdCredit`, `transactionStatusId`) to speed up read operations.
-- **Concurrency Control via Kafka**: The antifraud validation logic was decoupled from the transaction creation flow using Kafka. This allows asynchronous processing and horizontal scalability.
+- **Redis Caching**  
+  Redis is used to cache transaction query results, significantly reducing database load. Cache entries are automatically invalidated when a transaction status is updated.
+
+- **Database Indexing**  
+  Indexes were applied to key fields (`id`, `accountExternalIdDebit`, `accountExternalIdCredit`, `transactionStatusId`) to speed up read operations.
+
+- **Concurrency Control via Kafka**  
+  The antifraud validation logic was decoupled from the transaction creation flow using Kafka. This allows asynchronous processing and horizontal scalability.
 
 
 ## 📁 Project Structure
@@ -65,6 +98,11 @@ src/
 ├── main.ts
 ```
 
+## 🛠 Developer Notes
+
+- `@/` path alias configured via `tsconfig-paths`
+- Prisma client compiled with Linux binary target for Docker compatibility
+- CSRF protection enabled in production mode
 ---
 
 ## 🌍 Sandbox URL
@@ -193,3 +231,16 @@ This project can also be deployed and managed easily using [**Portainer**](https
 Below is a screenshot of the Portainer environment showing all required services (`PostgreSQL`, `Kafka`, `Zookeeper`, `Redis`, and the `API`) running successfully:
 
 ![Portainer Containers Running](./images/portainer-containers.png)
+
+---
+## 📊 Kafka Visualization
+
+You can also monitor Kafka traffic via the integrated Kafka UI.
+
+🔗 **[https://app-kafkaui-codechallenge.mnkyng.com/](https://app-kafkaui-codechallenge.mnkyng.com/)**
+
+**Authentication:**
+- **Username**: `codechallenge`
+- **Password**: `codechallenge`
+
+![Kafka UI](./images/kafka-ui-dashboard.png)
