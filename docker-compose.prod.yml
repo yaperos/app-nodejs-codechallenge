@@ -1,0 +1,72 @@
+services:
+  postgres-command:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: transaction_command_prod
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_command_data:/var/lib/postgresql/data
+
+  postgres-query:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: transaction_query_prod
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_query_data:/var/lib/postgresql/data
+
+  api-gateway:
+    build:
+      context: ./api_gateway-main
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - kafka
+      - postgres-command
+      - postgres-query
+    environment:
+      CLIENT_GATEWAY_PORT: 3000
+      KAFKA_BROKER: kafka:29092
+
+  ms-transaction-qr:
+    build:
+      context: ./ms_bk-ux-transaction-qr
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3001:3001"
+    restart: always
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgres://postgres:postgres@postgres-query:5432/transaction_query_prod?schema=public
+      KAFKA_BROKER: kafka:29092
+
+  ms-transaction-cm:
+    build:
+      context: ./ms_bk-ux-transaction-cm
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3002:3002"
+    restart: always
+    environment:
+      PORT: 3002
+      DATABASE_URL: postgres://postgres:postgres@postgres-command:5432/transaction_command_prod?schema=public
+      KAFKA_BROKER: kafka:29092
+
+  ms-anti-fraud:
+    build:
+      context: ./ms_bk-ng-anti_fraud
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3003:3003"
+    restart: always
+    environment:
+      PORT: 3003
+      KAFKA_BROKER: kafka:29092

@@ -12,8 +12,6 @@ El sistema consta de varios microservicios que colaboran para crear, validar y a
 - **api-gateway**: Permite tener un único punto de acceso y derivar las solicitudes a los microservicios correspondientes.
 - **Kafka**: Sistema de mensajería para la comunicación entre los microservicios.
 
-Este sistema sigue el patrón de **Saga**, donde cada microservicio responde a los eventos emitidos por otros microservicios.
-
 ## Tecnologías Usadas
 
 - **NestJS**: Framework de Node.js para la construcción de microservicios.
@@ -66,6 +64,19 @@ Este sistema sigue el patrón de **Saga**, donde cada microservicio responde a l
 | ms-anti-fraud     | PORT                                   | Puerto del microservicio        | 3003                                                                                      |
 | ms-anti-fraud     | KAFKA_BROKER                           | Broker de kafka                 | kafka:29092                                                                               |
 
+## Lista de comandos
+
+Se hace uso de [make](https://www.gnu.org/software/make/) para automatizar las tareas de construcción y levantamiento del proyecto.
+
+| Comando             | Descripción                                             |
+| ------------------- | ------------------------------------------------------- |
+| make docker-up      | Inicia todo el proyecto en modo desarrollo.             |
+| make docker-up-prod | Inicia todo el proyecto en modo producción.             |
+| make docker-stop    | Detiene todos los servicios del proyecto.               |
+| make docker-down    | Detiene todos los servicios y elimina los contenedores. |
+| make docker-logs    | Muestra los logs de los servicios.                      |
+| make docker-ps      | Muestra la lista de servicios.                          |
+
 ## Instalación y Configuración
 
 ### 1. Clonar el Repositorio
@@ -77,11 +88,27 @@ git clone https://github.com/username/app-nodejs-codechallenge.git
 cd app-nodejs-codechallenge
 ```
 
-### 2. Iniciar el docker-compose
+### 2. Iniciar el proyecto
+
+#### 2.1. Modo desarrollo
+
+Para iniciar el proyecto en modo desarrollo, ejecuta el siguiente comando:
 
 ```bash
-docker-compose up -d
+make docker-up
 ```
+
+Este comando iniciará todos los servicios necesarios para ejecutar el proyecto en modo desarrollo.
+
+#### 2.2. Modo producción
+
+Para iniciar el proyecto en modo producción, ejecuta el siguiente comando:
+
+```bash
+make docker-up-prod
+```
+
+Este comando iniciará todos los servicios necesarios para ejecutar el proyecto en modo producción.
 
 ## Ejecución
 
@@ -90,13 +117,14 @@ docker-compose up -d
 #### Request
 
 ```bash
-URL POST http://localhost:3000/transaction/create
+URL POST
+http://localhost:3000/transaction/create
 ```
 
 ```json
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "Guid", // UUID cualquiera
+  "accountExternalIdCredit": "Guid", // UUID cualquiera
   "transferTypeId": 1,
   "value": 120
 }
@@ -122,8 +150,11 @@ URL POST http://localhost:3000/transaction/create
 
 #### Request
 
+#### Request
+
 ```bash
-URL GET http://localhost:3000/transaction/detail/{Guid}
+URL GET
+http://localhost:3000/transaction/detail/{transactionExternalId}
 ```
 
 #### Response
@@ -141,6 +172,16 @@ URL GET http://localhost:3000/transaction/detail/{Guid}
   "createdAt": "Date"
 }
 ```
+
+## Siguientes pasos
+
+- [ ] Separar los microservicios por capas, una capa canal y otra multicanal.
+- [ ] Definir los microservicios de acuerdo a su rol, ejemplo: UX, Open Insurance, Negocio, Batch, etc.
+- [ ] Implementar un Api management para la organización y seguridad de los microservicios.
+- [ ] Implementar el patron Saga para la orquestación de transacciones.
+- [ ] Para la BD de lectura, se puede utilizar Redis como base de datos.
+- [ ] Implementar la autenticación y autorización de los microservicios.
+- [ ] Implementar un sistema de alertas para la monitorización de los microservicios.
 
 ## Conclusión
 

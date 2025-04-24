@@ -1,0 +1,79 @@
+services:
+  postgres-command:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: transaction_command_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_command_data:/var/lib/postgresql/data
+
+  postgres-query:
+    image: postgres:14
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: transaction_query_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_query_data:/var/lib/postgresql/data
+
+  api-gateway:
+    build:
+      context: ./api_gateway-main
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api_gateway-main:/app
+    environment:
+      CLIENT_GATEWAY_PORT: 3000
+      KAFKA_BROKER: kafka:29092
+
+  ms-transaction-qr:
+    build:
+      context: ./ms_bk-ux-transaction-qr
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./ms_bk-ux-transaction-qr:/app
+    command: npm run start:dev
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgres://postgres:postgres@postgres-query:5432/transaction_query_dev?schema=public
+      KAFKA_BROKER: kafka:29092
+
+  ms-transaction-cm:
+    build:
+      context: ./ms_bk-ux-transaction-cm
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./ms_bk-ux-transaction-cm:/app
+    command: npm run start:dev
+    environment:
+      PORT: 3002
+      DATABASE_URL: postgres://postgres:postgres@postgres-command:5432/transaction_command_dev?schema=public
+      KAFKA_BROKER: kafka:29092
+
+  ms-anti-fraud:
+    build:
+      context: ./ms_bk-ng-anti_fraud
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./ms_bk-ng-anti_fraud:/app
+    command: npm run start:dev
+    environment:
+      PORT: 3003
+      KAFKA_BROKER: kafka:29092
