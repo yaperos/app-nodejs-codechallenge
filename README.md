@@ -63,19 +63,7 @@ El sistema consta de varios microservicios que colaboran para crear, validar y a
 | ms-transaction-cm | KAFKA_BROKER                           | Broker de kafka                 | kafka:29092                                                                               |
 | ms-anti-fraud     | PORT                                   | Puerto del microservicio        | 3003                                                                                      |
 | ms-anti-fraud     | KAFKA_BROKER                           | Broker de kafka                 | kafka:29092                                                                               |
-
-## Lista de comandos
-
-Se hace uso de [make](https://www.gnu.org/software/make/) para automatizar las tareas de construcción y levantamiento del proyecto.
-
-| Comando             | Descripción                                             |
-| ------------------- | ------------------------------------------------------- |
-| make docker-up      | Inicia todo el proyecto en modo desarrollo.             |
-| make docker-up-prod | Inicia todo el proyecto en modo producción.             |
-| make docker-stop    | Detiene todos los servicios del proyecto.               |
-| make docker-down    | Detiene todos los servicios y elimina los contenedores. |
-| make docker-logs    | Muestra los logs de los servicios.                      |
-| make docker-ps      | Muestra la lista de servicios.                          |
+|                   |
 
 ## Instalación y Configuración
 
@@ -95,17 +83,35 @@ cd app-nodejs-codechallenge
 Para iniciar el proyecto en modo desarrollo, ejecuta el siguiente comando:
 
 ```bash
-make docker-up
+	docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build
 ```
 
 Este comando iniciará todos los servicios necesarios para ejecutar el proyecto en modo desarrollo.
+
+En caso de que se requiera iniciar los servicios individualmente, puede utilizar los siguientes comandos:
+
+```bash
+  docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build ms-transaction-cm
+```
+
+```bash
+  docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build ms-transaction-qr
+```
+
+```bash
+  docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build ms-anti-fraud
+```
+
+```bash
+  docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build api-gateway
+```
 
 #### 2.2. Modo producción
 
 Para iniciar el proyecto en modo producción, ejecuta el siguiente comando:
 
 ```bash
-make docker-up-prod
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 ```
 
 Este comando iniciará todos los servicios necesarios para ejecutar el proyecto en modo producción.
