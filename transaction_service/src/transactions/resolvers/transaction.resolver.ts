@@ -1,20 +1,19 @@
-// apps/transaction-management-service/src/transaction/graphql/transaction.resolver.ts
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { TransactionService } from '../services/transaction.service';
-import { TransactionType } from './../graphql/gql-types/transaction.types'; // Tipo de salida GQL
-import { CreateTransactionInput } from './../graphql/dto/create-transaction.dto'; // Input Type GQL
+import { TransactionType } from './../graphql/gql-types/transaction.types';
+import { CreateTransactionInput } from './../graphql/dto/create-transaction.dto';
 import { ParseUUIDPipe, UsePipes, ValidationPipe, Logger, NotFoundException } from '@nestjs/common';
-import { TransactionResponseDto } from './../../transactions/dto/create-transaction-response.dto'; // DTO para mapear la respuesta
+import { TransactionResponseDto } from './../../transactions/dto/create-transaction-response.dto';
 
-@Resolver(() => TransactionType) // Indica que este resolver maneja el tipo TransactionType
+@Resolver(() => TransactionType)
 export class TransactionResolver {
   private readonly logger = new Logger(TransactionResolver.name);
 
   constructor(private readonly transactionService: TransactionService) { }
 
-  @Query(() => TransactionType, { name: 'getTransaction', nullable: true }) // Define la Query 'getTransaction'
+  @Query(() => TransactionType, { name: 'getTransaction', nullable: true })
   async getTransaction(
-    // Define el argumento y aplica validación/transformación del pipe
+
     @Args('transactionExternalId', { type: () => ID }, new ParseUUIDPipe({ version: '4' }))
     transactionExternalId: string,
   ): Promise<TransactionResponseDto | null> {

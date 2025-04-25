@@ -18,7 +18,7 @@ import { join } from 'path';
     TypeOrmModule.forFeature([Transaction]),
     KafkaModule,
     CacheModule.registerAsync({
-      isGlobal: true, // Make CacheManager available globally via @Inject(CACHE_MANAGER)
+      isGlobal: true,
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
@@ -26,17 +26,15 @@ import { join } from 'path';
         host: configService.get<string>('REDIS_HOST', 'localhost'),
         port: configService.get<number>('REDIS_PORT', 6379),
         ttl: configService.get<number>('CACHE_TTL', 3600), // Default TTL in seconds (e.g., 1 hour)
-        // Add other Redis options if needed (password, db index, etc.)
+
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver, // Usamos el driver de Apollo Server
-      autoSchemaFile: join(process.cwd(), 'apps/transaction-management-service/src/schema.gql'), // Genera automáticamente el schema en esta ruta (code-first)
-      sortSchema: true, // Ordena el schema alfabéticamente (opcional)
-      playground: process.env.NODE_ENV !== 'production', // Habilita el playground de Apollo Sandbox en desarrollo
-      // O puedes forzarlo: playground: true,
-      // endpoint: '/graphql' // Puedes cambiar la ruta, por defecto es /graphql
-      // context: ({ req, res }) => ({ req, res }), // Para pasar request/response al contexto si lo necesitas
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'apps/transaction-management-service/src/schema.gql'),
+      sortSchema: true,
+      playground: process.env.NODE_ENV !== 'production',
+
     }),
   ],
   controllers: [

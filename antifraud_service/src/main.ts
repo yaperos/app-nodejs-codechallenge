@@ -22,27 +22,17 @@ async function bootstrap() {
       options: {
         client: {
           brokers: [kafkaBroker],
-          // Add clientId specific to the consumer instance if desired
           clientId: `${configService.get<string>('app.kafka.clientId')}-consumer`,
         },
         run: {
           autoCommit: false,
         },
         consumer: {
-          groupId: consumerGroupId, // Critical for consumer group behavior
-          // Optional: configure session timeout, heartbeat interval, etc.
-          // sessionTimeout: 30000,
-          // heartbeatInterval: 3000,
-          // allowAutoTopicCreation: false, // Recommended for production
+          groupId: consumerGroupId,
         },
-        // subscribe: {
-        // Optional: Explicitly define topics here if not using @MessagePattern discovery
-        // topics: [KAFKA_TOPIC_TRANSACTION_DEBEZIUM],
-        // fromBeginning: false, // Start consuming from the latest offset
-        // }
       },
     },
-    { inheritAppConfig: true } // Inherit logging, etc. from the main app
+    { inheritAppConfig: true }
   );
 
   await app.startAllMicroservices();

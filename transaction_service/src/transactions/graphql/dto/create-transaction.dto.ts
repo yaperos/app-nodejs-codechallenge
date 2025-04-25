@@ -1,18 +1,16 @@
 import { InputType, Field, Int, Float, ID } from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, IsUUID, Min, IsInt, MaxLength, Matches } from 'class-validator';
 
-@InputType() // Define un tipo de entrada para la mutation
+@InputType()
 export class CreateTransactionInput {
   @Field(() => ID, { description: 'ID externo de la cuenta débito (Formato IBAN PE)' })
   @IsNotEmpty({ message: 'accountExternalIdDebit no debe estar vacío' })
-  @IsUUID('4', { message: 'accountExternalIdDebit debe ser un UUID válido' }) // Ajusta si no es UUID sino IBAN
-  // @Matches(/^PE\d{22}$/, { message: 'accountExternalIdDebit debe tener formato IBAN PE válido'}) // Validación IBAN (Ejemplo)
+  @IsUUID('4', { message: 'accountExternalIdDebit debe ser un UUID válido' })
   accountExternalIdDebit: string;
 
   @Field(() => ID, { description: 'ID externo de la cuenta crédito (Formato IBAN PE)' })
   @IsNotEmpty({ message: 'accountExternalIdCredit no debe estar vacío' })
-  @IsUUID('4', { message: 'accountExternalIdCredit debe ser un UUID válido' }) // Ajusta si no es UUID sino IBAN
-  // @Matches(/^PE\d{22}$/, { message: 'accountExternalIdCredit debe tener formato IBAN PE válido'}) // Validación IBAN (Ejemplo)
+  @IsUUID('4', { message: 'accountExternalIdCredit debe ser un UUID válido' })
   accountExternalIdCredit: string;
 
   @Field(() => Int, { description: 'Identificador numérico del tipo de transferencia' })

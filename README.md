@@ -59,3 +59,6 @@ docker compose build --no-cache && docker compose up
 
 ## 8. Verify Connectors
 curl http://localhost:8083/connector-plugins | jq
+
+## 9. Check status
+docker ps
