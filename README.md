@@ -1,82 +1,62 @@
 # Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+# Microservicios de Transacciones
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Este proyecto está compuesto por dos microservicios en NestJS que se comunican mediante Kafka. El objetivo es permitir la creación y obtención de transacciones, integrando un sistema de validación antifraude.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## 🧱 Estructura del Proyecto
 
-# Problem
+- `transaction-service`: expone APIs para crear y obtener transacciones.
+- `anti-fraud-service`: escucha eventos de creación de transacción y valida el monto.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## 🚀 Requisitos
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+- Node.js >= 18
+- Docker & Docker Compose
+- Kafka (incluido en `docker-compose.yml`)
 
-Every transaction with a value greater than 1000 should be rejected.
+## 🛠️ Instalación
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+1. Clona el repositorio y navega a la raíz del proyecto.
+2. Ejecuta los servicios necesarios con Docker:
+
+```bash
+docker-compose up -d
 ```
 
-# Tech Stack
+## 🛠️ Correr las migraciones
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+1. Ingresar a la carpeta de transacciones
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```bash
+cd transaction-service
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+2. Correr las migraciones y semillas necesarias
+```bash
+npm install
+npm run db:run
+npm run db:seed
 ```
 
-## Optional
+## 🛠️ Levantar los proyectos
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+```bash
+cd transaction-service
+npm run start:dev
 
-You can use Graphql;
+cd anti-fraud-service
+npm run start:dev
+```
 
-# Send us your challenge
+## 🛠️ Ejecutar los servicios, puedes revisar en postman
+[localhost: ](http://localhost:3000/api)
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## 🛠️ Ejecutar las pruebas unitarias
+```bash
+cd transaction-service
+npm run test
 
-If you have any questions, please let us know.
+cd anti-fraud-service
+npm run test
+```
