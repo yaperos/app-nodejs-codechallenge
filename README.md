@@ -1,85 +1,61 @@
-# Yape Code Challenge :rocket:
+# Transaction Microservices Project (CQRS/EDA)
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+This repository contains a sample microservices-based system for managing financial transactions, implementing CQRS and EDA patterns using NestJS, Kafka, Debezium, PostgreSQL, Redis, and GraphQL.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Overview
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+The system is composed of:
 
-# Problem
+* **Transaction Management Service:** Handles the creation and querying of transactions GraphQL API and HTTP REST API. Uses PostgreSQL as the Write DB and Redis as the Read Cache.
+* **Anti-Fraud Validation Service:** Validates transactions based on simple rules (event-driven via Kafka).
+* **Infrastructure:** PostgreSQL, Redis, Kafka, Zookeeper, Kafka Connect with Debezium (managed via Docker Compose).
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## Prerequisites
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+Make sure you have the following installed on your local machine:
 
-Every transaction with a value greater than 1000 should be rejected.
+* Git  
+* Docker ([https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/))  
+* Docker Compose ([https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/))  
+* Node.js (v20+ or the version specified in `.nvmrc` / `package.json`)  
+* pnpm (`npm install -g pnpm` or your preferred method)
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+
+
+## Architecture Diagram
+
+Below is the architecture diagram for the system:
+
+![Architecture Diagram](./assets/architecture-diagram.png)
+
+
+## 🚀 Quick Start (Local Development)
+
+Follow these steps to spin up the entire environment:
+
+## 1. Clone the repository (replace with your actual repository URL)
+git clone <URL_DEL_REPOSITORIO>
+cd <NOMBRE_DEL_REPOSITORIO>
+
+## 2. Configure Environment Variables
+    MANUALLY: Copy/create the necessary .env files from .env.example files:
+    - transaction_service/.env
+    - antifraud_service/.env
+    - docker/.env
+    Adjust settings inside these files if needed (ports, credentials, Kafka topics, etc.).
+
+## 4. Navigate to the Docker directory
+cd docker
+
+## 5. Build images and start all services
+```bash
+docker compose build --no-cache && docker compose up
 ```
 
-# Tech Stack
+## 6. Wait for Kafka Connect to be ready (can take 30s to a few minutes)
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## 7. Register the Debezium connector 
+./scripts/init-debezium.sh
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
-```
-
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
-
-
-kafka-console-consumer --bootstrap-server kafka:9092 --topic txmng.public.transactions --from-beginning --max-messages 10
+## 8. Verify Connectors
+curl http://localhost:8083/connector-plugins | jq

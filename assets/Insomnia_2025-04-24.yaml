@@ -1,0 +1,140 @@
+type: collection.insomnia.rest/5.0
+name: yape
+meta:
+  id: wrk_8f2e2654a32e401f83f4748ea3b77030
+  created: 1745290581007
+  modified: 1745290581007
+collection:
+  - url: http://localhost:3000/graphql
+    name: Get transaction
+    meta:
+      id: req_d06a4af5e6cc4846a8435a65f9f9a50c
+      created: 1745290610493
+      modified: 1745515584197
+      isPrivate: false
+      sortKey: -1745341154345
+    method: POST
+    body:
+      mimeType: application/graphql
+      text: '{"query":"query GetTransactionById
+        {\n\tgetTransaction(\n\t\ttransactionExternalId:
+        \"3f1955f8-986b-4de1-8e2a-b1fd0026e7bf\"\n\t)
+        {\n\t\ttransactionExternalId\n\t\ttransactionType
+        {\n\t\t\tname\n\t\t}\n\t\ttransactionStatus
+        {\n\t\t\tname\n\t\t}\n\t\tvalue\n\t\tcreatedAt\n\t}\n}\n","operationName":"GetTransactionById"}'
+    parameters:
+      - id: pair_fec6d60470c742fc970de5ae84db5c91
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.2
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/transactions/832341d9-8862-42ab-9481-e29a424f45d6
+    name: HTTP GET Transaction
+    meta:
+      id: req_8f3a2fc938d04316bedb3781fbd34612
+      created: 1745325802468
+      modified: 1745512372713
+      isPrivate: false
+      sortKey: -1745348830283.5
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/transactions
+    name: POST create transaction
+    meta:
+      id: req_3608078c62b2444fb89b66309d1ad81a
+      created: 1745356506222
+      modified: 1745551024816
+      isPrivate: false
+      sortKey: -1745449888799.25
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"accountExternalIdDebit": "8e8fd6b4-93c1-4eca-b260-d09cc3e33865",
+        	"accountExternalIdCredit": "8e8fd6b4-63c1-4eca-b260-d09cc3e33864",
+        	"transferTypeId": 3,
+        	"value": 3000
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/graphql
+    name: Mutate Command Transaction
+    meta:
+      id: req_ca1eb2a698a54c8584df5a17824c6f62
+      created: 1745515325229
+      modified: 1745515548509
+      isPrivate: false
+      sortKey: -1745341154295
+    method: POST
+    body:
+      mimeType: application/graphql
+      text: '{"query":"mutation CreateNewTransaction
+        {\n\tcreateTransaction(\n\t\tinput: {\n\t\t\taccountExternalIdDebit:
+        \"7aed7998-0170-4284-b867-10e882629772\"
+        #\n\t\t\taccountExternalIdCredit:
+        \"7aed7998-0170-4284-b867-10e882629774\" #\n\t\t\ttransferTypeId:
+        4\n\t\t\tvalue: 230.50\n\t\t}\n\t)
+        {\n\t\ttransactionExternalId\n\n\t\ttransactionStatus
+        {\n\t\t\tname\n\t\t}\n\t\ttransactionType
+        {\n\t\t\tname\n\t\t}\n\t\tvalue\n\n\t\tcreatedAt\n\t}\n}\n","operationName":"CreateNewTransaction"}'
+    parameters:
+      - id: pair_fec6d60470c742fc970de5ae84db5c91
+        disabled: true
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.2
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_395c22f252ee66c0d2eb26fc296d1b6aae597fe5
+    created: 1745290581009
+    modified: 1745290581009
+environments:
+  name: Base Environment
+  meta:
+    id: env_395c22f252ee66c0d2eb26fc296d1b6aae597fe5
+    created: 1745290581008
+    modified: 1745290581008
+    isPrivate: false

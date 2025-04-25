@@ -9,6 +9,9 @@ import { TransactionResolver } from './resolvers/transaction.resolver';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { redisStore } from 'cache-manager-redis-store';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -25,6 +28,15 @@ import { redisStore } from 'cache-manager-redis-store';
         ttl: configService.get<number>('CACHE_TTL', 3600), // Default TTL in seconds (e.g., 1 hour)
         // Add other Redis options if needed (password, db index, etc.)
       }),
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver, // Usamos el driver de Apollo Server
+      autoSchemaFile: join(process.cwd(), 'apps/transaction-management-service/src/schema.gql'), // Genera automáticamente el schema en esta ruta (code-first)
+      sortSchema: true, // Ordena el schema alfabéticamente (opcional)
+      playground: process.env.NODE_ENV !== 'production', // Habilita el playground de Apollo Sandbox en desarrollo
+      // O puedes forzarlo: playground: true,
+      // endpoint: '/graphql' // Puedes cambiar la ruta, por defecto es /graphql
+      // context: ({ req, res }) => ({ req, res }), // Para pasar request/response al contexto si lo necesitas
     }),
   ],
   controllers: [
