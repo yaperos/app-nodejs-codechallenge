@@ -6,9 +6,28 @@ This repository contains a sample microservices-based system for managing financ
 
 The system is composed of:
 
-* **Transaction Management Service:** Handles the creation and querying of transactions GraphQL API and HTTP REST API. Uses PostgreSQL as the Write DB and Redis as the Read Cache.
-* **Anti-Fraud Validation Service:** Validates transactions based on simple rules (event-driven via Kafka).
+* **Transaction Service:** Handles the creation and querying of transactions GraphQL API and HTTP REST API. Uses PostgreSQL as the Write DB and Redis as the Read Cache.
+* **AntiFraud Service:** Validates transactions based on simple rules (event-driven via Kafka).
 * **Infrastructure:** PostgreSQL, Redis, Kafka, Zookeeper, Kafka Connect with Debezium (managed via Docker Compose).
+
+### Handling High Volume and Concurrency
+
+To address high-volume scenarios with concurrent reads and writes, this architecture implements the following key strategies:
+
+* **CQRS (Command Query Responsibility Segregation) Pattern:**
+    * **Writes (Commands):** Target a PostgreSQL database, optimized for transactional integrity (ACID).
+    * **Reads (Queries):** Served exclusively from an in-memory Redis cache, optimized for very high speed and low latency.
+    * This separation allows optimizing and scaling read and write workloads independently, reducing contention.
+
+* **Asynchronous and Event-Driven Processing:**
+    * The Redis cache (Read Model) is updated asynchronously via events consumed from Kafka (originating from Debezium and the AntiFraud service).
+    * This decouples write/update operations from reads, improving responsiveness and resilience.
+    * **Eventual consistency** is achieved.
+
+* **Independent Scalability:**
+    * **Reads (Redis):** Can be scaled horizontally using Redis Cluster.
+    * **Writes (PostgreSQL):** Can be scaled vertically or horizontally using techniques like partitioning or sharding.
+    * **Event Processing (Kafka/Consumers):** Can be scaled by increasing Kafka topic partitions and the number of consumer microservice instances (Transaction Service, AntiFraud Service).
 
 ## Prerequisites
 
