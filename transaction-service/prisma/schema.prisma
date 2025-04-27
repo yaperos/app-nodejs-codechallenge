@@ -25,7 +25,7 @@ model Transaction {
   accountExternalIdCredit  String
   transactionTypeId        Int
   status                   TransactionStatus @default(PENDING)
-  value                    Decimal           @db.Decimal(5, 2)
+  value                    Decimal           @db.Decimal(10, 2)
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
 }

@@ -1,0 +1,26 @@
+{
+  "name": "anti-fraud-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "nest build",
+    "start:prod": "node dist/main"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.15.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.13.3",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/cqrs": "^11.0.3",
+    "@nestjs/microservices": "^11.1.0",
+    "@nestjs/platform-express": "^11.1.0",
+    "kafkajs": "^2.2.4"
+  }
+}
