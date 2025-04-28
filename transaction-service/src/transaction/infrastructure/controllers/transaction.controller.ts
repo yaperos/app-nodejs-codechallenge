@@ -2,12 +2,12 @@ import { Controller, Logger } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { GrpcMethod } from "@nestjs/microservices";
 import { KafkaEventBus } from "src/event-bus/kafka.event-bus";
-import { CreateTransactionCommand } from "../create-transaction/create-transaction.command";
+import { CreateTransactionCommand } from "src/transaction/application/create-transaction/create-transaction.command";
 import {
   UpdateTransactionCommand,
   TransactionStatus,
-} from "../update-transaction/update-transaction.command";
-import { GetTransactionQuery } from "../get-transaction/get-transaction.query";
+} from "src/transaction/application/update-transaction/update-transaction.command";
+import { GetTransactionQuery } from "src/transaction/application/get-transaction/get-transaction.query";
 import { BaseController } from "./base.controller";
 import { EventPattern, Payload } from "@nestjs/microservices";
 

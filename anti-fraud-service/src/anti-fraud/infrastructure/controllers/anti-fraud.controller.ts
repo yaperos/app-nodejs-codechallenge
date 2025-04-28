@@ -2,7 +2,7 @@ import { Controller, Logger } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { EventPattern, Payload } from "@nestjs/microservices";
 import { BaseController } from "./base.controller";
-import { ValidateTransactionCommand } from "../validate-transaction/validate-transaction.command";
+import { ValidateTransactionCommand } from "src/anti-fraud/application/validate-transaction/validate-transaction.command";
 
 @Controller("anti-fraud")
 export class AntiFraudController extends BaseController {

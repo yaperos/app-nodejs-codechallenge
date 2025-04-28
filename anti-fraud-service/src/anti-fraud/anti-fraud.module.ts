@@ -1,5 +1,5 @@
-import { ValidateTransactionHandler } from "src/anti-fraud/validate-transaction/validate-transaction.handler";
-import { AntiFraudController } from "./controllers/anti-fraud.controller";
+import { ValidateTransactionHandler } from "src/anti-fraud/application/validate-transaction/validate-transaction.handler";
+import { AntiFraudController } from "./infrastructure/controllers/anti-fraud.controller";
 import { CqrsModule } from "@nestjs/cqrs";
 import { ConfigModule } from "@nestjs/config";
 import { Module } from "@nestjs/common";
