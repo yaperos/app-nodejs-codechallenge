@@ -18,7 +18,7 @@ message CreateTransactionResponse {
   string id = 1;
   string accountExternalIdDebit = 2;
   string accountExternalIdCredit = 3;
-  string transactionTypeId = 4;
+  int32 transactionTypeId = 4;
   string status = 5;
 }
 
