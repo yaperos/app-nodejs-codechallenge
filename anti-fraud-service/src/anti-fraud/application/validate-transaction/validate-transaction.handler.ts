@@ -5,6 +5,7 @@ import {
   TOPIC_TRANSACTIONS_REJECTED,
   TOPIC_TRANSACTIONS_ACCEPTED,
 } from "src/event-bus/event-bus.constants";
+import { TRANSACTION_MAX_VALUE } from "src/anti-fraud/application/anti-fraud.constants";
 
 @CommandHandler(ValidateTransactionCommand)
 export class ValidateTransactionHandler
@@ -14,7 +15,7 @@ export class ValidateTransactionHandler
 
   async execute(command: ValidateTransactionCommand) {
     const { TransactionDTO } = command;
-    if (TransactionDTO.value > 1000) {
+    if (TransactionDTO.value > TRANSACTION_MAX_VALUE) {
       this.eventBus.sendEvent(TOPIC_TRANSACTIONS_REJECTED, TransactionDTO);
     } else {
       this.eventBus.sendEvent(TOPIC_TRANSACTIONS_ACCEPTED, TransactionDTO);
