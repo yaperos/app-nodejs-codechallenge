@@ -21,7 +21,6 @@ export class CreateTransactionHandler
       },
     });
 
-    this.logger.log(`Created Transaction: ${JSON.stringify(transaction)}`);
     this.logger.log(`New Transaction Id: ${transaction.id}`);
     return transaction;
   }

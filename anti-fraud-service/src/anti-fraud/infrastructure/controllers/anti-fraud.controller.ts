@@ -3,6 +3,7 @@ import { CommandBus } from "@nestjs/cqrs";
 import { EventPattern, Payload } from "@nestjs/microservices";
 import { BaseController } from "./base.controller";
 import { ValidateTransactionCommand } from "src/anti-fraud/application/validate-transaction/validate-transaction.command";
+import { TOPIC_TRANSACTIONS_PENDING } from "src/event-bus/event-bus.constants";
 
 @Controller("anti-fraud")
 export class AntiFraudController extends BaseController {
@@ -11,11 +12,11 @@ export class AntiFraudController extends BaseController {
     super();
   }
 
-  @EventPattern("transactions.pending")
+  @EventPattern(TOPIC_TRANSACTIONS_PENDING)
   async validateTransactions(@Payload() eventMessage) {
     try {
       this.logger.log(
-        `[TRANSACTION_UUID]: ${eventMessage} [EVENT]: validate-transaction`
+        `[TRANSACTION_UUID]: ${eventMessage.id} [EVENT]: validate-transaction`
       );
       await this.commandBus.execute(
         new ValidateTransactionCommand(eventMessage)

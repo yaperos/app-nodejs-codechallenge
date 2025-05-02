@@ -10,6 +10,11 @@ import {
 import { GetTransactionQuery } from "src/transaction/application/get-transaction/get-transaction.query";
 import { BaseController } from "./base.controller";
 import { EventPattern, Payload } from "@nestjs/microservices";
+import {
+  TOPIC_TRANSACTIONS_ACCEPTED,
+  TOPIC_TRANSACTIONS_REJECTED,
+  TOPIC_TRANSACTIONS_PENDING,
+} from "src/event-bus/event-bus.constants";
 
 @Controller("transaction")
 export class TransactionController extends BaseController {
@@ -27,7 +32,7 @@ export class TransactionController extends BaseController {
     const result = await this.commandBus.execute(
       new CreateTransactionCommand(data)
     );
-    await this.eventBus.sendEvent("transactions.pending", {
+    await this.eventBus.sendEvent(TOPIC_TRANSACTIONS_PENDING, {
       id: result.id,
       value: result.value,
     });
@@ -40,7 +45,7 @@ export class TransactionController extends BaseController {
     return result;
   }
 
-  @EventPattern("transactions.accepted")
+  @EventPattern(TOPIC_TRANSACTIONS_ACCEPTED)
   async UpdateAcceptedTransactions(@Payload() eventMessage) {
     try {
       this.logger.log(
@@ -60,7 +65,7 @@ export class TransactionController extends BaseController {
     }
   }
 
-  @EventPattern("transactions.rejected")
+  @EventPattern(TOPIC_TRANSACTIONS_REJECTED)
   async UpdateRejectedTransactions(@Payload() eventMessage) {
     try {
       this.logger.log(
