@@ -36,13 +36,16 @@ export class TransactionController extends BaseController {
       id: result.id,
       value: result.value,
     });
-    return result;
+    return { createTransactionResponse: result };
   }
 
   @GrpcMethod("TransactionService", "GetTransaction")
   async GetTransaction(data: any): Promise<any> {
     const result = await this.queryBus.execute(new GetTransactionQuery(data));
-    return result;
+    if (!result) {
+      return this.fail("TRANSACTION NOT FOUND");
+    }
+    return { getTransactionRequest: result };
   }
 
   @EventPattern(TOPIC_TRANSACTIONS_ACCEPTED)

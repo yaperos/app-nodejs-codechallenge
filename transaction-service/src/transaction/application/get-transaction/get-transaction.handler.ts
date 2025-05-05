@@ -22,7 +22,9 @@ export class GetTransactionHandler
       where: { id: getTransactionDTO.transactionExternalId },
     });
 
-    this.logger.log(`get Transaction: ${JSON.stringify(transaction)}`);
+    if (!transaction) {
+      return null;
+    }
 
     const response = {
       transactionExternalId: transaction.id,

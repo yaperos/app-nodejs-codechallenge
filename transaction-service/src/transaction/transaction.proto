@@ -3,8 +3,8 @@ syntax = "proto3";
 package transaction;
 
 service TransactionService {
-  rpc CreateTransaction (CreateTransactionRequest) returns (CreateTransactionResponse);
-  rpc GetTransaction (GetTransactionRequest) returns (GetTransactionResponse);
+  rpc CreateTransaction (CreateTransactionRequest) returns (BaseResponse);
+  rpc GetTransaction (GetTransactionRequest) returns (BaseResponse);
 }
 
 message CreateTransactionRequest {
@@ -40,4 +40,17 @@ message GetTransactionResponse {
   TransactionType transactionType = 2;
   TransactionStatus transactionStatus = 3;
   string value = 4; // decimal
+}
+
+
+message Error {
+  string message = 1;
+}
+
+message BaseResponse {
+  oneof result {
+    Error error = 1;
+    CreateTransactionResponse createTransactionResponse = 2;
+    GetTransactionResponse getTransactionRequest = 3;
+  }
 }
