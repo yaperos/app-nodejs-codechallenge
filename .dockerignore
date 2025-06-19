@@ -1,0 +1,49 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de desarrollo
+.env*
+.env.local
+.env.development
+.env.test
+
+# Logs
+logs/
+*.log
+
+# Archivos de runtime
+.nyc_output
+coverage/
+dist/
+
+# Git
+.git/
+.gitignore
+
+# Documentación y archivos temporales
+README.md
+*.md
+documentation/
+
+# Archivos del OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml 
