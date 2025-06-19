@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { fraudConfig } from '../../shared/config/fraud.config';
 import { EvaluateTransactionDto } from './dto/evaluate-transaction.dto';
 
 @Injectable()
 export class AntiFraudService {
 
-  evaluate(dto: EvaluateTransactionDto): { transactionId: string, status: string } {
-    if (dto.value > 1000) {
-      return { transactionId: dto.transactionId, status: 'rejected' };
+  evaluate(dto: EvaluateTransactionDto): string {
+    if (dto.value > fraudConfig.evaluation.rejectionThreshold) {
+      return 'rejected';
     }
-    return { transactionId: dto.transactionId, status: 'approved' };
+
+    return 'approved';
   }
 }

@@ -7,10 +7,17 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=yape_transaction_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -23,3 +30,10 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+      - 29092:29092
+    volumes:
+      - kafkadata:/var/lib/kafka/data
+
+volumes:
+  pgdata:
+  kafkadata:

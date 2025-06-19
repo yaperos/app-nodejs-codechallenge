@@ -7,4 +7,4 @@ import { AntiFraudService } from './anti-fraud.service';
   controllers: [AntiFraudController],
   providers: [AntiFraudService],
 })
-export class AntiFraudModule {}
+export class AntiFraudModule { }

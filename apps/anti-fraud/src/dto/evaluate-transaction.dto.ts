@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsNumber, IsUUID } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class EvaluateTransactionDto {
-
     @IsUUID()
     @IsNotEmpty()
     transactionId: string;
@@ -9,4 +8,8 @@ export class EvaluateTransactionDto {
     @IsNumber()
     @IsNotEmpty()
     value: number;
+
+    @IsOptional()
+    @IsString()
+    status?: string;
 }
