@@ -14,9 +14,4 @@ describe('AntiFraudController', () => {
     antiFraudController = app.get<AntiFraudController>(AntiFraudController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(antiFraudController.getHello()).toBe('Hello World!');
-    });
-  });
 });

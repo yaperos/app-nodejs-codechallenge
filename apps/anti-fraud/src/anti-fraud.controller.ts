@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { EvaluateTransactionDto } from './dto/evaluate-transaction.dto';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AntiFraudService } from './anti-fraud.service';
 
-@Controller()
+@Controller('anti-fraud')
 export class AntiFraudController {
-  constructor(private readonly antiFraudService: AntiFraudService) {}
+  constructor(private readonly antiFraudService: AntiFraudService) { }
 
-  @Get()
-  getHello(): string {
-    return this.antiFraudService.getHello();
+  @Post('evaluate')
+  evaluate(@Body() dto: EvaluateTransactionDto) {
+    return this.antiFraudService.evaluate(dto);
   }
 }
