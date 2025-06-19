@@ -1,6 +1,7 @@
 import { BadRequestException, Inject, Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { CacheService } from '../../shared/cache/cache.service';
 import { kafkaConfig } from '../../shared/config/kafka.config';
 import { KafkaEvaluationResponse, KafkaTransactionPayload, TransactionData } from '../../shared/types/transaction.types';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
@@ -13,6 +14,7 @@ export class TransactionService implements OnModuleInit {
 
   constructor(
     private readonly prisma: PrismaService,
+    private readonly cacheService: CacheService,
     @Inject('KAFKA_SERVICE') private readonly kafkaClient: ClientKafka,
   ) { }
 
@@ -24,31 +26,53 @@ export class TransactionService implements OnModuleInit {
     await this.validateTransactionType(dto.transferTypeId);
     const pendingStatus = await this.getPendingStatus();
     const transaction = await this.createTransaction(dto, pendingStatus.id);
-    this.logger.log(`Transaction created: ${JSON.stringify(transaction)}`);
-    this.logger.log('Transaction created:', transaction);
 
+    this.logger.log(`Transaction created: ${JSON.stringify(transaction)}`);
     await this.publishTransactionToKafka(transaction);
 
     return { transactionId: transaction.id };
   }
 
   private async validateTransactionType(transferTypeId: number): Promise<void> {
-    const transactionType = await this.prisma.transactionType.findUnique({
-      where: { id: transferTypeId },
-    }); if (!transactionType) {
+    const cacheKey = CacheService.generateKey(CacheService.KEYS.TRANSACTION_TYPE, transferTypeId);
+
+    const transactionType = await this.cacheService.getOrSet(
+      cacheKey,
+      async () => {
+        this.logger.debug(`Fetching TransactionType ${transferTypeId} from DB`);
+        return await this.prisma.transactionType.findUnique({
+          where: { id: transferTypeId },
+        });
+      },
+      CacheService.TTL.CATALOG
+    );
+
+    if (!transactionType) {
       throw new NotFoundException('Transaction type not found');
     }
   }
 
   private async getPendingStatus() {
-    const pendingStatus = await this.prisma.transactionStatus.findUnique({
-      where: { name: 'pending' },
-    }); if (!pendingStatus) {
+    const cacheKey = CacheService.generateKey(CacheService.KEYS.TRANSACTION_STATUS, 'pending');
+
+    const pendingStatus = await this.cacheService.getOrSet(
+      cacheKey,
+      async () => {
+        this.logger.debug('Fetching pending status from DB');
+        return await this.prisma.transactionStatus.findUnique({
+          where: { name: 'pending' },
+        });
+      },
+      CacheService.TTL.CATALOG
+    );
+
+    if (!pendingStatus) {
       throw new NotFoundException('Transaction status "pending" not found');
     }
 
     return pendingStatus;
   }
+
   private async createTransaction(dto: CreateTransactionDto, statusId: number): Promise<TransactionData> {
     return await this.prisma.transaction.create({
       data: {
@@ -84,6 +108,7 @@ export class TransactionService implements OnModuleInit {
     }
   }
 
+
   private async updateTransactionStatus(transactionId: string, statusName: string): Promise<void> {
     const statusRecord = await this.prisma.transactionStatus.findUnique({
       where: { name: statusName },
@@ -104,7 +129,8 @@ export class TransactionService implements OnModuleInit {
         transactionType: true,
         transactionStatus: true,
       },
-    }); if (!transaction) {
+    });
+    if (!transaction) {
       throw new NotFoundException('Transaction not found');
     }
     return {
