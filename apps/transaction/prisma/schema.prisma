@@ -1,0 +1,35 @@
+// Prisma schema for the transaction microservice
+// Models: Transaction, TransactionType, TransactionStatus
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TransactionType {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  transactions Transaction[]
+}
+
+model TransactionStatus {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  transactions Transaction[]
+}
+
+model Transaction {
+  id                        String   @id @default(uuid())
+  accountExternalIdDebit    String
+  accountExternalIdCredit   String
+  transferTypeId            Int
+  value                     Float
+  createdAt                 DateTime @default(now())
+  transactionType           TransactionType @relation(fields: [transferTypeId], references: [id])
+  transactionStatusId       Int
+  transactionStatus         TransactionStatus @relation(fields: [transactionStatusId], references: [id])
+}
