@@ -1,0 +1,194 @@
+{
+  "info": {
+    "name": "Yape Transaction API",
+    "description": "Colección para probar la API de transacciones de Yape Code Challenge",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Transacción - Aprobada (Valor <= 1000)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-correlation-id",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accountExternalIdDebit\": \"Guid1\",\n  \"accountExternalIdCredit\": \"Guid2\",\n  \"tranferTypeId\": 1,\n  \"value\": 500\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["transactions"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Transacción - Rechazada (Valor > 1000)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-correlation-id",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accountExternalIdDebit\": \"Guid3\",\n  \"accountExternalIdCredit\": \"Guid4\",\n  \"tranferTypeId\": 1,\n  \"value\": 1500\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["transactions"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Transacción - Límite Exacto (Valor = 1000)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-correlation-id",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accountExternalIdDebit\": \"Guid5\",\n  \"accountExternalIdCredit\": \"Guid6\",\n  \"tranferTypeId\": 1,\n  \"value\": 1000\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["transactions"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Transacción por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-correlation-id",
+            "value": "{{$guid}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/transactions/{{transactionId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["transactions", "{{transactionId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Transacción - Datos Inválidos (Sin accountExternalIdDebit)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-correlation-id",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accountExternalIdCredit\": \"Guid8\",\n  \"tranferTypeId\": 1,\n  \"value\": 200\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["transactions"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Transacción - Valor Negativo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-correlation-id",
+            "value": "{{$guid}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"accountExternalIdDebit\": \"Guid9\",\n  \"accountExternalIdCredit\": \"Guid10\",\n  \"tranferTypeId\": 1,\n  \"value\": -100\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/transactions",
+          "host": ["{{baseUrl}}"],
+          "path": ["transactions"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Transacción - ID Inexistente",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-correlation-id",
+            "value": "{{$guid}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/transactions/nonexistent-id",
+          "host": ["{{baseUrl}}"],
+          "path": ["transactions", "nonexistent-id"]
+        }
+      },
+      "response": []
+    }
+  ]
+} 
