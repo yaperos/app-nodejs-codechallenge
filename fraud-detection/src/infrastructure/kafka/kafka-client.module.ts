@@ -1,26 +1,38 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { getKafkaConfig } from './kafka.config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'KAFKA_CLIENT',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: getKafkaConfig('fraud-detection').clientId,
-            brokers: getKafkaConfig('fraud-detection').brokers,
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              clientId: configService.get<string>(
+                'app.kafka.clientId',
+                'fraud-detection',
+              ),
+              brokers: configService.get<string[]>('app.kafka.brokers', [
+                'localhost:9092',
+              ]),
+            },
+            consumer: {
+              groupId: configService.get<string>(
+                'app.kafka.groupId',
+                'fraud-detection-group',
+              ),
+              allowAutoTopicCreation: true,
+            },
+            producer: {
+              allowAutoTopicCreation: true,
+            },
           },
-          consumer: {
-            groupId: getKafkaConfig('fraud-detection').groupId,
-            allowAutoTopicCreation: true,
-          },
-          producer: {
-            allowAutoTopicCreation: true,
-          },
-        },
+        }),
       },
     ]),
   ],
