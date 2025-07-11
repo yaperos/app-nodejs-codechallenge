@@ -1,22 +1,31 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { getKafkaConfig } from './kafka.config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'KAFKA_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: getKafkaConfig('ms-transactions').clientId,
-            brokers: getKafkaConfig('ms-transactions').brokers,
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              clientId: configService.get<string>('app.kafka.clientId'),
+              brokers: configService.get<string[]>('app.kafka.brokers', [
+                'localhost:9092',
+              ]),
+            },
+            consumer: {
+              groupId: configService.get<string>(
+                'app.kafka.groupId',
+                'default-group',
+              ),
+            },
           },
-          consumer: {
-            groupId: getKafkaConfig('ms-transactions').groupId,
-          },
-        },
+        }),
       },
     ]),
   ],
