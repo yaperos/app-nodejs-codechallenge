@@ -8,6 +8,7 @@ import {
   TransactionType,
 } from '../../domain/enums/transaction.enums';
 import { CreateTransactionDto } from '../../domain/dto/create-transaction.dto';
+import { Cache } from 'cache-manager';
 import Decimal from 'decimal.js';
 
 describe('CreateTransactionUseCaseImpl', () => {
@@ -15,6 +16,7 @@ describe('CreateTransactionUseCaseImpl', () => {
   let transactionRepository: jest.Mocked<TransactionRepository>;
   let outboxEventRepository: jest.Mocked<OutboxEventRepository>;
   let dataSource: jest.Mocked<DataSource>;
+  let cacheManager: jest.Mocked<Pick<Cache, 'get' | 'set' | 'del'>>;
   let mockManager: Record<string, unknown>;
   let transactionSpy: jest.SpyInstance;
   let createTransactionSpy: jest.SpyInstance;
@@ -32,6 +34,12 @@ describe('CreateTransactionUseCaseImpl', () => {
       findUnprocessed: jest.fn(),
       markAsProcessed: jest.fn(),
     } as jest.Mocked<OutboxEventRepository>;
+
+    cacheManager = {
+      get: jest.fn(),
+      set: jest.fn(),
+      del: jest.fn(),
+    } as jest.Mocked<Pick<Cache, 'get' | 'set' | 'del'>>;
 
     mockManager = {};
     dataSource = {
@@ -51,6 +59,7 @@ describe('CreateTransactionUseCaseImpl', () => {
       transactionRepository,
       outboxEventRepository,
       dataSource,
+      cacheManager as unknown as Cache,
     );
   });
 
@@ -101,6 +110,14 @@ describe('CreateTransactionUseCaseImpl', () => {
         processed: false,
       }),
       { transactionManager: mockManager },
+    );
+    expect(cacheManager.set).toHaveBeenCalledWith(
+      `transaction:${savedTransaction.id}`,
+      expect.objectContaining({
+        id: savedTransaction.id,
+        value: '100',
+      }),
+      3600,
     );
     expect(result).toBe(savedTransaction);
   });

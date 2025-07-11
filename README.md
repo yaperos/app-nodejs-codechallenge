@@ -100,6 +100,7 @@ This solution implements two microservices with the following key features:
 ### **Quick Start**
 
 ```bash
+docker compose up -d
 ```
 
 ### **API Examples**

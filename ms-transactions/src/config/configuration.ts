@@ -9,6 +9,10 @@ export default registerAs('app', () => ({
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_NAME || 'postgres',
   },
+  redis: {
+    host: process.env.REDIS_HOST || 'redis',
+    port: process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) : 6379,
+  },
   kafka: {
     clientId: process.env.KAFKA_CLIENT_ID || 'ms-transactions',
     brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],

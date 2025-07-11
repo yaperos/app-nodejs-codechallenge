@@ -1,5 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 import { CreateTransactionUseCase } from '../../domain/usecases/create-transaction.usecase';
 import { CreateTransactionDto } from '../../domain/dto/create-transaction.dto';
 import { Transaction } from '../../domain/entities/transaction';
@@ -12,6 +14,7 @@ import {
 } from '../../domain/enums/transaction.enums';
 import { v4 as uuidv4 } from 'uuid';
 import Decimal from 'decimal.js';
+import { CachedTransactionMapper } from '../../domain/mappers/cached-transaction.mapper';
 
 @Injectable()
 export class CreateTransactionUseCaseImpl implements CreateTransactionUseCase {
@@ -21,6 +24,7 @@ export class CreateTransactionUseCaseImpl implements CreateTransactionUseCase {
     @Inject('OutboxEventRepository')
     private readonly outboxEventRepository: OutboxEventRepository,
     private readonly dataSource: DataSource,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async execute(
@@ -62,6 +66,12 @@ export class CreateTransactionUseCaseImpl implements CreateTransactionUseCase {
       };
 
       await this.outboxEventRepository.create(outboxEvent, transactionContext);
+
+      await this.cacheManager.set(
+        `transaction:${savedTransaction.id}`,
+        CachedTransactionMapper.toDTO(savedTransaction),
+        3600,
+      );
 
       return savedTransaction;
     });

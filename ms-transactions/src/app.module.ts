@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
+import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TransactionController } from './infrastructure/controllers/transaction.controller';
@@ -21,12 +22,26 @@ import { TypeOrmOutboxEventRepository } from './infrastructure/repositories/type
 import { KafkaEventPublisher } from './infrastructure/adapters/kafka-event-publisher.adapter';
 
 import { TransactionMapper } from './presentation/mappers/transaction.mapper';
+import { createKeyv } from '@keyv/redis';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        ttl: 3600,
+        stores: [
+          createKeyv(
+            `redis://${configService.get<string>('app.redis.host', 'redis')}:${configService.get<number>('app.redis.port', 6379)}`,
+          ),
+        ],
+      }),
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
