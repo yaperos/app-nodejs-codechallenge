@@ -37,7 +37,14 @@ services:
       - '3001:3001'
     environment:
       - PORT=3001
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+      - KAFKA_CLIENT_ID=ms-transactions
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_GROUP_ID=ms-transactions-group
     depends_on:
       - postgres
       - kafka
@@ -50,6 +57,9 @@ services:
       - '3002:3002'
     environment:
       - PORT=3002
+      - KAFKA_BROKER=kafka:29092
+      - KAFKA_CLIENT_ID=fraud-detection
+      - KAFKA_GROUP_ID=fraud-detection-group
     depends_on:
       - kafka
 

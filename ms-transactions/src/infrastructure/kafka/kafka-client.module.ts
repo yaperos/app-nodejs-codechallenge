@@ -24,6 +24,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
                 'default-group',
               ),
             },
+            run: {
+              autoCommit: false,
+            },
           },
         }),
       },
