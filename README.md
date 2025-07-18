@@ -1,3 +1,24 @@
+# 🚀 Ejecución de Microservicios
+
+```diff
+! IMPORTANTE: Para ejecutar correctamente el sistema completo, 
+! debes iniciar los microservicios en el siguiente orden:
+```
+
+## 📋 Orden de Ejecución
+
+### 1️⃣ **Primero**: Ejecutar `business-transaction-v1`
+- 📁 Ve al directorio `business-transaction-v1/`
+- 📖 Lee el README.md de ese microservicio para instrucciones específicas de ejecución
+
+### 2️⃣ **Segundo**: Ejecutar `business-transaction-anti-fraud-v1`
+- 📁 Ve al directorio `business-transaction-anti-fraud-v1/`
+- 📖 Lee el README.md de ese microservicio para instrucciones específicas de ejecución
+
+> ⚠️ **CRÍTICO**: Es crucial seguir este orden ya que el microservicio anti-fraud depende de que el microservicio de transacciones esté funcionando correctamente.
+
+---
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 

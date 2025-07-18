@@ -1,0 +1,96 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: transaction-db
+    environment:
+      POSTGRES_DB: transaction_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka-manager:
+    image: hlebalbau/kafka-manager:latest
+    depends_on:
+      - kafka
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: zookeeper:2181
+
+  app:
+    build: .
+    container_name: transaction-api
+    ports:
+      - "3000:3000"
+    environment:
+      # Environment
+      NODE_ENV: development
+      
+      # Database Configuration
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: transaction_db
+      DATABASE_SSL: false
+      
+      # Server Configuration
+      SERVER_PORT: 3000
+      
+      # Application Configuration
+      TRX_TYPE_220: "Transferencias ordinaria"
+      TRX_TYPE_225: "Pago a cta tarjeta"
+      TRX_TYPE_320: "ORDINARIAS - INMEDIATAS"
+      TRX_TYPE_325: "PAGO DE TARJETA DE CREDITO - INMEDIATAS"
+      
+      TRX_STATUS_PENDING: "PENDING"
+      TRX_STATUS_APPROVED: "APPROVED"
+      TRX_STATUS_REJECTED: "REJECTED"
+      
+      # Kafka Configuration
+      KAFKA_BROKERS: kafka:29092
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_PRODUCER_TOPIC: transaction-anti-fraud-validation
+      KAFKA_CONSUMER_GROUP_ID: reactive-group
+      KAFKA_CONSUMER_TOPIC: transaction-processing
+      KAFKA_CONSUMER_FROM_BEGINNING: true
+      KAFKA_CONSUMER_AUTO_COMMIT: false
+      
+      # Security
+      JWT_SECRET: your-super-secret-jwt-key
+      CORS_ORIGIN: http://localhost:3000
+      
+      # Logging
+      LOG_LEVEL: debug
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - kafka
+
+volumes:
+  postgres_data:

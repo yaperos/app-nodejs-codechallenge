@@ -1,0 +1,34 @@
+version: '3.8'
+
+networks:
+  default:
+    external: true
+    name: business-transaction-v1_default  # Nombre correcto de la red del microservicio de transacciones
+
+services:
+  fraud-detector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: business-transaction-anti-fraud
+    ports:
+      - "8082:8082"
+    environment:
+      APP_NAME: business-transaction-anti-fraud
+      APP_BASE_PATH: /transaction-anti-fraud/v1
+      APP_PORT: 8082
+      APP_MAXIMUM_TRANSACTION_AMOUNT: 1000
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_BROKERS: kafka:29092
+      KAFKA_PRODUCER_TOPIC: transaction-processing
+      KAFKA_CONSUMER_GROUP_ID: reactive-group-01
+      KAFKA_CONSUMER_FROM_BEGINNING: true
+      KAFKA_CONSUMER_AUTO_COMMIT: false
+      KAFKA_CONSUMER_TOPIC: transaction-anti-fraud-validation
+      NODE_ENV: development
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+      - /app/node_modules
+    restart: unless-stopped
+    # Remover network_mode: host ya que usamos la red externa

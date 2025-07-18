@@ -1,0 +1,40 @@
+# Node
+node_modules
+npm-debug.log*
+
+# Build
+dist
+
+# Environment
+.env.local
+.env.test
+
+# Logs
+logs
+*.log
+
+# Docker files
+Dockerfile*
+docker-compose*
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# Tests
+coverage
+test/
+*.spec.ts
+*.test.ts
+
+# Documentation
+README.md
+*.md
+
+# Temporary
+*.tmp
+*.temp
