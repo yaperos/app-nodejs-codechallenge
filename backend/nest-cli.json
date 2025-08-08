@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/app-nodejs-codechallenge/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/app-nodejs-codechallenge/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/app-nodejs-codechallenge",
+  "projects": {
+    "anti-fraud": {
+      "type": "application",
+      "root": "apps/anti-fraud",
+      "entryFile": "main",
+      "sourceRoot": "apps/anti-fraud/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/anti-fraud/tsconfig.app.json"
+      }
+    },
+    "app-nodejs-codechallenge": {
+      "type": "application",
+      "root": "apps/app-nodejs-codechallenge",
+      "entryFile": "main",
+      "sourceRoot": "apps/app-nodejs-codechallenge/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/app-nodejs-codechallenge/tsconfig.app.json"
+      }
+    },
+    "contracts": {
+      "type": "library",
+      "root": "libs/contracts",
+      "entryFile": "index",
+      "sourceRoot": "libs/contracts/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/contracts/tsconfig.lib.json"
+      }
+    },
+    "db": {
+      "type": "library",
+      "root": "libs/db",
+      "entryFile": "index",
+      "sourceRoot": "libs/db/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/db/tsconfig.lib.json"
+      }
+    },
+    "logging": {
+      "type": "library",
+      "root": "libs/logging",
+      "entryFile": "index",
+      "sourceRoot": "libs/logging/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/logging/tsconfig.lib.json"
+      }
+    },
+    "messaging": {
+      "type": "library",
+      "root": "libs/messaging",
+      "entryFile": "index",
+      "sourceRoot": "libs/messaging/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/messaging/tsconfig.lib.json"
+      }
+    },
+    "transactions-api": {
+      "type": "application",
+      "root": "apps/transactions-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/transactions-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transactions-api/tsconfig.app.json"
+      }
+    }
+  }
+}
