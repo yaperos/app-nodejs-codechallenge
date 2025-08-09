@@ -12,7 +12,7 @@
     "prisma:generate": "prisma generate --schema libs/db/prisma/schema.prisma",
     "prisma:migrate:run": "prisma migrate deploy --schema libs/db/prisma/schema.prisma",
     "prisma:migrate:reset": "prisma migrate reset --schema libs/db/prisma/schema.prisma --force",
-    "prisma:migrate:save":  "prisma migrate dev --create-only --schema libs/db/prisma/schema.prisma"
+    "prisma:migrate:save": "prisma migrate dev --create-only --schema libs/db/prisma/schema.prisma"
   },
   "repository": {
     "type": "git",
@@ -40,10 +40,20 @@
     "typescript-eslint": "8.39.0"
   },
   "dependencies": {
+    "@apollo/server": "4.12.2",
+    "@nestjs/apollo": "13.1.0",
     "@nestjs/common": "11.1.6",
+    "@nestjs/config": "4.0.2",
     "@nestjs/core": "11.1.6",
+    "@nestjs/graphql": "13.1.0",
+    "@nestjs/microservices": "11.1.6",
     "@prisma/client": "6.13.0",
-    "prisma": "6.13.0"
+    "class-transformer": "0.5.1",
+    "class-validator": "0.14.2",
+    "graphql": "16.11.0",
+    "kafkajs": "2.2.4",
+    "prisma": "6.13.0",
+    "uuid": "11.1.0"
   },
   "engines": {
     "node": "22.18.x",
