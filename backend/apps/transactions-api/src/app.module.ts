@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaModule } from '@shared/db';
 import { KafkaMessagingModule } from '@shared/messaging/messaging-kafka';
+import { TransactionsModule } from 'apps/transactions-api/src/transactions/transactions.module';
 import { join } from 'path';
 
 @Module({
@@ -13,9 +14,10 @@ import { join } from 'path';
       autoSchemaFile: join(process.cwd(), 'apps/transactions-api/src/schema.gql'),
       sortSchema: true,
       playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
     }),
     PrismaModule,
+    TransactionsModule,
     KafkaMessagingModule,
   ],
 })

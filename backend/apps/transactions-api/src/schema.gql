@@ -1,0 +1,38 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateTransactionInput {
+  accountExternalIdCredit: String!
+  accountExternalIdDebit: String!
+  transferTypeId: String!
+  value: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createTransaction(input: CreateTransactionInput!): Transaction!
+}
+
+type Query {
+  transaction(externalId: String!): Transaction!
+}
+
+type Transaction {
+  createdAt: DateTime!
+  transactionExternalId: String!
+  transactionStatus: TransactionStatus!
+  transactionTypeName: String!
+  value: Int!
+}
+
+"""The status of a transaction"""
+enum TransactionStatus {
+  APPROVED
+  PENDING
+  REJECTED
+}

@@ -30,8 +30,8 @@ model Transaction {
   accountExternalIdCredit String            @map("account_external_id_credit") @db.Uuid
   accountExternalIdDebit  String            @map("account_external_id_debit") @db.Uuid
 
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Date
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
   typeId String          @map("type_id") @db.Uuid
   type   TransactionType @relation(fields: [typeId], references: [id])

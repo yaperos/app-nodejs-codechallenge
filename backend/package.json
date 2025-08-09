@@ -20,7 +20,11 @@
     "dev:tx": "nest start transactions-api --watch",
     "dev:fraud": "nest start anti-fraud --watch",
     "dev:all": "npx --yes concurrently -n tx,fraud -c blue,magenta \"nest start transactions-api --watch\" \"nest start anti-fraud --watch\"",
-    "dev": "npm run infra:up && npm run dev:tx"
+    "dev": "npm run infra:up && npm run dev:tx",
+    "db:seed": "prisma db seed --schema libs/db/prisma/schema.prisma"
+  },
+  "prisma": {
+    "seed": "ts-node libs/db/prisma/seeds/seed.ts"
   },
   "repository": {
     "type": "git",
@@ -35,7 +39,9 @@
   "homepage": "https://github.com/juanmdpc/app-nodejs-codechallenge#readme",
   "devDependencies": {
     "@eslint/js": "9.33.0",
+    "@faker-js/faker": "9.9.0",
     "@nestjs/cli": "11.0.10",
+    "@types/node": "24.2.1",
     "@typescript-eslint/eslint-plugin": "8.39.0",
     "@typescript-eslint/parser": "8.39.0",
     "concurrently": "9.2.0",
@@ -46,6 +52,8 @@
     "eslint-plugin-simple-import-sort": "12.1.1",
     "globals": "16.3.0",
     "prettier": "3.6.2",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.2",
     "typescript-eslint": "8.39.0"
   },
   "dependencies": {

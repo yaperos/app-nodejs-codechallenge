@@ -12,21 +12,21 @@ import { v4 as uuidv4 } from 'uuid';
 export class TransactionsService {
   constructor(private producer: KafkaProducer, private prisma: PrismaService) {}
 
-  async create(input: CreateTransactionDto): Promise<TransactionDto> {
+  async create(params: CreateTransactionDto): Promise<TransactionDto> {
+    const { transferTypeId, ...transactionParams } = params;
     const externalId = uuidv4();
-    
     
     const tx = await this.prisma.transaction.create({
       data: {
-        ...input,
+        ...transactionParams,
         externalId,
-        typeId: input.transferTypeId,
+        typeId: transferTypeId,
         status: TransactionStatusEnum.PENDING,
       },
       include: { type: true },
     });
 
-    await this.producer.publish(Topics.TransactionCreated, externalId, { ...input, transactionExternalId: externalId });
+    await this.producer.publish(Topics.TransactionCreated, externalId, { ...transactionParams, transferTypeId, transactionExternalId: externalId });
 
     return {
       value: tx.value,

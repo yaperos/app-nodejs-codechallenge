@@ -17,8 +17,8 @@ CREATE TABLE "public"."transactions" (
     "external_id" UUID NOT NULL,
     "account_external_id_credit" UUID NOT NULL,
     "account_external_id_debit" UUID NOT NULL,
-    "updated_at" DATE NOT NULL,
-    "created_at" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "type_id" UUID NOT NULL,
 
     CONSTRAINT "transactions_pkey" PRIMARY KEY ("id")
