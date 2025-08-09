@@ -8,7 +8,11 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "prisma:generate": "prisma generate --schema libs/db/prisma/schema.prisma",
+    "prisma:migrate:run": "prisma migrate deploy --schema libs/db/prisma/schema.prisma",
+    "prisma:migrate:reset": "prisma migrate reset --schema libs/db/prisma/schema.prisma --force",
+    "prisma:migrate:save":  "prisma migrate dev --create-only --schema libs/db/prisma/schema.prisma"
   },
   "repository": {
     "type": "git",
@@ -37,7 +41,9 @@
   },
   "dependencies": {
     "@nestjs/common": "11.1.6",
-    "@nestjs/core": "11.1.6"
+    "@nestjs/core": "11.1.6",
+    "@prisma/client": "6.13.0",
+    "prisma": "6.13.0"
   },
   "engines": {
     "node": "22.18.x",
