@@ -13,6 +13,7 @@ services:
   postgres:
     container_name: yape-db
     image: postgres:16-alpine
+    restart: always
     ports:
       - "${POSTGRES_PORT}:5432"
     environment:
@@ -35,6 +36,7 @@ services:
     container_name: yape-zookeeper
     platform: linux/amd64
     image: confluentinc/cp-zookeeper:5.5.3
+    restart: always
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
@@ -43,6 +45,7 @@ services:
     container_name: yape-kafka
     platform: linux/amd64
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    restart: always
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -51,11 +54,13 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
     ports:
       - "${KAFKA_EXTERNAL_PORT}:9092"
   kafka-ui:
     container_name: yape-kafka-ui
     image: provectuslabs/kafka-ui:latest
+    restart: always
     depends_on:
       - kafka
     environment:

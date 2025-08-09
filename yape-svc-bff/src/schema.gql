@@ -1,0 +1,40 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TransactionType {
+  name: String!
+}
+
+type TransactionStatus {
+  name: String!
+}
+
+type Transaction {
+  transactionId: String!
+  transactionType: TransactionType!
+  transactionStatus: TransactionStatus!
+  value: Float!
+  createdAt: String!
+}
+
+type Query {
+  ping: String!
+  hello: String!
+  retrieveTransaction(input: RetrieveTransactionInput!): Transaction!
+}
+
+input RetrieveTransactionInput {
+  transactionId: String!
+}
+
+type Mutation {
+  createTransaction(input: CreateTransactionInput!): Transaction!
+}
+
+input CreateTransactionInput {
+  accountExternalIdDebit: ID!
+  accountExternalIdCredit: ID!
+  transferTypeId: Int!
+  value: Float!
+}
