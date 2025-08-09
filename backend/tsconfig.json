@@ -29,7 +29,9 @@
       "@shared/logging": ["libs/logging/src"],
       "@shared/logging/*": ["libs/logging/src/*"],
       "@shared/messaging": ["libs/messaging/src"],
-      "@shared/messaging/*": ["libs/messaging/src/*"]
+      "@shared/messaging/*": ["libs/messaging/src/*"],
+      "@shared/messaging/messaging-kafka": ["libs/messaging/messaging-kafka"],
+      "@shared/messaging/messaging-kafka/*": ["libs/messaging/messaging-kafka/*"]
     }
   }
 }

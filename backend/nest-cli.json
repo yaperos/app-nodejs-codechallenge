@@ -4,7 +4,7 @@
   "sourceRoot": "apps/app-nodejs-codechallenge/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/app-nodejs-codechallenge/tsconfig.app.json"
   },
   "monorepo": true,

@@ -12,7 +12,15 @@
     "prisma:generate": "prisma generate --schema libs/db/prisma/schema.prisma",
     "prisma:migrate:run": "prisma migrate deploy --schema libs/db/prisma/schema.prisma",
     "prisma:migrate:reset": "prisma migrate reset --schema libs/db/prisma/schema.prisma --force",
-    "prisma:migrate:save": "prisma migrate dev --create-only --schema libs/db/prisma/schema.prisma"
+    "prisma:migrate:save": "prisma migrate dev --create-only --schema libs/db/prisma/schema.prisma",
+    "infra:up": "docker compose -f ../docker-compose.yml up -d",
+    "infra:down": "docker compose -f ../docker-compose.yml down -v",
+    "start:tx": "nest start transactions-api",
+    "start:fraud": "nest start anti-fraud",
+    "dev:tx": "nest start transactions-api --watch",
+    "dev:fraud": "nest start anti-fraud --watch",
+    "dev:all": "npx --yes concurrently -n tx,fraud -c blue,magenta \"nest start transactions-api --watch\" \"nest start anti-fraud --watch\"",
+    "dev": "npm run infra:up && npm run dev:tx"
   },
   "repository": {
     "type": "git",
@@ -30,6 +38,7 @@
     "@nestjs/cli": "11.0.10",
     "@typescript-eslint/eslint-plugin": "8.39.0",
     "@typescript-eslint/parser": "8.39.0",
+    "concurrently": "9.2.0",
     "eslint": "9.33.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.4",
@@ -47,6 +56,7 @@
     "@nestjs/core": "11.1.6",
     "@nestjs/graphql": "13.1.0",
     "@nestjs/microservices": "11.1.6",
+    "@nestjs/platform-express": "11.1.6",
     "@prisma/client": "6.13.0",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.2",
