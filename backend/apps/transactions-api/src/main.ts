@@ -4,8 +4,8 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 const brokers = (process.env.KAFKA_BROKERS ?? 'localhost:9092').split(',');
-const clientId = process.env.TX_API_KAFKA_CLIENT_ID ?? 'transactions-api';
-const consumerGroupId = process.env.TX_API_KAFKA_CONSUMER_GROUP_ID ?? 'transactions-api-consumer';
+const clientId = process.env.TX_API_CLIENT_ID ?? 'transactions-api';
+const consumerGroupId = process.env.TX_API_GROUP_ID ?? 'transactions-api-consumer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
