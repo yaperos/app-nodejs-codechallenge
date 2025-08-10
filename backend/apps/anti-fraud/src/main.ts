@@ -1,23 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { createValidationPipe } from '@shared/common';
+import { envConfig } from 'libs/config/env.config';
 
 import { AntiFraudModule } from './anti-fraud.module';
-
-const brokers = (process.env.KAFKA_BROKERS ?? 'localhost:9092').split(',');
-const clientId = process.env.ANTI_FRAUD_CLIENT_ID ?? 'anti-fraud';
-const consumerGroupId = process.env.ANTI_FRAUD_GROUP_ID ?? 'anti-fraud-consumer';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AntiFraudModule, {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId,
-        brokers,
+        clientId: envConfig.kafka.antiFraudClientId,
+        brokers: envConfig.kafka.brokers,
       },
       consumer: {
-        groupId: consumerGroupId,
+        groupId: envConfig.kafka.antiFraudConsumerGroupId,
       },
       run: { autoCommit: false },
     },

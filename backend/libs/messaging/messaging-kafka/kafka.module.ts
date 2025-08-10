@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { envConfig } from 'libs/config/env.config';
 
 import { KafkaProducer } from './kafka.producer';
 
-const brokers = (process.env.KAFKA_BROKERS ?? 'localhost:9092').split(',');
-const clientId = process.env.KAFKA_CLIENT_ID ?? 'kafka-client';
-const consumerGroupId = process.env.KAFKA_CONSUMER_GROUP_ID ?? 'kafka-consumer';
+
 
 @Module({
   imports: [
@@ -16,10 +15,10 @@ const consumerGroupId = process.env.KAFKA_CONSUMER_GROUP_ID ?? 'kafka-consumer';
           transport: Transport.KAFKA,
           options: {
             client: {
-              clientId,
-              brokers,
+              clientId: envConfig.kafka.clientId,
+              brokers: envConfig.kafka.brokers,
             },
-            consumer: { groupId: consumerGroupId },
+            consumer: { groupId: envConfig.kafka.groupId },
             run: { autoCommit: true },
             subscribe: { fromBeginning: false },
           },
