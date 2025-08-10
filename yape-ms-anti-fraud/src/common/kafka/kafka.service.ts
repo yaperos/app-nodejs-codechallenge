@@ -44,14 +44,11 @@ export class KafkaService
   }
 
   async onModuleInit() {
+    this.logger.log(`Connecting to Kafka...`);
     await Promise.all([this.producer.connect(), this.consumer.connect()]);
   }
 
   async onApplicationBootstrap() {
-    console.log({
-      listener: this.listeners,
-    });
-
     for (const [topic] of this.listeners) {
       this.logger.log(`Subscribing to topic: ${topic}`);
       await this.consumer.subscribe({ topic, fromBeginning: true });
