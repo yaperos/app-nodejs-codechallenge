@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { createValidationPipe } from '@shared/common';
-import { envConfig } from 'libs/config/env.config';
+import { envConfig } from 'libs/config/src/env.config';
 
 import { AntiFraudModule } from './anti-fraud.module';
 

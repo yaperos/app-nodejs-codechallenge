@@ -1,13 +1,13 @@
 import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
-import { TransactionCreatedDto } from "@shared/contracts/events/transaction-created";
+import { TransactionCreatedDto } from "@shared/contracts/events/transaction-created.event";
 import { PrismaService } from "@shared/db";
 import { Topics } from "@shared/messaging";
 import { KafkaProducer } from "@shared/messaging/messaging-kafka";
 import { CreateTransactionDto } from "apps/transactions-api/src/transactions/dtos/requests/create-transaction.dto";
 import { UpdateTransactionDto } from "apps/transactions-api/src/transactions/dtos/requests/update-transaction.dto";
 import { TransactionDto } from "apps/transactions-api/src/transactions/dtos/responses/transaction.dto";
-import { TransactionStatusEnum } from "apps/transactions-api/src/transactions/enums/transaction-status.enum";
+import { TransactionStatusEnum } from "@shared/contracts/enums/transaction-status.enum";
 import { CACHE_PORT, type CachePort,keys } from "libs/cache/src";
 import { TTL } from "libs/cache/src/ttl";
 import { v4 as uuidv4 } from 'uuid';

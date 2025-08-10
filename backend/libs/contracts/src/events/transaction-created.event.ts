@@ -1,4 +1,4 @@
-import { TransactionStatusEnum } from "apps/transactions-api/src/transactions/enums/transaction-status.enum";
+import { TransactionStatusEnum } from "@shared/contracts/enums";
 import { IsDate, IsEnum, IsNumber, IsPositive, IsString } from "class-validator";
 
 export class TransactionCreatedDto {

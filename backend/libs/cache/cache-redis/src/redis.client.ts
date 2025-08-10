@@ -1,5 +1,5 @@
 import { Redis } from "ioredis";
-import { envConfig } from "libs/config/env.config";
+import { envConfig } from "libs/config/src/env.config";
 
 export function createRedis() {
   return new Redis({

@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionValidatedDto } from '@shared/contracts/events/transaction-validated';
+import { TransactionStatusEnum , TransactionValidatedDto } from '@shared/contracts';
 import { Topics } from '@shared/messaging';
 import { KafkaProducer } from '@shared/messaging/messaging-kafka';
-import { TransactionStatusEnum } from 'apps/transactions-api/src/transactions/enums/transaction-status.enum';
 
 @Injectable()
 export class AntiFraudService {

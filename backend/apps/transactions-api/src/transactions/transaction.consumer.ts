@@ -1,6 +1,6 @@
 import { Controller } from "@nestjs/common";
 import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
-import { TransactionValidatedDto } from "@shared/contracts/events/transaction-validated";
+import { TransactionValidatedDto } from "@shared/contracts";
 import { commitOffset, Topics } from "@shared/messaging";
 import { TransactionsService } from "apps/transactions-api/src/transactions/transactions.service";
 

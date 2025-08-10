@@ -1,4 +1,4 @@
-import { TransactionStatusEnum } from "apps/transactions-api/src/transactions/enums/transaction-status.enum";
+import { TransactionStatusEnum } from "@shared/contracts/enums/transaction-status.enum";
 
 export class UpdateTransactionDto {
   readonly transactionExternalId: string;

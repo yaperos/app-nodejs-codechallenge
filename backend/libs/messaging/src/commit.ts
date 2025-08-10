@@ -1,4 +1,4 @@
-import { KafkaContext } from "@nestjs/microservices";
+import { KafkaContext } from '@nestjs/microservices';
 
 export async function commitOffset(ctx: KafkaContext): Promise<void> {
   try {

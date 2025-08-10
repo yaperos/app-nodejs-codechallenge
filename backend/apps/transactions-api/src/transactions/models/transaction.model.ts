@@ -1,5 +1,5 @@
 import { Field, GraphQLISODateTime, Int, ObjectType } from "@nestjs/graphql";
-import { TransactionStatusEnum } from "apps/transactions-api/src/transactions/enums/transaction-status.enum";
+import { TransactionStatusEnum } from "@shared/contracts/enums/transaction-status.enum";
 
 @ObjectType()
 export class Transaction {

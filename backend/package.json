@@ -20,7 +20,7 @@
     "dev:tx": "nest start transactions-api --watch",
     "dev:fraud": "nest start anti-fraud --watch",
     "dev:all": "npx --yes concurrently -n tx,fraud -c blue,magenta \"nest start transactions-api --watch\" \"nest start anti-fraud --watch\"",
-    "dev": "npm run infra:up && npm run dev:tx",
+    "dev": "npm run infra:up && npm run dev:all",
     "db:seed": "prisma db seed --schema libs/db/prisma/schema.prisma"
   },
   "prisma": {
@@ -41,6 +41,9 @@
     "@eslint/js": "9.33.0",
     "@faker-js/faker": "9.9.0",
     "@nestjs/cli": "11.0.10",
+    "@nestjs/testing": "11.1.6",
+    "@swc/jest": "0.2.39",
+    "@types/jest": "30.0.0",
     "@types/node": "24.2.1",
     "@typescript-eslint/eslint-plugin": "8.39.0",
     "@typescript-eslint/parser": "8.39.0",
@@ -51,8 +54,10 @@
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "globals": "16.3.0",
+    "jest": "30.0.5",
     "prettier": "3.6.2",
     "ts-node": "10.9.2",
+    "tsconfig-paths": "4.2.0",
     "typescript": "5.9.2",
     "typescript-eslint": "8.39.0"
   },

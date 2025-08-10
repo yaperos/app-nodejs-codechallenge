@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { envConfig } from 'libs/config/env.config';
+import { envConfig } from '@shared/config';
 
 import { KafkaProducer } from './kafka.producer';
-
-
 
 @Module({
   imports: [

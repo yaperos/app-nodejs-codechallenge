@@ -35,9 +35,10 @@
       "@shared/cache/*": ["libs/cache/src/*"],
       "@shared/cache/cache-redis": ["libs/cache/cache-redis/src"],
       "@shared/cache/cache-redis/*": ["libs/cache/cache-redis/src/*"],
-      "@shared/messaging/messaging-kafka": ["libs/messaging/messaging-kafka"],
-      "@shared/messaging/messaging-kafka/*": ["libs/messaging/messaging-kafka/*"],
-      "@shared/config": ["libs/config/"]
+      "@shared/messaging/messaging-kafka": ["libs/messaging/messaging-kafka/src"],
+      "@shared/messaging/messaging-kafka/*": ["libs/messaging/messaging-kafka/src/*"],
+      "@shared/config": ["libs/config/src"],
+      "@shared/config/*": ["libs/config/src/*"]
     }
   }
 }
