@@ -54,9 +54,16 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      # KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
     ports:
       - "${KAFKA_EXTERNAL_PORT}:9092"
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   kafka-ui:
     container_name: yape-kafka-ui
     image: provectuslabs/kafka-ui:latest
@@ -71,8 +78,69 @@ services:
     ports:
       - "8080:8080"
 
+  bff:
+    container_name: yape-svc-bff
+    build:
+      context: ./yape-svc-bff
+      dockerfile: ../Dockerfile.server
+    volumes:
+      - ./yape-svc-bff:/usr/app
+      - bff_modules:/usr/app/node_modules
+    restart: unless-stopped
+    ports:
+      - 6001:3000
+    env_file: ./yape-svc-bff/.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - ms-transactions
+
+  ms-anti-fraud:
+    container_name: yape-ms-anti-fraud
+    build:
+      context: ./yape-ms-anti-fraud
+      dockerfile: ../Dockerfile.server
+    volumes:
+      - ./yape-ms-anti-fraud:/usr/app
+      - ms-anti-fraud_modules:/usr/app/node_modules
+    restart: unless-stopped
+    ports:
+      - 6003:3000
+    env_file: ./yape-ms-anti-fraud/.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres: 
+        condition: service_healthy
+  
+
+  ms-transactions:
+    container_name: yape-ms-transactions
+    build:
+      context: ./yape-ms-transactions
+      dockerfile: ../Dockerfile.server
+    volumes:
+      - ./yape-ms-transactions:/usr/app
+      - ms-transactions_modules:/usr/app/node_modules
+    restart: unless-stopped
+    ports:
+      - 6002:3000
+    env_file: ./yape-ms-transactions/.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres: 
+        condition: service_healthy
+  
 volumes:
   postgresql:
   postgresql_lib:
   postgresql_data:
   redis:
+  bff_modules:
+  ms-anti-fraud_modules:
+  ms-transactions_modules:

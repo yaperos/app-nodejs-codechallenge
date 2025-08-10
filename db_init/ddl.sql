@@ -88,7 +88,7 @@ END$$;
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'app_usr_transactions_dev') THEN
-    CREATE USER app_usr_transactions_dev WITH PASSWORD '<STRONG_PASSWORD>';
+    CREATE USER app_usr_transactions_dev WITH PASSWORD 'secret';
 END IF;
 END$$;
 

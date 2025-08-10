@@ -1,0 +1,29 @@
+ARG VER_NODE=node:20.17.0-alpine3.20
+FROM $VER_NODE AS build
+
+# Bundler stage
+WORKDIR /usr/src
+
+COPY ./package*.json ./
+
+RUN npm i -g pnpm
+RUN pnpm i --silent
+
+# New stage
+ARG VER_NODE=nnode:20.17.0-alpine3.20
+FROM $VER_NODE
+
+ARG MODE=dev
+ENV MODE=$MODE
+
+WORKDIR /usr/app
+
+COPY --from=build /usr/src/node_modules ./node_modules
+
+## env needed for: node path error prevention
+ENV PATH=/usr/app/node_modules/.bin:$PATH
+
+# Copy from bundler to app
+COPY . .
+
+CMD ["sh", "-c", "npm run start:$MODE"]
