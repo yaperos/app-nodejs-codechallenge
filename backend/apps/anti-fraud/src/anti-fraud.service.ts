@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { TransactionValidatedDto } from '@shared/contracts/events/transaction-validated';
 import { Topics } from '@shared/messaging';
 import { KafkaProducer } from '@shared/messaging/messaging-kafka';
 import { TransactionStatusEnum } from 'apps/transactions-api/src/transactions/enums/transaction-status.enum';
@@ -10,6 +11,11 @@ export class AntiFraudService {
   async evaluateAndPublish(transactionExternalId: string, value: number): Promise<void> {
     const status = value > 1000 ? TransactionStatusEnum.REJECTED : TransactionStatusEnum.APPROVED;
 
-    await this.producer.publish(Topics.TransactionValidated, transactionExternalId, { transactionExternalId, status });
+    const eventPayload: TransactionValidatedDto = {
+      transactionExternalId,
+      transactionStatus: status,
+    };
+
+    await this.producer.publish(Topics.TransactionValidated, transactionExternalId, eventPayload);
   }
 }

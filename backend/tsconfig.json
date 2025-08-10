@@ -26,10 +26,12 @@
       "@shared/contracts/*": ["libs/contracts/src/*"],
       "@shared/db": ["libs/db/src"],
       "@shared/db/*": ["libs/db/src/*"],
+      "@shared/common": ["libs/common/src"],
       "@shared/logging": ["libs/logging/src"],
       "@shared/logging/*": ["libs/logging/src/*"],
       "@shared/messaging": ["libs/messaging/src"],
       "@shared/messaging/*": ["libs/messaging/src/*"],
+      
       "@shared/messaging/messaging-kafka": ["libs/messaging/messaging-kafka"],
       "@shared/messaging/messaging-kafka/*": ["libs/messaging/messaging-kafka/*"]
     }

@@ -1,4 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
+import { TransactionCreatedDto } from "@shared/contracts/events/transaction-created";
 import { PrismaService } from "@shared/db";
 import { Topics } from "@shared/messaging";
 import { KafkaProducer } from "@shared/messaging/messaging-kafka";
@@ -10,9 +12,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class TransactionsService {
-  constructor(private producer: KafkaProducer, private prisma: PrismaService) {}
+  private readonly logger: Logger
+
+  constructor(private producer: KafkaProducer, private prisma: PrismaService) {
+    this.logger = new Logger(TransactionsService.name);
+  }
 
   async create(params: CreateTransactionDto): Promise<TransactionDto> {
+    try {
     const { transferTypeId, ...transactionParams } = params;
     const externalId = uuidv4();
     
@@ -26,18 +33,26 @@ export class TransactionsService {
       include: { type: true },
     });
 
-    await this.producer.publish(Topics.TransactionCreated, externalId, { ...transactionParams, transferTypeId, transactionExternalId: externalId });
-
-    return {
+    const eventPayload: TransactionCreatedDto = {
       value: tx.value,
       createdAt: tx.createdAt,
       transactionTypeName: tx.type.name,
-      transactionExternalId: tx.externalId,
+      transactionExternalId: externalId,
       transactionStatus: tx.status as TransactionStatusEnum,
     };
+
+    await this.producer.publish(Topics.TransactionCreated, externalId, eventPayload);
+
+      return eventPayload
+    } catch (error) {
+      this.logger.error(`Error creating transaction`, error);
+
+      throw new InternalServerErrorException();
+    }
   }
 
   async getByExternalId(externalId: string): Promise<TransactionDto> {
+    try {
     const tx = await this.prisma.transaction.findUniqueOrThrow({
       where: { externalId },
       include: { type: true },
@@ -50,12 +65,22 @@ export class TransactionsService {
       transactionExternalId: tx.externalId,
       transactionStatus: tx.status as TransactionStatusEnum,
     };
+    } catch (error) {
+      this.logger.error(`Error getting transaction by external id ${externalId}`, error);
+
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        throw new NotFoundException('Transaction not found');
+      }
+
+      throw new InternalServerErrorException();
+    }
   }
 
-  async update(input: UpdateTransactionDto): Promise<TransactionDto> {
+  async applyValidation(input: UpdateTransactionDto): Promise<TransactionDto> {
+    try {
     const tx = await this.prisma.transaction.update({
-      where: { externalId: input.externalId },
-      data: { status: input.status },
+      where: { externalId: input.transactionExternalId },
+      data: { status: input.transactionStatus },
       include: { type: true },
     });
 
@@ -64,7 +89,12 @@ export class TransactionsService {
       createdAt: tx.createdAt,
       transactionTypeName: tx.type.name,
       transactionExternalId: tx.externalId,
-      transactionStatus: tx.status as TransactionStatusEnum,
-    };
+        transactionStatus: tx.status as TransactionStatusEnum,
+      };
+    } catch (error) {
+      this.logger.error(`Error applying validation to transaction ${input.transactionExternalId}`, error);
+      
+      throw new InternalServerErrorException();
+    }
   }
 }

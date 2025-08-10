@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { createValidationPipe } from '@shared/common';
 
 import { AppModule } from './app.module';
 
@@ -9,8 +10,9 @@ const consumerGroupId = process.env.TX_API_GROUP_ID ?? 'transactions-api-consume
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(createValidationPipe());
 
-  app.connectMicroservice<MicroserviceOptions>({
+  const ms = app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {
       client: {
@@ -21,6 +23,8 @@ async function bootstrap() {
       run: { autoCommit: false },
     },
   });
+  
+  ms.useGlobalPipes(createValidationPipe());
 
   await app.startAllMicroservices();
   await app.listen(process.env.PORT ?? 3000);

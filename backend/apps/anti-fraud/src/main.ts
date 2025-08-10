@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { createValidationPipe } from '@shared/common';
 
 import { AntiFraudModule } from './anti-fraud.module';
 
@@ -21,6 +22,8 @@ async function bootstrap() {
       run: { autoCommit: false },
     },
   });
+
+  app.useGlobalPipes(createValidationPipe());
 
   await app.listen();
 }
