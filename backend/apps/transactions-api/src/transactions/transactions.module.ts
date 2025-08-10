@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
+import { ScheduleModule } from "@nestjs/schedule";
 import { CacheRedisModule } from "@shared/cache/cache-redis";
 import { PrismaModule } from "@shared/db";
-import { KafkaMessagingModule } from "@shared/messaging/messaging-kafka";
-import { TransactionConsumer } from "apps/transactions-api/src/transactions/transaction.consumer";
+import { MessagingKafkaModule } from "@shared/messaging/messaging-kafka";
+import { OutboxDrainer } from "apps/transactions-api/src/transactions/outbox/outbox.drainer";
 import { TransactionsResolver } from "apps/transactions-api/src/transactions/transactions.resolver";
 import { TransactionsService } from "apps/transactions-api/src/transactions/transactions.service";
 
 
 @Module({
-  controllers: [TransactionConsumer],
-  imports: [KafkaMessagingModule, PrismaModule, CacheRedisModule],
-  providers: [TransactionsResolver, TransactionsService],
+  imports: [MessagingKafkaModule, PrismaModule, CacheRedisModule, ScheduleModule.forRoot()],
+  providers: [TransactionsResolver, TransactionsService, OutboxDrainer],
 })
 export class TransactionsModule {}

@@ -3,7 +3,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaModule } from '@shared/db';
-import { KafkaMessagingModule } from '@shared/messaging/messaging-kafka';
+import { MessagingKafkaModule } from '@shared/messaging/messaging-kafka';
 import { TransactionsModule } from 'apps/transactions-api/src/transactions/transactions.module';
 import { join } from 'path';
 
@@ -18,7 +18,7 @@ import { join } from 'path';
     }),
     PrismaModule,
     TransactionsModule,
-    KafkaMessagingModule,
+    MessagingKafkaModule,
   ],
 })
 export class AppModule {}

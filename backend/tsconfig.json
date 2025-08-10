@@ -22,23 +22,57 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@shared/contracts": ["libs/contracts/src"],
-      "@shared/contracts/*": ["libs/contracts/src/*"],
-      "@shared/db": ["libs/db/src"],
-      "@shared/db/*": ["libs/db/src/*"],
-      "@shared/common": ["libs/common/src"],
-      "@shared/logging": ["libs/logging/src"],
-      "@shared/logging/*": ["libs/logging/src/*"],
-      "@shared/messaging": ["libs/messaging/src"],
-      "@shared/messaging/*": ["libs/messaging/src/*"],
-      "@shared/cache": ["libs/cache/src"],
-      "@shared/cache/*": ["libs/cache/src/*"],
-      "@shared/cache/cache-redis": ["libs/cache/cache-redis/src"],
-      "@shared/cache/cache-redis/*": ["libs/cache/cache-redis/src/*"],
-      "@shared/messaging/messaging-kafka": ["libs/messaging/messaging-kafka/src"],
-      "@shared/messaging/messaging-kafka/*": ["libs/messaging/messaging-kafka/src/*"],
-      "@shared/config": ["libs/config/src"],
-      "@shared/config/*": ["libs/config/src/*"]
+      "@shared/cache": [
+        "libs/cache/src"
+      ],
+      "@shared/cache/*": [
+        "libs/cache/src/*"
+      ],
+      "@shared/cache/cache-redis": [
+        "libs/cache/cache-redis/src"
+      ],
+      "@shared/cache/cache-redis/*": [
+        "libs/cache/cache-redis/src/*"
+      ],
+      "@shared/common": [
+        "libs/common/src"
+      ],
+      "@shared/config": [
+        "libs/config/src"
+      ],
+      "@shared/config/*": [
+        "libs/config/src/*"
+      ],
+      "@shared/contracts": [
+        "libs/contracts/src"
+      ],
+      "@shared/contracts/*": [
+        "libs/contracts/src/*"
+      ],
+      "@shared/db": [
+        "libs/db/src"
+      ],
+      "@shared/db/*": [
+        "libs/db/src/*"
+      ],
+      "@shared/logging": [
+        "libs/logging/src"
+      ],
+      "@shared/logging/*": [
+        "libs/logging/src/*"
+      ],
+      "@shared/messaging": [
+        "libs/messaging/src"
+      ],
+      "@shared/messaging/*": [
+        "libs/messaging/src/*"
+      ],
+      "@shared/messaging/messaging-kafka": [
+        "libs/messaging/messaging-kafka/src"
+      ],
+      "@shared/messaging/messaging-kafka/*": [
+        "libs/messaging/messaging-kafka/src/*"
+      ]
     }
   }
 }

@@ -1,4 +1,5 @@
 export const Topics = {
-  TransactionCreated: 'transaction-created',
-  TransactionValidated: 'transaction-validated',
+  TransactionCommands: 'tx.commands',
+  TransactionCreated: 'tx-created',
+  TransactionValidated: 'tx-validated',
 };

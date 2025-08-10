@@ -27,4 +27,4 @@ import { KafkaProducer } from './kafka.producer';
   providers: [KafkaProducer],
   exports: [KafkaProducer],
 })
-export class KafkaMessagingModule {}
+export class MessagingKafkaModule {}

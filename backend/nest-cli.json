@@ -72,6 +72,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/transactions-api/tsconfig.app.json"
       }
+    },
+    "transactions-command": {
+      "type": "application",
+      "root": "apps/transactions-command",
+      "entryFile": "main",
+      "sourceRoot": "apps/transactions-command/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/transactions-command/tsconfig.app.json"
+      }
     }
   }
 }

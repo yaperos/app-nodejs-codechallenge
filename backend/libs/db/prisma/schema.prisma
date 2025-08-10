@@ -37,11 +37,35 @@ model Transaction {
   type   TransactionType @relation(fields: [typeId], references: [id])
 
   @@index([externalId])
+  @@index([createdAt])
+  @@index([createdAt, status])
   @@map("transactions")
+}
+
+model Outbox {
+  id          String       @id @default(uuid())
+  topic       String
+  key         String
+  payload     Json
+  status      OutboxStatus @default(PENDING)
+  attempts    Int          @default(0)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  availableAt DateTime     @default(now()) @map("available_at")
+
+  @@index([status, availableAt], name: "idx_outbox_status_available")
+  @@map("outbox")
 }
 
 enum TransactionStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum OutboxStatus {
+  SENDING
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
 }
