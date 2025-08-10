@@ -28,47 +28,42 @@ export class ValidateTransactionHandler
   async execute(command: ValidateTransactionCommand): Promise<void> {
     const { payload } = command;
 
-    try {
-      const result = await validateDTOClass(
-        TransactionRequestDto,
-        payload,
-        'Invalid message',
-      );
+    const result = await validateDTOClass(
+      TransactionRequestDto,
+      payload,
+      'Invalid message',
+    );
 
-      if (result instanceof Error) {
-        throw result;
-      }
-
-      const dto = result;
-
-      const amount = dto.value;
-      const transactionId = dto.id;
-
-      if (!transactionId) {
-        this.logger.warn('Received message without transaction.id');
-        throw TRANSACTION_ID_MISSING;
-      }
-
-      const status = amount > 1000 ? 'rejected' : 'approved';
-
-      const payloadOut = {
-        transactionId,
-        status,
-      };
-
-      await this.kafkaService.publishToTopic(
-        this.validatedTopic,
-        JSON.stringify(payloadOut),
-      );
-
-      this.logger.log(
-        `✅ Published validation result to ${this.validatedTopic}: ${JSON.stringify(
-          payloadOut,
-        )}`,
-      );
-    } catch (err) {
-      this.logger.error('Error processing message', err as Error);
-      throw err;
+    if (result instanceof Error) {
+      throw result;
     }
+
+    const dto = result;
+
+    const amount = dto.value;
+    const transactionId = dto.id;
+
+    if (!transactionId) {
+      this.logger.warn('Received message without transaction.id');
+      throw TRANSACTION_ID_MISSING;
+    }
+
+    const status = amount > 1000 ? 'rejected' : 'approved';
+
+    const payloadOut = {
+      transactionId,
+      status,
+    };
+
+    await this.kafkaService.publishToTopic(
+      this.validatedTopic,
+      JSON.stringify(payloadOut),
+    );
+
+    this.logger.log(
+      `✅ Published validation result to ${this.validatedTopic}: ${JSON.stringify(
+        payloadOut,
+      )}`,
+    );
   }
 }
