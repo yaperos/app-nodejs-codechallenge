@@ -1,25 +1,47 @@
-version: "3.7"
+version: '3.8'
 services:
   postgres:
-    image: postgres:14
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-  kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redpanda:
+    image: redpandadata/redpanda:latest
+    command:
+      [
+        "redpanda", "start",
+        "--overprovisioned",
+        "--smp", "1",
+        "--memory", "1G",
+        "--reserve-memory", "0M",
+        "--node-id", "0",
+        "--check=false",
+        "--kafka-addr", "0.0.0.0:9092",
+        "--advertise-kafka-addr", "redpanda:9092"
+      ]
     ports:
-      - 9092:9092
+      - '9092:9092'
+      - '29092:29092'
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres?schema=public
+      KAFKA_BROKER: redpanda:9092
+      KAFKA_CLIENT_ID: transactions-service
+      KAFKAJS_NO_PARTITIONER_WARNING: "1"
+      PORT: 3000
+    depends_on:
+      - postgres
+      - redpanda
+    ports:
+      - '3000:3000'
+
+volumes:
+  pgdata:
