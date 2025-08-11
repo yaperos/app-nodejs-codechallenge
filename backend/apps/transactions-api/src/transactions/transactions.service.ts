@@ -4,9 +4,9 @@ import { TransactionCommand, TransactionCommandTypeEnum } from "@shared/contract
 import { TransactionStatusEnum } from "@shared/contracts/enums/transaction-status.enum";
 import { PrismaService } from "@shared/db";
 import { Topics } from "@shared/messaging";
-import { KafkaProducer } from "@shared/messaging/messaging-kafka";
 import { CreateTransactionDto } from "apps/transactions-api/src/transactions/dtos/requests/create-transaction.dto";
 import { TransactionDto } from "apps/transactions-api/src/transactions/dtos/responses/transaction.dto";
+import { TransactionTypeDto } from "apps/transactions-api/src/transactions/dtos/responses/transaction-types.dto";
 import { CACHE_PORT, type CachePort,keys } from "libs/cache/src";
 import { TTL } from "libs/cache/src/ttl";
 import { v4 as uuidv4 } from 'uuid';
@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class TransactionsService {
   private readonly logger: Logger
 
-  constructor(private producer: KafkaProducer, private prisma: PrismaService, @Inject(CACHE_PORT) private cache: CachePort) {
+  constructor(private prisma: PrismaService, @Inject(CACHE_PORT) private cache: CachePort) {
     this.logger = new Logger(TransactionsService.name);
   }
 
@@ -87,5 +87,9 @@ export class TransactionsService {
 
       throw new InternalServerErrorException();
     }
+  }
+
+  async getTransactionTypes(): Promise<TransactionTypeDto[]> {
+    return this.prisma.transactionType.findMany();
   }
 }

@@ -22,7 +22,6 @@
     "dev:fraud": "nest start anti-fraud --watch",
     "dev:command": "nest start transactions-command --watch",
     "dev:all": "npx --yes concurrently -n tx,fraud,command -c blue,magenta,gray \"nest start transactions-api --watch\" \"nest start anti-fraud --watch\" \"nest start transactions-command --watch\"",
-    "dev": "npm run infra:up && npm run dev:all",
     "db:seed": "prisma db seed --schema libs/db/prisma/schema.prisma"
   },
   "prisma": {

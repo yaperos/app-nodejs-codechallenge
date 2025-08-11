@@ -1,11 +1,17 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { CreateTransactionInput } from "apps/transactions-api/src/transactions/inputs/create-transaction.input";
 import { Transaction } from "apps/transactions-api/src/transactions/models/transaction.model";
+import { TransactionType } from "apps/transactions-api/src/transactions/models/transaction-types.model";
 import { TransactionsService } from "apps/transactions-api/src/transactions/transactions.service";
 
 @Resolver()
 export class TransactionsResolver {
   constructor(private readonly transactionsService: TransactionsService) {}
+
+  @Query(() => [TransactionType], { name: 'transactionTypes' })
+  async transactionTypes(): Promise<TransactionType[]> {
+    return this.transactionsService.getTransactionTypes();
+  }
 
   @Mutation(() => Transaction, { name: 'createTransaction' })
   async create(@Args('input') input: CreateTransactionInput): Promise<Transaction> {

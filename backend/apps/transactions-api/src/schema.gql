@@ -20,6 +20,7 @@ type Mutation {
 
 type Query {
   transaction(externalId: String!): Transaction!
+  transactionTypes: [TransactionType!]!
 }
 
 type Transaction {
@@ -35,4 +36,9 @@ enum TransactionStatus {
   APPROVED
   PENDING
   REJECTED
+}
+
+type TransactionType {
+  id: String!
+  name: String!
 }

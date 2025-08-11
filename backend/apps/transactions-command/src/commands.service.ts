@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { CACHE_PORT, type CachePort,keys } from "@shared/cache";
 import { TransactionCommand, TransactionCommandTypeEnum, TransactionCreatedDto, TransactionStatusEnum } from "@shared/contracts";
 import { PrismaService } from "@shared/db";
 import { Topics } from "@shared/messaging";
@@ -10,7 +11,7 @@ import { KafkaProducer } from "@shared/messaging/messaging-kafka";
 export class CommandsService {
   private readonly logger: Logger
 
-  constructor(private readonly prisma: PrismaService, private readonly producer: KafkaProducer) {
+  constructor(private readonly prisma: PrismaService, private readonly producer: KafkaProducer, @Inject(CACHE_PORT) private cache: CachePort) {
     this.logger = new Logger(CommandsService.name);
   }
 
@@ -61,6 +62,8 @@ export class CommandsService {
         where: { externalId: command.externalId, status: TransactionStatusEnum.PENDING },
         data: { status: command.status },
       });
+
+      await this.cache.del(keys.tx(command.externalId));
     } catch (error) {
       this.logger.error(error);
 
