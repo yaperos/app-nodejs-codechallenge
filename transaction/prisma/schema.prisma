@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionStatus {
+  pending
+  approved
+  rejected
+}
+
+model TransferType {
+  id          String        @id @default(uuid())
+  code        String        @unique @db.VarChar(20)
+  name        String        @unique @db.VarChar(255)
+  Transaction Transaction[]
+
+  @@map("transfer_types")
+}
+
+model Transaction {
+  id                      String              @id @default(uuid())
+  accountExternalIdDebit  String              @map("account_external_id_debit") @db.VarChar(255)
+  accountExternalIdCredit String              @map("account_external_id_credit") @db.VarChar(255)
+  value                   Decimal             @db.Decimal(10, 2)
+  status                  TransactionStatus   @default(pending)
+  createdAt               DateTime            @default(now()) @map("created_at")
+  updatedAt               DateTime            @updatedAt @map("updated_at")
+  transferType         TransferType           @relation(fields: [transferTypeId], references: [id])
+  transferTypeId          String              @map("transfer_type_id")
+
+  @@map("transactions")
+}

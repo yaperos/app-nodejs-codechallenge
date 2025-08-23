@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: Transaction API
+  version: 1.0.0
+  description: API for managing financial transactions
+
+paths:
+  /transactions:
+    post:
+      tags:
+        - Transactions
+      summary: Create a new transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionRequest"
+      responses:
+        '201':
+          description: Transaction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+
+  /transactions/{id}:
+    get:
+      tags:
+        - Transactions
+      summary: Get a transaction by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "97b5a224-c89d-430f-a090-888424e31647"
+      responses:
+        '200':
+          description: Transaction details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Transaction not found"
+
+components:
+  schemas:
+    # Request Schema (for POST /transactions)
+    TransactionRequest:
+      type: object
+      properties:
+        value:
+          type: number
+          example: 12
+        transactionType:
+          type: string
+          example: "Inmediata"
+      required:
+        - value
+        - transactionType
+
+    # Response Schema (shared by POST and GET)
+    TransactionResponse:
+      type: object
+      properties:
+        transactionExternalId:
+          type: string
+          format: uuid
+          example: "97b5a224-c89d-430f-a090-888424e31647"
+        transactionType:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Inmediata"
+        transactionStatus:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "pending"
+        value:
+          type: number
+          example: 12
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-08-11T10:05:04.609Z"

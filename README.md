@@ -1,3 +1,72 @@
+# SOLUTION: Yape Code Challenge
+
+La solución del reto ténico esta desglosado en dos proyectos, esto debido a que se puede escalar cada proyecto independientemente
+- Proyecto "anti-fraud"
+- Proyecto "transaction"
+
+# Ejecutar el proyecto en modo local
+
+## 1. Clonar el proyecto "app-nodejs-codechallenge"
+```
+git clone https://github.com/yaperos/app-nodejs-codechallenge.git
+```
+
+## 2. Proyecto "transaction"
+2.1. Instalar las dependencias
+```
+npm install
+```
+
+2.2. Renombrar el archivo ".env.local" por ".env"
+
+2.3. Ejecutar docker para habilitar la base de datos Postgre y Kafka
+```
+docker-compose up -d
+```
+
+2.4. Ejecutar la migración de la creación de las tablas e inserción de datos
+```
+    npx prisma migrate dev
+    npx prisma db seed
+```
+2.5. Levantar el proyecto en modo local
+```
+npm run start:dev
+```
+
+## 3. Proyecto "anti-fraud"
+2.1. Instalar las dependencias
+```
+npm install
+```
+2.2. Renombrar el archivo ".env.local" por ".env"
+
+2.3. Levantar el proyecto en modo local
+```
+npm run start:dev
+```
+
+## 4. Documentación: ``openapi.yaml``
+
+## 5. Postman Curl
+#### GET: ``/transactions/{{id}}``
+````
+curl --location 'http://localhost:3000/transactions/ba67c7d2-3010-4c52-8818-48848b17b137'
+````
+#### POST: ``/transactions``
+````
+curl --location 'http://localhost:3000/transactions' \
+--header 'Content-Type: application/json' \
+--data '{
+"accountExternalIdDebit": "21122121121212",
+"accountExternalIdCredit": "3e343443433443",
+"transferTypeId": "23d03c79-821c-4ef2-9d28-ba2e4ce626a5",
+"value": 12
+}'
+````
+
+
+---
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
