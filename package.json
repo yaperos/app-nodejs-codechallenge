@@ -1,0 +1,42 @@
+{
+  "name": "reto-tecnico",
+  "version": "1.0.0",
+  "description": "",
+  "prisma":{
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "scripts": {
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
+    "build": "nest build",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/microservices": "^9.0.0",
+    "@nestjs/platform-express": "^9.0.0",
+    "@prisma/client": "^5.22.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "kafkajs": "^2.2.4",
+    "prisma": "^5.22.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^9.0.0",
+    "@nestjs/schematics": "^9.0.0",
+    "@nestjs/testing": "^9.0.0",
+    "@types/graphql": "^14.5.0",
+    "@types/node": "^18.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
