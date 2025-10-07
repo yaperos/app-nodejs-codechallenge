@@ -57,7 +57,7 @@ docker-compose ps
 pnpm prisma:validate
 
 # Check application health
-curl http://localhost:3000
+curl http://localhost:3000/health-check
 
 # View Kafka topics
 # Open http://localhost:8080 in browser
