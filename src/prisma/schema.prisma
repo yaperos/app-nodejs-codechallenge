@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionStatusName {
+  pending
+  approved
+  rejected
+}
+
+model TransactionStatus {
+  id           String                @id @default(uuid())
+  name         TransactionStatusName @unique
+  createdAt    DateTime              @default(now()) @map("created_at")
+  updatedAt    DateTime              @updatedAt @map("updated_at")
+  transactions Transaction[]
+}
+
+model TransactionType {
+  id           Int           @id
+  name         String        @unique
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  transactions Transaction[]
+}
+
+model IdempotencyKey {
+  id            String      @id @default(uuid())
+  key           String      @unique
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId String      @unique
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@index([transactionId], map: "idx_idempotency_transaction")
+}
+
+model Transaction {
+  id                      String            @id @default(uuid())
+  externalId              String            @unique @map("external_id")
+  accountExternalIdDebit  String            @map("account_external_id_debit")
+  accountExternalIdCredit String            @map("account_external_id_credit")
+  transferTypeId          Int               @map("transfer_type_id")
+  type                    TransactionType   @relation(fields: [transferTypeId], references: [id])
+  statusId                String            @map("status_id")
+  status                  TransactionStatus @relation(fields: [statusId], references: [id])
+  value                   Decimal           @db.Decimal(12, 2)
+  createdAt               DateTime          @default(now()) @map("created_at")
+  updatedAt               DateTime          @updatedAt @map("updated_at")
+  idempotencyKey          IdempotencyKey?
+
+  @@index([statusId], map: "idx_transaction_status")
+  @@index([transferTypeId], map: "idx_transaction_type")
+  @@index([createdAt], map: "idx_transaction_created_at")
+}
