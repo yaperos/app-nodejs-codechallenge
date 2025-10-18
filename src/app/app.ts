@@ -1,7 +1,7 @@
 import Fastify from "fastify";
 import { createLogger } from "./config/logger.js";
+import { registerTransactionRoutes } from "./modules/transactions/transaction.routes.js";
 
-// Builds a Fastify instance wired with shared logger
 export const buildApp = () => {
   const app = Fastify({
     logger: createLogger({ module: "http" })
@@ -11,6 +11,8 @@ export const buildApp = () => {
     request.log.debug({ route: "health" }, "health check pinged");
     return reply.send({ status: "ok" });
   });
+
+  registerTransactionRoutes(app);
 
   return app;
 };

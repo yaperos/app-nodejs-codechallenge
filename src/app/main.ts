@@ -2,7 +2,6 @@ import { buildApp } from "./app.js";
 import { env } from "./config/env.js";
 import { logger } from "./config/logger.js";
 
-// Boots the HTTP server and wires lifecycle logging
 const start = async () => {
   const app = buildApp();
 

@@ -3,7 +3,6 @@ import { z } from "zod";
 
 dotenv.config();
 
-// Validates environment variables once on startup to avoid runtime surprises
 const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])

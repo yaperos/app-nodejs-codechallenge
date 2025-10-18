@@ -8,7 +8,6 @@ type GlobalPrisma = {
 
 const globalForPrisma = globalThis as unknown as GlobalPrisma;
 
-// Reuses a single PrismaClient instance across hot reloads during development
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
