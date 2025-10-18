@@ -1,0 +1,1 @@
+export const HIGH_VALUE_THRESHOLD = 1000;
