@@ -1,12 +1,19 @@
 import { antifraudContainer } from "./container.js";
-import { startAntifraudMessaging } from "./bootstrap/startup.js";
+import { disconnectKafkaConsumer } from "./messaging/kafka.consumer.js";
+import { disconnectKafkaProducer } from "./messaging/kafka.producer.js";
+import { startAntifraudConsumer } from "./modules/antifraud/antifraud.consumer.js";
 
 const start = async () => {
-  const stop = await startAntifraudMessaging();
+  const consumer = await startAntifraudConsumer({
+    kafka: antifraudContainer.kafka,
+    env: antifraudContainer.env,
+    logger: antifraudContainer.logger.child({ module: "antifraud-consumer" })
+  });
 
   const shutdown = async () => {
     antifraudContainer.logger.info("shutting down antifraud service");
-    await stop();
+    await disconnectKafkaConsumer(consumer);
+    await disconnectKafkaProducer(antifraudContainer.kafka);
     process.exit(0);
   };
 
