@@ -2,11 +2,10 @@ import crypto from "node:crypto";
 import { Prisma, PrismaClient } from "@prisma/client";
 import type { Logger } from "pino";
 
-const deriveLockKeys = (key: string): [number, number] => {
+const deriveLockKey = (key: string): bigint => {
   const digest = crypto.createHash("sha256").update(key).digest();
-  const first = digest.readInt32BE(0);
-  const second = digest.readInt32BE(4);
-  return [first, second];
+  // Converte os primeiros 8 bytes para bigint
+  return digest.readBigInt64BE(0);
 };
 
 export const withPgTransactionLock = async <T>(
@@ -15,13 +14,14 @@ export const withPgTransactionLock = async <T>(
   callback: (tx: Prisma.TransactionClient) => Promise<T>,
   logger?: Logger
 ): Promise<T> => {
-  const [firstKey, secondKey] = deriveLockKeys(key);
+  const lockKey = deriveLockKey(key);
   const scopedLogger = logger?.child({ lockKey: key });
 
   return prisma.$transaction(
     async (tx: Prisma.TransactionClient) => {
       scopedLogger?.debug("acquiring advisory lock");
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(${firstKey}, ${secondKey})`;
+      // Cast para void para evitar erro de deserialização
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(${lockKey})`;
       scopedLogger?.debug("lock acquired");
 
       const result = await callback(tx);

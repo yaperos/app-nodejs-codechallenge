@@ -1,7 +1,7 @@
-import { antifraudContainer } from "./container.js";
-import { disconnectKafkaConsumer } from "./messaging/kafka.consumer.js";
-import { disconnectKafkaProducer } from "./messaging/kafka.producer.js";
-import { startAntifraudConsumer } from "./modules/antifraud/antifraud.consumer.js";
+import { antifraudContainer } from "./container";
+import { disconnectKafkaConsumer } from "./messaging/kafka.consumer";
+import { disconnectKafkaProducer } from "./messaging/kafka.producer";
+import { startAntifraudConsumer } from "./modules/antifraud/antifraud.consumer";
 
 const start = async () => {
   const consumer = await startAntifraudConsumer({

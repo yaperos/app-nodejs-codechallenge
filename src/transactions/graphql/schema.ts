@@ -24,9 +24,10 @@ export const typeDefs = /* GraphQL */ `
 
   type Query {
     transaction(transactionExternalId: ID!): Transaction
+    transactions: [Transaction!]!
   }
 
   type Mutation {
-    createTransaction(input: CreateTransactionInput!, idempotencyKey: String!): Transaction!
+    createTransaction(input: CreateTransactionInput!): Transaction!
   }
 `;

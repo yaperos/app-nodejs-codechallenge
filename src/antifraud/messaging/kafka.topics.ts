@@ -1,4 +1,4 @@
-import type { Env } from "../config/env.js";
+import type { Env } from "../config/env";
 
 export type KafkaTopics = {
   transactionCreated: string;

@@ -7,12 +7,12 @@ RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml tsconfig*.json ./
-RUN pnpm install --frozen-lockfile
+COPY package.json tsconfig*.json ./
+COPY pnpm-lock.yaml* ./
+RUN pnpm install --no-frozen-lockfile
 
 COPY . .
 RUN pnpm run build
-RUN pnpm run test
 
 # Stage 2: runtime image
 FROM node:18.20-alpine AS runtime

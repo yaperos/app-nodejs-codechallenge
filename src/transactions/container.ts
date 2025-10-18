@@ -1,8 +1,8 @@
-import { env } from "./config/env.js";
-import { logger } from "./config/logger.js";
-import { prisma } from "./db/prisma-client.js";
-import { getKafkaClient } from "./messaging/kafka.client.js";
-import { getKafkaTopics } from "./messaging/kafka.topics.js";
+import { env } from "./config/env";
+import { logger } from "./config/logger";
+import { prisma } from "./db/prisma-client";
+import { getKafkaClient } from "./messaging/kafka.client";
+import { getKafkaTopics } from "./messaging/kafka.topics";
 
 const kafka = getKafkaClient({
   clientId: env.KAFKA_CLIENT_ID,

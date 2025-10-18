@@ -1,12 +1,12 @@
 import type { Kafka } from "kafkajs";
 import type { Logger } from "pino";
-import { sendKafkaMessage } from "../../messaging/kafka.producer.js";
-import type { KafkaTopics } from "../../messaging/kafka.topics.js";
-import type { TransactionCreatedEvent } from "../../messaging/events.js";
+import { sendKafkaMessage } from "../../messaging/kafka.producer";
+import type { KafkaTopics } from "../../messaging/kafka.topics";
+import type { TransactionCreatedEvent } from "../../messaging/events";
 import type {
-  CreateTransactionBody,
+  CreateTransactionInput,
   TransactionResponse
-} from "./transaction.schemas.js";
+} from "./transaction.graphql.types";
 
 export type TransactionCreatedPublisherDeps = {
   kafka: Kafka;
@@ -16,7 +16,7 @@ export type TransactionCreatedPublisherDeps = {
 
 export const publishTransactionCreated = async (
   deps: TransactionCreatedPublisherDeps,
-  body: CreateTransactionBody,
+  body: CreateTransactionInput,
   payload: TransactionResponse
 ) => {
   const event: TransactionCreatedEvent = {

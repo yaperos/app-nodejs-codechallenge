@@ -8,7 +8,10 @@
     "dev": "tsx watch main.ts",
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/main.js",
-    "test": "echo 'no tests yet'"
+    "test": "jest --config jest.config.cjs --runInBand",
+    "test:unit": "jest --config jest.config.cjs --selectProjects unit",
+    "test:integration": "jest --config jest.config.cjs --selectProjects integration --runInBand",
+    "test:watch": "jest --config jest.config.cjs --watch"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
@@ -18,7 +21,16 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-typescript": "^7.27.1",
+    "@testcontainers/kafka": "^10.13.2",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.8.1",
+    "babel-jest": "^30.2.0",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "jest": "^30.2.0",
+    "testcontainers": "^10.13.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }

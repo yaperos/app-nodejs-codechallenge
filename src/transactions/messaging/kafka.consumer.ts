@@ -12,10 +12,17 @@ export const createKafkaConsumer = async (
   kafka: Kafka,
   config: KafkaConsumerConfig
 ): Promise<Consumer> => {
+  if (!config.topics || config.topics.length === 0) {
+    throw new Error("At least one topic is required");
+  }
+
   const consumer = kafka.consumer({ groupId: config.groupId });
   await consumer.connect();
 
   for (const topic of config.topics) {
+    if (!topic) {
+      throw new Error("Topic name cannot be empty");
+    }
     await consumer.subscribe({ topic });
   }
 

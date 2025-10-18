@@ -1,11 +1,11 @@
 import type { Kafka } from "kafkajs";
 import type { Logger } from "pino";
-import { evaluateTransaction } from "./antifraud.processor.js";
-import { createKafkaConsumer } from "../../messaging/kafka.consumer.js";
-import { sendKafkaMessage } from "../../messaging/kafka.producer.js";
-import { getKafkaTopics } from "../../messaging/kafka.topics.js";
-import type { TransactionCreatedEvent } from "../../messaging/events.js";
-import type { Env } from "../../config/env.js";
+import { evaluateTransaction } from "./antifraud.processor";
+import { createKafkaConsumer } from "../../messaging/kafka.consumer";
+import { sendKafkaMessage } from "../../messaging/kafka.producer";
+import { getKafkaTopics } from "../../messaging/kafka.topics";
+import type { TransactionCreatedEvent } from "../../messaging/events";
+import type { Env } from "../../config/env";
 
 export type AntifraudConsumerDeps = {
   kafka: Kafka;

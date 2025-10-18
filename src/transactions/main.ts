@@ -1,12 +1,10 @@
-import { buildApp } from "./http/app.js";
-import { disconnectKafkaConsumer } from "./messaging/kafka.consumer.js";
-import { disconnectKafkaProducer } from "./messaging/kafka.producer.js";
-import { startTransactionStatusConsumer } from "./modules/transactions/transaction.consumer.js";
-import { transactionsContainer } from "./container.js";
+import { startServer } from "./http/app";
+import { disconnectKafkaConsumer } from "./messaging/kafka.consumer";
+import { disconnectKafkaProducer } from "./messaging/kafka.producer";
+import { startTransactionStatusConsumer } from "./modules/transactions/transaction.consumer";
+import { transactionsContainer } from "./container";
 
 const start = async () => {
-  const app = buildApp();
-
   const kafkaLogger = transactionsContainer.logger.child({ module: "kafka" });
   const statusConsumer = await startTransactionStatusConsumer({
     kafka: transactionsContainer.kafka,
@@ -15,25 +13,23 @@ const start = async () => {
     logger: kafkaLogger.child({ consumer: "transaction-status" })
   });
 
+  const { server, url } = await startServer(transactionsContainer.env.PORT);
+
   const shutdown = async () => {
     transactionsContainer.logger.info("shutting down transactions service");
-    await app.close();
+    await server.stop();
     await disconnectKafkaConsumer(statusConsumer);
     await disconnectKafkaProducer(transactionsContainer.kafka);
+    await transactionsContainer.prisma.$disconnect();
     process.exit(0);
   };
 
   process.on("SIGINT", shutdown);
   process.on("SIGTERM", shutdown);
 
-  await app.listen({
-    host: "0.0.0.0",
-    port: transactionsContainer.env.PORT
-  });
-
   transactionsContainer.logger.info(
-    { port: transactionsContainer.env.PORT },
-    "transactions HTTP server is running"
+    { url, port: transactionsContainer.env.PORT },
+    "transactions GraphQL server is running"
   );
 };
 
