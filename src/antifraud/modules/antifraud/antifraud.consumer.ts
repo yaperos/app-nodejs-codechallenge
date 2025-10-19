@@ -1,6 +1,7 @@
 import type { Kafka } from "kafkajs";
 import type { Logger } from "pino";
 import { evaluateTransaction } from "./antifraud.processor";
+import { parseTransactionCreatedEvent } from "./antifraud.validation";
 import { createKafkaConsumer } from "../../messaging/kafka.consumer";
 import { sendKafkaMessage } from "../../messaging/kafka.producer";
 import { getKafkaTopics } from "../../messaging/kafka.topics";
@@ -30,7 +31,29 @@ export const startAntifraudConsumer = async ({
         return;
       }
 
-      const payload = JSON.parse(message.value.toString()) as TransactionCreatedEvent;
+      let decoded: unknown;
+      try {
+        decoded = JSON.parse(message.value.toString());
+      } catch (error) {
+        logger.warn({ err: error }, "failed to parse transaction.created payload");
+        return;
+      }
+
+      const validation = parseTransactionCreatedEvent(decoded);
+      if (!validation.success) {
+        logger.warn(
+          {
+            issues: validation.error.issues.map((issue) => ({
+              path: issue.path.join("."),
+              message: issue.message
+            }))
+          },
+          "invalid transaction.created payload received"
+        );
+        return;
+      }
+
+      const payload = validation.data as TransactionCreatedEvent;
       const statusEvent = evaluateTransaction(payload);
 
       await sendKafkaMessage(

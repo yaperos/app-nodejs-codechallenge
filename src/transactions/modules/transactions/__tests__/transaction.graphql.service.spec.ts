@@ -1,6 +1,8 @@
 import { PrismaClient, TransactionStatusName, Prisma } from "@prisma/client";
 import { Kafka } from "kafkajs";
 import { Logger } from "pino";
+import { GraphQLError } from "graphql";
+import * as crypto from "node:crypto";
 import { TransactionGraphQLService } from "../transaction.graphql.service";
 import { publishTransactionCreated } from "../transaction.publisher";
 import { withPgTransactionLock } from "../../../locks/postgres-lock";
@@ -8,10 +10,12 @@ import type { KafkaTopics } from "../../../messaging/kafka.topics";
 
 jest.mock("../transaction.publisher");
 jest.mock("../../../locks/postgres-lock");
-jest.mock("node:crypto", () => ({
-  ...jest.requireActual("node:crypto"),
-  randomUUID: jest.fn().mockReturnValue("mocked-uuid-123")
-}));
+
+const MOCK_TRANSACTION_ID = crypto.randomUUID();
+const EXISTING_TRANSACTION_ID = crypto.randomUUID();
+const DEBIT_ACCOUNT_ID = crypto.randomUUID();
+const CREDIT_ACCOUNT_ID = crypto.randomUUID();
+let randomUuidSpy: jest.SpiedFunction<typeof crypto.randomUUID>;
 
 describe("TransactionGraphQLService", () => {
   let mockPrisma: jest.Mocked<PrismaClient>;
@@ -21,6 +25,7 @@ describe("TransactionGraphQLService", () => {
   let service: TransactionGraphQLService;
 
   beforeEach(() => {
+    randomUuidSpy = jest.spyOn(crypto, "randomUUID").mockReturnValue(MOCK_TRANSACTION_ID);
     jest.clearAllMocks();
 
     mockPrisma = {
@@ -58,13 +63,22 @@ describe("TransactionGraphQLService", () => {
     });
   });
 
+  afterEach(() => {
+    randomUuidSpy.mockRestore();
+  });
+
   describe("transaction (Query)", () => {
+    it("should reject invalid UUID", async () => {
+      await expect(service.transaction(null, { transactionExternalId: "invalid" }))
+        .rejects.toThrow(GraphQLError);
+    });
+
     it("should return existing transaction", async () => {
       // Arrange
       const mockTransaction = {
-        externalId: "txn-123",
-        accountExternalIdDebit: "debit-111",
-        accountExternalIdCredit: "credit-222",
+        externalId: MOCK_TRANSACTION_ID,
+        accountExternalIdDebit: DEBIT_ACCOUNT_ID,
+        accountExternalIdCredit: CREDIT_ACCOUNT_ID,
         value: new Prisma.Decimal(250.00),
         createdAt: new Date("2024-01-15T12:00:00.000Z"),
         status: { id: 1, name: TransactionStatusName.pending },
@@ -74,11 +88,11 @@ describe("TransactionGraphQLService", () => {
       mockPrisma.transaction.findUnique = jest.fn().mockResolvedValue(mockTransaction);
 
       // Act
-      const result = await service.transaction(null, { transactionExternalId: "txn-123" });
+      const result = await service.transaction(null, { transactionExternalId: MOCK_TRANSACTION_ID });
 
       // Assert
       expect(result).toEqual({
-        transactionExternalId: "txn-123",
+        transactionExternalId: MOCK_TRANSACTION_ID,
         transactionType: { name: "TED" },
         transactionStatus: { name: TransactionStatusName.pending },
         value: 250.00,
@@ -91,7 +105,7 @@ describe("TransactionGraphQLService", () => {
       mockPrisma.transaction.findUnique = jest.fn().mockResolvedValue(null);
 
       // Act
-      const result = await service.transaction(null, { transactionExternalId: "non-existent" });
+      const result = await service.transaction(null, { transactionExternalId: EXISTING_TRANSACTION_ID });
 
       // Assert
       expect(result).toBeNull();
@@ -101,8 +115,8 @@ describe("TransactionGraphQLService", () => {
 
   describe("createTransaction (Mutation)", () => {
     const mockInput = {
-      accountExternalIdDebit: "debit-account-123",
-      accountExternalIdCredit: "credit-account-456",
+      accountExternalIdDebit: DEBIT_ACCOUNT_ID,
+      accountExternalIdCredit: CREDIT_ACCOUNT_ID,
       transferTypeId: 1,
       value: 100.50
     };
@@ -110,9 +124,9 @@ describe("TransactionGraphQLService", () => {
     it("should create new transaction when idempotency key does not exist", async () => {
       // Arrange
       const mockTransactionRecord = {
-        externalId: "mocked-uuid-123",
-        accountExternalIdDebit: "debit-account-123",
-        accountExternalIdCredit: "credit-account-456",
+        externalId: MOCK_TRANSACTION_ID,
+        accountExternalIdDebit: DEBIT_ACCOUNT_ID,
+        accountExternalIdCredit: CREDIT_ACCOUNT_ID,
         value: new Prisma.Decimal(100.50),
         createdAt: new Date("2024-01-15T10:00:00.000Z"),
         status: { id: 1, name: TransactionStatusName.pending },
@@ -130,7 +144,7 @@ describe("TransactionGraphQLService", () => {
 
       // Assert
       expect(result).toEqual({
-        transactionExternalId: "mocked-uuid-123",
+        transactionExternalId: MOCK_TRANSACTION_ID,
         transactionType: { name: "PIX" },
         transactionStatus: { name: TransactionStatusName.pending },
         value: 100.50,
@@ -144,9 +158,9 @@ describe("TransactionGraphQLService", () => {
       // Arrange
       const existingTransaction = {
         transaction: {
-          externalId: "existing-uuid-999",
-          accountExternalIdDebit: "debit-account-123",
-          accountExternalIdCredit: "credit-account-456",
+          externalId: EXISTING_TRANSACTION_ID,
+          accountExternalIdDebit: DEBIT_ACCOUNT_ID,
+          accountExternalIdCredit: CREDIT_ACCOUNT_ID,
           value: new Prisma.Decimal(100.50),
           createdAt: new Date("2024-01-14T09:00:00.000Z"),
           status: { id: 2, name: TransactionStatusName.approved },
@@ -161,7 +175,7 @@ describe("TransactionGraphQLService", () => {
 
       // Assert
       expect(result).toEqual({
-        transactionExternalId: "existing-uuid-999",
+        transactionExternalId: EXISTING_TRANSACTION_ID,
         transactionType: { name: "PIX" },
         transactionStatus: { name: TransactionStatusName.approved },
         value: 100.50,
@@ -170,6 +184,32 @@ describe("TransactionGraphQLService", () => {
 
       expect(withPgTransactionLock).not.toHaveBeenCalled();
       expect(publishTransactionCreated).not.toHaveBeenCalled();
+    });
+
+    it("should reject payloads with invalid UUIDs", async () => {
+      await expect(
+        service.createTransaction(null, {
+          input: {
+            accountExternalIdDebit: "not-a-uuid",
+            accountExternalIdCredit: mockInput.accountExternalIdCredit,
+            transferTypeId: mockInput.transferTypeId,
+            value: mockInput.value
+          }
+        })
+      ).rejects.toThrow(GraphQLError);
+    });
+
+    it("should reject payloads with invalid numeric fields", async () => {
+      await expect(
+        service.createTransaction(null, {
+          input: {
+            accountExternalIdDebit: mockInput.accountExternalIdDebit,
+            accountExternalIdCredit: mockInput.accountExternalIdCredit,
+            transferTypeId: 0,
+            value: -10
+          }
+        })
+      ).rejects.toThrow(GraphQLError);
     });
   });
 });

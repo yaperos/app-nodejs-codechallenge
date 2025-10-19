@@ -16,7 +16,7 @@ export const createKafkaConsumer = async (
   await consumer.connect();
 
   for (const topic of config.topics) {
-    await consumer.subscribe({ topic });
+    await consumer.subscribe({ topic, fromBeginning: false });
   }
 
   await consumer.run({

@@ -1,5 +1,7 @@
 import { TransactionStatusName, Prisma } from "@prisma/client";
 import { randomUUID, createHash } from "node:crypto";
+import { GraphQLError } from "graphql";
+import { z } from "zod";
 import { withPgTransactionLock } from "../../locks/postgres-lock";
 import { publishTransactionCreated } from "./transaction.publisher";
 import type {
@@ -8,6 +10,10 @@ import type {
   TransactionResponse,
   TransactionRecord
 } from "./transaction.graphql.types";
+import {
+  createTransactionArgsSchema,
+  transactionQueryArgsSchema
+} from "./transaction.graphql.validation";
 
 /**
  * Service that directly implements GraphQL operations.
@@ -26,10 +32,16 @@ export class TransactionGraphQLService {
   ): Promise<TransactionResponse | null> {
     const { prisma, logger } = this.deps;
 
-    logger.debug({ transactionExternalId: args.transactionExternalId }, "querying transaction");
+    const { transactionExternalId } = this.parseOrThrow(
+      transactionQueryArgsSchema,
+      args,
+      "Invalid transaction query arguments"
+    );
+
+    logger.debug({ transactionExternalId }, "querying transaction");
 
     const record = await prisma.transaction.findUnique({
-      where: { externalId: args.transactionExternalId },
+      where: { externalId: transactionExternalId },
       include: {
         status: true,
         type: true
@@ -37,7 +49,7 @@ export class TransactionGraphQLService {
     });
 
     if (!record) {
-      logger.warn({ transactionExternalId: args.transactionExternalId }, "transaction not found");
+      logger.warn({ transactionExternalId }, "transaction not found");
       return null;
     }
 
@@ -75,7 +87,11 @@ export class TransactionGraphQLService {
     args: { input: CreateTransactionInput }
   ): Promise<TransactionResponse> {
     const { prisma, kafka, topics, logger } = this.deps;
-    const { input } = args;
+    const { input } = this.parseOrThrow(
+      createTransactionArgsSchema,
+      args,
+      "Invalid createTransaction input"
+    );
 
     // Gera idempotency key baseado nos campos da request
     const idempotencyKey = this.generateIdempotencyKey(input);
@@ -227,5 +243,17 @@ export class TransactionGraphQLService {
       value: Number(transaction.value),
       createdAt: transaction.createdAt.toISOString()
     };
+  }
+
+  private parseOrThrow<T>(schema: z.ZodSchema<T>, data: unknown, contextMessage: string): T {
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      const details = result.error.issues
+        .map((issue) => `${issue.path.join(".") || "value"}: ${issue.message}`)
+        .join("; ");
+      throw new GraphQLError(`${contextMessage}: ${details}`);
+    }
+
+    return result.data;
   }
 }

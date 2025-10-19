@@ -7,6 +7,7 @@ import { getKafkaTopics } from "../../../messaging/kafka.topics";
 import type { TransactionCreatedEvent, TransactionStatusEvent } from "../../../messaging/events";
 import type { Env } from "../../../config/env";
 import pino from "pino";
+import { randomUUID } from "node:crypto";
 
 describe("Antifraud Integration Tests", () => {
   let kafkaContainer: StartedKafkaContainer;
@@ -36,7 +37,7 @@ describe("Antifraud Integration Tests", () => {
 
     kafka = new Kafka({
       brokers: [brokers],
-      logLevel: logLevel.ERROR
+      logLevel: logLevel.NOTHING
     });
 
     admin = kafka.admin();
@@ -62,8 +63,14 @@ describe("Antifraud Integration Tests", () => {
   }, 60000);
 
   afterAll(async () => {
-    if (antifraudConsumer) await antifraudConsumer.disconnect();
-    if (consumer) await consumer.disconnect();
+    if (antifraudConsumer) {
+      await antifraudConsumer.stop();
+      await antifraudConsumer.disconnect();
+    }
+    if (consumer) {
+      await consumer.stop();
+      await consumer.disconnect();
+    }
     if (producer) await producer.disconnect();
     if (admin) await admin.disconnect();
     if (kafkaContainer) await kafkaContainer.stop();
@@ -83,7 +90,7 @@ describe("Antifraud Integration Tests", () => {
       });
 
       // Wait for antifraud consumer to be ready
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 5000));
 
       // Subscribe test consumer to read result
       await consumer.subscribe({ topic: topics.transactionStatus, fromBeginning: true });
@@ -105,13 +112,15 @@ describe("Antifraud Integration Tests", () => {
       });
 
       // Wait for test consumer to be ready
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       const transactionEvent: TransactionCreatedEvent = {
-        transactionExternalId: "test-txn-001",
-        accountExternalIdDebit: "acc-debit-001",
-        accountExternalIdCredit: "acc-credit-001",
-        value: 100.00
+        transactionExternalId: randomUUID(),
+        accountExternalIdDebit: randomUUID(),
+        accountExternalIdCredit: randomUUID(),
+        transferTypeId: 1,
+        value: 100.00,
+        createdAt: new Date().toISOString()
       };
 
       // Act
@@ -130,7 +139,7 @@ describe("Antifraud Integration Tests", () => {
       ]);
       expect(receivedMessages.length).toBeGreaterThan(0);
       expect(receivedMessages[0]).toMatchObject({
-        transactionExternalId: "test-txn-001",
+        transactionExternalId: transactionEvent.transactionExternalId,
         status: "approved"
       });
       expect(receivedMessages[0].processedAt).toBeDefined();
@@ -155,6 +164,15 @@ describe("Antifraud Integration Tests", () => {
       await testConsumer.connect();
       await testConsumer.subscribe({ topic: topics.transactionStatus, fromBeginning: false });
 
+      const transactionEvent: TransactionCreatedEvent = {
+        transactionExternalId: randomUUID(),
+        accountExternalIdDebit: randomUUID(),
+        accountExternalIdCredit: randomUUID(),
+        transferTypeId: 2,
+        value: 10000.00, // High value to be rejected
+        createdAt: new Date().toISOString()
+      };
+
       const receivedMessages: TransactionStatusEvent[] = [];
       let resolvePromise: () => void;
       const messagePromise = new Promise<void>((resolve) => {
@@ -165,7 +183,7 @@ describe("Antifraud Integration Tests", () => {
         eachMessage: async ({ message }) => {
           if (message.value) {
             const event = JSON.parse(message.value.toString()) as TransactionStatusEvent;
-            if (event.transactionExternalId === "test-txn-002") {
+            if (event.transactionExternalId === transactionEvent.transactionExternalId) {
               receivedMessages.push(event);
               resolvePromise();
             }
@@ -174,13 +192,6 @@ describe("Antifraud Integration Tests", () => {
       });
 
       await new Promise(resolve => setTimeout(resolve, 1000));
-
-      const transactionEvent: TransactionCreatedEvent = {
-        transactionExternalId: "test-txn-002",
-        accountExternalIdDebit: "acc-debit-002",
-        accountExternalIdCredit: "acc-credit-002",
-        value: 10000.00 // High value to be rejected
-      };
 
       // Act
       await producer.send({
@@ -197,11 +208,12 @@ describe("Antifraud Integration Tests", () => {
         new Promise(resolve => setTimeout(resolve, 10000))
       ]);
 
+      await testConsumer.stop();
       await testConsumer.disconnect();
 
       expect(receivedMessages.length).toBeGreaterThan(0);
       expect(receivedMessages[0]).toMatchObject({
-        transactionExternalId: "test-txn-002",
+        transactionExternalId: transactionEvent.transactionExternalId,
         status: "rejected"
       });
       expect(receivedMessages[0].processedAt).toBeDefined();
@@ -228,22 +240,28 @@ describe("Antifraud Integration Tests", () => {
 
       const transactions: TransactionCreatedEvent[] = [
         {
-          transactionExternalId: "batch-001",
-          accountExternalIdDebit: "acc-d-001",
-          accountExternalIdCredit: "acc-c-001",
-          value: 50.00
+          transactionExternalId: randomUUID(),
+          accountExternalIdDebit: randomUUID(),
+          accountExternalIdCredit: randomUUID(),
+          transferTypeId: 1,
+          value: 50.00,
+          createdAt: new Date().toISOString()
         },
         {
-          transactionExternalId: "batch-002",
-          accountExternalIdDebit: "acc-d-002",
-          accountExternalIdCredit: "acc-c-002",
-          value: 5000.00
+          transactionExternalId: randomUUID(),
+          accountExternalIdDebit: randomUUID(),
+          accountExternalIdCredit: randomUUID(),
+          transferTypeId: 1,
+          value: 5000.00,
+          createdAt: new Date().toISOString()
         },
         {
-          transactionExternalId: "batch-003",
-          accountExternalIdDebit: "acc-d-003",
-          accountExternalIdCredit: "acc-c-003",
-          value: 200.00
+          transactionExternalId: randomUUID(),
+          accountExternalIdDebit: randomUUID(),
+          accountExternalIdCredit: randomUUID(),
+          transferTypeId: 1,
+          value: 200.00,
+          createdAt: new Date().toISOString()
         }
       ];
 
@@ -253,11 +271,13 @@ describe("Antifraud Integration Tests", () => {
         resolvePromise = resolve;
       });
 
+      const txnIds = transactions.map(t => t.transactionExternalId);
+
       await testConsumer.run({
         eachMessage: async ({ message }) => {
           if (message.value) {
             const event = JSON.parse(message.value.toString()) as TransactionStatusEvent;
-            if (event.transactionExternalId.startsWith("batch-")) {
+            if (txnIds.includes(event.transactionExternalId)) {
               receivedMessages.push(event);
               if (receivedMessages.length === 3) {
                 resolvePromise();
@@ -286,18 +306,19 @@ describe("Antifraud Integration Tests", () => {
         new Promise(resolve => setTimeout(resolve, 20000))
       ]);
 
+      await testConsumer.stop();
       await testConsumer.disconnect();
 
       expect(receivedMessages.length).toBeGreaterThanOrEqual(3);
 
-      const batch001 = receivedMessages.find(m => m.transactionExternalId === "batch-001");
-      expect(batch001?.status).toBe("approved");
+      const result1 = receivedMessages.find(m => m.transactionExternalId === transactions[0].transactionExternalId);
+      expect(result1?.status).toBe("approved");
 
-      const batch002 = receivedMessages.find(m => m.transactionExternalId === "batch-002");
-      expect(batch002?.status).toBe("rejected");
+      const result2 = receivedMessages.find(m => m.transactionExternalId === transactions[1].transactionExternalId);
+      expect(result2?.status).toBe("rejected");
 
-      const batch003 = receivedMessages.find(m => m.transactionExternalId === "batch-003");
-      expect(batch003?.status).toBe("approved");
+      const result3 = receivedMessages.find(m => m.transactionExternalId === transactions[2].transactionExternalId);
+      expect(result3?.status).toBe("approved");
     }, 30000);
   });
 });

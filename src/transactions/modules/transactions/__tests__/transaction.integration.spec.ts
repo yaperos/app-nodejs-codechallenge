@@ -90,7 +90,7 @@ describe("Transactions Integration Tests", () => {
 
     kafka = new Kafka({
       brokers: [brokers],
-      logLevel: logLevel.ERROR
+      logLevel: logLevel.NOTHING
     });
 
     admin = kafka.admin();
@@ -115,8 +115,14 @@ describe("Transactions Integration Tests", () => {
   }, 90000);
 
   afterAll(async () => {
-    if (statusConsumer) await statusConsumer.disconnect();
-    if (consumer) await consumer.disconnect();
+    if (statusConsumer) {
+      await statusConsumer.stop();
+      await statusConsumer.disconnect();
+    }
+    if (consumer) {
+      await consumer.stop();
+      await consumer.disconnect();
+    }
     if (producer) await producer.disconnect();
     if (admin) await admin.disconnect();
     await prisma.$disconnect();
@@ -346,6 +352,7 @@ describe("Transactions Integration Tests", () => {
         new Promise(resolve => setTimeout(resolve, 8000))
       ]);
 
+      await testConsumer.stop();
       await testConsumer.disconnect();
 
       expect(receivedEvents.length).toBeGreaterThan(0);

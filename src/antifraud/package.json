@@ -2,7 +2,6 @@
   "name": "antifraud",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "main": "dist/main.js",
   "scripts": {
     "dev": "tsx watch main.ts",
@@ -10,7 +9,7 @@
     "start": "node dist/main.js",
     "test": "jest --config jest.config.cjs --runInBand",
     "test:unit": "jest --config jest.config.cjs --selectProjects unit",
-    "test:integration": "jest --config jest.config.cjs --selectProjects integration --runInBand",
+    "test:integration": "jest --config jest.config.cjs --selectProjects integration --runInBand --forceExit",
     "test:watch": "jest --config jest.config.cjs --watch"
   },
   "dependencies": {

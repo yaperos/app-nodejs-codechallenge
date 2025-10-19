@@ -6,10 +6,18 @@ import { sendKafkaMessage } from "../../../messaging/kafka.producer";
 import { evaluateTransaction } from "../antifraud.processor";
 import { TransactionCreatedEvent } from "../../../messaging/events";
 import { Env } from "../../../config/env";
+import * as crypto from "node:crypto";
 
 jest.mock("../../../messaging/kafka.consumer");
 jest.mock("../../../messaging/kafka.producer");
 jest.mock("../antifraud.processor");
+
+const TRANSACTION_ID_APPROVED = crypto.randomUUID();
+const TRANSACTION_ID_REJECTED = crypto.randomUUID();
+const DEBIT_ACCOUNT_ID = crypto.randomUUID();
+const CREDIT_ACCOUNT_ID = crypto.randomUUID();
+const HIGH_VALUE_DEBIT_ID = crypto.randomUUID();
+const HIGH_VALUE_CREDIT_ID = crypto.randomUUID();
 
 describe("AntifraudConsumer", () => {
   let mockKafka: jest.Mocked<Kafka>;
@@ -99,10 +107,12 @@ describe("AntifraudConsumer", () => {
     it("should process valid message and send result", async () => {
       // Arrange
       const transactionEvent: TransactionCreatedEvent = {
-        transactionExternalId: "txn-123",
-        accountExternalIdDebit: "acc-debit-456",
-        accountExternalIdCredit: "acc-credit-789",
-        value: 150.00
+        transactionExternalId: TRANSACTION_ID_APPROVED,
+        accountExternalIdDebit: DEBIT_ACCOUNT_ID,
+        accountExternalIdCredit: CREDIT_ACCOUNT_ID,
+        transferTypeId: 1,
+        value: 150.00,
+        createdAt: new Date("2024-01-15T10:00:00Z").toISOString()
       };
 
       const message = {
@@ -110,7 +120,7 @@ describe("AntifraudConsumer", () => {
       };
 
       const statusEvent = {
-        transactionExternalId: "txn-123",
+        transactionExternalId: TRANSACTION_ID_APPROVED,
         status: "approved",
         processedAt: "2024-01-15T10:00:00Z"
       };
@@ -127,7 +137,7 @@ describe("AntifraudConsumer", () => {
         {
           topic: "transaction.status",
           messages: [{
-            key: "txn-123",
+            key: TRANSACTION_ID_APPROVED,
             value: JSON.stringify(statusEvent)
           }]
         },
@@ -151,10 +161,12 @@ describe("AntifraudConsumer", () => {
     it("should process rejected transaction correctly", async () => {
       // Arrange
       const transactionEvent: TransactionCreatedEvent = {
-        transactionExternalId: "txn-999",
-        accountExternalIdDebit: "acc-debit-111",
-        accountExternalIdCredit: "acc-credit-222",
-        value: 10000.00
+        transactionExternalId: TRANSACTION_ID_REJECTED,
+        accountExternalIdDebit: HIGH_VALUE_DEBIT_ID,
+        accountExternalIdCredit: HIGH_VALUE_CREDIT_ID,
+        transferTypeId: 2,
+        value: 10000.00,
+        createdAt: new Date("2024-01-15T11:00:00Z").toISOString()
       };
 
       const message = {
@@ -162,7 +174,7 @@ describe("AntifraudConsumer", () => {
       };
 
       const statusEvent = {
-        transactionExternalId: "txn-999",
+        transactionExternalId: TRANSACTION_ID_REJECTED,
         status: "rejected",
         processedAt: "2024-01-15T11:00:00Z"
       };
@@ -178,7 +190,7 @@ describe("AntifraudConsumer", () => {
         {
           topic: "transaction.status",
           messages: [{
-            key: "txn-999",
+            key: TRANSACTION_ID_REJECTED,
             value: JSON.stringify(statusEvent)
           }]
         },
