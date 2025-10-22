@@ -1,0 +1,19 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".integration.spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/jest-setup.ts"],
+  "testTimeout": 30000,
+  "maxWorkers": 1,
+  "moduleNameMapper": {
+    "^@domain/(.*)$": "<rootDir>/../src/domain/$1",
+    "^@application/(.*)$": "<rootDir>/../src/application/$1",
+    "^@infrastructure/(.*)$": "<rootDir>/../src/infrastructure/$1",
+    "^@presentation/(.*)$": "<rootDir>/../src/presentation/$1",
+    "^@common/(.*)$": "<rootDir>/../src/common/$1"
+  }
+}

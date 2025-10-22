@@ -1,0 +1,115 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 20
+      name: "Warm up"
+    - duration: 120
+      arrivalRate: 50
+      name: "Ramp up to 50 RPS"
+    - duration: 300
+      arrivalRate: 100
+      name: "Sustained 100 RPS"
+    - duration: 180
+      arrivalRate: 150
+      name: "Peak load 150 RPS"
+    - duration: 60
+      arrivalRate: 50
+      name: "Cool down"
+  plugins:
+    expect: {}
+    metrics-by-endpoint: {}
+  processor: "./processor.js"
+  variables:
+    baseUrl: "/api/v1"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+  http:
+    timeout: 10
+    maxSockets: 500
+
+scenarios:
+  - name: "High Volume Transaction Creation"
+    weight: 60
+    flow:
+      - function: "generateTransactionData"
+      - post:
+          url: "{{ baseUrl }}/transactions"
+          json:
+            type: "{{ transactionType }}"
+            amount: "{{ amount }}"
+            currency: "PEN"
+            sourceAccountId: "{{ sourceAccount }}"
+            targetAccountId: "{{ targetAccount }}"
+            idempotencyKey: "{{ idempotencyKey }}"
+            metadata:
+              description: "10K load test {{ $randomNumber }}"
+              testRun: "10k-test"
+              timestamp: "{{ timestamp }}"
+              batchId: "{{ batchId }}"
+          capture:
+            - json: "$.data.id"
+              as: "transactionId"
+            - json: "$.data.status"
+              as: "status"
+          expect:
+            - statusCode: 201
+            - contentType: json
+
+      - think: 1
+
+      - loop:
+          - get:
+              url: "{{ baseUrl }}/transactions/{{ transactionId }}"
+              ifTrue: "{{ $randomNumber }} < 0.2"
+              expect:
+                - statusCode: 200
+
+  - name: "Concurrent Account Queries"
+    weight: 25
+    flow:
+      - loop:
+          - function: "generateAccountId"
+          - get:
+              url: "{{ baseUrl }}/transactions/account/{{ accountId }}"
+              qs:
+                limit: 5
+                offset: 0
+              expect:
+                - statusCode: 200
+        count: 3
+
+  - name: "Status Filtering"
+    weight: 10
+    flow:
+      - loop:
+          - get:
+              url: "{{ baseUrl }}/transactions/status/{{ $randomString(['PENDING', 'COMPLETED', 'FAILED']) }}"
+              qs:
+                limit: 10
+              expect:
+                - statusCode: 200
+        count: 2
+
+  - name: "Mixed Operations"
+    weight: 5
+    flow:
+      - function: "generateTransactionData"
+      - post:
+          url: "{{ baseUrl }}/transactions"
+          json:
+            type: "PAYMENT"
+            amount: "{{ amount }}"
+            currency: "PEN"
+            sourceAccountId: "{{ sourceAccount }}"
+            targetAccountId: "{{ targetAccount }}"
+          capture:
+            - json: "$.data.id"
+              as: "txId"
+
+      - get:
+          url: "{{ baseUrl }}/transactions/statistics/summary"
+
+      - get:
+          url: "{{ baseUrl }}/transactions/account/{{ sourceAccount }}"

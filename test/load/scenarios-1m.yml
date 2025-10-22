@@ -1,0 +1,76 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+      name: "Initial load"
+    - duration: 120
+      arrivalRate: 500
+      rampTo: 1000
+      name: "Ramp to 1000 RPS"
+    - duration: 120
+      arrivalRate: 1000
+      rampTo: 2000
+      name: "Ramp to 2000 RPS"
+
+    - duration: 900
+      arrivalRate: 2000
+      name: "Sustained 2000 RPS"
+
+    - duration: 300
+      arrivalRate: 3000
+      name: "Peak 3000 RPS"
+
+    - duration: 120
+      arrivalRate: 500
+      name: "Cool down"
+
+  plugins:
+    expect: {}
+    metrics-by-endpoint: {}
+    publish-metrics:
+      - type: "cloudwatch"
+        region: "us-east-1"
+  processor: "./processor.js"
+  variables:
+    baseUrl: "/api/v1"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+  http:
+    timeout: 5
+    maxSockets: 2000
+  engines:
+    http:
+      pool: 100
+
+scenarios:
+  - name: "Bulk Transaction Creation"
+    weight: 90
+    flow:
+      - loop:
+          - function: "generateBulkTransactionData"
+          - post:
+              url: "{{ baseUrl }}/transactions"
+              json:
+                type: "{{ transactionType }}"
+                amount: "{{ amount }}"
+                currency: "PEN"
+                sourceAccountId: "{{ sourceAccount }}"
+                targetAccountId: "{{ targetAccount }}"
+                idempotencyKey: "{{ idempotencyKey }}"
+                metadata:
+                  testRun: "1m-stress"
+                  batchId: "{{ batchId }}"
+                  sequence: "{{ sequence }}"
+              expect:
+                - statusCode: [201, 200]
+        count: 5
+
+  - name: "Statistics Only"
+    weight: 10
+    flow:
+      - get:
+          url: "{{ baseUrl }}/transactions/statistics/summary"
+          expect:
+            - statusCode: 200

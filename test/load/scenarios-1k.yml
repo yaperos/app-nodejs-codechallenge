@@ -1,0 +1,79 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 30
+      arrivalRate: 10
+      name: "Warm up"
+    - duration: 60
+      arrivalRate: 20
+      name: "Ramp up load"
+    - duration: 120
+      arrivalRate: 30
+      name: "Sustained load"
+  plugins:
+    expect: {}
+    metrics-by-endpoint: {}
+  processor: "./processor.js"
+  variables:
+    baseUrl: "/api/v1"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "Create and Verify Transaction - 1K Test"
+    weight: 70
+    flow:
+      - function: "generateTransactionData"
+      - post:
+          url: "{{ baseUrl }}/transactions"
+          json:
+            type: "P2P"
+            amount: "{{ amount }}"
+            currency: "PEN"
+            sourceAccountId: "{{ sourceAccount }}"
+            targetAccountId: "{{ targetAccount }}"
+            idempotencyKey: "{{ idempotencyKey }}"
+            metadata:
+              description: "Load test transaction {{ $randomNumber }}"
+              testRun: "1k-test"
+              timestamp: "{{ timestamp }}"
+          capture:
+            - json: "$.data.id"
+              as: "transactionId"
+          expect:
+            - statusCode: 201
+            - contentType: json
+            - hasProperty: "success"
+
+      - think: 2
+
+      - get:
+          url: "{{ baseUrl }}/transactions/{{ transactionId }}"
+          expect:
+            - statusCode: 200
+            - hasProperty: "data.id"
+
+  - name: "Query Account Transactions"
+    weight: 20
+    flow:
+      - function: "generateAccountId"
+      - get:
+          url: "{{ baseUrl }}/transactions/account/{{ accountId }}"
+          qs:
+            limit: 10
+            offset: 0
+          expect:
+            - statusCode: 200
+            - hasProperty: "data"
+            - hasProperty: "pagination"
+
+  - name: "Get Transaction Statistics"
+    weight: 10
+    flow:
+      - get:
+          url: "{{ baseUrl }}/transactions/statistics/summary"
+          expect:
+            - statusCode: 200
+            - hasProperty: "data.counts"
+            - hasProperty: "data.amounts"
