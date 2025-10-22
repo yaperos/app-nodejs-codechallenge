@@ -15,27 +15,27 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
-  createTransaction(input: CreateTransactionInput!): TransactionResponse!
+  createTransaction(input: CreateTransactionInput!): TransactionResponseDto!
 }
 
 type Query {
-  getTransaction(transactionExternalId: String!): TransactionResponse!
+  getTransaction(transactionExternalId: String!): TransactionResponseDto!
 }
 
-type TransactionResponse {
+type TransactionResponseDto {
   createdAt: DateTime!
   transactionExternalId: ID!
-  transactionStatus: TransactionStatus!
-  transactionType: TransactionType!
+  transactionStatus: TransactionStatusDto!
+  transactionType: TransactionTypeDto!
   value: Float!
 }
 
-type TransactionStatus {
+type TransactionStatusDto {
   id: Int!
   name: String!
 }
 
-type TransactionType {
+type TransactionTypeDto {
   id: Int!
   name: String!
 }
