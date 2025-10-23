@@ -1,12 +1,12 @@
 version: "3.7"
 services:
-  postgres:
-    image: postgres:14
+  mongo1:
+    image: mongo
+    restart: always
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - 27017:27017
+    volumes:
+      - $PWD/mongo-data:/data/db'
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:

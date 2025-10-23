@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS", //very important for vscode sugges absolute path
+    "rootDir": ".", //cause error to import from shared folder
+    "importHelpers": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true, //true: to debug ts file, false: to debug js file
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "strictNullChecks": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    /* "paths": {
+      "src/*": ["./src/*"],
+      "test/*": ["./test/*"],
+      "types/*": ["./types/*"]
+    }, */
+    "allowJs": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "ES2021",
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["./src/*"],
+      "configuration/*": ["src/configuration/*"],
+      //"./src/modules*"
+    },
+    "preserveWatchOutput": false,
+    "noEmitOnError": true, //to void create js file in root of shared folder in error case
+    "types": ["node"],
+    //to allow use external packages : https://stackoverflow.com/questions/48189713/visual-studio-shared-typescript-library-ts6059-file-is-not-under-rootd
+    // "rootDirs": ["src"]
+  },
+  //include: Specifies an array of filenames or patterns to include in the program
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "types/**/*.ts"
+  ],
+  "rules": {
+    "no-unused-vars": "off"
+  },
+  "exclude": ["node_modules"]
+}
