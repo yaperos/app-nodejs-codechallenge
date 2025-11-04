@@ -1,82 +1,136 @@
-# Yape Code Challenge :rocket:
+# Yape Reto - Transaction & Antifraud Microservices
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+This project consists of two microservices: Transaction Management and Antifraud Detection.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Prerequisites
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+- Node.js (LTS version recommended)
+- pnpm package manager
+- Docker and Docker Compose
 
-# Problem
+## Installation
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### 1. Install Antifraud Microservice
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```bash
+cd antifraud-ms
+pnpm install
 ```
 
-# Tech Stack
+### 2. Install Transaction Microservice
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```bash
+cd transaction-ms
+pnpm install
+```
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+### 3. Start Docker Services
 
-You must have two resources:
+From the root directory, start the required Docker containers:
 
-1. Resource to create a transaction that must containt:
+```bash
+docker-compose up -d
+```
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+### 4. Configure Environment Variables
+
+Copy the environment template file to create your local configuration:
+
+```bash
+cd transaction-ms
+cp .env.template .env
+```
+
+## Running the Application
+
+Start both microservices in development mode:
+
+### Terminal 1 - Antifraud Microservice
+```bash
+cd antifraud-ms
+pnpm run start:dev
+```
+
+### Terminal 2 - Transaction Microservice
+```bash
+cd transaction-ms
+pnpm run start:dev
+```
+
+## Testing the API
+
+Once both services are running, navigate to the GraphQL playground:
+
+```
+http://localhost:3000/graphql
+```
+
+### Available Operations
+
+#### 1. Create Transaction Mutation
+
+First, use this mutation to create a new transaction:
+
+```graphql
+mutation Mutation($createTransactionInput: CreateTransactionInput!) {
+  createTransaction(createTransactionInput: $createTransactionInput) {
+    accountExternalIdCredit
+    accountExternalIdDebit
+    createdAt
+    status
+    transactionExternalId
+    value
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
-
+**Variables:**
 ```json
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+  "createTransactionInput": {
+    "accountExternalIdDebit": "550e8400-e29b-41d4-a716-446655440000",
+    "accountExternalIdCredit": "9f1a8a23-3c7b-4b9f-9e29-17d1f8e41e76",
+    "value": 999,
+    "transferTypeId": 1
+  }
 }
 ```
 
-## Optional
+> **Note:** Copy the `transactionExternalId` from the response, you'll need it for the next query.
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+#### 2. Query Transaction
 
-You can use Graphql;
+Use this query to retrieve the transaction details using the `transactionExternalId` obtained from the create mutation:
 
-# Send us your challenge
+```graphql
+query Transaction($transactionExternalId: String!) {
+  transaction(transactionExternalId: $transactionExternalId) {
+    status
+    accountExternalIdCredit
+    accountExternalIdDebit
+    status
+    transactionExternalId
+  }
+}
+```
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+**Variables:**
+```json
+{
+  "transactionExternalId": "<USE THE transactionExternalId FROM THE CREATE MUTATION RESPONSE>"
+}
+```
 
-If you have any questions, please let us know.
+## Troubleshooting
+
+- Ensure all Docker containers are running: `docker-compose ps`
+- Check if ports 3000 and other required ports are available
+- Verify environment variables are properly configured in `.env` file
+- Check logs of each service for any errors
+
+## Architecture
+
+This project implements a microservices architecture with:
+- **Transaction Microservice**: Handles transaction creation and management
+- **Antifraud Microservice**: Validates transactions for fraud detection
+- **GraphQL API**: Provides a unified interface for client interactions
