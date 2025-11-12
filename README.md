@@ -1,82 +1,124 @@
-# Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+### Installation & Setup
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+1. **Clone and install dependencies:**
+```bash
+git clone https://github.com/carloshuayamares/app-nodejs-codechallenge.git
+cd app-nodejs-codechallenge
+npm install
 ```
 
-# Tech Stack
+2. **Set up environment:**
+```bash
+cp .env.example .env
+# Edit .env if needed (defaults should work)
+```
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+3. **Start the application and services:**
+```bash
+npm run build
+npm run docker:up
+```
+  - **Script Pre-Population**: In the deployment of docker compose, an initial query is executed to create the transaction types and transaction states.
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+### Important Information (Script Pre-Population)
+```bash
+  // Description of the possible values ​​for: transferTypeId
+  [
+    { id: 1, name: 'Transfer' },
+    { id: 2, name: 'Payment' },
+    { id: 3, name: 'Withdrawal' },
+  ];
 
-You must have two resources:
+  // Description of the possible values ​​for: transactionStatus
+  [
+    { id: 1, name: 'Pending' },
+    { id: 2, name: 'Approved' },
+    { id: 3, name: 'Rejected' },
+  ];
+```
+The application will be available at:
+- **GraphQL Playground**: http://localhost:3000/graphql
+- **Kafka UI**: http://localhost:8080
 
-1. Resource to create a transaction that must containt:
+### Examples via GraphQL Playground:
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+#### 1. Create a Transaction 
+
+**GraphQL Mutation:** 
+```graphql
+mutation {
+  createTransaction(input: {
+    accountExternalIdDebit: "uuid-debit-code-generate"
+    accountExternalIdCredit: "uuid-credit-code-generate"
+    tranferTypeId: 1
+    value: 999
+  }) {
+    transactionExternalId
+    transactionType {
+      name
+    }
+    transactionStatus {
+      name
+    }
+    value
+    createdAt
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
-
+**Expected Response:**
 ```json
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+  "data": {
+    "createTransaction": {
+      "transactionExternalId": "generated-uuid",
+      "transactionType": {
+        "name": "Transfer"
+      },
+      "transactionStatus": {
+        "name": "Pending"
+      },
+      "value": 999,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  }
 }
 ```
 
-## Optional
+#### 2. Retrieve a Transaction
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+**GraphQL Query:**
+```graphql
+query {
+  getTransaction(transactionExternalId: "uuid-of-create-transaction") {
+    transactionExternalId
+    transactionType {
+      name
+    }
+    transactionStatus {
+      name
+    }
+    value
+    createdAt
+  }
+}
+```
+**Expected Response:**
+```json
+{
+  "data": {
+    "getTransaction": {
+      "transactionExternalId": "generated-uuid",
+      "transactionType": {
+        "name": "Transfer"
+      },
+      "transactionStatus": {
+        "name": "Approved"
+      },
+      "value": 999,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  }
+}
+```
