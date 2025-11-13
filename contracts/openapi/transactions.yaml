@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: Yape Transactions API
+  version: 1.0.0
+paths:
+  /transactions:
+    post:
+      summary: Create a transaction
+      operationId: createTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransactionRequest'
+      responses:
+        '201':
+          description: Transaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTransactionResponse'
+  /transactions/{transactionExternalId}:
+    get:
+      summary: Get transaction by external id
+      operationId: getTransaction
+      parameters:
+        - in: path
+          name: transactionExternalId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Transaction detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionView'
+components:
+  schemas:
+    TransactionStatusName:
+      type: string
+      enum:
+        - pending
+        - approved
+        - rejected
+    CreateTransactionRequest:
+      type: object
+      required:
+        - accountExternalIdDebit
+        - accountExternalIdCredit
+        - tranferTypeId
+        - value
+      properties:
+        accountExternalIdDebit:
+          type: string
+          format: uuid
+        accountExternalIdCredit:
+          type: string
+          format: uuid
+        tranferTypeId:
+          type: integer
+        value:
+          type: number
+    CreateTransactionResponse:
+      type: object
+      required:
+        - transactionExternalId
+        - transactionStatus
+        - createdAt
+      properties:
+        transactionExternalId:
+          type: string
+          format: uuid
+        transactionStatus:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              $ref: '#/components/schemas/TransactionStatusName'
+        createdAt:
+          type: string
+          format: date-time
+    TransactionView:
+      type: object
+      required:
+        - transactionExternalId
+        - transactionType
+        - transactionStatus
+        - value
+        - createdAt
+      properties:
+        transactionExternalId:
+          type: string
+          format: uuid
+        transactionType:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+        transactionStatus:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              $ref: '#/components/schemas/TransactionStatusName'
+        value:
+          type: number
+        createdAt:
+          type: string
+          format: date-time

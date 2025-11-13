@@ -1,0 +1,14 @@
+{
+  "name": "app-nodejs-codechallenge-main",
+  "private": true,
+  "workspaces": [
+    "transaction-service",
+    "anti-fraud-service"
+  ],
+  "scripts": {
+    "dev:transaction-service": "npm --workspace transaction-service run start:dev",
+    "dev:anti-fraud-service": "npm --workspace anti-fraud-service run start:dev",
+    "test": "npm --workspaces run test",
+    "lint": "npm --workspaces run lint"
+  }
+}

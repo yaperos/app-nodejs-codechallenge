@@ -1,0 +1,10 @@
+$body = @{
+    accountExternalIdDebit = '11111111-1111-1111-1111-111111111111'
+    accountExternalIdCredit = '22222222-2222-2222-2222-222222222222'
+    tranferTypeId = 1
+    value = 150.75
+    transactionExternalId = '33333333-3333-3333-3333-333333333333'
+}
+
+$response = Invoke-RestMethod -Method Post -Uri 'http://localhost:3000/transactions' -ContentType 'application/json' -Body ($body | ConvertTo-Json)
+$response | ConvertTo-Json -Depth 5

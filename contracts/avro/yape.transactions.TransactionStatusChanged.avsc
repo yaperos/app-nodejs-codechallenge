@@ -1,0 +1,1 @@
+{"type":"record","name":"TransactionStatusChanged","namespace":"yape.transactions","fields":[{"name":"transactionExternalId","type":"string"},{"name":"status","type":{"type":"enum","name":"Status","symbols":["pending","approved","rejected"]}},{"name":"reason","type":["null","string"],"default":null},{"name":"evaluatedAt","type":{"type":"long","logicalType":"timestamp-millis"}}]}

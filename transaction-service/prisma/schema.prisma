@@ -1,0 +1,40 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Transaction {
+  transactionExternalId  String             @id @default(uuid()) @db.Uuid
+  accountExternalIdDebit String             @db.Uuid
+  accountExternalIdCredit String            @db.Uuid
+  transferTypeId         Int
+  value                  Decimal            @db.Decimal(18, 2)
+  status                 TransactionStatus  @default(pending)
+  createdAt              DateTime           @default(now())
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum TransactionStatus {
+  pending
+  approved
+  rejected
+}
+
+model Outbox {
+  id          String   @id @default(uuid()) @db.Uuid
+  topic       String
+  key         String
+  payload     Json
+  createdAt   DateTime @default(now())
+  publishedAt DateTime?
+  attempts    Int      @default(0)
+  nextAttemptAt DateTime @default(now())
+
+  @@index([topic, publishedAt])
+  @@index([nextAttemptAt])
+}
