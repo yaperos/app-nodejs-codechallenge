@@ -1,0 +1,28 @@
+---
+server:
+  port: 8085
+  servlet:
+    context-path: /api/transactions-report
+spring:
+  application:
+    name: transaction-report-service
+  webflux:
+    base-path: /api/transactions-report
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.r2dbc: DEBUG
+    org.springframework.kafka: INFO
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  health:
+    db:
+      enabled: true

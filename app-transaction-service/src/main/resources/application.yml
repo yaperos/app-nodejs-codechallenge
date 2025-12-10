@@ -1,0 +1,48 @@
+---
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: transaction-service
+  webflux:
+    base-path: /api
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/postgres
+    user: postgres
+    password: postgres
+    ignoreUnsupportedDatabase: true
+    locations: classpath:db/migration
+  kafka:
+    bootstrap-servers: "localhost:9092"
+    properties:
+      schema.registry.url: "https://localhost:8081"
+    consumer:
+      group-id: anti-fraud-service-group
+      specific-avro-reader: true
+      enable-auto-commit: false
+      auto-offset-reset: latest
+    producer:
+      acks: all
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.r2dbc: DEBUG
+    org.springframework.kafka: INFO
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  health:
+    db:
+      enabled: true
+    kafka:
+      enabled: true

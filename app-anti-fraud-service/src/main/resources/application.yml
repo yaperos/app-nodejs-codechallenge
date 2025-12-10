@@ -1,0 +1,29 @@
+---
+server:
+  port: 8082
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    topics:
+      transactions-created: transactions.created
+      transactions-validated: transactions.validated
+    schema-registry-url: http://localhost:8081
+application:
+  rules:
+    amount-limit: "1000"
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.r2dbc: DEBUG
+    org.springframework.kafka: INFO
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  health:
+    db:
+      enabled: true
+    kafka:
+      enabled: true

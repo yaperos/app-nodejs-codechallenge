@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "TransactionValidatedEvent",
+  "namespace": "com.pe.yape.service.challenge.transactions.avro",
+  "fields": [
+    {"name": "transactionExternalId", "type": "string"},
+    {"name": "status", "type": "string"},
+    {"name": "reasonCode", "type": ["null","string"], "default": null},
+    {"name": "validatedAt", "type": "string"}
+  ]
+}
