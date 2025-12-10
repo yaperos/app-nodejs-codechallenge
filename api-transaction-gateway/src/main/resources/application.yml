@@ -1,0 +1,32 @@
+server:
+  port: 9000
+spring:
+  redis:
+    host: localhost
+    port: 6379
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      transactionServices:
+        sliding-window-size: 6
+        permitted-number-of-calls-in-half-open-state: 2
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+
+  retry:
+    instances:
+      transactionRetry:
+        max-attempts: 3
+        wait-duration: 2s
+
+  timelimiter:
+    instances:
+      transactionTimeout:
+        timeout-duration: 4s
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG

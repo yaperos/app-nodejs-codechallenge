@@ -1,5 +1,10 @@
 version: "3.7"
 services:
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
   postgres:
     image: postgres:14
     ports:
@@ -23,3 +28,15 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.6.1
+    container_name: schema-registry
+    depends_on:
+      - kafka
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
+
+
