@@ -1,0 +1,22 @@
+{
+  "name": "anti-fraud-service",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "test": "jest --runInBand",
+    "build": "tsc",
+    "start:prod": "node dist/src/index.js"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.0",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6",
+    "@types/jest": "^30.0.0"
+  }
+
+}
