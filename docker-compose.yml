@@ -7,6 +7,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=yape_transactions_db
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +24,41 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+
+  transaction-service:
+    build:
+      context: ./transaction-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=yape_transactions_db
+
+  anti-fraud-service:
+    build:
+      context: ./anti-fraud-service
+    ports:
+      - "3003:3003"
+    depends_on:
+      - kafka
+    environment:
+      - NODE_ENV=development
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKER_CONNECT: "kafka:29092"
+    depends_on:
+      - kafka
+    networks:
+      - default
