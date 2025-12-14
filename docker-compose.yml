@@ -57,7 +57,10 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - DB_DATABASE=postgres
-      - KAFKA_BROKER=kafka:29092 
+      - KAFKA_BROKER=kafka:29092
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_TTL_MS=120000
     depends_on:
       postgres:
         condition: service_healthy
@@ -71,4 +74,14 @@ services:
       - KAFKA_BROKER=kafka:29092 
     depends_on:
       kafka:
-        condition: service_healthy        
+        condition: service_healthy
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

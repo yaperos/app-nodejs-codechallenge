@@ -4,8 +4,12 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
-
-console.log('Database Host:', process.env.DB_HOST);
+import { Transaction } from './entities/transaction.entity';
+import { CacheModule } from '@nestjs/cache-manager';
+import { join } from 'path';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AppResolver } from './app.resolver';
 
 @Module({
   imports: [
@@ -18,7 +22,11 @@ console.log('Database Host:', process.env.DB_HOST);
         transport: Transport.KAFKA,
         options: {
           client: {
-            brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
+            brokers: [process.env.KAFKA_BROKER || 'kafka:9092'],
+            retry: {
+              initialRetryTime: 300,
+              retries: 10,
+            },
           },
           consumer: {
             groupId: 'transaction-consumer',
@@ -36,8 +44,23 @@ console.log('Database Host:', process.env.DB_HOST);
       autoLoadEntities: true,
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([Transaction]),
+    CacheModule.register({
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      ttl: +(process.env.REDIS_TTL_MS || 120000),
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'), 
+      sortSchema: true,
+      playground: true,
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    AppResolver
+  ],
 })
 export class AppModule {}
