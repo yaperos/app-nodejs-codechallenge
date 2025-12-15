@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "prisma": "^7.1.0"
+  },
+  "dependencies": {
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/microservices": "^11.1.9",
+    "kafkajs": "^2.2.4"
+  }
+}

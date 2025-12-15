@@ -1,82 +1,90 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Solución para el reto técnico de Yape.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Descripción
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+El sistema consta de dos microservicios desacoplados que se comunican de forma asíncrona. El objetivo es procesar transacciones de alto volumen y validar reglas de negocio antifraude sin bloquear la respuesta al cliente.
 
-# Problem
+### Flujo de la Aplicación
+1.  **Transaction Service** recibe una solicitud HTTP para crear una transacción.
+2.  La transacción se guarda en **MySQL** con estado `PENDING`.
+3.  Se emite un evento `transaction_created` a **Kafka**.
+4.  **Anti-Fraud Service** consume el evento y valida el monto.
+5.  Si el valor es **> 1000**, se rechaza (`REJECTED`); de lo contrario, se aprueba (`APPROVED`).
+6.  Se emite un evento `transaction_status_update` de vuelta.
+7.  **Transaction Service** actualiza el estado final en la base de datos.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## Tecnologías
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+* **Node.js & NestJS**: Framework principal (Modo Híbrido: HTTP + Microservice).
+* **Apache Kafka**: Message Broker para comunicación asíncrona.
+* **MySQL**: Base de datos relacional.
+* **Prisma ORM**: Gestión de esquemas y migraciones automáticas.
+* **Docker & Docker Compose**: Orquestación de contenedores y entorno de desarrollo.
 
-Every transaction with a value greater than 1000 should be rejected.
+## Instalación y Ejecución
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+### Prerrequisitos
+* Docker
+* Git
+
+### Pasos
+1.  Clona el repositorio:
+    ```bash
+    git clone <url-del-repo>
+    cd <nombre-del-repo>
+    ```
+
+2.  Ejecuta el entorno con Docker Compose:
+    ```bash
+    docker-compose up --build
+    ```
+
+3.  Verifica que los servicios estén corriendo:
+    * **API Transaction:** `http://localhost:3000`
+    * **Kafka UI (Opcional):** `http://localhost:8080` 
+
+## Uso de la API
+
+Puedes probar los endpoints usando `curl` o Postman.
+
+### 1. Crear una Transacción
+
+Envia una transacción. Si el `value` es mayor a 1000, será rechazada.
+
+**Request:**
+```bash
+curl -X POST http://localhost:3000/transactions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accountExternalIdDebit": "28608054-47b6-4522-9214-722e0322b270",
+    "accountExternalIdCredit": "28608054-47b6-4522-9214-722e0322b271",
+    "transferTypeId": 1,
+    "value": 120
+  }'
 ```
 
-# Tech Stack
+### 2. Consultar una Transacción
+Usa el transactionExternalId (UUID) que recibiste en la respuesta anterior para ver su estado final.
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+**Request:**
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```bash
+curl http://localhost:3000/transactions/{TU-UUID-AQUI}
 ```
+Respuesta Exitosa (Aprobada):
 
-2. Resource to retrieve a transaction
-
-```json
+```JSON
 {
-  "transactionExternalId": "Guid",
+  "transactionExternalId": "1f0bfb31-4577-4755-8253-60ea07d0273e",
   "transactionType": {
-    "name": ""
+    "name": "1"
   },
   "transactionStatus": {
-    "name": ""
+    "name": "APPROVED"
   },
   "value": 120,
-  "createdAt": "Date"
+  "createdAt": "2025-12-13T20:31:23.691Z"
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
