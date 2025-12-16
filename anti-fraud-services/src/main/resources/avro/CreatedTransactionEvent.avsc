@@ -1,0 +1,32 @@
+{
+  "type": "record",
+  "name": "CreatedTransactionMessageEvent",
+  "namespace": "com.pe.yape.service.challenge.kafka.avro",
+  "fields": [
+    {
+      "name": "transactionId",
+      "type": "string",
+      "doc": "Identificador único de la transacción"
+    },
+    {
+      "name": "accountExternalIdDebit",
+      "type": "string",
+      "doc": "Identificador externo de la cuenta de débito"
+    },
+    {
+      "name": "accountExternalIdCredit",
+      "type": "string",
+      "doc": "Identificador externo de la cuenta en crédito"
+    },
+    {
+      "name": "transferTypeId",
+      "type": "int",
+      "doc": "Tipo de transferencia"
+    },
+    {
+      "name": "value",
+      "type": "double",
+      "doc": "Valor de la transacción"
+    }
+  ]
+}

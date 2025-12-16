@@ -33,7 +33,7 @@ Every transaction with a value greater than 1000 should be rejected.
 # Tech Stack
 
 <ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
+  <li>Java. You can use any framework you want (i.e. spring web flux with an ORM like spring jpa o r2db2) </li>
   <li>Any database</li>
   <li>Kafka</li>    
 </ol>

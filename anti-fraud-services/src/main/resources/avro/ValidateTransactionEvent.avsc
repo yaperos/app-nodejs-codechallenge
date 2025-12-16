@@ -1,0 +1,17 @@
+{
+  "type": "record",
+  "name": "ValidateTransactionMessageEvent",
+  "namespace": "com.pe.yape.service.challenge.kafka.avro",
+  "fields": [
+    {
+      "name": "transactionId",
+      "type": "string",
+      "doc": "Identificador único de la transacción"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "doc": "estatus de la validación de la transacción"
+    }
+  ]
+}
