@@ -1,0 +1,59 @@
+info:
+  version: "@project.version@"
+  title: transaction-services
+
+spring:
+  profiles.active: dev
+  webflux:
+    base-path: /api/v1
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/postgres
+    user: postgres
+    password: postgres
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+  kafka:
+    consumer:
+      topic: validateTransaction
+      bootstrap-servers: localhost:9092
+      group-id: validate-transaction-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        specific.avro.reader: true
+        schema.registry.url: http://localhost:8081
+    producer:
+      topic: createTransaction
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://localhost:8081
+
+  schema-registry:
+    url: http://localhost:8081
+
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    url: /swagger.yaml
+
+server:
+  port: 8085
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.springframework: DEBUG
+    com.financial: DEBUG
+  date-format: yyyy-MM-dd HH:mm:ss

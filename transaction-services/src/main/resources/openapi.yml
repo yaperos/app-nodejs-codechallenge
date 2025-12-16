@@ -1,0 +1,115 @@
+openapi: '3.0.3'
+info:
+  title: Transaction Service
+  version: 1.0.0
+  description: API for creating and retrieving transactions
+
+servers:
+  - url: http://localhost:8081/api/v1
+paths:
+  /transaction:
+    post:
+      summary: Create Transaction
+      description: Create a transaction of a client
+      operationId: createTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+
+    get:
+      summary: Get Transaction Detail
+      description: Get transaction information by transactionId
+      operationId: getTransaction
+      parameters:
+        - name: transactionId
+          in: query
+          required: true
+          description: Unique transaction identifier
+          schema:
+            type: string
+            format: uuid
+          example: a9d7c6b2-1234-4c99-8e91-9a1234567890
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionDetailResponse'
+        "404":
+          description: Transaction Not Found
+        "500":
+          description: Internal Server Error
+
+components:
+  schemas:
+    TransactionRequest:
+      type: object
+      required:
+        - accountExternalIdDebit
+        - accountExternalIdCredit
+        - transferTypeId
+        - value
+      properties:
+        accountExternalIdDebit:
+          type: string
+          format: uuid
+          pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
+          example: "a9d7c6b2-1234-4c99-8e91-9a1234567890"
+        accountExternalIdCredit:
+          type: string
+          format: uuid
+          pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$'
+          example: "a9d7c6b2-1234-4c99-8e91-9a1234567890"
+        transferTypeId:
+          type: string
+          example: "1"
+        value:
+          type: number
+    TransactionResponse:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          format: uuid
+          example: "a9d7c6b2-1234-4c99-8e91-9a1234567890"
+    TransactionDetailResponse:
+      type: object
+      properties:
+        transactionExternalId:
+          type: string
+          format: uuid
+          example: c2f7a1b4-1111-4aaa-8bbb-999999999999
+        transactionType:
+          type: object
+          properties:
+            name:
+              type: string
+              example: TRANSFER
+        transactionStatus:
+          type: object
+          properties:
+            name:
+              type: string
+              example: APPROVED
+        value:
+          type: number
+          example: 120
+        createdAt:
+          type: string
+          format: date-time
+          example: 2025-12-15T20:30:00Z

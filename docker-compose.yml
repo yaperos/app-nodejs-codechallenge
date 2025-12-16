@@ -23,3 +23,43 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.5.0
+    depends_on: [ kafka ]
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+  kafka-setup:
+    image: confluentinc/cp-kafka:5.5.3
+    depends_on:
+      - kafka
+    command: >
+      bash -c "
+        echo 'Esperando a que Kafka esté listo...'
+        cub kafka-ready -b kafka:29092 1 30
+        echo 'Creando tópicos...'
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic createTransaction
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:29092 --partitions 1 --replication-factor 1 --topic validateTransaction
+        echo 'Tópicos creados exitosamente'
+        kafka-topics --list --bootstrap-server kafka:29092
+      "
+    restart: "no"
+  anti-fraud-services:
+    build:
+      context: ./anti-fraud-services
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+  transaction-services:
+    build:
+      context: ./transaction-services
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
