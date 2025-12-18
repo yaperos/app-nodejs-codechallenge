@@ -1,25 +1,128 @@
-version: "3.7"
+version: "3.9"
+
 services:
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver2022-docker
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Yape2025."
+    ports:
+      - "1435:1433"
+    volumes:
+      - ./sqlserver/data:/var/opt/mssql/data
+      - ./sqlserver/log:/var/opt/mssql/log
+      - ./sqlserver/init:/usr/src/init
+    command: ["/bin/bash", "-c", "/usr/src/init/init-yape.sh"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Yape2025.' -C -Q \"SELECT 1\" >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks:
+      - yape-net
+
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:7.7.7
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - yape-net
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+    image: confluentinc/cp-kafka:7.7.7
+    container_name: kafka
+    depends_on:
+      - zookeeper
     ports:
-      - 9092:9092
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+    networks:
+      - yape-net
+
+  # ---------------------------
+  # Kafka init (create topics)
+  # ---------------------------
+  kafka-init:
+    image: confluentinc/cp-kafka:7.7.7
+    container_name: kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./kafka/create-topics.sh:/scripts/create-topics.sh:ro
+    command: ["bash", "-lc", "BOOTSTRAP_SERVER=kafka:29092 bash /scripts/create-topics.sh"]
+    restart: "no"
+    networks:
+      - yape-net
+
+  yape-transactions-api:
+    build:
+      context: ./yape-transactions-api
+      dockerfile: Dockerfile
+    container_name: yape-transactions-api
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
+    ports:
+      - "8090:8080"
+    environment:
+      SPRING_THREADS_VIRTUAL_ENABLED: "true"
+      SPRING_DATASOURCE_URL: "jdbc:sqlserver://sqlserver2022-docker:1433;databaseName=YAPE;encrypt=true;trustServerCertificate=true"
+      SPRING_DATASOURCE_USERNAME: "sa"
+      SPRING_DATASOURCE_PASSWORD: "Yape2025."
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+    restart: unless-stopped
+    networks:
+      - yape-net
+
+  yape-anti-fraud-api:
+    build:
+      context: ./yape-anti-fraud-api
+      dockerfile: Dockerfile
+    container_name: yape-anti-fraud-api
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
+    ports:
+      - "8091:8080"
+    environment:
+      SPRING_THREADS_VIRTUAL_ENABLED: "true"
+      SPRING_DATASOURCE_URL: "jdbc:sqlserver://sqlserver2022-docker:1433;databaseName=YAPE;encrypt=true;trustServerCertificate=true"
+      SPRING_DATASOURCE_USERNAME: "sa"
+      SPRING_DATASOURCE_PASSWORD: "Yape2025."
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+    restart: unless-stopped
+    networks:
+      - yape-net
+
+networks:
+  yape-net:
+    driver: bridge

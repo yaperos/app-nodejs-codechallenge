@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: yape-transactions-api
+  threads:
+    virtual:
+      enabled: true
+
+  datasource:
+    url: jdbc:sqlserver://localhost:1435;databaseName=YAPE;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: Yape2025.
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: yape-transactions-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.value.default.type: com.yape.transactions.dto.TransactionValidatedEvent
+        spring.json.use.type.headers: false
+        spring.json.trusted.packages: "com.yape.antifraud.dto"
+    
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      enable-idempotence: true
+
+app:
+  topics:
+    transaction-created: transaction.created
+    transaction-validated: transaction.validated
+    transaction-validated-dlt: transaction.validated.dlt
+  kafka:
+    listener:
+      concurrency: 3
+
+  retry:
+    max-attempts: 5
+    backoff-ms: 500
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
