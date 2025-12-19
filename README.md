@@ -1,82 +1,236 @@
-# Yape Code Challenge :rocket:
+# 🧾 Financial Transactions Platform (Microservices)
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Este proyecto es una plataforma de ejemplo basada en **arquitectura de microservicios**, diseñada para manejar **transacciones financieras**, validarlas mediante un servicio de **detección de fraude**, y coordinar la comunicación entre servicios usando **Kafka**.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+El objetivo principal es demostrar buenas prácticas en:
+- NestJS
+- Clean / Modular Architecture
+- GraphQL + REST
+- Kafka (event-driven)
+- PostgreSQL
+- Docker & Docker Compose
+- Testing con Jest
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+---
 
-# Problem
+## 🛠️ Tecnologías Utilizadas
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### Backend
+- **Node.js 20**
+- **NestJS**
+- **TypeScript**
+- **GraphQL (Apollo)**
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+### Persistencia
+- **PostgreSQL**
+- **TypeORM**
 
-Every transaction with a value greater than 1000 should be rejected.
+### Mensajería / Eventos
+- **Apache Kafka**
+- **Zookeeper**
+- Imágenes Confluent:
+  - `confluentinc/cp-zookeeper:5.5.3`
+  - `confluentinc/cp-enterprise-kafka:5.5.3`
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+### Observabilidad
+- **Pino / nestjs-pino** (logging estructurado)
+
+### Testing
+- **Jest**
+- **Unit Tests** para:
+  - Use cases
+  - Services
+  - Kafka producers / consumers
+  - Repositories (mockeados)
+
+### Infraestructura
+- **Docker**
+- **Docker Compose**
+
+
+---
+
+## 📦 Microservicios
+
+### 🔹 ms-financial-transaction
+Responsabilidades:
+- Exponer API GraphQL para crear y consultar transacciones
+- Persistir transacciones en PostgreSQL
+- Publicar evento `financial.transaction.created`
+- Consumir evento `financial.transaction.update` para actualizar estado
+
+### 🔹 ms-fraud-detection
+Responsabilidades:
+- Consumir evento `financial.transaction.created`
+- Evaluar reglas antifraude (ej. monto > 1000)
+- Publicar evento `financial.transaction.update`
+
+---
+
+## ✅ Requisitos Previos
+
+Antes de levantar el proyecto asegúrate de tener:
+
+- **Docker Desktop** (recomendado con al menos 4GB de RAM asignados)
+- **Docker Compose v2**
+- **Git**
+
+Versiones recomendadas:
+- Docker ≥ 24.x
+- Node.js ≥ 20 (solo si ejecutas servicios fuera de Docker)
+
+---
+
+## 🚀 Cómo levantar TODO el proyecto
+
+### Clonar el repositorio
+
+```bash
+git clone <repo-url>
+cd <repo-name>
 ```
 
-# Tech Stack
+### Reemplazar el nombre de los archivos .env.example por solo .env
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```bash
+.env.example  -> .env
+ms-financial-transaction/.env.example -> ms-financial-transaction/.env
+ms-fraud-detection/.env.example -> ms-fraud-detection/.env
+```
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+### Levantar todos los servicios
 
-You must have two resources:
+```bash
+docker compose up -d --build
+```
+⏳ La primera vez puede tardar entre 5 y 10 minutos, especialmente por Kafka.
 
-1. Resource to create a transaction that must containt:
+## 🧩 Acceso al GraphQL Playground
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+Una vez levantados los servicios con Docker:
+
+```bash
+http://localhost:3000/graphql
+```
+
+## Desde aquí puedes ejecutar queries y mutations.
+
+
+## ✏️ Crear una transacción
+
+### Mutation GraphQL
+
+```graphql
+mutation {
+  createTransaction(
+    input: {
+      amount: 1500
+      transferType: "DEBIT"
+      accountExternalIdDebit: "acc-debit-001"
+      accountExternalIdCredit: "acc-credit-001"
+    }
+  ) {
+    id
+    amount
+    createdAt
+  }
+}
+```
+## ✏️ Consultar una transacción por id
+
+### Query GraphQL
+
+```graphql
+query {
+  getTransactionById(
+    id: "793357d8-6e3a-4952-9d47-5ec926e1f5c7"
+  ) {
+    transactionExternalId
+    value
+    transactionType {
+        name
+    }
+    transactionStatus {
+        name
+    }
+    createdAt
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
+### Ejemplo Respuesta
 
-```json
+```graphql
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+    "data": {
+        "getTransactionById": {
+            "transactionExternalId": "793357d8-6e3a-4952-9d47-5ec926e1f5c7",
+            "value": 505,
+            "transactionType": {
+                "name": "CREDIT"
+            },
+            "transactionStatus": {
+                "name": "APPROVED"
+            },
+            "createdAt": "19/12/2025, 10:46:10 a. m."
+        }
+    }
 }
 ```
+---
 
-## Optional
+## 🚀 Futuras mejoras y extensiones del proyecto
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+Este proyecto fue diseñado con una arquitectura modular y desacoplada, lo que permite escalar y evolucionar fácilmente. A continuación se listan mejoras recomendadas para un entorno productivo.
 
-You can use Graphql;
+---
 
-# Send us your challenge
+## 🔐 Seguridad
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+### Autenticación y autorización
+- Implementar **JWT** para proteger el acceso al API GraphQL
+- Uso de **guards** en NestJS
+- Roles y permisos (admin, system, service)
 
-If you have any questions, please let us know.
+## 🌐 API Gateway
+
+- Centralizar acceso a los microservicios
+- Manejo de:
+  - Rate limiting
+  - Autenticación
+  - Versionado
+
+
+## 📦 Contratos de eventos (Event Contracts)
+
+Formalizar los mensajes Kafka usando:
+- **Schema Registry**
+- Avro / JSON Schema / Protobuf
+
+---
+
+## 🔁 Retries y Dead Letter Topics (DLT)
+
+Mejorar la resiliencia del sistema:
+
+- Retry automático en consumers Kafka
+- Dead Letter Topic para mensajes fallidos
+- Backoff exponencial
+
+## 🧪 Testing avanzado
+
+- Pruebas de integración
+- Manejo de cobertura de código
+
+## ⚙️ Configuración y secretos
+
+- Centralizar configuración con:
+  - Vault
+  - Kubernetes Secrets
+
+## ✍️ Autor
+
+**Diego Cayetano** 
+
+📍 Perú  
+💼 Backend Developer  
