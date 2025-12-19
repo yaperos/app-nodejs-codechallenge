@@ -2,17 +2,23 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: db-transactions
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: zookeeper-transactions
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    container_name: kafka-transactions
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -21,5 +27,40 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     ports:
       - 9092:9092
+  
+  ms-financial-transaction:
+    build:
+      context: ./ms-financial-transaction
+    container_name: ms-financial-transaction
+    depends_on:
+      - postgres
+      - kafka
+    env_file:
+      - ./ms-financial-transaction/.env
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${POSTGRES_DB}
+      DATABASE_USER: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      KAFKA_BROKER: kafka:29092
+    ports:
+      - "3000:3000"
+
+  ms-fraud-detection:
+    build:
+      context: ./ms-fraud-detection
+    container_name: ms-fraud-detection
+    depends_on:
+      - kafka
+    env_file:
+      - ./ms-fraud-detection/.env
+    environment:
+      KAFKA_BROKER: kafka:29092
+    ports:
+      - "3001:3001"
+volumes:
+  postgres_data: {}

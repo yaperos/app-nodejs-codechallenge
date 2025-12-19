@@ -38,8 +38,10 @@ bower_components
 build/Release
 
 # Dependency directories
+*/dist/
 node_modules/
 jspm_packages/
+build/
 
 # TypeScript v1 declaration files
 typings/
@@ -71,6 +73,10 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -102,3 +108,23 @@ dist
 
 # TernJS port file
 .tern-port
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# temp directory
+.temp
+.tmp
