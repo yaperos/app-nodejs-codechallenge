@@ -13,31 +13,6 @@ El objetivo principal es demostrar buenas prácticas en:
 
 ---
 
-## 🧱 Arquitectura General
-
-El sistema está compuesto por los siguientes servicios:
-
-┌──────────────────────────┐
-│ ms-financial-transaction │
-│--------------------------│
-│ GraphQL API │
-│ PostgreSQL │
-│ Kafka Producer │
-│ Kafka Consumer │
-└─────────┬────────────────┘
-│
-▼
-┌───────────────────────┐
-│ ms-fraud-detection │
-│-----------------------│
-│ Kafka Consumer │
-│ Kafka Producer │
-│ Lógica antifraude │
-└───────────────────────┘
-
-
----
-
 ## 🛠️ Tecnologías Utilizadas
 
 ### Backend
@@ -113,6 +88,7 @@ Versiones recomendadas:
 ```bash
 git clone <repo-url>
 cd <repo-name>
+```
 
 ### Reemplazar el nombre de los archivos .env.example por solo .env
 
@@ -120,12 +96,13 @@ cd <repo-name>
 .env.example  -> .env
 ms-financial-transaction/.env.example -> ms-financial-transaction/.env
 ms-fraud-detection/.env.example -> ms-fraud-detection/.env
+```
 
 ### Levantar todos los servicios
 
 ```bash
 docker compose up -d --build
-
+```
 ⏳ La primera vez puede tardar entre 5 y 10 minutos, especialmente por Kafka.
 
 ## 🧩 Acceso al GraphQL Playground
@@ -134,11 +111,10 @@ Una vez levantados los servicios con Docker:
 
 ```bash
 http://localhost:3000/graphql
+```
 
+## Desde aquí puedes ejecutar queries y mutations.
 
-### Desde aquí puedes ejecutar queries y mutations.
-
----
 
 ## ✏️ Crear una transacción
 
@@ -159,7 +135,7 @@ mutation {
     createdAt
   }
 }
-
+```
 ## ✏️ Consultar una transacción por id
 
 ### Query GraphQL
@@ -180,7 +156,7 @@ query {
     createdAt
   }
 }
-
+```
 
 ### Ejemplo Respuesta
 
@@ -200,7 +176,7 @@ query {
         }
     }
 }
-
+```
 ---
 
 ## 🚀 Futuras mejoras y extensiones del proyecto
