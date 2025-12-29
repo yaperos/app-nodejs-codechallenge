@@ -1,0 +1,15 @@
+{
+  "name": "@yape/common",
+  "version": "1.0.0",
+  "description": "Shared code between microservices",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

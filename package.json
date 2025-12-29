@@ -1,0 +1,24 @@
+{
+  "name": "yape-code-challenge",
+  "version": "1.0.0",
+  "description": "Yape Code Challenge - Transaction Anti-Fraud System",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "start:transaction": "npm run start:dev --workspace=apps/transaction-service",
+    "start:anti-fraud": "npm run start:dev --workspace=apps/anti-fraud-service",
+    "start:all": "concurrently \"npm run start:transaction\" \"npm run start:anti-fraud\"",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
