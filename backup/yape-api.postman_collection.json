@@ -1,0 +1,25 @@
+{
+	"info": {
+		"_postman_id": "f8d70d3f-1899-4f9e-81bd-10f083f0b15d",
+		"name": "yape-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10949300",
+		"_collection_link": "https://interstellar-sunset-7218.postman.co/workspace/YAPE~520c7c7a-3777-4ff8-8fcb-b7e84ce0afb9/collection/10949300-f8d70d3f-1899-4f9e-81bd-10f083f0b15d?action=share&source=collection_link&creator=10949300"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": []
+		},
+		{
+			"name": "Docker",
+			"item": []
+		}
+	],
+	"variable": [
+		{
+			"key": "transactionId",
+			"value": ""
+		}
+	]
+}
