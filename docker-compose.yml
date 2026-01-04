@@ -1,25 +1,147 @@
-version: "3.7"
+version: '3.8'
+
 services:
+  # PostgreSQL Database
   postgres:
-    image: postgres:14
+    image: postgres:16-alpine
+    container_name: yape-postgres
+    environment:
+      - POSTGRES_DB=yape_transactions
+      - POSTGRES_USER=yapeuser
+      - POSTGRES_PASSWORD=YapePass2026
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yapeuser -d yape_transactions"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yape-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: yape-redis
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --save ""
+      --appendonly no
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yape-network
+
+  # Zookeeper for Kafka
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: yape-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - yape-network
+
+  # Kafka
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: yape-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: kafka-broker-api-versions --bootstrap-server localhost:9092 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yape-network
+
+  # Kafka UI
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: yape-kafka-ui
+    depends_on:
+      - kafka
     ports:
-      - 9092:9092
+      - "8090:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    networks:
+      - yape-network
+
+  # Transaction Service
+  transaction-service:
+    build:
+      context: .
+      dockerfile: transaction-service/Dockerfile
+    container_name: yape-transaction-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/yape_transactions
+      - SPRING_DATASOURCE_USERNAME=yapeuser
+      - SPRING_DATASOURCE_PASSWORD=YapePass2026
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+    networks:
+      - yape-network
+    restart: on-failure
+
+  # Anti-Fraud Service
+  antifraud-service:
+    build:
+      context: .
+      dockerfile: antifraud-service/Dockerfile
+    container_name: yape-antifraud-service
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,antifraud
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    networks:
+      - yape-network
+    restart: on-failure
+
+networks:
+  yape-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+

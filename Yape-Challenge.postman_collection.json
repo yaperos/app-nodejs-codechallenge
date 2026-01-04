@@ -1,0 +1,288 @@
+{
+  "info": {
+    "_postman_id": "bd15a21f-512c-41e9-9864-044f6c4568a6",
+    "name": "Yape",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "13458143"
+  },
+  "item": [
+    {
+      "name": "transaction-service",
+      "item": [
+        {
+          "name": "actuator",
+          "item": [
+            {
+              "name": "Health",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/actuator/health",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "actuator",
+                    "health"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Metrics",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/actuator/metrics",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "actuator",
+                    "metrics"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "transaction",
+          "item": [
+            {
+              "name": "get transaction",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/transactions/250d26ea-9342-459f-b45a-1762943275af",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "250d26ea-9342-459f-b45a-1762943275af"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "create transaction",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountExternalIdDebit\": \"4720478c-3d11-411f-9f79-f8923eb33e9e\",\n  \"accountExternalIdCredit\": \"c85500ab-7177-455c-b311-c2f2e26659a6\",\n  \"tranferTypeId\": 1,\n  \"value\": 150.60\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/transactions",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "event-store",
+          "item": [
+            {
+              "name": "Get all events",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/events/transaction/ce767f62-9e3a-4155-8765-e9b6a443de33",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "events",
+                    "transaction",
+                    "ce767f62-9e3a-4155-8765-e9b6a443de33"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get event count for a specific transaction",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/events/transaction/ce767f62-9e3a-4155-8765-e9b6a443de33/count",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "events",
+                    "transaction",
+                    "ce767f62-9e3a-4155-8765-e9b6a443de33",
+                    "count"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all events by event type",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/events/type/TransactionStatusChangedDomainEvent",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "events",
+                    "type",
+                    "TransactionStatusChangedDomainEvent"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get all transaction events",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/events/all",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "events",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Check if transaction exists in event store",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/api/v1/events/transaction/ce767f62-9e3a-4155-8765-e9b6a443de33/exists",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "api",
+                    "v1",
+                    "events",
+                    "transaction",
+                    "ce767f62-9e3a-4155-8765-e9b6a443de33",
+                    "exists"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "antifraud-service",
+      "item": [
+        {
+          "name": "actuator",
+          "item": [
+            {
+              "name": "Health",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/actuator/health",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "actuator",
+                    "health"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Metrics",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/actuator/metrics",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "actuator",
+                    "metrics"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

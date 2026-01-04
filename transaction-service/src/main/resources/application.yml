@@ -1,0 +1,173 @@
+# Application name
+spring:
+  application:
+    name: transaction-service
+
+  # Database configuration
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/yape_transactions}
+    username: ${SPRING_DATASOURCE_USERNAME:yapeuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:YapePass2026}
+    driver-class-name: org.postgresql.Driver
+
+    # HikariCP configuration (optimized for high volume)
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 3000  # Fallar rápido si la BD no está disponible
+      validation-timeout: 2000
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+      auto-commit: false
+      connection-test-query: SELECT 1
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+
+  # Redis configuration (for distributed cache)
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 5
+          max-wait: 2000ms
+        shutdown-timeout: 200ms
+
+  # Cache configuration
+  cache:
+    type: redis
+    redis:
+      time-to-live: 300000  # 5 minutes
+      cache-null-values: false
+      use-key-prefix: true
+      key-prefix: "yape:txn:"
+
+  # SQL initialization - Ejecuta después de que Hibernate cree las tablas
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/data.sql
+      continue-on-error: false
+
+  # JPA/Hibernate configuration
+  jpa:
+    defer-datasource-initialization: true  # Espera a que Hibernate cree las tablas primero
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+
+  # Kafka configuration
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: transaction-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        max.block.ms: 5000  # Timeout máximo para bloqueos en send/partitionsFor
+        request.timeout.ms: 5000  # Timeout de solicitud
+        delivery.timeout.ms: 10000  # Timeout total de entrega
+        linger.ms: 0  # No esperar para enviar
+        retries: 2  # Reintentos a nivel de Kafka
+
+# Server configuration
+server:
+  port: ${SERVER_PORT:8080}
+
+# Management/Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakers,circuitbreakerevents
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+# Resilience4j Circuit Breaker configuration
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+        recordExceptions:
+          - org.springframework.kafka.KafkaException
+          - java.util.concurrent.TimeoutException
+          - org.springframework.dao.DataAccessException
+          - org.springframework.dao.DataAccessResourceFailureException
+          - org.hibernate.exception.JDBCConnectionException
+          - java.sql.SQLTransientConnectionException
+          - java.sql.SQLException
+          - java.util.concurrent.ExecutionException
+          - org.apache.kafka.common.errors.TimeoutException
+          - org.apache.kafka.common.errors.DisconnectException
+          - java.net.ConnectException
+          - java.net.UnknownHostException
+          - com.yape.challenge.transaction.infrastructure.kafka.exception.KafkaProducerException
+    instances:
+      kafkaProducer:
+        baseConfig: default
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 3
+        waitDurationInOpenState: 30s
+        failureRateThreshold: 50
+        slowCallRateThreshold: 80
+        slowCallDurationThreshold: 5s
+      database:
+        baseConfig: default
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 3
+        waitDurationInOpenState: 15s
+        failureRateThreshold: 60
+        slowCallRateThreshold: 70
+        slowCallDurationThreshold: 3s
+
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 1s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+    instances:
+      kafkaProducer:
+        maxAttempts: 2
+        waitDuration: 1s
+        retryExceptions:
+          - org.springframework.kafka.KafkaException
+          - java.util.concurrent.TimeoutException
+          - java.util.concurrent.ExecutionException
+
+# Logging configuration
+logging:
+  level:
+    com.yape.challenge: ${LOGGING_LEVEL:INFO}
+    org.springframework.kafka: WARN
+
