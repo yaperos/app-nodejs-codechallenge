@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: anti-fraud-service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: anti-fraud-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: transaction-created:com.yape.antifraud.infrastructure.messaging.event.TransactionCreatedEvent
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      properties:
+        enable.idempotence: true
+        spring.json.add.type.headers: false
+    listener:
+      ack-mode: manual
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.yape: INFO
+    org.springframework.kafka: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Kafka Topics Configuration
+kafka:
+  topics:
+    transaction-created: transaction-created
+    transaction-status-updated: transaction-status-updated
+
+# Anti-Fraud Business Rules
+anti-fraud:
+  max-transaction-value: 1000
+
