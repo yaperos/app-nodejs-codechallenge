@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-YapeApplication<yape>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.desafio.yape.YapeApplication",
+            "projectName": "yape",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
