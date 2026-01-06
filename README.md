@@ -1,82 +1,151 @@
-# Yape Code Challenge :rocket:
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Overview
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+This project implements a transaction processing system with asynchronous antifraud validation using an event-driven microservices architecture.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+Every transaction is:
 
-# Problem
+- Created with an initial pending status
+- Sent to an antifraud service via Kafka
+- Validated asynchronously
+- Updated to approved or rejected
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+The solution prioritizes decoupling, scalability, and eventual consistency, following real-world financial system patterns.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
 
-Every transaction with a value greater than 1000 should be rejected.
+## Architecture
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+[Grafic](https://drive.google.com/file/d/1OkKfq8jrwy62WnkhHKUrhjgYM3QiBgFL/view?usp=sharing)
+
+
+## Design Decisions
+
+**Why Kafka?**
+
+- Decouples transaction creation from antifraud validation
+- Allows horizontal scaling of antifraud workers
+- Enables eventual consistency
+- Prevents tight coupling between services
+
+**Why separate Antifraud Service?**
+
+- Each microservice owns a single responsibility
+- Antifraud does not access the transaction database
+- Communication happens only through events
+
+**Why asynchronous validation?**
+
+- Transactions are not blocked by antifraud latency
+- System remains responsive under high load
+- Mirrors real banking / fintech flows
+
+
+## Services
+
+■ Transaction Service
+
+- REST API (NestJS)
+
+- PostgreSQL persistence (Prisma)
+
+- Kafka producer & consumer
+
+- Manages transaction lifecycle
+
+■ Antifraud Service
+
+- Kafka consumer & producer only
+
+- No HTTP server
+
+- No database
+
+- Applies antifraud rule:
+
+    » value > 1000 → rejected
+
+    » otherwise → approved
+## API Reference
+
+#### Create Transaction
+
+```http
+  POST /transactions
 ```
 
-# Tech Stack
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `api_keyaccountExternalIdDebit` | `string` | **Required**.|
+| `accountExternalIdCredit` | `string` | **Required**. |
+| `tranferTypeId` | `int` | **Required**. 1 for Yapeo/2 for Pago de Servicios/3 for Recarga de Celular |
+| `value` | `float` | **Required**. |
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+#### Get Transaction
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
-
-You must have two resources:
-
-1. Resource to create a transaction that must containt:
-
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
-}
+```http
+  GET /transactions/${transactionExternalId}
 ```
 
-2. Resource to retrieve a transaction
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `transactionExternalId`      | `string` | **Required**.|
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+
+
+
+## Running Tests
+**Unit Tests**
+
+- Business rules validation
+- Initial transaction status
+- Kafka producer mocked
+
+**E2E Tests**
+
+- POST /transactions
+- GET /transactions/:id
+- Prisma and Kafka mocked
+
+To run tests, run the following command
+
+```bash
+  npm run test
 ```
 
-## Optional
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## Deployment
 
-You can use Graphql;
+**Requirements**
 
-# Send us your challenge
+- Docker
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+- Docker Compose
 
-If you have any questions, please let us know.
+Run everything: 
+
+```bash
+  docker compose up --build
+```
+This starts:
+
+- PostgreSQL
+- Zookeeper
+- Kafka
+- Transaction Service (port 3000)
+- Antifraud Service (worker)
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`DATABASE_URL="postgresql://postgres:postgres@postgres:5432/postgres"`
+
+
+## Feedback
+
+If you have any feedback, please reach out to us at andersson26012000@gmail.com
+
+
+## Authors
+
+- Piero Andersson Sanchez Bazan (BackEnd Developer)

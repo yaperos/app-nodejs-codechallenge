@@ -23,3 +23,17 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+  transaction-service:
+    build: ./transaction-service
+    depends_on:
+      - postgres
+      - kafka
+    env_file:
+      - ./transaction-service/.env
+    ports:
+      - "3000:3000"
+
+  antifraud-service:
+    build: ./antifraud-service
+    depends_on:
+      - kafka
