@@ -1,0 +1,58 @@
+# Archivos y carpetas que Biome debe ignorar
+
+# (adicionales a los del .gitignore que ya respeta automáticamente)
+
+# Build outputs
+
+dist/
+build/
+.next/
+out/
+
+# Dependencies
+
+node_modules/
+.pnp/
+.pnp.js
+
+# Testing
+
+coverage/
+.nyc_output/
+
+# Database & migrations
+
+drizzle/
+migrations/
+
+# Logs
+
+\*.log
+logs/
+
+# Environment files
+
+.env
+.env.local
+.env.\*.local
+
+# Editor
+
+.vscode/
+.idea/
+_.swp
+_.swo
+
+# OS
+
+.DS_Store
+Thumbs.db
+
+# Observability configs
+
+observability/
+
+# Generated files
+
+**/\*.generated.ts
+**/\*.generated.js

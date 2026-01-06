@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "542944d9-9b82-46c0-a971-3f9fb59e07b8",
+		"name": "RETO YAPE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33499029"
+	},
+	"item": [
+		{
+			"name": "transactions",
+			"item": []
+		},
+		{
+			"name": "CREAR TRANSACCION",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountExternalIdDebit\": \"120e8400-e29b-41d4-a716-446655440000\",\r\n    \"accountExternalIdCredit\": \"120e8400-e29b-41d4-a716-446655440001\",\r\n    \"tranferTypeId\": 1,\r\n    \"value\": 700\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CONSULTA DE TRANSACCION",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/transactions/13eace8e-832d-4270-aac6-c8dfee8688c5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transactions",
+						"13eace8e-832d-4270-aac6-c8dfee8688c5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

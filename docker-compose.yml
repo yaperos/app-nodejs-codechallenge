@@ -1,19 +1,42 @@
-version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yape-network
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    healthcheck:
+      test: ["CMD-SHELL", "echo srvr | nc localhost 2181 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yape-network
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    image: confluentinc/cp-kafka:5.5.3
+    container_name: kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -21,5 +44,178 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     ports:
-      - 9092:9092
+      - "9092:9092"
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      - yape-network
+
+  db-migration:
+    build:
+      context: .
+      dockerfile: apps/transaction-service/Dockerfile
+      target: builder
+    container_name: db-migration
+    environment:
+      - TRANSACTION_DB_URL=${TRANSACTION_DB_URL:-postgresql://postgres:postgres@postgres:5432/postgres}
+      - ANTIFRAUD_DB_URL=${ANTIFRAUD_DB_URL:-postgresql://postgres:postgres@postgres:5432/postgres}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "npm run db:migrate && npm run seed:fraud-rules"
+    networks:
+      - yape-network
+
+  transaction-service:
+    build:
+      context: .
+      dockerfile: apps/transaction-service/Dockerfile
+      target: runner
+    container_name: transaction-service
+    ports:
+      - "3000:3000"
+    environment:
+      # Database
+      - TRANSACTION_DB_URL=${TRANSACTION_DB_URL:-postgresql://postgres:postgres@postgres:5432/postgres}
+      # Kafka
+      - KAFKA_BROKER=${KAFKA_BROKER:-kafka:29092}
+      # Redis
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      # Service
+      - PORT=3000
+      - SERVICE_NAME=transaction-service
+      - NODE_ENV=${NODE_ENV:-development}
+      # OpenTelemetry
+      - OTEL_ENABLED=${OTEL_ENABLED:-true}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
+      - OTEL_SAMPLING_RATIO=${OTEL_SAMPLING_RATIO:-1.0}
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      # Sentry (optional)
+      - SENTRY_ENABLED=${SENTRY_ENABLED:-false}
+    depends_on:
+      db-migration:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    networks:
+      - yape-network
+    restart: unless-stopped
+
+  anti-fraud-service:
+    build:
+      context: .
+      dockerfile: apps/anti-fraud-service/Dockerfile
+      target: runner
+    container_name: anti-fraud-service
+    ports:
+      - "3001:3001"
+    environment:
+      # Database
+      - ANTIFRAUD_DB_URL=${ANTIFRAUD_DB_URL:-postgresql://postgres:postgres@postgres:5432/postgres}
+      # Kafka
+      - KAFKA_BROKER=${KAFKA_BROKER:-kafka:29092}
+      # Redis
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      # Service
+      - ANTI_FRAUD_PORT=3001
+      - SERVICE_NAME=anti-fraud-service
+      - NODE_ENV=${NODE_ENV:-development}
+      # OpenTelemetry
+      - OTEL_ENABLED=${OTEL_ENABLED:-true}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
+      - OTEL_SAMPLING_RATIO=${OTEL_SAMPLING_RATIO:-1.0}
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      # Sentry (optional)
+      - SENTRY_ENABLED=${SENTRY_ENABLED:-false}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    networks:
+      - yape-network
+    restart: unless-stopped
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.7.2
+    container_name: kafka-ui
+    ports:
+      - "9000:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - yape-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - yape-network
+    restart: unless-stopped
+
+  # ============================================================================
+  # Observability Stack (Minimal: Tempo + Grafana for traces visualization)
+  # ============================================================================
+
+  # Grafana Tempo - Distributed Tracing Backend
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./observability/tempo/tempo.yaml:/etc/tempo.yaml
+      - tempo-data:/tmp/tempo
+    ports:
+      - "3200:3200"   # Tempo API
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    networks:
+      - yape-network
+    restart: unless-stopped
+
+  # Grafana - Visualization Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3002:3000"
+    networks:
+      - yape-network
+    restart: unless-stopped
+    depends_on:
+      - tempo
+
+networks:
+  yape-network:
+    driver: bridge
+
+volumes:
+  tempo-data:
+  grafana-data:
+  postgres-data:

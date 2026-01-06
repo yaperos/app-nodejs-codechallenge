@@ -71,6 +71,7 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+docker/.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -102,3 +103,15 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Drizzle
+drizzle/
+
+# IDE
+.vscode/
+.idea/
+
+# AI Tools
+.claude/
+.cursor/
+.ai/
