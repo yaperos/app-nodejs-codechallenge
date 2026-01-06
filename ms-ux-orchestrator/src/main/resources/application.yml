@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: ms-ux-orchestrator
+
+server:
+  port: 9991
+
+services:
+  transaction:
+    base-url: ${SERVICES_TRANSACTION_BASE_URL:http://localhost:9992}
+    timeout: ${SERVICES_TRANSACTION_TIMEOUT:5000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    pe.com.yape.orchestrator: INFO
+    org.springframework.web.reactive: DEBUG
+

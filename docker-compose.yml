@@ -1,25 +1,261 @@
 version: "3.7"
+
 services:
   postgres:
-    image: postgres:14
+    image: postgres:16-alpine
+    container_name: yape-postgres-db
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: yape_user
+      POSTGRES_PASSWORD: yape_password
+      POSTGRES_DB: yape_db
+    command: ["postgres", "-c", "wal_level=logical"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yape_user -d yape_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yape-network 
+
+  redis:
+    image: redis:7-alpine
+    container_name: yape-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - yape-network
+
+  transaction-service:
+    build:
+      context: ./ms-ne-transaction-service
+      dockerfile: Dockerfile
+    container_name: yape-ne-transaction-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      kafka:
+        condition: service_started
+    ports:
+      - "9992:9992"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/yape_db
+      SPRING_DATASOURCE_USERNAME: yape_user
+      SPRING_DATASOURCE_PASSWORD: yape_password
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9992/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - yape-network
+  
+  orchestrator-service:
+    build:
+      context: ./ms-ux-orchestrator
+      dockerfile: Dockerfile
+    container_name: yape-ux-orchestrator
+    depends_on:
+      transaction-service:
+        condition: service_healthy
+    ports:
+      - "9991:9991"
+    environment:
+      SERVICES_TRANSACTION_BASE_URL: http://transaction-service:9992
+      SERVICES_TRANSACTION_TIMEOUT: 5000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9991/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - yape-network
+
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: yape-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SYNC_LIMIT: 2
+    networks:
+      - yape-network
+
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    image: confluentinc/cp-enterprise-kafka:7.5.0
+    container_name: yape-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - yape-network
+
+  connect:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yape-connect
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      transaction-service:
+        condition: service_healthy 
     ports:
-      - 9092:9092
+      - "8083:8083"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/connector-plugins"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: 'kafka:29092'
+      CONNECT_REST_PORT: 8083
+      CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
+      CONNECT_GROUP_ID: "yape-connect-group"
+      CONNECT_CONFIG_STORAGE_TOPIC: "yape-connect-configs"
+      CONNECT_OFFSET_STORAGE_TOPIC: "yape-connect-offsets"
+      CONNECT_STATUS_STORAGE_TOPIC: "yape-connect-status"
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
+    networks:
+      - yape-network
+    command: 
+      - /bin/bash
+      - -c 
+      - |
+        echo "Iniciando Kafka Connect..."
+        /etc/confluent/docker/run & 
+        
+        echo "Esperando a que Kafka Connect esté listo..."
+        # Primero esperamos a que el servicio esté disponible
+        until curl -s -o /dev/null -w "%{http_code}" localhost:8083 | grep -q "200\|404"; do
+          echo "Kafka Connect no está listo todavía... (reintentando en 5s)"
+          sleep 5
+        done
+        
+        echo "Kafka Connect está listo. Esperando a que cargue los plugins..."
+        sleep 10
+        
+        # Verificar que el plugin de Debezium esté disponible
+        MAX_RETRIES=20
+        RETRY_COUNT=0
+        until curl -s localhost:8083/connector-plugins | grep -q "PostgresConnector"; do
+          RETRY_COUNT=$((RETRY_COUNT+1))
+          if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
+            echo "ERROR: No se pudo detectar el plugin de Debezium después de $MAX_RETRIES intentos"
+            echo "Plugins disponibles:"
+            curl -s localhost:8083/connector-plugins | jq '.[].class' || curl -s localhost:8083/connector-plugins
+            exit 1
+          fi
+          echo "Todavía no detecto el plugin de Debezium... (intento $RETRY_COUNT/$MAX_RETRIES, reintentando en 5s)"
+          sleep 5
+        done
+
+        echo "¡Plugin de Debezium detectado! Registrando conector..."
+        curl -i -X POST -H "Content-Type: application/json" \
+          -d '{
+            "name": "yape-transaction-connector",
+            "config": {
+              "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+              "tasks.max": "1",
+              "database.hostname": "postgres",
+              "database.port": "5432",
+              "database.user": "yape_user",
+              "database.password": "yape_password",
+              "database.dbname": "yape_db",
+              "topic.prefix": "yape",
+              "plugin.name": "pgoutput",
+              "table.include.list": "public.transactions",
+              "publication.autocreate.mode": "all_tables",
+              "slot.name": "yape_slot",
+              "transforms": "unwrap",
+              "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+              "transforms.unwrap.drop.tombstones": "false",
+              "transforms.unwrap.delete.handling.mode": "rewrite",
+              "transforms.unwrap.add.fields": "op,source.ts_ms",
+              "decimal.handling.mode": "double",
+              "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+              "key.converter.schemas.enable": "false",
+              "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+              "value.converter.schemas.enable": "false",
+              "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+              "schema.history.internal.kafka.topic": "yape.schema-changes.transactions"
+            }
+          }' http://localhost:8083/connectors
+        
+        echo "Conector registrado. Kafka Connect continuará ejecutándose..."
+        wait
+
+  antifraud-service:
+    build:
+      context: ./ms-sp-antifraud-rules
+      dockerfile: Dockerfile
+    container_name: yape-sp-antifraud
+    depends_on:
+      kafka:
+        condition: service_healthy
+      connect:
+        condition: service_healthy
+    ports:
+      - "9993:9993"
+    environment:
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka:29092
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9993/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - yape-network
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:7.5.0
+    container_name: yape-control-center
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: kafka:29092
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      PORT: 9021
+    networks:
+      - yape-network
+
+networks:
+  yape-network:
+    driver: bridge

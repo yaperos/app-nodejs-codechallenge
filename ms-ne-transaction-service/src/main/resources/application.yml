@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: ms-ne-transaction-service
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/yape_db}
+    username: ${SPRING_DATASOURCE_USERNAME:yape_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:yape_password}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      timeout: 60000
+
+  flyway:
+    enabled: ${SPRING_FLYWAY_ENABLED:true}
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+server:
+  port: 9992
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,cache
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    pe.com.yape.ms.transaction: DEBUG
+    org.springframework.cloud.stream: DEBUG
+    org.springframework.kafka: INFO

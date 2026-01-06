@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: ms-sp-antifraud-rules
+
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: ${SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS:localhost:9092}
+
+      bindings:
+        processTransaction-in-0:
+          destination: yape.public.transactions
+          content-type: application/json
+          group: antifraud-consumer-group
+          consumer:
+            max-attempts: 3
+            back-off-initial-interval: 1000
+        
+        processTransaction-out-0:
+          destination: transaction.validated
+          content-type: application/json
+
+      function:
+        definition: processTransaction
+
+server:
+  port: 9993
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,bindings
+  endpoint:
+    health:
+      show-details: always
+  health:
+    binders:
+      enabled: true
+
+logging:
+  level:
+    pe.com.yape.ms.antifraud: INFO
+    org.springframework.cloud.stream: DEBUG
+    org.apache.kafka: INFO

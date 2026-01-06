@@ -1,0 +1,6 @@
+rootProject.name = 'yape-code-challenge'
+
+include 'ms-ux-orchestrator'
+include 'ms-ne-transaction-service'
+include 'ms-sp-antifraud-rules'
+
