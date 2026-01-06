@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  kafka:
+    bootstrap-servers: kafka:29092
+
+    consumer:
+      group-id: ms-risk-antifraud-evaluation
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

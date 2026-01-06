@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-payment-transaction-command
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/yape
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  kafka:
+    bootstrap-servers: kafka:29092
+    consumer:
+      group-id: ms-payment-transaction-command
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      acks: all
+      properties:
+        enable.idempotence: true
+
+outbox:
+  publisher:
+    fixed-delay-ms: 1000
+    batch-size: 50
+
+logging:
+  level:
+    root: INFO

@@ -1,82 +1,141 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge – Async Payment Transaction Platform (Java 21)
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Overview
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+This solution implements an event-driven microservices architecture for financial transaction processing and anti-fraud validation.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+The platform is composed of two independent microservices communicating asynchronously through Apache Kafka:
 
-# Problem
+- **ms-payment-transaction-command**
+  - Exposes REST APIs to create and retrieve transactions.
+  - Persists transactions with initial `PENDING` status.
+  - Publishes `TransactionCreated` events.
+  - Consumes validation results and updates transaction status.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+- **ms-risk-antifraud-evaluation**
+  - Consumes created transaction events.
+  - Applies anti-fraud rules.
+  - Publishes validation results (`APPROVED` / `REJECTED`).
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+The solution follows **Hexagonal Architecture** and applies the **Transactional Outbox Pattern** to guarantee consistency between database state and published Kafka events.
 
-Every transaction with a value greater than 1000 should be rejected.
+---
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+## Architecture
 
-# Tech Stack
+- Java 21 / Spring Boot 3
+- Apache Kafka (event backbone)
+- PostgreSQL (transactional persistence)
+- Transactional Outbox Pattern
+- Idempotent Kafka consumers
+- Optimistic concurrency control
+- Docker Compose local environment
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+---
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+## Event Flow
 
-You must have two resources:
+1. Client creates transaction → status `PENDING`
+2. Transaction service stores transaction and outbox event
+3. Outbox publisher emits `payment.transaction.created.v1`
+4. Anti-fraud service validates business rule
+5. Anti-fraud publishes `payment.transaction.validated.v1`
+6. Transaction service consumes result and updates transaction status
 
-1. Resource to create a transaction that must containt:
+---
 
-```json
+## Running locally
+
+### Start infrastructure only (Kafka + Postgres)
+
+```bash
+docker compose up -d
+
+Kafka UI
+http://localhost:8088
+
+PostgreSQL
+localhost:5432
+user: postgres
+password: postgres
+db: yape
+
+
+Start full platform (infra + microservices)
+
+docker compose --profile apps up -d --build
+
+
+REST API
+Create transaction
+
+POST http://localhost:8081/transactions
+json
+
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "a1c1e3d4-1111-4bda-8c01-abc123",
+  "accountExternalIdCredit": "b2f2a3d4-2222-4bda-8c01-def456",
   "tranferTypeId": 1,
   "value": 120
 }
-```
 
-2. Resource to retrieve a transaction
 
-```json
+Get transaction
+
+GET http://localhost:8081/transactions/{transactionExternalId}
+
+Response:
+
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
+  "transactionExternalId": "uuid",
+  "transactionType": { "name": "TRANSFER" },
+  "transactionStatus": { "name": "APPROVED" },
   "value": 120,
-  "createdAt": "Date"
+  "createdAt": "2026-01-06T13:10:00Z"
 }
-```
 
-## Optional
+Kafka Topics
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+payment.transaction.created.v1
 
-You can use Graphql;
+payment.transaction.validated.v1
 
-# Send us your challenge
+payment.transaction.created.dlq.v1
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+payment.transaction.validated.dlq.v1
 
-If you have any questions, please let us know.
+High concurrency & reliability strategy
+
+This solution is designed for high-write / high-read scenarios:
+
+Transactional outbox to avoid dual-write problems
+
+Kafka-based async processing
+
+Idempotent consumers
+
+Conditional updates (WHERE status = 'PENDING')
+
+Indexed reads
+
+Optimistic locking
+
+Horizontal scalability
+
+Design principles
+
+Hexagonal architecture
+
+Clear domain boundaries
+
+Infrastructure isolation
+
+Event-driven communication
+
+Production-oriented reliability patterns
+
+Notes
+
+This implementation prioritizes reliability, scalability and data consistency, following real-world banking-grade asynchronous processing patterns.
+
+
