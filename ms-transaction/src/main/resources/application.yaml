@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: transaction
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: HikariPool-Postgres
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 1800000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: transaction-service-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: pe.com.yape.transaction.infraestructure.adapter.in.messaging.kafka.dto.TransactionEvaluatedEventDto
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      properties:
+        enable.idempotence: true
+
+kafka:
+  topics:
+    transaction-created: transaction.created
+    transaction-approved: transaction.approved
+    transaction-rejected: transaction.rejected
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.kafka: INFO
