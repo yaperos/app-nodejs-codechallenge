@@ -1,0 +1,29 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: anti-fraud-group
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: pe.com.yape.antifraud.infraestructure.adapters.in.messaging.kafka.dto.TransactionEventDto
+        spring.json.trusted.packages: >
+          pe.com.yape.antifraud.*,
+          pe.com.yape.transaction.infraestructure.adapter.out.messaging.kafka.dto
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+kafka:
+  topics:
+    transaction-approved: transaction.approved
+    transaction-rejected: transaction.rejected
+
+server:
+  port: 8081
+
+logging:
+  level:
+    root: INFO
+    org.springframework.kafka: INFO
