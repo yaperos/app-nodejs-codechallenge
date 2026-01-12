@@ -1,0 +1,31 @@
+FROM maven:3.9.12-eclipse-temurin-21-alpine AS build
+
+WORKDIR /transaction
+
+COPY /YapeChallenge/pom.xml .
+
+COPY /YapeChallenge/TransactionManager/pom.xml ./TransactionManager/pom.xml
+COPY /YapeChallenge/TransactionManager/src ./TransactionManager/src
+
+COPY /YapeChallenge/AntiFraudManager/pom.xml ./AntiFraudManager/pom.xml
+COPY /YapeChallenge/AntiFraudManager/src ./AntiFraudManager/src
+
+
+COPY /YapeChallenge/SharedModel/pom.xml ./SharedModel/pom.xml
+COPY /YapeChallenge/SharedModel/src ./SharedModel/src
+
+RUN mvn clean package -pl TransactionManager -am -DskipTests=true
+
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /transaction
+
+ENV POSTGRES_USER=
+ENV POSTGRES_PASSWORD=
+ENV POSTGRES_DB_NAME=
+
+COPY --from=build /transaction/TransactionManager/target/transaction-manager-1.0.0.jar .
+
+EXPOSE 8081
+
+ENTRYPOINT ["java", "-jar", "transaction-manager-1.0.0.jar"]

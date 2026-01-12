@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.msucre</groupId>
+        <artifactId>yape-challenge</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>antifraud</artifactId>
+    <packaging>jar</packaging>
+
+    <name>AntiFraud</name>
+    <description>AntiFraund Manager</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.msucre</groupId>
+            <artifactId>shared-model</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <exclusions>
+                <!--Excluding org.lz4. Vulnerabilities found in transitive dependency -->
+                <!--https://ossindex.sonatype.org/component/pkg:maven/org.lz4/lz4-java@1.8.0 -->
+                <!--https://security.snyk.io/package/maven/org.lz4%3Alz4-java/1.8.0 -->
+                <exclusion>
+                    <groupId>org.lz4</groupId>
+                    <artifactId>lz4-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- using community fork that addresses the vulnerabilities -->
+        <!-- https://central.sonatype.com/artifact/at.yawk.lz4/lz4-java -->
+        <!-- https://github.com/lz4/lz4-java -->
+        <dependency>
+            <groupId>at.yawk.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <version>${lz4-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor.kafka</groupId>
+            <artifactId>reactor-kafka</artifactId>
+            <version>${react-kafka-version}</version>
+        </dependency>
+    </dependencies>
+</project>
