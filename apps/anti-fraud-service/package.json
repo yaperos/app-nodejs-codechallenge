@@ -1,0 +1,19 @@
+{
+  "name": "@yape/anti-fraud-service",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@yape/contracts": "workspace:*",
+    "@yape/kafka": "workspace:*",
+    "pino": "^9.3.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  }
+}

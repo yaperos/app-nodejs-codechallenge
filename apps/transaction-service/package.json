@@ -1,0 +1,33 @@
+{
+  "name": "@yape/transaction-service",
+  "version": "1.0.0",
+  "private": true,
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+
+    "prisma:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.19.1",
+    "@yape/contracts": "workspace:*",
+    "@yape/kafka": "workspace:*",
+    "fastify": "^4.28.1",
+    "pino": "^9.3.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  }
+}
+

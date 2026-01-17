@@ -1,48 +1,45 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge – Servicios de Transacciones y Anti-Fraude
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Descripción general
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Este repositorio implementa un sistema orientado a eventos que modela el ciclo de vida de una transacción financiera, la cual debe ser validada por un servicio de anti-fraude antes de confirmar su estado final.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+La solución está compuesta por dos servicios independientes que se comunican de manera asíncrona mediante Kafka:
 
-# Problem
+- **Transaction Service**: expone APIs HTTP para crear y consultar transacciones, gestiona la persistencia y publica eventos.
+- **Anti-Fraud Service**: consume eventos de transacciones creadas, aplica reglas de validación y publica el resultado.
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+El sistema sigue un modelo de **consistencia eventual** y está diseñado considerando confiabilidad, idempotencia y escenarios de alto volumen.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+### Principios aplicados
 
-Every transaction with a value greater than 1000 should be rejected.
+- Comunicación asíncrona mediante eventos
+- Arquitectura orientada a eventos
+- Consistencia eventual
+- Consumers idempotentes
+- Publicación confiable de eventos usando Outbox Pattern
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+---
 
-# Tech Stack
+## Servicios
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+### 1. Transaction Service
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+#### Responsabilidades
 
-You must have two resources:
+- Crear transacciones con estado inicial `pending`
+- Persistir información de la transacción
+- Publicar eventos `TransactionCreated`
+- Consumir eventos `TransactionValidated` para actualizar el estado
+- Exponer APIs HTTP para consulta
 
-1. Resource to create a transaction that must containt:
+---
+
+### Endpoints
+
+#### Crear transacción
+
+**POST** `/transactions`
 
 ```json
 {
@@ -53,30 +50,76 @@ You must have two resources:
 }
 ```
 
-2. Resource to retrieve a transaction
+Respuesta:
+
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionStatus": {
+    "name": "pending"
+  }
+}
+```
+
+---
+
+#### Obtener transacción
+
+**GET** `/transactions/{transactionExternalId}`
 
 ```json
 {
   "transactionExternalId": "Guid",
   "transactionType": {
-    "name": ""
+    "name": "TRANSFER"
   },
   "transactionStatus": {
-    "name": ""
+    "name": "approved | rejected | pending"
   },
   "value": 120,
-  "createdAt": "Date"
+  "createdAt": "ISO Date"
 }
 ```
 
-## Optional
+---
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+## Ejecución local
 
-You can use Graphql;
+### Requisitos
 
-# Send us your challenge
+- Node.js 18+
+- pnpm
+- Docker / Docker Compose
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+---
 
-If you have any questions, please let us know.
+### Pasos
+
+#### 1. Levantar infraestructura (Kafka + PostgreSQL)
+
+```bash
+pnpm dev:infra
+```
+
+#### 2. Instalar dependencias
+
+```bash
+pnpm install
+```
+
+#### 3. Aplicar esquema de base de datos
+
+```bash
+pnpm db:push
+```
+
+#### 4. Ejecutar servicios
+
+```bash
+pnpm dev:transaction
+pnpm dev:antifraud
+```
+
+---
+
+## Adrian Lopez

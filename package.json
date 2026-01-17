@@ -1,0 +1,13 @@
+{
+  "name": "yape-code-challenge",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev:infra": "docker compose up -d",
+    "dev:transaction": "pnpm -C apps/transaction-service dev",
+    "dev:antifraud": "pnpm -C apps/anti-fraud-service dev",
+    "dev:all": "pnpm -r dev",
+    "db:push": "pnpm -C apps/transaction-service db:push",
+    "db:studio": "pnpm -C apps/transaction-service db:studio"
+  }
+}
