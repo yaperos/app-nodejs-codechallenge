@@ -1,0 +1,23 @@
+server:
+  port: 8581 # Puerto diferente al microservicio principal
+
+spring:
+  application:
+    name: antifraud
+  kafka:
+    bootstrap-servers: localhost:9592
+    consumer:
+      group-id: antifraud-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: com.jaragon.antifraud.model.TransactionEvent
+        spring.json.type.mapping: com.jaragon.solution.model.TransactionEvent:com.jaragon.antifraud.model.TransactionEvent
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+antifraud:
+  max-approved-value: ${ANTIFRAUD_MAX_VALUE:1000}

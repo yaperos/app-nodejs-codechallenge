@@ -1,0 +1,9 @@
+curl --request POST \
+  --url http://localhost:8580/transaction \
+  --header 'content-type: application/json' \
+  --data '{
+  "accountExternalIdDebit": "c2b1e1f1-6a0d-4c61-9a47-2c4e91b8a123",
+  "accountExternalIdCredit": "b7a2d0c9-9b12-4d38-8e13-2d1a7b9c4567",
+  "tranferTypeId": 1,
+  "value": 1200
+}'

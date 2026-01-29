@@ -2,6 +2,7 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: database
     ports:
       - "5432:5432"
     environment:
@@ -9,17 +10,45 @@ services:
       - POSTGRES_PASSWORD=postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
+    container_name: kafka
     depends_on: [zookeeper]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9592
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - 9592:9592
+
+  antifraud:
+    build: 
+      context: ./antifraud
+      dockerfile: Dockerfile
+    container_name: antifraud-ms
+    ports:
+      - "8581:8581"
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - ANTIFRAUD_MAX_VALUE=1000
+    depends_on:
+      - kafka
+
+  solution:
+    build: 
+      context: ./solution
+      dockerfile: Dockerfile
+    container_name: solution-ms
+    ports:
+      - "8580:8580"
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    depends_on:
+      - kafka
+      - postgres
