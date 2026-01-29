@@ -1,0 +1,27 @@
+# ===== Etapa de build =====
+FROM maven:3.9.12-eclipse-temurin-21-alpine AS build
+
+# Directorio de trabajo dentro del contenedor
+WORKDIR /transaction
+
+# Copiar POM y código fuente directamente al WORKDIR
+COPY ./yape-financial/yape-transaction/pom.xml ./pom.xml
+COPY ./yape-financial/yape-transaction/src ./src
+
+# Compilar el microservicio (skip tests para acelerar)
+RUN mvn clean package -DskipTests=true
+
+
+# ===== Etapa runtime =====
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /transaction
+
+# Copiar jar construido desde la etapa de build
+COPY --from=build /transaction/target/yape-transaction-1.0-SNAPSHOT.jar .
+
+# Exponer puerto del microservicio
+EXPOSE 8081
+
+# Ejecutar la aplicación
+ENTRYPOINT ["java", "-jar", "yape-transaction-1.0-SNAPSHOT.jar"]

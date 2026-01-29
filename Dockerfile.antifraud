@@ -1,0 +1,31 @@
+# ===== Etapa de build =====
+FROM maven:3.9.12-eclipse-temurin-21-alpine AS build
+
+WORKDIR /antifraud
+
+# Copiar POM directamente al WORKDIR
+COPY ./yape-financial/yape-antifraud/pom.xml ./pom.xml
+
+# Descargar dependencias sin compilar (aprovecha cache de Docker)
+RUN mvn dependency:go-offline -B
+
+# Copiar el código fuente
+COPY ./yape-financial/yape-antifraud/src ./src
+
+# Compilar microservicio (tests omitidos)
+RUN mvn clean package -DskipTests=true
+
+
+# ===== Etapa runtime =====
+FROM eclipse-temurin:21-jdk-alpine
+
+WORKDIR /antifraud
+
+# Copiar jar construido desde la etapa de build
+COPY --from=build /antifraud/target/yape-antifraud-1.0-SNAPSHOT.jar .
+
+# Exponer puerto del microservicio
+EXPOSE 8082
+
+# Ejecutar la aplicación
+ENTRYPOINT ["java", "-jar", "yape-antifraud-1.0-SNAPSHOT.jar"]
