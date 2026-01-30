@@ -1,0 +1,66 @@
+# =============================================================================
+# Transaction Domain - Type Definitions
+# =============================================================================
+
+"""
+Represents a financial transaction in the system.
+"""
+type Transaction {
+    """Unique external identifier of the transaction"""
+    transactionExternalId: UUID!
+
+    """Type of the transaction"""
+    transactionType: TransactionType!
+
+    """Current status of the transaction"""
+    transactionStatus: TransactionStatus!
+
+    """Amount of the transaction"""
+    value: BigDecimal!
+
+    """Date and time of the transaction creation"""
+    createdAt: Date!
+}
+
+"""
+Details about a transfer type.
+"""
+type TransferType {
+    """Identifier of the transfer type"""
+    transferTypeId: ID!
+    """Name of the transfer type"""
+    name: String!
+}
+
+"""
+Details about a transaction type.
+"""
+type TransactionType {
+    """Name of the transaction type"""
+    name: String!
+}
+
+"""
+Details about a transaction status.
+"""
+type TransactionStatus {
+    """Name of the status"""
+    name: String!
+}
+
+"""
+Event emitted when a transaction status changes (for Subscriptions).
+"""
+type TransactionStatusChangedEvent {
+    """The updated transaction"""
+    transaction: Transaction!
+
+    """Previous status"""
+    previousStatus: String!
+
+    """New status"""
+    newStatus: String!
+
+    """Date and time of the change"""
+    changedAt: DateTime!
+}

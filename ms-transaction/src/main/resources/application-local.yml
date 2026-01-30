@@ -1,0 +1,118 @@
+# This configuration is used for local development environment.
+# Profile: local (activate with -Dquarkus.profile=local)
+
+# Quarkus Configuration
+quarkus:
+
+  # Datasource Configuration (PostgreSQL)
+  datasource:
+    db-kind: postgresql
+    username: "${QUARKUS_DATASOURCE_USERNAME:postgres}"
+    password: "${QUARKUS_DATASOURCE_PASSWORD:postgres}"
+    jdbc:
+      url: "${QUARKUS_DATASOURCE_JDBC_URL:jdbc:postgresql://localhost:5432/yape_transactions}"
+      max-size: 16
+      min-size: 4
+      initial-size: 4
+      idle-removal-interval: 2M
+      max-lifetime: 30M
+
+  # Redis Configuration
+  redisson:
+    threads: 16
+    netty-threads: 32
+    single-server-config:
+      address: "${QUARKUS_REDISSON_SINGLE_SERVER_CONFIG_ADDRESS:redis://localhost:6379}"
+
+  flyway:
+    migrate-at-start: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  # Hibernate ORM Configuration
+  hibernate-orm:
+    log:
+      sql: false
+
+  devservices:
+    enabled: false
+
+  # Logging Configuration
+  log:
+    level: INFO
+    category:
+      "com.yape":
+        level: DEBUG
+      "org.hibernate.SQL":
+        level: ERROR
+      "io.smallrye.reactive.messaging":
+        level: DEBUG
+
+  # SmallRye GraphQL Configuration
+  smallrye-graphql:
+    error-extension-fields:
+      - exception
+      - classification
+      - code
+    show-runtime-exception-message:
+      - com.yape.services.shared.exception.BusinessException
+      - com.yape.services.shared.exception.ValidationException
+      - com.yape.services.shared.exception.ResourceNotFoundException
+
+application:
+  cache:
+    transaction:
+      map-name: "transactions"
+      prefix: "transaction:"
+      ttl:
+        pending: 300
+        approved: 3600
+        rejected: 3600
+    transfer-type:
+      map-name: "transfer-types"
+      prefix: "transfer_type:"
+      ttl: 86400
+
+# Kafka / Event Streaming Configuration
+kafka:
+  bootstrap:
+    servers: "${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}"
+  schema:
+    registry:
+      url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
+
+# MicroProfile Reactive Messaging Configuration
+mp:
+  messaging:
+    outgoing:
+      transaction-producer:
+        connector: smallrye-kafka
+        topic: transaction.created
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        value:
+          serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        schema:
+          registry:
+            url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
+
+    incoming:
+      transaction-status-consumer:
+        connector: smallrye-kafka
+        topic: transaction.status
+        group:
+          id: ms-transaction-group
+        auto:
+          offset:
+            reset: earliest
+        failure-strategy: ignore
+        key:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value:
+          deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        schema:
+          registry:
+            url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
+        specific:
+          avro:
+            reader: true

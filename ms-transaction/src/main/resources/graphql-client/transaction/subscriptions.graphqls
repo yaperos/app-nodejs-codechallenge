@@ -1,0 +1,26 @@
+# =============================================================================
+# Transaction Domain - Subscription Definitions
+# =============================================================================
+
+"""
+Root Subscription type for real-time transaction updates.
+"""
+type Subscription {
+    """
+    Subscribe to status changes of a specific transaction.
+
+    Enables real-time notifications when the anti-fraud service
+    updates the transaction status.
+
+    Security:
+    - Requires authentication via token in WebSocket connection payload
+
+    Emitted events:
+    - PENDING → APPROVED: Transaction approved by anti-fraud
+    - PENDING → REJECTED: Transaction rejected by anti-fraud (value > 1000)
+    """
+    transactionStatusChanged(
+        """Identifier of the transaction to observe"""
+        transactionExternalId: UUID!
+    ): TransactionStatusChangedEvent! @authenticated
+}

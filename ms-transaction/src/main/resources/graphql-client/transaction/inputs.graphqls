@@ -1,0 +1,23 @@
+# =============================================================================
+# Transaction Domain - Input Definitions
+# =============================================================================
+
+"""
+Input for creating a new financial transaction.
+"""
+input CreateTransaction {
+    """Identifier of the debit account"""
+    accountExternalIdDebit: UUID!
+
+    """Identifier of the credit account"""
+    accountExternalIdCredit: UUID!
+
+    """Transfer type identifier (category: TRANSFER, PAYMENT, DEPOSIT)"""
+    transferTypeId: Int!
+
+    """
+    Transaction amount.
+    - Minimum: 0
+    """
+    value: BigDecimal! @Min(value: 0)
+}

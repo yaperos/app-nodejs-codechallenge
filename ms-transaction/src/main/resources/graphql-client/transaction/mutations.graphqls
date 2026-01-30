@@ -1,0 +1,24 @@
+# =============================================================================
+# Transaction Domain - Mutation Definitions
+# =============================================================================
+
+"""
+Root Mutation type for transaction operations.
+"""
+type Mutation {
+    """
+    Creates a new financial transaction.
+
+    The transaction is created with PENDING status and sent to the
+    anti-fraud service for validation. Transactions with value > 1000
+    will be automatically rejected.
+
+    Possible errors:
+    - BAD_REQUEST: Invalid input data
+    - VALIDATION_ERROR: Business rule violation
+    """
+    createTransaction(
+        """Transaction data"""
+        input: CreateTransaction!
+    ): Transaction!
+}

@@ -1,0 +1,60 @@
+# This configuration is used for local development environment.
+# Profile: local (activate with -Dquarkus.profile=local)
+
+# Quarkus Configuration
+quarkus:
+  devservices:
+    enabled: false
+
+  # Logging Configuration
+  log:
+    level: INFO
+    category:
+      "com.yape":
+        level: DEBUG
+      "io.smallrye.reactive.messaging":
+        level: DEBUG
+
+# Kafka / Event Streaming Configuration
+kafka:
+  bootstrap:
+    servers: "${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}"
+  schema:
+    registry:
+      url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
+
+# MicroProfile Reactive Messaging Configuration
+mp:
+  messaging:
+    outgoing:
+      transaction-status-producer:
+        connector: smallrye-kafka
+        topic: transaction.status
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        value:
+          serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        schema:
+          registry:
+            url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
+
+    incoming:
+      transaction-created-consumer:
+        connector: smallrye-kafka
+        topic: transaction.created
+        group:
+          id: ms-anti-fraud-group
+        auto:
+          offset:
+            reset: earliest
+        failure-strategy: ignore
+        key:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value:
+          deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        schema:
+          registry:
+            url: "${KAFKA_SCHEMA_REGISTRY_URL:http://localhost:8081}"
+        specific:
+          avro:
+            reader: true

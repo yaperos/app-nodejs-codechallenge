@@ -1,0 +1,6 @@
+"""
+Indicates the minimum allowed value for a field or argument
+"""
+directive @Min(
+    value : BigDecimal = -2147483648.00
+) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION

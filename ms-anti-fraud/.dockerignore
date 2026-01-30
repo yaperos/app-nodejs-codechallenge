@@ -1,0 +1,22 @@
+# Ignore IDE files
+.idea/
+*.iml
+.vscode/
+.eclipse/
+
+# Ignore build output (we build inside container)
+target/
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore documentation
+*.md
+docs/
+
+# Ignore test resources that aren't needed
+src/test/resources/
+
+# Ignore local config
+.claude/

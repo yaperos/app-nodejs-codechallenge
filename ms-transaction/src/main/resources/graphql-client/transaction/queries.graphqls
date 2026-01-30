@@ -1,0 +1,24 @@
+# =============================================================================
+# Transaction Domain - Query Definitions
+# =============================================================================
+
+"""
+Root Query type for transaction-related operations.
+"""
+type Query {
+    """
+    Retrieves a transaction by its external identifier.
+
+    Possible errors:
+    - NOT_FOUND: Transaction does not exist
+    """
+    transaction(
+        """Unique external identifier of the transaction"""
+        transactionExternalId: UUID!
+    ): Transaction
+
+    """
+    Retrieves all available transfer types.
+    """
+    transferTypes: [TransferType!]!
+}

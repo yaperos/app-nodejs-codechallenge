@@ -1,0 +1,126 @@
+{
+  "type": "record",
+  "name": "TransactionStatusUpdatedEvent",
+  "namespace": "com.yape.services.transaction.events",
+  "doc": "Emitted event when Anti-Fraud service updates the status of a transaction. Published to the topic 'transaction.status' for ms-transaction to update the status in the database.",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "type": "record",
+        "name": "EventMetadata",
+        "namespace": "com.yape.services.common.events",
+        "doc": "Standard metadata for all system events",
+        "fields": [
+          {
+            "name": "eventId",
+            "type": "string",
+            "doc": "Unique identifier of the event (UUID v4)"
+          },
+          {
+            "name": "eventType",
+            "type": "string",
+            "doc": "Type of the event (e.g., TRANSACTION_CREATED, TRANSACTION_STATUS_UPDATED)"
+          },
+          {
+            "name": "eventTimestamp",
+            "type": "string",
+            "doc": "Timestamp of event creation in ISO 8601 format (yyyy-MM-dd'T'HH:mm:ss.SSSZ)"
+          },
+          {
+            "name": "source",
+            "type": "string",
+            "doc": "Service originating the event (e.g., ms-transaction, ms-anti-fraud)"
+          },
+          {
+            "name": "version",
+            "type": "string",
+            "default": "1.0.0",
+            "doc": "Version of the event schema"
+          },
+          {
+            "name": "requestId",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null,
+            "doc": "Original Request-Id of the HTTP request that triggered the event"
+          }
+        ]
+      },
+      "doc": "Event metadata"
+    },
+    {
+      "name": "payload",
+      "type": {
+        "type": "record",
+        "name": "TransactionStatusUpdatedPayload",
+        "doc": "Payload with the update data",
+        "fields": [
+          {
+            "name": "transactionExternalId",
+            "type": "string",
+            "doc": "Unique external identifier of the transaction (UUID v4)"
+          },
+          {
+            "name": "previousStatus",
+            "type": {
+              "type": "enum",
+              "name": "TransactionStatus",
+              "namespace": "com.yape.services.transaction.events.enums",
+              "doc": "Possible statuses of a financial transaction",
+              "symbols": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED"
+              ]
+            },
+            "doc": "Previous status of the transaction"
+          },
+          {
+            "name": "newStatus",
+            "type": "com.yape.services.transaction.events.enums.TransactionStatus",
+            "doc": "New status of the transaction"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "doc": "Monetary value of the transaction as a string to preserve precision"
+          },
+          {
+            "name": "validationResult",
+            "type": {
+              "type": "record",
+              "name": "ValidationResult",
+              "doc": "Details of the anti-fraud validation result",
+              "fields": [
+                {
+                  "name": "isValid",
+                  "type": "boolean",
+                  "doc": "Indicates if the transaction passed the anti-fraud validation"
+                },
+                {
+                  "name": "ruleCode",
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "default": null,
+                  "doc": "Code of the applied rule (e.g., MAX_AMOUNT_EXCEEDED)"
+                }
+              ]
+            },
+            "doc": "Details of the anti-fraud validation result"
+          },
+          {
+            "name": "processedAt",
+            "type": "string",
+            "doc": "Timestamp when the validation was processed in ISO 8601 format"
+          }
+        ]
+      },
+      "doc": "Payload with the update data"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+quarkus:
+  application:
+    name: ms-anti-fraud
+  smallrye-health:
+    root-path: /health
+    ui:
+      enabled: false
+  http:
+    root-path: /ms-anti-fraud
+    port: 18081
+  profile: local
+
+info:
+  project:
+    artifact: ${project.artifactId}
+    version: ${project.version}
