@@ -1,19 +1,38 @@
 version: "3.7"
+
 services:
   postgres:
     image: postgres:14
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    depends_on:
+      - postgres
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on:
+      - zookeeper
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -22,4 +41,61 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - "9092:9092"
+
+  transaction-microservice:
+    build:
+      context: ./transaction-microservice
+      dockerfile: Dockerfile
+    container_name: transaction-microservice
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - "8081:8081"
+    environment:
+      SERVER_PORT: 8081
+      SPRING_APPLICATION_NAME: transaction-microservice
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_CONSUMER_GROUP_ID: yape-group
+      KAFKA_TOPIC_TRANSACTION_CREATED: transaction.created
+      KAFKA_TOPIC_TRANSACTION_UPDATED: transaction.updated
+
+  antifraud-microservice:
+    build:
+      context: ./antifraud-microservice
+      dockerfile: Dockerfile
+    container_name: antifraud-microservice
+    depends_on:
+      - transaction-microservice
+      - kafka
+    ports:
+      - "8082:8082"
+    environment:
+      SERVER_PORT: 8082
+      SPRING_APPLICATION_NAME: antifraud-microservice
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_CONSUMER_GROUP_ID: yape-group
+      KAFKA_TOPIC_TRANSACTION_CREATED: transaction.created
+      KAFKA_TOPIC_TRANSACTION_UPDATED: transaction.updated
+
+  yape-microservice:
+    build:
+      context: ./yape-microservice
+      dockerfile: Dockerfile
+    container_name: yape-microservice
+    depends_on:
+      - transaction-microservice
+    ports:
+      - "4300:80"
+    environment:
+      NODE_ENV: production
+
+volumes:
+  postgres-data:
+  pgadmin-data:
