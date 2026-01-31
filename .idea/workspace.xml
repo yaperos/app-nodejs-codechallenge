@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a9de01a3-8545-4816-be99-afdf018326de" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/dto/TransactionCreatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/dto/TransactionStatusChangedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/enums/TransactionStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/service/AntifraudEvaluationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/in/kafka/AntifraudResultListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/in/kafka/KafkaEnableConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/in/kafka/config/KafkaConsumerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/in/web/dto/kafka/TransactionStatusChangedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/client/dto/TransactionCreatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/client/mapper/AntiFraudEventMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/antifraud-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/antifraud-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/config/KafkaProducerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/controller/AntifraudController.java" beforeDir="false" afterPath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/controller/AntifraudController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/kafka/EventProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/antifraud-service/src/main/java/com/devpull/antifraudservice/kafka/EventProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/antifraud-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/antifraud-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/TransactionServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/TransactionServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/in/kafka/TransactionStatusConsumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/client/AntiFraudWebClientAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/client/AntiFraudWebClientAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/adapter/TransactionRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/adapter/TransactionRepositoryAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/entity/AccountEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/entity/AccountEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/entity/TransactionEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/entity/TransactionEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/mapper/AccountPersistenceMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/mapper/AccountPersistenceMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/mapper/TransactionPersistenceMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/adapter/out/persistence/mapper/TransactionPersistenceMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/application/port/out/TransactionRepositoryPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/application/port/out/TransactionRepositoryPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/application/usecase/CreateAccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/application/usecase/CreateAccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/application/usecase/UpdateTransactionStatusService.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/application/usecase/UpdateTransactionStatusService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/domain/enums/TransactionStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/devpull/transactionservice/domain/enums/TransactionStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/resources/application.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/luis/IdeaProjects/app-java-codechallenge" value="38rV8ZAdxMEeBlREU0pxDXsNrXL" />
+      <entry key="_/Users/luis/IdeaProjects/app-java-codechallenge/antifraud-service" value="38tsQOSh8V1vH8BZ0gjKljJFWIV" />
+      <entry key="_/Users/luis/IdeaProjects/app-java-codechallenge/transaction-service" value="390vQeUNr4GR3wrbvv1Lmc16VfW" />
+    </persistenceIdMap>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package-info" />
+        <option value="Interface" />
+        <option value="Record" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;3nr19u3&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:3nr19u3/app-java-codechallenge.git&quot;,
+    &quot;accountId&quot;: &quot;ccb41516-fc70-4471-9fb5-9b6453f6b0eb&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="38rV8ZAdxMEeBlREU0pxDXsNrXL" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AntifraudServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.TransactionServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/implements-antifraud-flux&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/luis/IdeaProjects/app-java-codechallenge&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.devpull.antifraudservice.enums" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.TransactionServiceApplication">
+    <configuration name="AntifraudServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="antifraud-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.devpull.antifraudservice.AntifraudServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TransactionServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="transaction-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.devpull.transactionservice.TransactionServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-cffe25b9f5b3-intellij.indexing.shared.core-IU-253.28294.334" />
+        <option value="bundled-js-predefined-d6986cc7102b-c7e53b3be11b-JavaScript-IU-253.28294.334" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a9de01a3-8545-4816-be99-afdf018326de" name="Changes" comment="" />
+      <created>1769557517634</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769557517634</updated>
+      <workItem from="1769557518653" duration="8540000" />
+      <workItem from="1769630185778" duration="597000" />
+      <workItem from="1769689820003" duration="52523000" />
+      <workItem from="1769845787336" duration="7562000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

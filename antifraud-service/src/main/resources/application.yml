@@ -1,0 +1,30 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: antifraud-service
+
+  main:
+    web-application-type: reactive
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:antifraud-service}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+
+    topic:
+      name: ${KAFKA_TOPIC_TRANSACTIONS:transactions_fraud}
+
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: ${LOG_R2DBC_QUERY:DEBUG}
+    io.r2dbc.postgresql.PARAM: ${LOG_R2DBC_PARAM:DEBUG}

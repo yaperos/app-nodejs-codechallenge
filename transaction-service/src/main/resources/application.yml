@@ -1,0 +1,41 @@
+
+app:
+  boot-marker: "transaction-service-yml-loaded"
+
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: transaction-service
+
+  main:
+    web-application-type: reactive
+
+  r2dbc:
+    url: ${R2DBC_URL:r2dbc:postgresql://localhost:5433/app_java_codechallenge}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:transaction-service}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+
+    topic:
+      name: ${KAFKA_TOPIC_TRANSACTIONS:transactions_fraud}
+
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: ${LOG_R2DBC_QUERY:DEBUG}
+    io.r2dbc.postgresql.PARAM: ${LOG_R2DBC_PARAM:DEBUG}
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: INFO
