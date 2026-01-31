@@ -1,0 +1,37 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: anti-fraud-service
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/transactions
+    username: postgres
+    password: postgres
+  sql:
+    init:
+      mode: always
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: anti-fraud-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.default.value.type: com.yape.anti_fraud_service.infrastructure.messaging.event.TransactionStatusUpdatedEvent
+        spring.json.trusted.packages: com.yape.anti_fraud_service.infrastructure.messaging.event
+        spring.json.use.type.headers: false
+        spring.json.type.mapping: >
+          TransactionStatusUpdatedEvent:com.yape.anti_fraud_service.infrastructure.messaging.event.TransactionStatusUpdatedEvent
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+logging:
+  level:
+    root: INFO
+    org.springframework.kafka: INFO
