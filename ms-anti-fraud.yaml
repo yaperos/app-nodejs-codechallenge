@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: Anti-Fraud Service (Event-Driven API)
+  description: >
+    Anti-Fraud microservice responsible for processing financial transactions received via Kafka,
+    validating fraud rules, and publishing updated transaction statuses.
+  version: 1.0.0
+
+servers:
+  - url: kafka://localhost:9092
+    description: Local Kafka Broker
+
+paths: {}
+
+components:
+  schemas:
+    TransactionCreatedEvent:
+      type: object
+      required:
+        - transactionExternalId
+        - accountExternalIdDebit
+        - accountExternalIdCredit
+        - tranferTypeId
+        - value
+        - createdAt
+      properties:
+        transactionExternalId:
+          type: string
+          format: uuid
+        accountExternalIdDebit:
+          type: string
+          format: uuid
+        accountExternalIdCredit:
+          type: string
+          format: uuid
+        tranferTypeId:
+          type: integer
+        value:
+          type: number
+          format: double
+        createdAt:
+          type: string
+          format: date-time
+
+    TransactionStatusUpdatedEvent:
+      type: object
+      required:
+        - transactionExternalId
+        - transactionStatus
+      properties:
+        transactionExternalId:
+          type: string
+          format: uuid
+        transactionStatus:
+          type: string
+          enum:
+            - approved
+            - rejected
+
+x-kafka-topics:
+  transaction-created:
+    description: Event published by ms-transaction when a new transaction is created.
+    message:
+      $ref: '#/components/schemas/TransactionCreatedEvent'
+
+  transaction-status-updated:
+    description: Event published by ms-anti-fraud after fraud evaluation.
+    message:
+      $ref: '#/components/schemas/TransactionStatusUpdatedEvent'
