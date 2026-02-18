@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: Transaction Service API
+  description: API for creating and retrieving financial transactions.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8081
+    description: Local Development
+
+paths:
+  /transaction:
+    post:
+      summary: Create a new transaction
+      description: |
+        Creates a new transaction with status *pending*, publishes the event to Kafka,
+        and returns the stored transaction.  
+        The final status (*approved* or *rejected*) will be updated asynchronously by the anti-fraud service.
+      operationId: createTransaction
+      tags:
+        - Transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+            example:
+              accountExternalIdDebit: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+              accountExternalIdCredit: "b1c2d3e4-f5a6-7b8c-9d0e-1f2a3b4c5d6e"
+              tranferTypeId: 1
+              value: 500.50
+      responses:
+        '201':
+          description: Transaction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          description: Invalid input
+
+  /transaction/{transactionExternalId}:
+    get:
+      summary: Get a transaction by its external ID
+      description: Retrieve a single transaction including its current status.
+      operationId: getTransactionById
+      tags:
+        - Transactions
+      parameters:
+        - name: transactionExternalId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the transaction to retrieve.
+      responses:
+        '200':
+          description: Transaction found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '404':
+          description: Transaction not found
+
+components:
+  schemas:
+    TransactionRequest:
+      type: object
+      required:
+        - accountExternalIdDebit
+        - accountExternalIdCredit
+        - tranferTypeId
+        - value
+      properties:
+        accountExternalIdDebit:
+          type: string
+          format: uuid
+        accountExternalIdCredit:
+          type: string
+          format: uuid
+        tranferTypeId:
+          type: integer
+        value:
+          type: number
+          format: double
+
+    TransactionResponse:
+      type: object
+      properties:
+        transactionExternalId:
+          type: string
+          format: uuid
+        transactionType:
+          type: object
+          properties:
+            name:
+              type: string
+        transactionStatus:
+          type: object
+          properties:
+            name:
+              type: string
+              enum: [pending, approved, rejected]
+        value:
+          type: number
+          format: double
+        createdAt:
+          type: string
+          format: date-time
