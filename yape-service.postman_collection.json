@@ -1,0 +1,134 @@
+{
+  "info": {
+    "_postman_id": "1af0e93f-c796-4557-a9a6-6e887c0bd227",
+    "name": "yape-service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36481549"
+  },
+  "item": [
+    {
+      "name": "transactions",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"accountExternalIdDebit\": \"11111111-1111-1111-1111-111111111111\",\r\n  \"accountExternalIdCredit\": \"22222222-2222-2222-2222-222222222222\",\r\n  \"tranferTypeId\": 1,\r\n  \"value\": 120\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/transactions",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "transactions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SearchTransaction",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/transactions/4d89a448-6c35-47eb-928a-e956a441df96",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "transactions",
+            "4d89a448-6c35-47eb-928a-e956a441df96"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Transaction",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/transactions/4d89a448-6c35-47eb-928a-e956a441df96",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "transactions",
+            "4d89a448-6c35-47eb-928a-e956a441df96"
+          ]
+        },
+        "description": "Generated from cURL: curl -X DELETE http://localhost:8080/transactions/bf1e870a-b34f-47e4-a596-75009a46b356 -i\r\n"
+      },
+      "response": []
+    },
+    {
+      "name": "update yape service",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"accountExternalIdDebit\": \"11111111-1111-1111-1111-111111111111\",\r\n    \"accountExternalIdCredit\": \"22222222-2222-2222-2222-222222222223\",\r\n    \"tranferTypeId\": 1,\r\n    \"value\": 999\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/transactions/4d89a448-6c35-47eb-928a-e956a441df96",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "transactions",
+            "4d89a448-6c35-47eb-928a-e956a441df96"
+          ]
+        },
+        "description": "Generated from cURL: curl -X PUT \"http://localhost:8080/transactions/2a94a12f-8f93-4c96-9055-acb09ad6c26d\" \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{\r\n    \"accountExternalIdDebit\": \"11111111-1111-1111-1111-111111111111\",\r\n    \"accountExternalIdCredit\": \"33333333-3333-3333-3333-333333333333\",\r\n    \"value\": 500\r\n  }'\r\n"
+      },
+      "response": []
+    }
+  ]
+}
