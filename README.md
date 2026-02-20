@@ -1,49 +1,128 @@
-# Yape Code Challenge :rocket:
+# Reto Java – Transacciones + Anti-Fraude (Kafka)
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Implementación del reto usando **Java 21**, **Spring Boot**, **Kafka** y **PostgreSQL** en una arquitectura **event-driven**.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+---
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+##  Resumen del problema
 
-# Problem
+Cada vez que se crea una transacción:
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+1. Se registra con estado `pending`
+2. Se publica un evento en Kafka
+3. El microservicio anti-fraude consume el evento, aplica la regla y publica el resultado
+4. El microservicio de transacciones consume la respuesta y actualiza el estado en la BD
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+### Estados
+- `pending`
+- `approved`
+- `rejected`
 
-Every transaction with a value greater than 1000 should be rejected.
+### Regla anti-fraude
+- Si `value > 1000` → **`rejected`**
+- Si no → **`approved`**
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+> Nota: el cambio de estado es asíncrono (event-driven). Puede que necesites reintentar el `GET` luego de unos segundos.
+
+---
+
+##  Arquitectura
+
+Se implementa usando la arquitectura hexagonal y se crea dos microservicios y un módulo compartido:
+
+### 1) `transaction-service`
+- **API REST**
+    - `POST /transactions`: crea una transacción con estado `pending` y publica un evento en Kafka.
+    - `GET /transactions/{transactionExternalId}`: consulta una transacción.
+- **Kafka Consumer**
+    - Escucha eventos de actualización para persistir el nuevo estado en la BD.
+
+### 2) `anti-fraud-service`
+- **Kafka Consumer**
+    - Escucha eventos de transacciones creadas.
+- Aplica la regla anti-fraude.
+- **Kafka Producer**
+    - Publica eventos con el estado resultante.
+
+### 3) `common`
+- Comparte clases/DTOs de eventos para garantizar consistencia de serialización/deserialización JSON.
+
+---
+
+##  Tópicos Kafka
+
+- `transactions.created`
+- `transactions.status-updated`
+
+---
+
+##  Stack
+
+- Java 21
+- Spring Boot 3.x
+- Maven (multi-módulo)
+- PostgreSQL
+- Kafka + Zookeeper (Docker Compose)
+
+---
+
+##  Estructura del repositorio
+
+```text
+.
+├── pom.xml
+├── docker-compose.yml
+├── common/
+├── transaction-service/
+└── anti-fraud-service/
 ```
 
-# Tech Stack
+---
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+##  Cómo ejecutar en local
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+###  Requisitos
+- Java 21
+- Maven 3.9+
+- Docker + Docker Compose
 
-You must have two resources:
+### 1) Levantar infraestructura (Kafka + Postgres)
+```bash
+docker compose up -d
+```
 
-1. Resource to create a transaction that must containt:
+### 2) Compilar todos los módulos
+```bash
+mvn clean package
+```
 
+### 3) Ejecutar `transaction-service`
+```bash
+mvn -U -f .\common\pom.xml clean install
+mvn -U -f .\transaction-service\pom.xml spring-boot:run
+
+```
+
+### 4) Ejecutar `anti-fraud-service` (en otra terminal)
+```bash
+mvn -U -f .\anti-fraud-service\pom.xml spring-boot:run
+
+```
+
+###  Servicios
+- `transaction-service`: http://localhost:8080
+- `anti-fraud-service`: http://localhost:8081
+
+---
+
+### Crear transacción
+
+**Endpoint**
+```http
+POST /transactions
+```
+
+**Request**
 ```json
 {
   "accountExternalIdDebit": "Guid",
@@ -53,30 +132,85 @@ You must have two resources:
 }
 ```
 
-2. Resource to retrieve a transaction
-
+**Response**
 ```json
 {
   "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
+  "transactionType": { "name": "TYPE_1" },
+  "transactionStatus": { "name": "pending" },
   "value": 120,
-  "createdAt": "Date"
+  "createdAt": "2026-02-18T12:00:00Z"
 }
 ```
 
-## Optional
+**Ejemplo (curl)**
+```bash
+curl -X POST "http://localhost:8080/transactions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accountExternalIdDebit":"11111111-1111-1111-1111-111111111111",
+    "accountExternalIdCredit":"22222222-2222-2222-2222-222222222222",
+    "tranferTypeId":1,
+    "value":120
+  }'
+```
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+---
 
-You can use Graphql;
+### Consultar transacción
 
-# Send us your challenge
+**Endpoint**
+```http
+GET /transactions/{transactionExternalId}
+```
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+**Response**
+```json
+{
+  "transactionExternalId": "Guid",
+  "transactionType": { "name": "TYPE_1" },
+  "transactionStatus": { "name": "approved" },
+  "value": 120,
+  "createdAt": "2026-02-18T12:00:00Z"
+}
+```
 
-If you have any questions, please let us know.
+**Ejemplo (curl)**
+```bash
+curl "http://localhost:8080/transactions/<transactionExternalId>"
+```
+
+> Nota: el cambio de estado es asíncrono. Puede que necesites reintentar el `GET` después de unos segundos.
+
+---
+
+##  Validación rápida de la regla anti-fraude
+
+### Caso aprobado (`value <= 1000`)
+```bash
+curl -X POST "http://localhost:8080/transactions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accountExternalIdDebit":"11111111-1111-1111-1111-111111111111",
+    "accountExternalIdCredit":"22222222-2222-2222-2222-222222222222",
+    "tranferTypeId":1,
+    "value":120
+  }'
+```
+
+### Caso rechazado (`value > 1000`)
+```bash
+curl -X POST "http://localhost:8080/transactions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accountExternalIdDebit":"11111111-1111-1111-1111-111111111111",
+    "accountExternalIdCredit":"22222222-2222-2222-2222-222222222222",
+    "tranferTypeId":1,
+    "value":1200
+  }'
+```
+
+Luego consulta el estado:
+```bash
+curl "http://localhost:8080/transactions/<transactionExternalId>"
+```
