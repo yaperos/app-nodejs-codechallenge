@@ -36,7 +36,6 @@ public class TransactionEntity {
     @Column(nullable = false)
     private Instant createdAt;
 
-    // getters/setters (genera con tu IDE)
     public Long getId() { return id; }
     public String getTransactionExternalId() { return transactionExternalId; }
     public void setTransactionExternalId(String s) { this.transactionExternalId = s; }
