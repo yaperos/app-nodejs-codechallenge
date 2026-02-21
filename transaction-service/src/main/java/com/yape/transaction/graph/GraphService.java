@@ -123,7 +123,7 @@ public class GraphService {
                 .transactionType(node.get("transactionType").asString())
                 .transactionStatus(node.get("transactionStatus").asString())
                 .value(node.get("value").asFloat())
-                .createdAt(node.get("createdAt").asOffsetDateTime().toInstant())
+                .createdAt(Instant.parse(node.get("createdAt").asString()))
                 .build();
     }
 
