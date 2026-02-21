@@ -1,19 +1,32 @@
 version: "3.7"
 services:
   postgres:
-    image: postgres:14
+    image: postgres:17
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: transactions_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d transactions_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -21,5 +34,46 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+
+  #Se agrego redis como una solución opcional cuando se tiene escenarios de alto volumen: escritura y lectura, segun descrito en el reto
+  redis:
+    image: redis:7-alpine
     ports:
-      - 9092:9092
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  transaction-service:
+    build: ./transaction-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: transactions_db
+      KAFKA_BROKERS: kafka:29092
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    restart: on-failure
+
+  antifraud-service:
+    build: ./antifraud-service
+    depends_on:
+      kafka:
+        condition: service_started
+    environment:
+      KAFKA_BROKERS: kafka:29092
+    restart: on-failure
