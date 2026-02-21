@@ -1,0 +1,52 @@
+type Transaction {
+    id: ID!
+    accountExternalIdDebit: String!
+    accountExternalIdCredit: String!
+    transferTypeId: Int!
+    value: Float!
+    status: TransactStatus!
+    createdAt: String!
+    updatedAt: String!
+    fraudResult: FraudResult!
+}
+
+type FraudResult {
+    transactionId: ID!
+    transactionExternalId: String!
+    transactionType: TransactionType!
+    transactionStatus: TransactionStatus!
+    value: Float!
+    createdAt: String!
+}
+
+type TransactionType {
+    name: TransactType!
+}
+
+type TransactionStatus {
+    name: TransactStatus!
+}
+
+type Account {
+    accountId: ID!
+}
+
+enum TransactStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}
+
+enum TransactType {
+    DEPOSIT
+    TRANSFER
+    PAYMENT
+    INTEREST
+    REFOUND
+}
+
+type Query {
+    transaction(id: ID!): Transaction
+    accountTransactions(accountId: ID!, limit: Int): [Transaction!]!
+    highRiskAccounts(minRejections: Int!): [Account!]!
+}
