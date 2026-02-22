@@ -1,0 +1,50 @@
+server:
+  port: 8081
+  server-header: ""
+  shutdown: graceful
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  threads:
+    virtual:
+      enabled: true
+
+  application:
+    name: anti-fraud-service
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        spring.json.type.mapping: >
+          transaction-status-updated:com.yape.antifraud.infrastructure.adapter.out.kafka.TransactionStatusMessage
+    consumer:
+      group-id: yape.anti-fraud-service.transaction-created.v1
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "com.yape.antifraud.infrastructure.adapter.in.kafka"
+        spring.json.type.mapping: >
+          transaction-created:com.yape.antifraud.infrastructure.adapter.in.kafka.TransactionCreatedMessage
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
