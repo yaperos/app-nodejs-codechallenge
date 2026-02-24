@@ -1,0 +1,1 @@
+package com.yape.transaction.infrastructure.adapter.out.kafka;

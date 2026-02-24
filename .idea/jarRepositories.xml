@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="bdsdigital" />
+      <option name="name" value="bdsdigital" />
+      <option name="url" value="https://pkgs.dev.azure.com/bdsdigital/_packaging/bdsdigital/maven/v1" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jasperreports" />
+      <option name="name" value="jasperreports" />
+      <option name="url" value="http://jasperreports.sourceforge.net/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jaspersoft-third-party" />
+      <option name="name" value="jaspersoft-third-party" />
+      <option name="url" value="https://jaspersoft.jfrog.io/artifactory/third-party-ce-artifacts" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+  </component>
+</project>
