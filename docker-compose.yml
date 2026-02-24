@@ -7,10 +7,18 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=yape
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d yape"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
     depends_on: [zookeeper]
@@ -22,4 +30,26 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - "9092:9092"
+
+  transaction-service:
+    build: ./transaction-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/yape
+      - KAFKA_BROKERS=kafka:29092
+    ports:
+      - "3000:3000"
+
+  antifraud-service:
+    build: ./antifraud-service
+    depends_on:
+      kafka:
+        condition: service_started
+    environment:
+      - KAFKA_BROKERS=kafka:29092

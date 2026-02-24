@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: antifraud-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

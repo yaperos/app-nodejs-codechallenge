@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: transaction-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/yape
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: transaction-service
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      properties:
+        spring.json.add.type.headers: false
+
+kafka:
+  topics:
+    transactions-created: transactions.created
+
+antifraud:
+  base-url: http://localhost:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.springframework.kafka: info
