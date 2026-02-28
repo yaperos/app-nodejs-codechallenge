@@ -7,13 +7,22 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    depends_on: [ zookeeper ]
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -22,4 +31,34 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
     ports:
-      - 9092:9092
+      - "9092:9092"
+
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
+
+  transaction-service:
+    build:
+      context: ./transaction-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_R2DBC_URL=r2dbc:postgresql://postgres:5432/postgres
+      - SPRING_R2DBC_USERNAME=postgres
+      - SPRING_R2DBC_PASSWORD=postgres
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - kafka
+      - redis
+
+  anti-fraud-service:
+    build:
+      context: ./anti-fraud-service
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    depends_on:
+      - kafka
