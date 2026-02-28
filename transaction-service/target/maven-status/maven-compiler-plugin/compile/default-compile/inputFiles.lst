@@ -1,0 +1,13 @@
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/repository/TransactionRepository.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/domain/Transaction.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/service/KafkaProducerService.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/dto/TransactionStatusUpdatedEvent.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/dto/CreateTransactionRequest.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/TransactionServiceApplication.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/service/KafkaConsumerService.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/dto/TransactionCreatedEvent.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/config/KafkaConfig.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/controller/TransactionController.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/service/TransactionService.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/config/KafkaTopicConfig.java
+/Users/jimmy/Documents/workspace-intellij/yape-challange/transaction-service/src/main/java/com/example/transactionservice/config/JacksonConfig.java

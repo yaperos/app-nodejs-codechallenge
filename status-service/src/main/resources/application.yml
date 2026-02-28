@@ -1,0 +1,65 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: status-service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+      properties:
+        max.in.flight.requests.per.connection: 5
+        enable.idempotence: true
+    consumer:
+      group-id: status-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      properties:
+        max.poll.records: 100
+        request.timeout.ms: 60000
+        connections.max.idle.ms: 600000
+        metadata.max.age.ms: 180000
+        session.timeout.ms: 60000
+        heartbeat.interval.ms: 3000
+
+# Configuración de tópicos de Kafka
+kafka:
+  topics:
+    transaction-creation: transaction-creation-topic
+    anti-fraud-validation: anti-fraud-validation-topic
+  consumer:
+    concurrency: 3
+    max-poll-records: 100
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.example.statusservice: DEBUG
+    reactor.kafka: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
