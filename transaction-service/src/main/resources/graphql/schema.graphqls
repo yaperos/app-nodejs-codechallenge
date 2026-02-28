@@ -1,0 +1,30 @@
+type Query {
+    getTransaction(id: ID!): TransactionResponse
+}
+
+type Mutation {
+    createTransaction(request: CreateTransactionRequestInput!): TransactionResponse
+}
+
+input CreateTransactionRequestInput {
+    accountExternalIdDebit: String!
+    accountExternalIdCredit: String!
+    tranferTypeId: Int!
+    value: Float!
+}
+
+type TransactionResponse {
+    transactionExternalId: ID
+    transactionType: TransactionTypeResponse
+    transactionStatus: TransactionStatusResponse
+    value: Float
+    createdAt: String
+}
+
+type TransactionTypeResponse {
+    name: String
+}
+
+type TransactionStatusResponse {
+    name: String
+}
