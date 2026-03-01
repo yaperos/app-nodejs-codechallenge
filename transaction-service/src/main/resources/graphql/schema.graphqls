@@ -1,0 +1,10 @@
+scalar UUID
+scalar DateTime
+
+type Query {
+
+}
+
+type Mutation {
+
+}
