@@ -1,82 +1,82 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+This microservice handles the management of financial transactions, integrating asynchronous anti-fraud validation through an event-driven flow. The solution has been designed with a pragmatic and scalable approach, prioritizing data consistency and high performance in service-to-service communication.
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+## Tech Stack
+* **Java 17 / Spring Boot 4.0.3**: Leveraging the latest performance improvements.
+* **GraphQL (Spring GraphQL)**: For a flexible and optimized API that prevents over-fetching.
+* **PostgreSQL 14**: Robust relational persistence.
+* **Apache Kafka**: Event bus for asynchronous and decoupled communication.
+* **MapStruct**: High-performance object mapping (based on code generation, not reflection).
+* **Docker & Docker Compose**: Complete infrastructure orchestration.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+---
 
-# Problem
+## Engineering & Design Decisions
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+### 1. Pragmatic Layered Architecture
+A clear separation between `Controller`, `Service`, and `Repository` was implemented.
+* **Justification:** For this specific domain, priority was given to reducing latency and code simplicity (KISS), avoiding excessive boilerplate while maintaining solid decoupling through Mappers and DTOs.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+### 2. Distributed Identity (Native UUID)
+The `Transaction` entity uses a **UUID** as a natively generated primary key.
+* **Scalability:** As a system designed for **High Volume**, using UUIDs avoids database contention caused by traditional sequences and facilitates future horizontal scaling.
+* **Data Type:** The native Postgres UUID type is used to optimize storage and indexing.
 
-Every transaction with a value greater than 1000 should be rejected.
+### 3. Persistence & Event Strategy
+* **Atomicity:** `saveAndFlush` is used in the service to ensure the transaction is physically persisted before emitting the Kafka event.
+* **Asynchrony:** The main flow is non-blocking. The transaction is created in a `PENDING` state, and the final state (`APPROVED`/`REJECTED`) is updated eventually by the Kafka consumer.
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+---
 
-# Tech Stack
+## How to Run the Project
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+### Prerequisites
+* Docker and Docker Compose installed.
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+### Steps
+1. **Start infrastructure and microservices:**
+   From the repository root, run:
+   ```bash
+   docker-compose up --build -d
+   ```
+   *This command will spin up PostgreSQL, Kafka, Zookeeper, the Transaction Service, and the Anti-fraud Service.*
 
-You must have two resources:
+---
 
-1. Resource to create a transaction that must containt:
+## API Reference (GraphQL)
 
-```json
-{
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+### Create Transaction (Mutation)
+```graphql
+mutation {
+  createTransaction(request: {
+    accountExternalIdDebit: "550e8400-e29b-41d4-a716-446655440000",
+    accountExternalIdCredit: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+    transferTypeId: 1,
+    value: 120.50
+  }) {
+    transactionExternalId
+    transactionStatus {
+      name
+    }
+    createdAt
+  }
 }
 ```
 
-2. Resource to retrieve a transaction
-
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
+### Get Transaction (Query)
+```graphql
+query {
+  getTransaction(id: "YOUR_TRANSACTION_UUID") {
+    transactionExternalId
+    value
+    transactionStatus {
+      name
+    }
+    transactionType {
+      name
+    }
+    createdAt
+  }
 }
 ```
-
-## Optional
-
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
