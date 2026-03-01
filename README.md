@@ -1,82 +1,112 @@
-# Yape Code Challenge :rocket:
+# Yape Transaction Service
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Overview
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Event-driven microservices system for processing financial transactions with anti-fraud validation using Apache Kafka.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Architecture
 
-# Problem
+The project consists of two microservices:
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+**transaction-service** — Core service built with Onion Architecture (DDD). Handles transaction creation, persistence, and status updates.
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
+**anti-fraud-service** — Lightweight worker service that consumes transaction events, validates fraud rules, and publishes the result.
 
-Every transaction with a value greater than 1000 should be rejected.
+### Event Flow
 
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```
+1. Client creates a transaction via REST API
+2. Transaction is saved in PostgreSQL with status PENDING
+3. transaction-service publishes event to Kafka topic "transaction.created"
+4. anti-fraud-service consumes the event and validates:
+   - Amount <= 1000 → APPROVED
+   - Amount > 1000  → REJECTED
+5. anti-fraud-service publishes result to Kafka topic "transaction.status"
+6. transaction-service consumes the event and updates the status in the database
 ```
 
-# Tech Stack
+### Project Structure
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```
+transaction-service/          → Onion Architecture (DDD)
+├── domain/                   → Entities, enums, repository interfaces
+├── application/              → Use cases, ports (interfaces), DTOs
+└── infrastructure/           →  JPA, Kafka producers/consumers
+└── Presentation Layer/       → REST API, Spring controllers, exceptions handlers
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+anti-fraud-service/           → Simple structure
+├── models/                   → TransactionEvent, TransactionStatus enum
+└── consumers/                → Kafka consumer + producer logic
+```
 
-You must have two resources:
+## Tech Stack
 
-1. Resource to create a transaction that must containt:
+- Java 21
+- Spring Boot 4.x
+- Apache Kafka (Confluent 5.5.3)
+- PostgreSQL 14
+- MapStruct
+- Lombok
+- Springdoc OpenAPI (Swagger)
+
+## Prerequisites
+
+- Java 21
+- Docker & Docker Compose
+- Maven
+
+## Getting Started
+
+### 1. Start infrastructure
+
+```bash
+docker-compose up -d
+```
+
+This starts PostgreSQL, Zookeeper, and Kafka.
+
+### 2. Run transaction-service
+
+```bash
+cd transaction-service
+mvn spring-boot:run
+```
+
+Runs on `http://localhost:8080`
+
+### 3. Run anti-fraud-service
+
+```bash
+cd anti-fraud-service
+mvn spring-boot:run
+```
+
+Runs as a Kafka worker (no HTTP server).
+
+## API Documentation
+
+Swagger UI available at: `http://localhost:8080/`
+
+### Endpoints
+
+**POST** `/transactions` — Create a new transaction
 
 ```json
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+  "accountExternalIdDebit": "uuid",
+  "accountExternalIdCredit": "uuid",
+  "transferTypeId": 1,
+  "value": 500
 }
 ```
 
-2. Resource to retrieve a transaction
+**GET** `/transactions/{id}` — Get transaction by external ID
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
-```
+Returns transaction with current status (PENDING, APPROVED, or REJECTED).
 
-## Optional
+## Kafka Topics
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
-
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+| Topic | Producer | Consumer | Description |
+|---|---|---|---|
+| `transaction.created` | transaction-service | anti-fraud-service | New transaction event |
+| `transaction.status` | anti-fraud-service | transaction-service | Fraud validation result |
