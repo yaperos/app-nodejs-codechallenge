@@ -1,0 +1,32 @@
+server:
+  port: 8081
+
+fraud:
+  rules:
+    max-amount: 1000
+
+kafka:
+  topics:
+    transaction-created: transaction-created
+    transaction-validated: transaction-validated
+
+spring:
+  application:
+    name: fraud-service
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: fraud-group
+      auto-offset-reset: earliest
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: com.codeh.fraud_service.messaging.event.TransactionCreatedEvent
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
