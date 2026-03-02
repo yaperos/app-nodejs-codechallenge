@@ -1,82 +1,63 @@
-# Yape Code Challenge :rocket:
+# Yape Code Challenge - Quarkus  
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
-
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
-```
+Sistema de transacciones financieras con validación anti-fraude usando Kafka y arquitectura hexagonal.
 
 # Tech Stack
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+- **Quarkus 3.8** - Framework Java
+- **PostgreSQL 15** - Base de datos
+- **Apache Kafka** - Mensajería de eventos
+- **Redis** - Cache e idempotencia
+- **Arquitectura Hexagonal** - Clean Architecture
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+## API Endpoints
 
-You must have two resources:
+### Crear Transacción
 
-1. Resource to create a transaction that must containt:
+```bash
+POST http://localhost:8080/transactions
+Content-Type: application/json
 
-```json
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "550e8400-e29b-41d4-a716-446655440000",
+  "accountExternalIdCredit": "550e8400-e29b-41d4-a716-446655440001",
   "tranferTypeId": 1,
-  "value": 120
+  "value": 500
 }
 ```
 
-2. Resource to retrieve a transaction
-
+**Respuesta (201 Created):**
 ```json
 {
-  "transactionExternalId": "Guid",
+  "transactionExternalId": "generated-uuid",
   "transactionType": {
-    "name": ""
+    "name": "Transfer"
   },
   "transactionStatus": {
-    "name": ""
+    "name": "pending"
   },
-  "value": 120,
-  "createdAt": "Date"
+  "value": 500,
+  "createdAt": "2024-01-15T10:30:00"
 }
 ```
 
-## Optional
+### Consultar Transacción
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+```bash
+GET http://localhost:8080/transactions/{transactionExternalId}
+```
 
-You can use Graphql;
-
-# Send us your challenge
-
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
-
-If you have any questions, please let us know.
+**Respuesta (200 OK):**
+```json
+{
+  "transactionExternalId": "uuid",
+  "transactionType": {
+    "name": "Transfer"
+  },
+  "transactionStatus": {
+    "name": "approved"
+  },
+  "value": 500,
+  "createdAt": "2024-01-15T10:30:00"
+}
+```
