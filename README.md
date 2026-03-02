@@ -1,3 +1,7 @@
+## Candidate Solution
+
+The implementation can be found in the `/solution` directory.
+
 # Yape Code Challenge :rocket:
 
 Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
@@ -80,3 +84,4 @@ You can use Graphql;
 When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
 
 If you have any questions, please let us know.
+
