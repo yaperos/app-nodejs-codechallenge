@@ -1,82 +1,145 @@
-# Yape Code Challenge :rocket:
+# Reto Yape
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+## Arquitectura
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
-
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
-
-# Problem
-
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
-
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     transaction-service                          │
+│                                                                  │
+│  REST API  ──►  CreateTransactionUseCase  ──►  DB (PENDING)     │
+│                          │                                       │
+│                          └──► Kafka: transaction.created        │
+│                                                                  │
+│  Kafka Consumer ◄── transaction.status.updated                  │
+│          │                                                       │
+│          └──► UpdateTransactionStatusUseCase ──► DB (update)    │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲ │
+                              │ ▼ Kafka
+┌─────────────────────────────────────────────────────────────────┐
+│                     anti-fraud-service                           │
+│                                                                  │
+│  Kafka Consumer ◄── transaction.created                         │
+│          │                                                       │
+│          └──► EvaluateTransactionUseCase                        │
+│                  value > 1000 → REJECTED                        │
+│                  value ≤ 1000 → APPROVED                        │
+│                          │                                       │
+│                          └──► Kafka: transaction.status.updated │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-# Tech Stack
+## Estructura de paquetes - Arquitectura Hexagonal
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+```
+src/main/java/com/yape/transaction/
+├── domain/
+│   ├── model/                    # Entidades y Value Objects (núcleo del dominio)
+│   │   ├── Transaction.java
+│   │   ├── TransactionStatus.java
+│   │   └── TransactionType.java
+│   └── port/
+│       ├── in/                   # Casos de uso (interfaces de entrada)
+│       │   ├── CreateTransactionUseCase.java
+│       │   ├── GetTransactionUseCase.java
+│       │   └── UpdateTransactionStatusUseCase.java
+│       └── out/                  # Puertos de salida (contratos de infraestructura)
+│           ├── TransactionRepository.java
+│           └── TransactionEventPublisher.java
+├── application/
+│   └── usecase/                  # Implementaciones de casos de uso
+│       ├── CreateTransactionService.java
+│       ├── GetTransactionService.java
+│       └── UpdateTransactionStatusService.java
+└── infrastructure/
+    ├── adapter/
+    │   ├── in/
+    │   │   ├── rest/             # Controllers REST (adaptador de entrada)
+    │   │   └── messaging/        # Kafka consumers (adaptador de entrada)
+    │   └── out/
+    │       ├── persistence/      # JPA adapters (adaptador de salida)
+    │       └── messaging/        # Kafka producers (adaptador de salida)
+    └── config/                   # Configuración de Spring / Kafka
+```
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+## Cómo levantar el proyecto
 
-You must have two resources:
+### Prerrequisitos
+- Docker & Docker Compose
+- Java 17+
+- Maven 3.9+
 
-1. Resource to create a transaction that must containt:
+### Levantar infraestructura + servicios
+```bash
+docker-compose up -d
+```
 
-```json
+### Solo infraestructura (para desarrollo local)
+```bash
+docker-compose up -d postgres kafka zookeeper kafka-ui
+```
+
+### Ejecutar servicios localmente
+```bash
+# Terminal 1 - Transaction Service
+cd transaction-service
+mvn spring-boot:run
+
+# Terminal 2 - Anti-Fraud Service
+cd anti-fraud-service
+mvn spring-boot:run
+```
+
+## API Endpoints
+
+### Crear transacción
+```http
+POST http://localhost:8080/api/v1/transactions
+Content-Type: application/json
+
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
+  "accountExternalIdDebit": "3a0c1b2d-4e5f-6789-abcd-ef0123456789",
+  "accountExternalIdCredit": "7f8e9d0c-1b2a-3456-789a-bcdef0123456",
   "tranferTypeId": 1,
   "value": 120
 }
 ```
 
-2. Resource to retrieve a transaction
+### Recuperar transacción
+```http
+GET http://localhost:8080/api/v1/transactions/{transactionExternalId}
+```
 
+### Respuesta esperada
 ```json
 {
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
+  "transactionExternalId": "uuid",
+  "transactionType": { "name": "Transfer" },
+  "transactionStatus": { "name": "APPROVED" },
   "value": 120,
-  "createdAt": "Date"
+  "createdAt": "2024-01-15T10:30:00"
 }
 ```
 
-## Optional
+## Tópicos Kafka
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+| Tópico                        | Publicado por         | Consumido por         |
+|-------------------------------|-----------------------|-----------------------|
+| `transaction.created`         | transaction-service   | anti-fraud-service    |
+| `transaction.status.updated`  | anti-fraud-service    | transaction-service   |
 
-You can use Graphql;
+## Reglas de negocio
 
-# Send us your challenge
+- Toda transacción inicia con estado **PENDING**
+- Anti-fraud aprueba si `value <= 1000`
+- Anti-fraud rechaza si `value > 1000`
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+## Tests
 
-If you have any questions, please let us know.
+```bash
+# Transaction service
+cd transaction-service && mvn test
+
+# Anti-fraud service
+cd anti-fraud-service && mvn test
+```

@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: transaction-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/transactions_db
+    username: ${DB_USERNAME:yape}
+    password: ${DB_PASSWORD:yape}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: transaction-service-group
+      auto-offset-reset: earliest
+
+server:
+  port: 8080
+
+kafka:
+  topics:
+    transaction-created: transaction.created
+    transaction-status-updated: transaction.status.updated
+
+logging:
+  level:
+    com.yape.transaction: DEBUG
+    org.springframework.kafka: INFO
