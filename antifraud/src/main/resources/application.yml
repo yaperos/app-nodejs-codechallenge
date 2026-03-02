@@ -1,0 +1,8 @@
+spring:
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${SPRING_KAFKA_CONSUMER_GROUP_ID:anti-fraud-group-id}
+    topics:
+      transaction: ${KAFKA_TOPIC_TRANSACTION:transaction-topic}
+      anti-fraud: ${KAFKA_TOPIC_ANTIFRAUD:anti-fraud-topic}

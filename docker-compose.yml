@@ -2,18 +2,48 @@ version: "3.7"
 services:
   postgres:
     image: postgres:14
+    container_name: yape-postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yape-network
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
+    container_name: yape-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    healthcheck:
+      test: ["CMD-SHELL", "echo srvr | nc localhost 2181 || exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - yape-network
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
+    container_name: yape-kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
     environment:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -21,5 +51,69 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms256M"
     ports:
       - 9092:9092
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:29092 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - yape-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  antifraud:
+    build:
+      context: ./antifraud
+      dockerfile: Dockerfile
+    container_name: yape-antifraud
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    ports:
+      - "8081:8081"
+    networks:
+      - yape-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  transaction:
+    build:
+      context: ./transaction
+      dockerfile: Dockerfile
+    container_name: yape-transaction
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      antifraud:
+        condition: service_started
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - SPRING_R2DBC_URL=r2dbc:postgresql://postgres:5432/postgres?schema=public
+      - SPRING_R2DBC_USERNAME=postgres
+      - SPRING_R2DBC_PASSWORD=postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - yape-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+networks:
+  yape-network:
+    driver: bridge
