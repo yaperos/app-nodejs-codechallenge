@@ -102,3 +102,20 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+.settings/
+.project
+.classpath
+.idea/
+*.iml
+.factorypath
+
+# OS
+.DS_Store
+Thumbs.db
