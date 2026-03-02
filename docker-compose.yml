@@ -1,25 +1,99 @@
-version: "3.7"
+version: '3.8'
+
 services:
+
+  # ── PostgreSQL ────────────────────────────────────────
   postgres:
-    image: postgres:14
+    image: postgres:15-alpine
+    container_name: yape-postgres
+    environment:
+      POSTGRES_DB: transactions_db
+      POSTGRES_USER: yape
+      POSTGRES_PASSWORD: yape
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yape -d transactions_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Zookeeper ─────────────────────────────────────────
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.3
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: yape-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  # ── Kafka ─────────────────────────────────────────────
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.3
-    depends_on: [zookeeper]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_BROKER_ID: 1
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_JMX_PORT: 9991
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: yape-kafka
+    depends_on:
+      - zookeeper
     ports:
-      - 9092:9092
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Kafka UI (optional - useful for debugging) ────────
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: yape-kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - "8090:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+
+  # ── Transaction Service ───────────────────────────────
+  transaction-service:
+    build:
+      context: ./transaction-service
+      dockerfile: Dockerfile
+    container_name: yape-transaction-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/transactions_db
+      DB_USERNAME: yape
+      DB_PASSWORD: yape
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+  # ── Anti-Fraud Service ────────────────────────────────
+  anti-fraud-service:
+    build:
+      context: ./anti-fraud-service
+      dockerfile: Dockerfile
+    container_name: yape-anti-fraud-service
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+volumes:
+  postgres_data:
