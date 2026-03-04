@@ -1,0 +1,31 @@
+debug: true
+server.port: 8090
+
+app:
+  kafka:
+    topic-request: transaction.request
+    topic-result: transaction.result
+
+spring:
+  application.name: core-antifraud-v1
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: core-antifraud-group
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.value.default.type: com.yape.shared.domain.TransactionData
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+logging:
+  level:
+    org.springframework.boot:
+      autoconfigure:
+        logging:
+          ConditionEvaluationReportLogger: INFO
