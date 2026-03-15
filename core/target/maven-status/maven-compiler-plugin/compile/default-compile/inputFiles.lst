@@ -1,0 +1,11 @@
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\domain\enums\TransactionStatus.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\domain\event\FraudResultEvent.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\ports\input\CreateTransactionUseCase.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\ports\output\TransactionEventPublisher.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\ports\output\TransactionRepository.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\usecase\UpdateTransactionStatusService.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\ports\input\GetTransactionUseCase.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\usecase\CreateTransactionService.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\usecase\GetTransactionService.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\domain\model\TransactionType.java
+C:\Users\malca\OneDrive\Documentos\Jeffrey\YAPE\app-nodejs-codechallenge\core\src\main\java\com\challenge\transaction\core\domain\model\Transaction.java

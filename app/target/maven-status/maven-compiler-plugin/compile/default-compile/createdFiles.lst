@@ -1,0 +1,15 @@
+com\challenge\transaction\app\config\SwaggerConfig.class
+com\challenge\transaction\app\mapper\TransactionMapper.class
+com\challenge\transaction\app\config\KafkaConfig.class
+com\challenge\transaction\app\kafka\FraudResultConsumer.class
+com\challenge\transaction\app\TransactionApplication.class
+com\challenge\transaction\app\dto\CreateTransactionRequest.class
+com\challenge\transaction\app\controller\TransactionController.class
+com\challenge\transaction\app\dto\TransactionResponse.class
+com\challenge\transaction\app\persistence\TransactionEntity.class
+com\challenge\transaction\app\dto\TransactionResponse$TypeDto.class
+com\challenge\transaction\app\persistence\TransactionJpaRepository.class
+com\challenge\transaction\app\dto\TransactionResponse$StatusDto.class
+com\challenge\transaction\app\persistence\TransactionRepositoryAdapter.class
+com\challenge\transaction\app\kafka\TransactionProducer.class
+com\challenge\transaction\app\config\BeanConfiguration.class

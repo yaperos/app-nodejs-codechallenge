@@ -1,0 +1,11 @@
+com\challenge\transaction\core\usecase\UpdateTransactionStatusService.class
+com\challenge\transaction\core\usecase\GetTransactionService.class
+com\challenge\transaction\core\ports\output\TransactionRepository.class
+com\challenge\transaction\core\usecase\CreateTransactionService.class
+com\challenge\transaction\core\ports\input\GetTransactionUseCase.class
+com\challenge\transaction\core\ports\input\CreateTransactionUseCase.class
+com\challenge\transaction\core\domain\event\FraudResultEvent.class
+com\challenge\transaction\core\domain\enums\TransactionStatus.class
+com\challenge\transaction\core\ports\output\TransactionEventPublisher.class
+com\challenge\transaction\core\domain\model\Transaction.class
+com\challenge\transaction\core\domain\model\TransactionType.class
