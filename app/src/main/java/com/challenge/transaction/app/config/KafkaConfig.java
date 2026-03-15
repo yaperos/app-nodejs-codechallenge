@@ -16,5 +16,4 @@ public class KafkaConfig {
     public NewTopic transactionValidatedTopic() {
         return new NewTopic("transaction-validated", 3, (short) 1);
     }
-
 }
