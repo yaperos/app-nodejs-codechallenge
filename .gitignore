@@ -103,4 +103,14 @@ dist
 # TernJS port file
 .tern-port
 
-.iml
+
+*.class
+*.jar
+
+#Maven
+target/
+dist/
+
+# JetBrains IDE
+.idea/
+.iml/
