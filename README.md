@@ -1,82 +1,148 @@
-# Yape Code Challenge :rocket:
+# app-nodejs-codechallenge
 
-Our code challenge will let you marvel us with your Jedi coding skills :smile:. 
+Este repositorio es un microservicio en NestJS para manejar transacciones financieras. Usa PostgreSQL para persistencia y Kafka para la validación asíncrona (anti-fraud).
 
-Don't forget that the proper way to submit your work is to fork the repo and create a PR :wink: ... have fun !!
+Este README describe cómo levantar el entorno, cómo usar los servicios (endpoints) y cómo comprobar el flujo de mensajes con Kafka.
 
-- [Problem](#problem)
-- [Tech Stack](#tech_stack)
-- [Send us your challenge](#send_us_your_challenge)
+## Resumen técnico
+- Framework: NestJS
+- Persistencia: PostgreSQL (TypeORM)
+- Mensajería: Kafka
+- Arquitectura: monolito modular con flujo event-driven para validación anti-fraud
 
-# Problem
+## Requisitos
+- Docker & Docker Compose
+- Node 18+ y npm o yarn
 
-Every time a financial transaction is created it must be validated by our anti-fraud microservice and then the same service sends a message back to update the transaction status.
-For now, we have only three transaction statuses:
+## Configuración (.env)
+Crear un archivo `.env` en la raíz con las variables de Postgres:
 
-<ol>
-  <li>pending</li>
-  <li>approved</li>
-  <li>rejected</li>  
-</ol>
-
-Every transaction with a value greater than 1000 should be rejected.
-
-```mermaid
-  flowchart LR
-    Transaction -- Save Transaction with pending Status --> transactionDatabase[(Database)]
-    Transaction --Send transaction Created event--> Anti-Fraud
-    Anti-Fraud -- Send transaction Status Approved event--> Transaction
-    Anti-Fraud -- Send transaction Status Rejected event--> Transaction
-    Transaction -- Update transaction Status event--> transactionDatabase[(Database)]
+```
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
 ```
 
-# Tech Stack
+Nota: la app por defecto usa `localhost:9092` como broker Kafka. Si ejecutas la app dentro de Docker, usa `kafka:29092` como broker.
 
-<ol>
-  <li>Node. You can use any framework you want (i.e. Nestjs with an ORM like TypeOrm or Prisma) </li>
-  <li>Any database</li>
-  <li>Kafka</li>    
-</ol>
+## Levantar el entorno
 
-We do provide a `Dockerfile` to help you get started with a dev environment.
+1. Instala dependencias:
 
-You must have two resources:
+```bash
+npm install
+# o
+yarn install
+```
 
-1. Resource to create a transaction that must containt:
+2. Levanta infra con Docker Compose (Postgres, Zookeeper, Kafka):
+
+```bash
+docker compose up -d
+```
+
+3. Ejecuta la aplicación en modo desarrollo:
+
+```bash
+npm run local
+# o
+yarn local
+```
+
+### Levantar los dos servicios (transaction + anti-fraud)
+
+Abre dos terminales separados y en cada uno ejecuta:
+
+Terminal A (transaction):
+
+```bash
+cd transaction
+npm install
+npm run local
+```
+
+Terminal B (anti-fraud):
+
+```bash
+cd anti-fraud
+npm install
+npm run local
+```
+
+Ambos servicios deben poder conectar al broker Kafka que levantaste con `docker compose up -d`.
+
+## Cómo usar los servicios (endpoints)
+
+Base URL: `http://localhost:3000`
+
+1) Crear transacción — POST `/transaction`
+
+- Descripción: crea una transacción y publica el evento para validación anti-fraud.
+- Body (JSON):
 
 ```json
 {
-  "accountExternalIdDebit": "Guid",
-  "accountExternalIdCredit": "Guid",
-  "tranferTypeId": 1,
-  "value": 120
+	"accountExternalIdDebit": "5429d629-c239-45fa-8235-1a386258c536",
+	"accountExternalIdCredit": "d6cd54da-8ce3-4f79-abda-bd5be9b19e68",
+	"tranferTypeId": 1,
+	"value": 120
 }
 ```
 
-2. Resource to retrieve a transaction
+Ejemplos `curl`:
 
-```json
-{
-  "transactionExternalId": "Guid",
-  "transactionType": {
-    "name": ""
-  },
-  "transactionStatus": {
-    "name": ""
-  },
-  "value": 120,
-  "createdAt": "Date"
-}
+```bash
+curl -i -X POST http://localhost:3000/transaction \
+	-H "Content-Type: application/json" \
+	-d '{
+		"accountExternalIdDebit": "5429d629-c239-45fa-8235-1a386258c536",
+		"accountExternalIdCredit": "d6cd54da-8ce3-4f79-abda-bd5be9b19e68",
+		"tranferTypeId": 1,
+		"value": 120
+	}'
 ```
 
-## Optional
+2) Listar transacciones — GET `/transaction`
 
-You can use any approach to store transaction data but you should consider that we may deal with high volume scenarios where we have a huge amount of writes and reads for the same data at the same time. How would you tackle this requirement?
+- Descripción: devuelve todas las transacciones guardadas (útil para debug local).
 
-You can use Graphql;
+```bash
+curl http://localhost:3000/transaction
+```
 
-# Send us your challenge
+## Flujo Kafka (anti-fraud)
 
-When you finish your challenge, after forking a repository, you **must** open a pull request to our repository. There are no limitations to the implementation, you can follow the programming paradigm, modularization, and style that you feel is the most appropriate solution.
+- Al crear una transacción se publica un evento `transaction.created` con los datos básicos.
+- Un consumidor (anti-fraud) valida la transacción y emite `transaction.validated` con `{ id, status }`.
+- La app escucha `transaction.validated` y actualiza el `status` en la base de datos.
 
-If you have any questions, please let us know.
+Regla implementada en el anti-fraud (ejemplo): `if value > 1000 => rejected`; else `approved`.
+
+3. Consultar la última transacción:
+
+```sql
+select * from transaction where "accountExternalIdDebit" = {{ID}};
+```
+
+## DDL (esquema) para probar localmente
+
+```sql
+
+CREATE TABLE public.transaction
+(
+	"accountExternalIdDebit"  varchar                              NOT NULL,
+	"accountExternalIdCredit" varchar                              NOT NULL,
+	"tranferTypeId"           integer                              NOT NULL,
+	value                     numeric                              NOT NULL,
+	id                        uuid      DEFAULT uuid_generate_v4() NOT NULL
+		CONSTRAINT "PK_89eadb93a89810556e1cbcd6ab9"
+			PRIMARY KEY,
+	"createdAt"               timestamp DEFAULT now()              NOT NULL,
+	"updatedAt"               timestamp DEFAULT now()              NOT NULL,
+	status                    integer                              NOT NULL
+);
+```
+
+Si usas TypeORM, la entidad del proyecto crea automáticamente la tabla al iniciar (si `synchronize: true`). Usa este DDL solo si quieres preparar la tabla manualmente o probar fuera del ciclo de arranque de la app.
