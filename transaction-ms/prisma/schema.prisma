@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  id                      String   @id @db.Uuid
+  accountExternalIdDebit  String   @db.Uuid
+  accountExternalIdCredit String   @db.Uuid
+  transferTypeId          Int
+  value                   Decimal  @db.Decimal(18, 2)
+  status                  String   @default("pending")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+}
+
+model OutboxEvent {
+  id          String    @id @default(uuid())
+  eventId     String    @unique
+  aggregateId String
+  topic       String
+  key         String
+  payload     Json
+  status      String    @default("PENDING")
+  createdAt   DateTime  @default(now())
+  sentAt      DateTime?
+
+  @@index([status, createdAt])
+}
+
+model ProcessedMessage {
+  consumer    String
+  messageId   String
+  processedAt DateTime @default(now())
+
+  @@id([consumer, messageId])
+}

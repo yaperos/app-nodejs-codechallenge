@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   postgres:
     image: postgres:14
@@ -7,6 +6,11 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=transactions
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -21,5 +25,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9991
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
     ports:
       - 9092:9092

@@ -1,0 +1,17 @@
+{
+    "name": "app-nodejs-codechallenge",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "transaction-ms",
+        "anti-fraud-ms",
+        "client-gateway"
+    ],
+    "scripts": {
+        "build:contracts": "npm run build -w @yape/contracts",
+        "dev:tx": "npm run start:dev -w transaction-ms",
+        "dev:fraud": "npm run start:dev -w anti-fraud-ms",
+        "dev:gateway": "npm run start:dev -w client-gateway",
+        "test": "npm run test --workspaces --if-present"
+    }
+}
