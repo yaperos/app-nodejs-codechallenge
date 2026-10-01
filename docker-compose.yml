@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   postgres:
     image: postgres:14
@@ -7,6 +6,10 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 20
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.3
     environment:
@@ -23,3 +26,60 @@ services:
       KAFKA_JMX_PORT: 9991
     ports:
       - 9092:9092
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server kafka:29092 --list"]
+      interval: 10s
+      retries: 30
+
+  # Crea los tópicos con 3 particiones antes de que arranquen los servicios.
+  # Kafka 2.5 no admite --if-not-exists con --bootstrap-server: se lista primero.
+  kafka-init:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        for t in transaction.created transaction.status-updated transaction.created.dlq transaction.status-updated.dlq; do
+          kafka-topics --bootstrap-server kafka:29092 --list | grep -qx $$t ||
+            kafka-topics --bootstrap-server kafka:29092 --create --topic $$t --partitions 3 --replication-factor 1 || exit 1
+        done
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_HOST_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+
+  transaction:
+    build:
+      context: .
+      args:
+        APP: transaction
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
+    environment:
+      PORT: 3000
+      KAFKA_BROKERS: kafka:29092
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3000:3000"
+  anti-fraud:
+    build:
+      context: .
+      args:
+        APP: anti-fraud
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+    environment:
+      KAFKA_BROKERS: kafka:29092
