@@ -9,7 +9,6 @@ import {
   ValidationOptions,
 } from 'class-validator';
 
-// Límite de negocio: mantiene el monto muy por debajo de la precisión segura de un double.
 export const MAX_TRANSACTION_VALUE = 1_000_000_000;
 
 function IsNotEqualTo(property: string, options?: ValidationOptions) {
@@ -38,7 +37,6 @@ export class CreateTransactionDto {
   @IsNotEqualTo('accountExternalIdDebit')
   accountExternalIdCredit!: string;
 
-  // El typo "tranferTypeId" es el contrato del README y se respeta tal cual.
   @ApiProperty({
     example: 1,
     description: 'Spelled as in the challenge contract',

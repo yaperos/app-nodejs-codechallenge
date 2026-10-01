@@ -20,7 +20,6 @@ export class KafkaProducerService implements OnModuleInit, OnModuleDestroy {
   private readonly producer: Producer;
 
   constructor(@Inject(KAFKA_OPTIONS) options: KafkaOptions) {
-    // Particionador compatible con el cliente Java (murmur2): misma key, misma partición.
     this.producer = new Kafka(options).producer({
       idempotent: true,
       createPartitioner: Partitioners.DefaultPartitioner,
