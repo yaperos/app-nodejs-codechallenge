@@ -5,6 +5,10 @@ import { FinalTransactionStatus } from './transaction-status';
 
 export interface TransactionCreatedEvent {
   transactionExternalId: string;
+  accountExternalIdDebit: string;
+  accountExternalIdCredit: string;
+  // Mismo typo que el contrato del API del README, a propósito.
+  tranferTypeId: number;
   // Decimal como string: el monto nunca pasa por un float de JS.
   value: string;
   createdAt: string;
