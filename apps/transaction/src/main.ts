@@ -1,18 +1,13 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { TransactionModule } from './transaction.module';
+import { createValidationPipe } from './validation';
 
 async function bootstrap() {
   const app = await NestFactory.create(TransactionModule);
   app.enableShutdownHooks();
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
+  app.useGlobalPipes(createValidationPipe());
 
   const document = SwaggerModule.createDocument(
     app,
